@@ -1,102 +1,260 @@
+"use client";
+
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+const phases = [
+  {
+    days: "Days 1–4",
+    title: "The Shock",
+    description:
+      "Processing the diagnosis, understanding HSA, exploring treatment options, and telling the people who matter.",
+    dotColor: "var(--terracotta)",
+    labelColor: "var(--terracotta)",
+    bgColor: "rgba(212,133,106,0.07)",
+    borderColor: "rgba(212,133,106,0.25)",
+  },
+  {
+    days: "Days 5–10",
+    title: "Building Ground",
+    description:
+      "Creating routines, supplements & nutrition, navigating good days and bad, and making your home safer.",
+    dotColor: "var(--gold)",
+    labelColor: "var(--gold)",
+    bgColor: "rgba(196,162,101,0.07)",
+    borderColor: "rgba(196,162,101,0.25)",
+  },
+  {
+    days: "Days 11–17",
+    title: "The Emotions",
+    description:
+      "Confronting guilt, finding your support system, learning presence, the financial reality, and caring for other pets.",
+    dotColor: "var(--sage-light)",
+    labelColor: "var(--sage)",
+    bgColor: "rgba(122,154,125,0.07)",
+    borderColor: "rgba(122,154,125,0.25)",
+  },
+  {
+    days: "Days 18–24",
+    title: "Going Deeper",
+    description:
+      "Processing anger, noticing the small things, having hard conversations, helping kids cope, and documenting the love.",
+    dotColor: "var(--sage)",
+    labelColor: "var(--sage)",
+    bgColor: "rgba(91,123,94,0.07)",
+    borderColor: "rgba(91,123,94,0.25)",
+  },
+  {
+    days: "Days 25–30",
+    title: "Finding Meaning",
+    description:
+      "Self-care, legacy, gratitude in grief, community, and stepping into whatever comes next — with grace.",
+    dotColor: "var(--sage-dark)",
+    labelColor: "var(--sage-dark)",
+    bgColor: "rgba(62,87,64,0.07)",
+    borderColor: "rgba(62,87,64,0.25)",
+  },
+];
+
 export function JourneyTimeline() {
-  const phases = [
-    {
-      days: "Days 1\u20134",
-      color: "bg-terracotta",
-      title: "The Shock",
-      description:
-        "Processing the diagnosis, understanding HSA, exploring treatment options, and telling the people who matter.",
-    },
-    {
-      days: "Days 5\u201310",
-      color: "bg-gold",
-      title: "Building Ground",
-      description:
-        "Creating routines, supplements & nutrition, navigating good days and bad, and making your home safer.",
-    },
-    {
-      days: "Days 11\u201317",
-      color: "bg-sage-light",
-      title: "The Emotions",
-      description:
-        "Confronting guilt, finding your support system, learning presence, the financial reality, and caring for other pets.",
-    },
-    {
-      days: "Days 18\u201324",
-      color: "bg-sage",
-      title: "Going Deeper",
-      description:
-        "Processing anger, noticing the small things, having hard conversations, helping kids cope, and documenting the love.",
-    },
-    {
-      days: "Days 25\u201330",
-      color: "bg-sage-dark",
-      title: "Finding Meaning",
-      description:
-        "Self-care, legacy, gratitude in grief, community, and stepping into whatever comes next \u2014 with grace.",
-    },
-  ];
+  const ref = useScrollReveal();
 
   return (
-    <section id="journey" className="py-[100px] px-6 md:py-[100px] py-12">
+    <section
+      id="journey"
+      ref={ref as React.RefObject<HTMLElement>}
+      className="relative overflow-hidden"
+      style={{
+        paddingTop: "clamp(80px, 10vw, 120px)",
+        paddingBottom: "clamp(80px, 10vw, 120px)",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        background: "var(--cream)",
+      }}
+    >
+      {/* Background ambient */}
+      <div
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+        style={{
+          bottom: "-20%",
+          left: "-10%",
+          width: "600px",
+          height: "600px",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(91,123,94,0.07) 0%, transparent 70%)",
+          animationName: "ambientGlow",
+          animationDuration: "10s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
+          animationDelay: "2s",
+        }}
+      />
+
       <div className="max-w-[1100px] mx-auto">
-        <div className="text-center">
-          <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div
+            className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
+            style={{ color: "var(--gold)" }}
+          >
             The Journey
           </div>
-          <div className="font-serif text-[clamp(1.8rem,3.5vw,2.4rem)] font-semibold leading-[1.3] mb-5 tracking-tight">
-            30 days, five chapters of healing.
-          </div>
-          <p className="text-[1.05rem] text-text-muted max-w-[600px] mx-auto leading-relaxed mb-[50px]">
-            Each week builds on the last. You start with survival. You end with
-            meaning.
+          <h2
+            className="reveal font-serif font-semibold tracking-tight mb-5"
+            style={{
+              fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
+              lineHeight: 1.25,
+              transitionDelay: "0.08s",
+            }}
+          >
+            30 days.{" "}
+            <em className="italic" style={{ color: "var(--sage)" }}>
+              Five chapters of healing.
+            </em>
+          </h2>
+          <p
+            className="reveal text-[1.05rem] leading-relaxed mx-auto"
+            style={{
+              color: "var(--text-muted)",
+              maxWidth: "560px",
+              transitionDelay: "0.16s",
+            }}
+          >
+            Each week builds on the last. You start with survival. You end with meaning.
           </p>
         </div>
 
         {/* Desktop: horizontal timeline */}
-        <div className="hidden md:flex relative">
-          {/* Connector line */}
-          <div className="absolute top-[36px] left-10 right-10 h-[3px] rounded-sm bg-gradient-to-r from-terracotta via-gold via-sage-light via-sage to-sage-dark" />
+        <div className="hidden md:block">
+          {/* The drawing line */}
+          <div className="relative mb-3 h-[3px]">
+            <div
+              className="absolute inset-0 rounded-full opacity-10"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--terracotta), var(--gold), var(--sage-light), var(--sage), var(--sage-dark))",
+              }}
+            />
+            <div
+              className="timeline-line-h absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--terracotta), var(--gold), var(--sage-light), var(--sage), var(--sage-dark))",
+              }}
+            />
+          </div>
 
-          {phases.map((phase, i) => (
-            <div key={i} className="flex-1 text-center relative px-3">
-              <div className="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-text-muted mb-3">
-                {phase.days}
+          {/* Dots and cards */}
+          <div className="reveal-stagger grid grid-cols-5 gap-3">
+            {phases.map((phase, i) => (
+              <div key={i} className="flex flex-col items-center text-center pt-3">
+                {/* Dot */}
+                <div
+                  className="w-4 h-4 rounded-full mb-5 transition-transform duration-300 hover:scale-125"
+                  style={{
+                    background: phase.dotColor,
+                    boxShadow: `0 0 0 4px white, 0 0 0 6px ${phase.dotColor}40`,
+                  }}
+                />
+
+                {/* Card */}
+                <div
+                  className="w-full rounded-xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.07)]"
+                  style={{
+                    background: phase.bgColor,
+                    border: `1px solid ${phase.borderColor}`,
+                  }}
+                >
+                  <div
+                    className="text-[0.62rem] font-bold uppercase tracking-[0.1em] mb-1.5"
+                    style={{ color: phase.labelColor }}
+                  >
+                    {phase.days}
+                  </div>
+                  <h4
+                    className="font-serif text-[0.95rem] font-semibold mb-1.5"
+                    style={{ color: "var(--text)" }}
+                  >
+                    {phase.title}
+                  </h4>
+                  <p
+                    className="text-[0.8rem] leading-relaxed"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {phase.description}
+                  </p>
+                </div>
               </div>
-              <div
-                className={`w-4 h-4 rounded-full mx-auto mb-4 relative z-10 border-[3px] border-warm-white shadow-[0_0_0_2px_var(--border)] ${phase.color}`}
-              />
-              <h4 className="font-serif text-base font-semibold mb-2 text-text">
-                {phase.title}
-              </h4>
-              <p className="text-[0.85rem] text-text-muted leading-relaxed">
-                {phase.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Mobile: vertical timeline */}
-        <div className="md:hidden flex flex-col gap-6 pl-8 relative">
-          {/* Vertical line */}
-          <div className="absolute top-0 bottom-0 left-5 w-[3px] rounded-sm bg-gradient-to-b from-terracotta via-gold via-sage-light via-sage to-sage-dark" />
-
-          {phases.map((phase, i) => (
-            <div key={i} className="relative pl-6">
+        <div className="md:hidden">
+          <div className="relative pl-10">
+            {/* Vertical drawing line */}
+            <div className="absolute top-0 bottom-0 left-4 w-[3px] rounded-full overflow-hidden">
               <div
-                className={`absolute -left-[12px] top-[18px] w-4 h-4 rounded-full border-[3px] border-warm-white shadow-[0_0_0_2px_var(--border)] ${phase.color}`}
+                className="absolute inset-0 opacity-10 rounded-full"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, var(--terracotta), var(--gold), var(--sage-light), var(--sage), var(--sage-dark))",
+                }}
               />
-              <div className="text-[0.7rem] font-semibold uppercase tracking-[0.08em] text-text-muted mb-1">
-                {phase.days}
-              </div>
-              <h4 className="font-serif text-base font-semibold mb-2 text-text">
-                {phase.title}
-              </h4>
-              <p className="text-[0.85rem] text-text-muted leading-relaxed">
-                {phase.description}
-              </p>
+              <div
+                className="timeline-line-v absolute inset-0 rounded-full"
+                style={{
+                  background:
+                    "linear-gradient(to bottom, var(--terracotta), var(--gold), var(--sage-light), var(--sage), var(--sage-dark))",
+                }}
+              />
             </div>
-          ))}
+
+            <div className="reveal-stagger flex flex-col gap-6">
+              {phases.map((phase, i) => (
+                <div key={i} className="relative">
+                  {/* Dot */}
+                  <div
+                    className="absolute -left-[25px] top-5 w-4 h-4 rounded-full"
+                    style={{
+                      background: phase.dotColor,
+                      boxShadow: `0 0 0 3px white, 0 0 0 5px ${phase.dotColor}40`,
+                    }}
+                  />
+
+                  {/* Card */}
+                  <div
+                    className="rounded-xl p-5 transition-all duration-300"
+                    style={{
+                      background: phase.bgColor,
+                      border: `1px solid ${phase.borderColor}`,
+                    }}
+                  >
+                    <div
+                      className="text-[0.62rem] font-bold uppercase tracking-[0.1em] mb-1"
+                      style={{ color: phase.labelColor }}
+                    >
+                      {phase.days}
+                    </div>
+                    <h4
+                      className="font-serif text-base font-semibold mb-1.5"
+                      style={{ color: "var(--text)" }}
+                    >
+                      {phase.title}
+                    </h4>
+                    <p
+                      className="text-[0.88rem] leading-relaxed"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {phase.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

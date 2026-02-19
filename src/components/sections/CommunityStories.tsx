@@ -1,59 +1,205 @@
+"use client";
+
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
+const stories = [
+  {
+    initials: "SM",
+    gradient: "linear-gradient(135deg, var(--sage-light), var(--sage))",
+    quote:
+      "Having a place to write about what I was feeling each day — and knowing it was just for me — gave me something to hold onto when everything felt out of control.",
+    name: "Sarah M.",
+    detail: "Beau, Golden Retriever · Day 14",
+  },
+  {
+    initials: "MT",
+    gradient: "linear-gradient(135deg, var(--gold-light), var(--gold))",
+    quote:
+      "The supplement guide alone saved me hours of research. But it was the daily reflections that really helped. Feeling like someone understood what I was going through made all the difference.",
+    name: "Mike T.",
+    detail: "Luna, German Shepherd · Day 22",
+    featured: true,
+  },
+  {
+    initials: "JK",
+    gradient: "linear-gradient(135deg, var(--terracotta-light), var(--terracotta))",
+    quote:
+      "I didn't want to 'make the most' of every day. I just wanted to stop crying long enough to enjoy the small stuff. HSA Days helped me get there, one day at a time.",
+    name: "Jen K.",
+    detail: "Rosie, Lab Mix · Day 30",
+  },
+];
+
 export function CommunityStories() {
-  const stories = [
-    {
-      avatar: "\uD83D\uDC36",
-      quote:
-        "Having a place to write about what I was feeling each day \u2014 and knowing it was just for me \u2014 gave me something to hold onto when everything felt out of control.",
-      name: "Sarah M.",
-      detail: "Beau, Golden Retriever",
-    },
-    {
-      avatar: "\uD83D\uDC3E",
-      quote:
-        "The supplement guide alone saved me hours of research. But it was the daily reflections that really helped. Feeling like someone understood what I was going through made all the difference.",
-      name: "Mike T.",
-      detail: "Luna, German Shepherd",
-    },
-    {
-      avatar: "\uD83E\uDDE1",
-      quote:
-        "I didn\u2019t want to \u2018make the most\u2019 of every day. I just wanted to stop crying long enough to enjoy the small stuff. HSA Days helped me get there, one day at a time.",
-      name: "Jen K.",
-      detail: "Rosie, Lab Mix",
-    },
-  ];
+  const ref = useScrollReveal();
 
   return (
-    <section id="community-section" className="py-[100px] px-6 bg-cream md:py-[100px] py-12">
-      <div className="max-w-[1100px] mx-auto">
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
-          Community
-        </div>
-        <div className="font-serif text-[clamp(1.8rem,3.5vw,2.4rem)] font-semibold leading-[1.3] mb-5 tracking-tight">
-          Stories from the HSA family.
-        </div>
-        <p className="text-[1.05rem] text-text-muted max-w-[600px] leading-relaxed">
-          Every dog is different. Every journey is different. But the love
-          &mdash; that&apos;s the same.
-        </p>
+    <section
+      id="community-section"
+      ref={ref as React.RefObject<HTMLElement>}
+      className="relative overflow-hidden"
+      style={{
+        paddingTop: "clamp(80px, 10vw, 120px)",
+        paddingBottom: "clamp(80px, 10vw, 120px)",
+        paddingLeft: "24px",
+        paddingRight: "24px",
+        background: "var(--cream)",
+      }}
+    >
+      {/* Ambient background glows */}
+      <div
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+        style={{
+          top: "20%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "700px",
+          height: "400px",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(ellipse, rgba(91,123,94,0.07) 0%, transparent 70%)",
+          animationName: "ambientGlow",
+          animationDuration: "9s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
+          animationDelay: "1s",
+        }}
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-[50px] md:grid md:overflow-visible overflow-x-auto snap-x snap-mandatory flex md:flex-none -mx-5 px-5 md:mx-0 md:px-0 pb-2 md:pb-0">
+      <div className="max-w-[1100px] mx-auto relative">
+
+        {/* Header */}
+        <div className="text-center mb-14">
+          <div
+            className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
+            style={{ color: "var(--gold)" }}
+          >
+            Community
+          </div>
+          <h2
+            className="reveal font-serif font-semibold tracking-tight mb-4"
+            style={{
+              fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
+              lineHeight: 1.25,
+              transitionDelay: "0.08s",
+            }}
+          >
+            Stories from the{" "}
+            <em className="italic" style={{ color: "var(--sage)" }}>
+              HSA family.
+            </em>
+          </h2>
+          <p
+            className="reveal text-[1.05rem] leading-relaxed mx-auto"
+            style={{
+              color: "var(--text-muted)",
+              maxWidth: "520px",
+              transitionDelay: "0.16s",
+            }}
+          >
+            Every dog is different. Every journey is different. But the love
+            — that&apos;s the same.
+          </p>
+        </div>
+
+        {/* Stories grid */}
+        <div className="reveal-stagger grid grid-cols-1 md:grid-cols-3 gap-5">
           {stories.map((story, i) => (
             <div
               key={i}
-              className="bg-white rounded-2xl px-7 py-8 border border-border transition-transform hover:-translate-y-[2px] md:min-w-0 min-w-[280px] snap-start shrink-0"
+              className="group relative flex flex-col rounded-2xl p-7 transition-all duration-350 hover:-translate-y-1.5"
+              style={{
+                background: "white",
+                border: "1px solid var(--border)",
+                boxShadow: story.featured
+                  ? "0 8px 40px rgba(91,123,94,0.12)"
+                  : "0 2px 12px rgba(0,0,0,0.03)",
+              }}
             >
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-sage-light to-gold-light mb-4 flex items-center justify-center text-[1.3rem]">
-                {story.avatar}
+              {/* Featured accent */}
+              {story.featured && (
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[0.62rem] font-semibold uppercase tracking-[0.1em] px-3.5 py-1 rounded-full"
+                  style={{
+                    background: "var(--sage)",
+                    color: "white",
+                  }}
+                >
+                  Most Shared
+                </div>
+              )}
+
+              {/* Avatar */}
+              <div
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold text-[0.9rem] mb-5 font-sans flex-shrink-0"
+                style={{ background: story.gradient }}
+              >
+                {story.initials}
               </div>
-              <blockquote className="text-[0.95rem] text-text-muted leading-relaxed italic mb-4">
-                &ldquo;{story.quote}&rdquo;
+
+              {/* Quote mark */}
+              <div
+                className="font-serif text-[2.2rem] leading-none mb-2"
+                style={{ color: "var(--border-strong)", lineHeight: 1 }}
+                aria-hidden="true"
+              >
+                &ldquo;
+              </div>
+
+              <blockquote
+                className="font-serif italic text-[0.97rem] leading-relaxed flex-1 mb-5"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {story.quote}
               </blockquote>
-              <div className="font-semibold text-[0.9rem] text-text">
-                {story.name}
+
+              {/* Attribution */}
+              <div
+                className="pt-5"
+                style={{
+                  borderTop: "1px solid var(--border)",
+                }}
+              >
+                <div
+                  className="font-semibold text-[0.88rem]"
+                  style={{ color: "var(--text)" }}
+                >
+                  {story.name}
+                </div>
+                <div
+                  className="text-[0.78rem] mt-0.5"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {story.detail}
+                </div>
               </div>
-              <div className="text-[0.8rem] text-text-muted">
-                {story.detail}
+            </div>
+          ))}
+        </div>
+
+        {/* Community stat strip */}
+        <div
+          className="reveal mt-14 flex flex-wrap justify-center gap-x-12 gap-y-4"
+          style={{ transitionDelay: "0.4s" }}
+        >
+          {[
+            { num: "Hundreds", label: "of families supported" },
+            { num: "30", label: "days of guided content" },
+            { num: "Free", label: "always and forever" },
+          ].map((s) => (
+            <div key={s.label} className="flex items-center gap-3">
+              <div
+                className="text-[1.3rem] font-serif font-semibold"
+                style={{ color: "var(--sage-dark)" }}
+              >
+                {s.num}
+              </div>
+              <div
+                className="text-[0.82rem]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {s.label}
               </div>
             </div>
           ))}
