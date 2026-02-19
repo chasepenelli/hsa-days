@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+
 import { ScrollToCurrentDay } from "@/components/days/ScrollToCurrentDay";
 import { AnimatedDayCard } from "@/components/days/AnimatedDayCard";
 
@@ -112,7 +112,6 @@ export default async function DaysDashboard() {
     { data: days },
     { data: progress },
     { data: journalEntries },
-    { data: mediaEntries },
   ] = await Promise.all([
     supabase
       .from("daily_content")
@@ -125,10 +124,6 @@ export default async function DaysDashboard() {
     supabase
       .from("journal_entries")
       .select("day_number, entry_text")
-      .eq("subscriber_id", user.id),
-    supabase
-      .from("day_media")
-      .select("day_number, file_path, file_type")
       .eq("subscriber_id", user.id),
   ]);
 
@@ -149,48 +144,6 @@ export default async function DaysDashboard() {
         }
       }
     }
-  );
-
-  // Build media map
-  const mediaMap = new Map<
-    number,
-    { count: number; firstImagePath: string | null }
-  >();
-  mediaEntries?.forEach(
-    (m: { day_number: number; file_path: string; file_type: string }) => {
-      const existing = mediaMap.get(m.day_number) || {
-        count: 0,
-        firstImagePath: null,
-      };
-      existing.count++;
-      if (!existing.firstImagePath && (m.file_type === "image" || m.file_type?.startsWith("image/"))) {
-        existing.firstImagePath = m.file_path;
-      }
-      mediaMap.set(m.day_number, existing);
-    }
-  );
-
-  // Generate signed URLs for completed day thumbnails
-  const completedDaysWithImages = Array.from(mediaMap.entries())
-    .filter(
-      ([dayNum, media]) =>
-        media.firstImagePath && progressMap.get(dayNum)?.completed_at
-    )
-    .map(([dayNum]) => dayNum);
-
-  const signedUrlMap = new Map<number, string>();
-  await Promise.all(
-    completedDaysWithImages.map(async (dayNum) => {
-      const media = mediaMap.get(dayNum);
-      if (media?.firstImagePath) {
-        const { data } = await supabase.storage
-          .from("day-memories")
-          .createSignedUrl(media.firstImagePath, 3600);
-        if (data?.signedUrl) {
-          signedUrlMap.set(dayNum, data.signedUrl);
-        }
-      }
-    })
   );
 
   const completedCount =
@@ -363,8 +316,6 @@ export default async function DaysDashboard() {
             const weekInfo = showWeekDivider ? WEEK_CONFIG[week] : null;
 
             const journalSnippet = journalMap.get(day.day_number);
-            const media          = mediaMap.get(day.day_number);
-            const thumbnailUrl   = signedUrlMap.get(day.day_number);
 
             const categoryColor =
               CATEGORY_COLORS[day.category] || "bg-sage/10 text-sage-dark";
@@ -562,22 +513,8 @@ export default async function DaysDashboard() {
                             boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
                           }}
                         >
-                          {/* Thumbnail */}
-                          {thumbnailUrl && (
-                            <div className="absolute top-3 right-3 hidden sm:block">
-                              <Image
-                                src={thumbnailUrl}
-                                alt=""
-                                width={36}
-                                height={36}
-                                className="w-9 h-9 rounded-lg object-cover"
-                                style={{ opacity: 0.85 }}
-                              />
-                            </div>
-                          )}
-
                           <div className="flex items-start gap-3">
-                            <div className={`flex-1 min-w-0 ${thumbnailUrl ? "sm:pr-12" : ""}`}>
+                            <div className="flex-1 min-w-0">
                               {/* Meta */}
                               <div className="flex items-center gap-2 mb-1">
                                 <span className={`text-[0.6rem] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-full ${categoryColor}`}>
@@ -622,19 +559,6 @@ export default async function DaysDashboard() {
                                 </div>
                               )}
 
-                              {/* Media count */}
-                              {media && media.count > 0 && (
-                                <div
-                                  className="flex items-center gap-1 mt-2 text-[0.72rem]"
-                                  style={{ color: "var(--text-muted)", opacity: 0.5 }}
-                                >
-                                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-3.5 h-3.5">
-                                    <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
-                                    <circle cx="12" cy="13" r="4" />
-                                  </svg>
-                                  {media.count} {media.count === 1 ? "memory" : "memories"}
-                                </div>
-                              )}
                             </div>
 
                             {/* Checkmark badge */}
