@@ -88,10 +88,10 @@ export default async function DaysDashboard() {
     redirect("/login");
   }
 
-  // Ensure subscriber record exists (safety net)
+  // Ensure subscriber record exists (safety net) + fetch pet info
   const { data: subscriber } = await supabase
     .from("subscribers")
-    .select("id")
+    .select("id, dog_name, pet_photo_path")
     .eq("id", user.id)
     .single();
 
@@ -105,6 +105,17 @@ export default async function DaysDashboard() {
       },
       { onConflict: "id" }
     );
+  }
+
+  const petName = subscriber?.dog_name || null;
+
+  // Get signed URL for pet photo if available
+  let petPhotoUrl: string | null = null;
+  if (subscriber?.pet_photo_path) {
+    const { data: signedData } = await supabase.storage
+      .from("pet-photos")
+      .createSignedUrl(subscriber.pet_photo_path, 3600);
+    petPhotoUrl = signedData?.signedUrl || null;
   }
 
   // Fetch all data in parallel
@@ -170,6 +181,46 @@ export default async function DaysDashboard() {
       {/* ─── Journey Header ─── */}
       <div className="px-6 pt-24 pb-12 text-center" style={{ background: "linear-gradient(to bottom, var(--cream) 0%, var(--warm-white) 100%)" }}>
         <div className="max-w-[560px] mx-auto">
+
+          {/* Pet photo + name greeting */}
+          {petName && (
+            <div className="flex flex-col items-center mb-6">
+              {petPhotoUrl ? (
+                <div
+                  className="w-16 h-16 rounded-full mb-3 overflow-hidden"
+                  style={{
+                    border: "2.5px solid var(--sage)",
+                    boxShadow: "0 2px 12px rgba(91,123,94,0.15)",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={petPhotoUrl}
+                    alt={petName}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="w-16 h-16 rounded-full mb-3 flex items-center justify-center"
+                  style={{
+                    background: "rgba(91,123,94,0.08)",
+                    border: "2px solid var(--border-strong)",
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7" style={{ color: "var(--sage)" }}>
+                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </div>
+              )}
+              <p
+                className="text-[0.85rem] font-medium"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {petName}&rsquo;s journey
+              </p>
+            </div>
+          )}
 
           {/* Current status heading */}
           {currentDay <= 30 ? (

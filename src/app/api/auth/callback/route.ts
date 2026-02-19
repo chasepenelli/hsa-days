@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       if (user) {
         const { data: existing } = await supabase
           .from("subscribers")
-          .select("id")
+          .select("id, onboarding_completed")
           .eq("id", user.id)
           .single();
 
@@ -43,6 +43,14 @@ export async function GET(request: Request) {
               upsertError.message
             );
           }
+
+          // New user — send to onboarding
+          return NextResponse.redirect(`${origin}/welcome`);
+        }
+
+        // Existing user — check onboarding status
+        if (!existing.onboarding_completed) {
+          return NextResponse.redirect(`${origin}/welcome`);
         }
       }
 

@@ -9,9 +9,11 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const isGatePage = pathname === "/gate";
     const isGateApi = pathname === "/api/gate";
+    const isWelcome = pathname === "/welcome";
+    const isOnboardingApi = pathname === "/api/onboarding";
     const hasAccess = request.cookies.get("site_access")?.value === sitePassword;
 
-    if (!hasAccess && !isGatePage && !isGateApi) {
+    if (!hasAccess && !isGatePage && !isGateApi && !isWelcome && !isOnboardingApi) {
       const gateUrl = request.nextUrl.clone();
       gateUrl.pathname = "/gate";
       return NextResponse.redirect(gateUrl);
