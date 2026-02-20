@@ -2,7 +2,7 @@ import { Hero } from "@/components/sections/Hero";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { WhyThisExists } from "@/components/sections/WhyThisExists";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
-import { SeeInside } from "@/components/sections/SeeInside";
+import { SeeInsideV2 } from "@/components/sections/SeeInsideV2";
 import { EmailPreview } from "@/components/sections/EmailPreview";
 import { About } from "@/components/sections/About";
 import { CommunityStories } from "@/components/sections/CommunityStories";
@@ -17,7 +17,7 @@ export default function Home() {
       <HowItWorks />
       <WhyThisExists />
       <JourneyTimeline />
-      <SeeInside />
+      <SeeInsideV2 />
       <EmailPreview />
       <About />
       <CommunityStories />

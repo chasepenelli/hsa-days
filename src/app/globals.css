@@ -447,3 +447,22 @@ input, textarea, select {
   opacity: 1;
   animation: shimmer 0.7s ease-out both;
 }
+
+/* ─────────────────────────────────────────────
+   Sticky scroll cards (SeeInside v2)
+────────────────────────────────────────────── */
+
+.sticky-card {
+  will-change: transform, opacity;
+  position: absolute;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-card {
+    position: relative !important;
+    opacity: 1 !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
