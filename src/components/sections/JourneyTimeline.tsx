@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const phases = [
@@ -180,7 +181,7 @@ export function JourneyTimeline() {
                 >
                   {/* Phase spot illustration */}
                   <div
-                    className="relative w-full mb-4 rounded-lg overflow-hidden"
+                    className="relative w-full mb-4"
                     style={{ aspectRatio: "1/1" }}
                   >
                     <Image
@@ -188,8 +189,8 @@ export function JourneyTimeline() {
                       alt={phase.illustrationAlt}
                       fill
                       sizes="(max-width: 1100px) 20vw, 200px"
-                      className="object-cover"
-                      style={{ mixBlendMode: "multiply", opacity: 0.88 }}
+                      className="object-contain"
+                      style={{ mixBlendMode: "multiply", opacity: 0.92 }}
                     />
                   </div>
 
@@ -259,18 +260,18 @@ export function JourneyTimeline() {
                     }}
                   >
                     <div className="flex items-start gap-4">
-                      {/* Phase spot illustration — smaller on mobile */}
+                      {/* Phase spot illustration — mobile */}
                       <div
-                        className="relative flex-shrink-0 rounded-lg overflow-hidden"
-                        style={{ width: "72px", height: "72px" }}
+                        className="relative flex-shrink-0"
+                        style={{ width: "88px", height: "88px" }}
                       >
                         <Image
                           src={phase.illustration}
                           alt={phase.illustrationAlt}
                           fill
-                          sizes="72px"
-                          className="object-cover"
-                          style={{ mixBlendMode: "multiply", opacity: 0.88 }}
+                          sizes="88px"
+                          className="object-contain"
+                          style={{ mixBlendMode: "multiply", opacity: 0.92 }}
                         />
                       </div>
 
@@ -300,6 +301,26 @@ export function JourneyTimeline() {
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Link to full journey page */}
+        <div className="reveal text-center mt-14" style={{ transitionDelay: "0.2s" }}>
+          <Link
+            href="/journey"
+            className="inline-flex items-center gap-2 text-[0.9rem] font-medium no-underline transition-colors hover:opacity-80"
+            style={{ color: "var(--sage)" }}
+          >
+            See the full journey
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              className="w-4 h-4"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
