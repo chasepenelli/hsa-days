@@ -100,18 +100,12 @@ export function Resources() {
               />
 
               {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
-                style={{
-                  background: resource.accentBg,
-                  border: `1px solid ${resource.accentBg.replace("0.08", "0.2")}`,
-                }}
-              >
+              <div className="mb-6 transition-transform duration-300 group-hover:scale-110">
                 <Image
                   src={resource.icon}
                   alt=""
-                  width={28}
-                  height={28}
+                  width={64}
+                  height={64}
                   style={{ objectFit: "contain" }}
                 />
               </div>
