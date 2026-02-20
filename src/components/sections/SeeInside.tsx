@@ -691,23 +691,13 @@ export function SeeInside() {
                   (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
                 }}
               >
-                {/* Icon badge */}
-                <div
-                  className="flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "12px",
-                    background: feature.bg,
-                    border: `1px solid ${feature.borderColor}`,
-                    flexShrink: 0,
-                  }}
-                >
+                {/* Icon */}
+                <div className="mb-4 transition-transform duration-300 group-hover:scale-110">
                   <Image
                     src={feature.icon}
                     alt=""
-                    width={24}
-                    height={24}
+                    width={128}
+                    height={128}
                     style={{ objectFit: "contain" }}
                   />
                 </div>

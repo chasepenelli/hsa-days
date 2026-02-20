@@ -78,7 +78,7 @@ export function HowItWorks() {
         <div className="relative">
           {/* Desktop connector */}
           <div
-            className="timeline-line-h hidden md:block absolute h-[2px] top-[52px] rounded-full"
+            className="timeline-line-h hidden md:block absolute h-[2px] top-[64px] rounded-full"
             style={{
               left: "calc(16.66% + 40px)",
               right: "calc(16.66% + 40px)",
@@ -92,25 +92,20 @@ export function HowItWorks() {
           <div className="reveal-stagger grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
             {steps.map((step, i) => (
               <div key={i} className="flex flex-col items-center text-center md:items-center">
-                {/* Icon circle */}
+                {/* Icon */}
                 <div
-                  className="relative w-[104px] h-[104px] rounded-full flex items-center justify-center mb-6 transition-transform duration-300 hover:scale-105 z-10"
-                  style={{
-                    background: step.bg,
-                    border: `1.5px solid ${step.bg.replace("0.08", "0.25")}`,
-                    boxShadow: `0 4px 24px ${step.bg.replace("0.08", "0.18")}`,
-                  }}
+                  className="relative mb-6 transition-transform duration-300 hover:scale-105 z-10"
                 >
                   <Image
                     src={step.icon}
                     alt=""
-                    width={36}
-                    height={36}
+                    width={128}
+                    height={128}
                     style={{ objectFit: "contain" }}
                   />
                   {/* Step number badge */}
                   <div
-                    className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] font-bold font-sans"
+                    className="absolute -top-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] font-bold font-sans"
                     style={{
                       background: step.color,
                       color: "white",
