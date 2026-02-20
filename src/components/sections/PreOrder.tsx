@@ -1,13 +1,335 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-const features = [
-  "30 daily reflections & activities",
-  "Full supplement guide",
-  "Dedicated journaling space",
-  "Food & nutrition reference",
-];
+/* ── Product data ─────────────────────────────────────── */
+
+type Product = {
+  badge: string;
+  badgeBg: string;
+  badgeColor: string;
+  badgeBorder: string;
+  accentColor: string;
+  watermark: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  features: { icon: string; title: string; description: string }[];
+  price: string;
+  priceColor: string;
+  ctaLabel: string;
+  ctaBg: string;
+  ctaHoverBg: string;
+  ctaShadow: string;
+  ctaHoverShadow: string;
+  ctaStyle: "solid" | "outline";
+  subtext: string;
+};
+
+const guidedJournal: Product = {
+  badge: "AVAILABLE NOW",
+  badgeBg: "rgba(91,123,94,0.10)",
+  badgeColor: "var(--sage)",
+  badgeBorder: "rgba(91,123,94,0.20)",
+  accentColor: "var(--sage)",
+  watermark: "/illustrations/icons/icon-journal.png",
+  title: "The Guided Journal",
+  subtitle: "Record your journey as it happens.",
+  description:
+    "All 30 days in a beautiful printed format with dedicated writing space, thick archival pages, lay-flat binding, and room for photos and keepsakes.",
+  features: [
+    {
+      icon: "/illustrations/icons/icon-journal.png",
+      title: "30 Days of Guided Space",
+      description: "Every reflection, prompt, and activity with room to write.",
+    },
+    {
+      icon: "/illustrations/icons/icon-supplement.png",
+      title: "Complete Resource Guides",
+      description: "Supplements, nutrition, and practical care references.",
+    },
+    {
+      icon: "/illustrations/icons/icon-pencil.png",
+      title: "Built for Writing",
+      description: "Thick archival pages with lay-flat binding.",
+    },
+  ],
+  price: "$49",
+  priceColor: "var(--sage)",
+  ctaLabel: "Pre-Order the Guided Journal",
+  ctaBg: "var(--terracotta)",
+  ctaHoverBg: "#c4775f",
+  ctaShadow: "rgba(212,133,106,0.3)",
+  ctaHoverShadow: "rgba(212,133,106,0.4)",
+  ctaStyle: "solid" as const,
+  subtext: "Ships Spring 2026. Free digital access included.",
+};
+
+const keepsakeBook: Product = {
+  badge: "COMING SOON",
+  badgeBg: "rgba(196,162,101,0.10)",
+  badgeColor: "var(--gold)",
+  badgeBorder: "rgba(196,162,101,0.22)",
+  accentColor: "var(--gold)",
+  watermark: "/illustrations/icons/icon-heart.png",
+  title: "The Keepsake Book",
+  subtitle: "Celebrate your completed journey.",
+  description:
+    "We compile your journal entries, reflections, and photos from the digital program into a one-of-a-kind printed book. Your words, your memories, bound forever.",
+  features: [
+    {
+      icon: "/illustrations/icons/icon-camera.png",
+      title: "Your Words & Photos",
+      description: "Everything you wrote and captured, beautifully arranged.",
+    },
+    {
+      icon: "/illustrations/icons/icon-heart.png",
+      title: "One of a Kind",
+      description: "Unique to your journey \u2014 no two books are the same.",
+    },
+    {
+      icon: "/illustrations/icons/icon-star.png",
+      title: "Heirloom Quality",
+      description: "Printed on premium paper with hardcover binding.",
+    },
+  ],
+  price: "Coming 2026",
+  priceColor: "var(--gold)",
+  ctaLabel: "Get Notified When Available",
+  ctaBg: "transparent",
+  ctaHoverBg: "rgba(196,162,101,0.08)",
+  ctaShadow: "none",
+  ctaHoverShadow: "none",
+  ctaStyle: "outline" as const,
+  subtext: "We\u2019ll email you when the Keepsake Book is ready.",
+};
+
+/* ── Sub-components ───────────────────────────────────── */
+
+function FeatureBlock({
+  icon,
+  title,
+  description,
+  accentColor,
+}: {
+  icon: string;
+  title: string;
+  description: string;
+  accentColor: string;
+}) {
+  return (
+    <div className="flex items-start gap-3.5">
+      <div
+        className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+        style={{
+          background:
+            accentColor === "var(--sage)"
+              ? "rgba(91,123,94,0.09)"
+              : "rgba(196,162,101,0.09)",
+        }}
+      >
+        <Image
+          src={icon}
+          alt=""
+          width={22}
+          height={22}
+          style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div
+          className="text-[0.88rem] font-semibold mb-0.5"
+          style={{ color: "var(--text)" }}
+        >
+          {title}
+        </div>
+        <p className="text-[0.82rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function ProductCard({
+  product,
+  isPrimary,
+}: {
+  product: Product;
+  isPrimary: boolean;
+}) {
+  return (
+    <div
+      className="relative rounded-[20px] overflow-hidden flex flex-col"
+      style={{
+        background: "white",
+        border: "1px solid var(--border)",
+        boxShadow: isPrimary
+          ? "0 12px 48px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)"
+          : "0 4px 24px rgba(0,0,0,0.05)",
+      }}
+    >
+      {/* Accent top bar */}
+      <div
+        style={{
+          height: "3px",
+          background: product.accentColor,
+          borderRadius: "20px 20px 0 0",
+        }}
+      />
+
+      {/* Watermark illustration */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <Image
+          src={product.watermark}
+          alt=""
+          width={280}
+          height={280}
+          className="absolute"
+          style={{
+            right: "-20px",
+            bottom: "-20px",
+            width: "280px",
+            height: "280px",
+            objectFit: "contain",
+            opacity: 0.06,
+            mixBlendMode: "multiply",
+          }}
+        />
+      </div>
+
+      {/* Card content */}
+      <div className="relative p-7 md:p-10 flex flex-col flex-1">
+        {/* Badge */}
+        <div className="mb-5">
+          <span
+            className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.12em] px-3.5 py-1.5 rounded-full"
+            style={{
+              background: product.badgeBg,
+              color: product.badgeColor,
+              border: `1px solid ${product.badgeBorder}`,
+            }}
+          >
+            {product.badge}
+          </span>
+        </div>
+
+        {/* Title & subtitle */}
+        <h3
+          className="font-serif font-semibold mb-1.5"
+          style={{ fontSize: "1.45rem", color: "var(--text)", lineHeight: 1.3 }}
+        >
+          {product.title}
+        </h3>
+        <p
+          className="font-serif italic text-[0.95rem] mb-4"
+          style={{ color: "var(--text-muted)" }}
+        >
+          {product.subtitle}
+        </p>
+
+        {/* Description */}
+        <p
+          className="text-[0.92rem] leading-relaxed mb-6"
+          style={{ color: "var(--text-muted)" }}
+        >
+          {product.description}
+        </p>
+
+        {/* Feature blocks */}
+        <div className="flex flex-col gap-4 mb-8">
+          {product.features.map((f) => (
+            <FeatureBlock
+              key={f.title}
+              icon={f.icon}
+              title={f.title}
+              description={f.description}
+              accentColor={product.accentColor}
+            />
+          ))}
+        </div>
+
+        {/* Spacer to push price + CTA to bottom */}
+        <div className="mt-auto">
+          {/* Divider */}
+          <div
+            className="mb-6"
+            style={{
+              height: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--border-strong), transparent)",
+            }}
+          />
+
+          {/* Price */}
+          <div className="text-center mb-5">
+            <span
+              className="font-serif font-semibold"
+              style={{
+                fontSize: isPrimary ? "2rem" : "1.15rem",
+                color: product.priceColor,
+                lineHeight: 1,
+              }}
+            >
+              {product.price}
+            </span>
+          </div>
+
+          {/* CTA Button */}
+          {product.ctaStyle === "solid" ? (
+            <button
+              className="w-full md:w-auto md:mx-auto md:px-10 px-6 py-4 text-white border-none rounded-xl text-[1rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] block"
+              style={{
+                background: product.ctaBg,
+                boxShadow: `0 4px 20px ${product.ctaShadow}`,
+                minHeight: "52px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = product.ctaHoverBg;
+                e.currentTarget.style.boxShadow = `0 6px 24px ${product.ctaHoverShadow}`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = product.ctaBg;
+                e.currentTarget.style.boxShadow = `0 4px 20px ${product.ctaShadow}`;
+              }}
+            >
+              {product.ctaLabel}
+            </button>
+          ) : (
+            <button
+              className="w-full md:w-auto md:mx-auto md:px-10 px-6 py-4 rounded-xl text-[1rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] block"
+              style={{
+                background: "transparent",
+                color: "var(--gold)",
+                border: "2px solid var(--gold)",
+                minHeight: "52px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = product.ctaHoverBg;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              {product.ctaLabel}
+            </button>
+          )}
+
+          {/* Subtext */}
+          <p
+            className="mt-3.5 text-[0.82rem] text-center"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {product.subtext}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Section ─────────────────────────────────────── */
 
 export function PreOrder() {
   const ref = useScrollReveal();
@@ -25,147 +347,151 @@ export function PreOrder() {
         background: "var(--warm-white)",
       }}
     >
-      {/* Ambient glow */}
+      {/* Ambient glows */}
       <div
         className="absolute pointer-events-none"
         aria-hidden="true"
         style={{
-          top: "30%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "500px",
-          height: "300px",
+          top: "-10%",
+          left: "-8%",
+          width: "480px",
+          height: "480px",
           borderRadius: "50%",
           background:
-            "radial-gradient(ellipse, rgba(212,133,106,0.07) 0%, transparent 70%)",
-          animationName: "ambientGlow",
-          animationDuration: "10s",
-          animationTimingFunction: "ease-in-out",
-          animationIterationCount: "infinite",
-          animationDelay: "3s",
+            "radial-gradient(circle, rgba(91,123,94,0.06) 0%, transparent 68%)",
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        aria-hidden="true"
+        style={{
+          bottom: "-10%",
+          right: "-8%",
+          width: "420px",
+          height: "420px",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(196,162,101,0.07) 0%, transparent 68%)",
         }}
       />
 
-      <div className="max-w-[1100px] mx-auto">
-        <div className="mb-14">
+      <div className="relative max-w-[1100px] mx-auto">
+        {/* ── Zone A: Empathy Opening ───────────────── */}
+        <div className="text-center mb-10">
           <div
             className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
             style={{ color: "var(--gold)" }}
           >
-            Pre-Order
+            HOLD IT FOREVER
           </div>
           <h2
-            className="reveal font-serif font-semibold tracking-tight mb-4"
+            className="reveal font-serif font-semibold tracking-tight mb-5"
             style={{
               fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
               lineHeight: 1.25,
+              color: "var(--text)",
               transitionDelay: "0.08s",
             }}
           >
-            Hold it{" "}
+            Some things deserve to be{" "}
             <em className="italic" style={{ color: "var(--sage)" }}>
-              in your hands.
+              more than digital.
             </em>
           </h2>
           <p
-            className="reveal text-[1.05rem] leading-relaxed"
+            className="reveal text-[1.05rem] leading-relaxed mx-auto"
             style={{
               color: "var(--text-muted)",
-              maxWidth: "560px",
+              maxWidth: "600px",
               transitionDelay: "0.16s",
             }}
           >
-            The physical journal includes all 30 days, dedicated writing space,
-            and the complete resource guides — designed to sit next to your
-            coffee and your dog.
+            You&apos;re building something deeply personal through these 30 days
+            &mdash; reflections, memories, quiet moments with your dog that
+            you&apos;ll never get back. We believe those deserve a permanent
+            home.
           </p>
         </div>
 
+        {/* ── Zone B: Emotional Bridge ──────────────── */}
         <div
-          className="reveal-scale max-w-[680px] mx-auto rounded-[24px] p-12 md:p-12 p-7 text-center"
-          style={{
-            background: "white",
-            border: "1px solid var(--border)",
-            boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
-            transitionDelay: "0.24s",
-          }}
+          className="reveal max-w-[640px] mx-auto text-center mb-14"
+          style={{ transitionDelay: "0.24s" }}
         >
+          {/* Top rule */}
           <div
-            className="inline-block text-[0.72rem] font-semibold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6"
+            className="mx-auto mb-5"
             style={{
-              background: "rgba(212,133,106,0.1)",
-              color: "var(--terracotta)",
-              border: "1px solid rgba(212,133,106,0.2)",
+              width: "48px",
+              height: "2px",
+              borderRadius: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--gold), transparent)",
             }}
-          >
-            Coming Soon
-          </div>
-
-          <h3
-            className="font-serif text-[1.7rem] font-semibold mb-3"
-            style={{ color: "var(--text)" }}
-          >
-            HSA Days: The Printed Journal
-          </h3>
-          <p
-            className="text-base leading-relaxed mx-auto mb-8"
-            style={{ color: "var(--text-muted)", maxWidth: "460px" }}
-          >
-            Everything from the website in a beautiful printed format. Thicker
-            pages for writing, lay-flat binding, and space to keep photos and
-            memories.
-          </p>
-
-          {/* Features */}
-          <div className="grid grid-cols-2 gap-3 mb-8 text-left max-w-[400px] mx-auto">
-            {features.map((feature, i) => (
-              <div key={i} className="flex items-center gap-2.5">
-                <div
-                  className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[0.7rem]"
-                  style={{
-                    background: "rgba(91,123,94,0.1)",
-                    color: "var(--sage)",
-                  }}
-                >
-                  ✓
-                </div>
-                <span
-                  className="text-[0.88rem]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {feature}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <button
-            className="inline-block px-10 py-4 text-white border-none rounded-xl text-[1.05rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] md:w-auto w-full"
+          />
+          <blockquote>
+            <p
+              className="font-serif italic text-[1.05rem] leading-[1.75] mb-3"
+              style={{ color: "var(--text)" }}
+            >
+              &ldquo;I wanted something I could hold in my hands. Something that
+              proved this time happened &mdash; that it mattered, that we were
+              here together.&rdquo;
+            </p>
+            <cite
+              className="not-italic text-[0.84rem]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              &mdash; From an HSA Days family
+            </cite>
+          </blockquote>
+          {/* Bottom rule */}
+          <div
+            className="mx-auto mt-5"
             style={{
-              background: "var(--terracotta)",
-              boxShadow: "0 4px 20px rgba(212,133,106,0.3)",
-              minHeight: "52px",
+              width: "48px",
+              height: "2px",
+              borderRadius: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--gold), transparent)",
             }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background = "#c4775f";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                "0 6px 24px rgba(212,133,106,0.4)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background =
-                "var(--terracotta)";
-              (e.currentTarget as HTMLButtonElement).style.boxShadow =
-                "0 4px 20px rgba(212,133,106,0.3)";
-            }}
-          >
-            Pre-Order the Journal
-          </button>
-          <p
-            className="mt-4 text-[0.84rem]"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Ships Spring 2026. Free digital access included with every pre-order.
-          </p>
+          />
+        </div>
+
+        {/* ── Zone C: Product Cards ─────────────────── */}
+        <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+          <ProductCard product={guidedJournal} isPrimary={true} />
+          <ProductCard product={keepsakeBook} isPrimary={false} />
+        </div>
+
+        {/* ── Zone D: Trust Strip ───────────────────── */}
+        <div
+          className="reveal flex flex-wrap items-center justify-center gap-x-12 gap-y-4"
+          style={{ transitionDelay: "0.1s" }}
+        >
+          {[
+            "Designed with love",
+            "Ships Spring 2026",
+            "Free digital access included",
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2.5">
+              <div
+                style={{
+                  width: "5px",
+                  height: "5px",
+                  borderRadius: "50%",
+                  background: "var(--gold)",
+                  opacity: 0.6,
+                }}
+              />
+              <span
+                className="text-[0.84rem]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {item}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
