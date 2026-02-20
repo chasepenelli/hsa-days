@@ -410,57 +410,83 @@ function FeatureSlide({
   return (
     <div className="sticky-card flex items-center justify-center" style={style}>
       <div
-        className="w-full rounded-2xl p-8"
+        className="w-full rounded-2xl overflow-hidden relative"
         style={{
-          maxWidth: "640px",
+          maxWidth: "780px",
           background: "white",
           border: `1px solid ${feature.borderColor}`,
           boxShadow:
-            "0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.03)",
+            "0 24px 72px rgba(0,0,0,0.10), 0 6px 20px rgba(0,0,0,0.04)",
         }}
       >
-        {/* Icon */}
-        <div className="flex justify-center mb-5">
+        {/* Background illustration fill */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          aria-hidden="true"
+        >
           <Image
             src={feature.icon}
             alt=""
-            width={128}
-            height={128}
-            style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+            width={400}
+            height={400}
+            className="absolute"
+            style={{
+              right: "-40px",
+              bottom: "-40px",
+              width: "320px",
+              height: "320px",
+              objectFit: "contain",
+              opacity: 0.06,
+              mixBlendMode: "multiply",
+            }}
           />
         </div>
 
-        {/* Title */}
-        <h3
-          className="font-serif font-semibold text-center mb-2"
-          style={{ fontSize: "1.15rem", color: "var(--text)", lineHeight: 1.3 }}
-        >
-          {feature.title}
-        </h3>
+        {/* Card content */}
+        <div className="relative p-10 md:p-12">
+          {/* Icon */}
+          <div className="flex justify-center mb-6">
+            <Image
+              src={feature.icon}
+              alt=""
+              width={128}
+              height={128}
+              style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+            />
+          </div>
 
-        {/* Description */}
-        <p
-          className="text-[0.88rem] leading-relaxed text-center mx-auto mb-5"
-          style={{ color: "var(--text-muted)", maxWidth: "440px" }}
-        >
-          {feature.description}
-        </p>
+          {/* Title */}
+          <h3
+            className="font-serif font-semibold text-center mb-3"
+            style={{ fontSize: "1.3rem", color: "var(--text)", lineHeight: 1.3 }}
+          >
+            {feature.title}
+          </h3>
 
-        {/* Gold gradient divider */}
-        <div
-          className="mx-auto mb-5"
-          style={{
-            width: "60px",
-            height: "2px",
-            borderRadius: "1px",
-            background:
-              "linear-gradient(to right, transparent, var(--gold), transparent)",
-          }}
-        />
+          {/* Description */}
+          <p
+            className="text-[0.92rem] leading-relaxed text-center mx-auto mb-6"
+            style={{ color: "var(--text-muted)", maxWidth: "480px" }}
+          >
+            {feature.description}
+          </p>
 
-        {/* Day 1 preview */}
-        <div className="mx-auto" style={{ maxWidth: "480px" }}>
-          <Preview />
+          {/* Gold gradient divider */}
+          <div
+            className="mx-auto mb-6"
+            style={{
+              width: "60px",
+              height: "2px",
+              borderRadius: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--gold), transparent)",
+            }}
+          />
+
+          {/* Day 1 preview */}
+          <div className="mx-auto" style={{ maxWidth: "520px" }}>
+            <Preview />
+          </div>
         </div>
       </div>
     </div>
@@ -639,7 +665,7 @@ function StickyScrollSection() {
           style={{
             position: "relative",
             width: "100%",
-            maxWidth: "640px",
+            maxWidth: "780px",
             flex: "1 1 auto",
             minHeight: 0,
             display: "flex",
