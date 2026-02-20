@@ -143,6 +143,19 @@ export function Hero() {
         className="absolute inset-[-20%] pointer-events-none will-change-transform"
         aria-hidden="true"
       >
+        {/* Hero background scatter illustration — full-field watermark */}
+        <div className="absolute" style={{ inset: "20%" }}>
+          <Image
+            src="/illustrations/home/home-hero-bg.png"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover"
+            style={{ opacity: 0.09, mixBlendMode: "multiply" }}
+            priority
+          />
+        </div>
+
         {/* Hero illustration — person with corgi, sage ink wash */}
         <div
           className="absolute"
