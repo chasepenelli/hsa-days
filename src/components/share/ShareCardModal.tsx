@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
 import { useCardGenerator } from "./useCardGenerator";
 import { useWebShare } from "./useWebShare";
@@ -195,12 +196,19 @@ export function ShareCardModal({
               border: "none",
               cursor: "pointer",
               padding: 4,
-              color: "var(--text-muted)",
-              fontSize: 20,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
             aria-label="Close"
           >
-            &#x2715;
+            <Image
+              src="/illustrations/icons/icon-close.png"
+              alt="Close"
+              width={20}
+              height={20}
+              style={{ objectFit: "contain", opacity: 0.6 }}
+            />
           </button>
         </div>
 
@@ -477,17 +485,13 @@ export function ShareCardModal({
                 }}
               />
             ) : (
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                style={{ width: 16, height: 16 }}
-              >
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
+              <Image
+                src="/illustrations/icons/icon-download.png"
+                alt=""
+                width={16}
+                height={16}
+                style={{ objectFit: "contain" }}
+              />
             )}
             Download
           </button>
@@ -527,17 +531,13 @@ export function ShareCardModal({
                 }}
               />
             ) : (
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                style={{ width: 16, height: 16 }}
-              >
-                <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" />
-                <polyline points="16 6 12 2 8 6" />
-                <line x1="12" y1="2" x2="12" y2="15" />
-              </svg>
+              <Image
+                src="/illustrations/icons/icon-share.png"
+                alt=""
+                width={16}
+                height={16}
+                style={{ objectFit: "contain" }}
+              />
             )}
             {canShare ? "Share" : "Download"}
           </button>

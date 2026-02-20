@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   saveJournalLocally,
   markJournalSynced,
@@ -121,10 +122,13 @@ export function JournalEditor({
           className="flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.1em]"
           style={{ color: "var(--sage)" }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-3.5 h-3.5">
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4Z" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-pencil.png"
+            alt=""
+            width={14}
+            height={14}
+            style={{ objectFit: "contain" }}
+          />
           Your Journal
         </div>
 
@@ -134,12 +138,28 @@ export function JournalEditor({
             <span style={{ color: "var(--text-muted)" }}>Saving...</span>
           )}
           {saved && !saving && !offline && (
-            <span className="animate-ink-write" style={{ color: "var(--sage)" }}>
-              &#x2713; Saved
+            <span className="animate-ink-write inline-flex items-center gap-1" style={{ color: "var(--sage)" }}>
+              <Image
+                src="/illustrations/icons/icon-checkmark.png"
+                alt=""
+                width={10}
+                height={10}
+                style={{ objectFit: "contain" }}
+              />
+              Saved
             </span>
           )}
           {saved && !saving && offline && (
-            <span style={{ color: "var(--gold)" }}>&#x2713; Saved locally</span>
+            <span className="inline-flex items-center gap-1" style={{ color: "var(--gold)" }}>
+              <Image
+                src="/illustrations/icons/icon-checkmark.png"
+                alt=""
+                width={10}
+                height={10}
+                style={{ objectFit: "contain" }}
+              />
+              Saved locally
+            </span>
           )}
         </div>
       </div>

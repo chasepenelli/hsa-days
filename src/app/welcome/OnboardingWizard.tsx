@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const STAGES = ["I", "II", "III", "IV", "I'm not sure"] as const;
 
@@ -388,17 +389,13 @@ export default function OnboardingWizard() {
                   className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
                   style={{ background: "rgba(91,123,94,0.08)" }}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                    className="w-7 h-7"
-                    style={{ color: "var(--sage)" }}
-                  >
-                    <path d="M12 16V4m0 0l-4 4m4-4l4 4" />
-                    <path d="M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17" />
-                  </svg>
+                  <Image
+                    src="/illustrations/icons/icon-upload-cloud.png"
+                    alt=""
+                    width={28}
+                    height={28}
+                    style={{ objectFit: "contain" }}
+                  />
                 </div>
                 <p
                   className="text-[0.95rem] font-medium mb-1"
@@ -503,16 +500,13 @@ export default function OnboardingWizard() {
                   "linear-gradient(135deg, rgba(91,123,94,0.12) 0%, rgba(196,162,101,0.12) 100%)",
               }}
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={1.5}
-                className="w-9 h-9"
-                style={{ color: "var(--sage)" }}
-              >
-                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
+              <Image
+                src="/illustrations/icons/icon-heart.png"
+                alt=""
+                width={36}
+                height={36}
+                style={{ objectFit: "contain" }}
+              />
             </div>
             <h1
               className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold mb-3 leading-tight"

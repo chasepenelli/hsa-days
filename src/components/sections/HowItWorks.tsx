@@ -1,20 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const steps = [
   {
     number: "01",
-    icon: (
-      <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
-        <rect x="6" y="10" width="28" height="22" rx="4" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M6 17h28" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        <circle cx="13" cy="13.5" r="1.5" fill="currentColor" />
-        <circle cx="20" cy="13.5" r="1.5" fill="currentColor" />
-        <circle cx="27" cy="13.5" r="1.5" fill="currentColor" />
-        <path d="M12 24h7M12 28.5h12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-email-signup.png",
     color: "var(--sage)",
     bg: "rgba(91,123,94,0.08)",
     title: "Sign up with your email",
@@ -23,13 +15,7 @@ const steps = [
   },
   {
     number: "02",
-    icon: (
-      <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
-        <rect x="8" y="6" width="24" height="30" rx="3" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M13 13h14M13 18h10M13 23h8M13 28h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-        <path d="M27 22l2 2-2 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-read-reflect.png",
     color: "var(--gold)",
     bg: "rgba(196,162,101,0.08)",
     title: "Read, reflect, and journal",
@@ -38,13 +24,7 @@ const steps = [
   },
   {
     number: "03",
-    icon: (
-      <svg viewBox="0 0 40 40" fill="none" className="w-9 h-9">
-        <circle cx="20" cy="20" r="12" stroke="currentColor" strokeWidth="1.8" />
-        <path d="M20 13v7.5l5 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M20 6v2M20 32v2M6 20h2M32 20h2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-morning-nudge.png",
     color: "var(--terracotta)",
     bg: "rgba(212,133,106,0.08)",
     title: "A gentle nudge each morning",
@@ -118,11 +98,16 @@ export function HowItWorks() {
                   style={{
                     background: step.bg,
                     border: `1.5px solid ${step.bg.replace("0.08", "0.25")}`,
-                    color: step.color,
                     boxShadow: `0 4px 24px ${step.bg.replace("0.08", "0.18")}`,
                   }}
                 >
-                  {step.icon}
+                  <Image
+                    src={step.icon}
+                    alt=""
+                    width={36}
+                    height={36}
+                    style={{ objectFit: "contain" }}
+                  />
                   {/* Step number badge */}
                   <div
                     className="absolute -top-1.5 -right-1.5 w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] font-bold font-sans"

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { QuoteCard } from "./QuoteCard";
 import { JournalEditor } from "@/components/forms/JournalEditor";
 import { DayNav } from "./DayNav";
@@ -36,6 +37,19 @@ interface DayContentProps {
   initialMedia?: MediaItem[];
   dogName?: string;
 }
+
+/* ── Day illustration mapping ────────────────────────── */
+const DAY_HEADER_ILLUSTRATIONS: Record<number, string> = {
+  1: "/illustrations/days/day01-header.png",
+  2: "/illustrations/days/day02-header.png",
+  3: "/illustrations/days/day03-header.png",
+};
+
+const DAY_ACTIVITY_ILLUSTRATIONS: Record<number, string> = {
+  1: "/illustrations/days/day01-activity.png",
+  2: "/illustrations/days/day02-activity.png",
+  3: "/illustrations/days/day03-activity.png",
+};
 
 function getMilestoneMessage(dayNumber: number): string | null {
   switch (dayNumber) {
@@ -143,9 +157,11 @@ export function DayContent({
     }
   }, [dayNumber]);
 
-  const isMilestone       = [7, 14, 21, 30].includes(dayNumber);
-  const completionMessage = getCompletionMessage(dayNumber);
-  const progressPct       = Math.round((dayNumber / 30) * 100);
+  const isMilestone           = [7, 14, 21, 30].includes(dayNumber);
+  const completionMessage     = getCompletionMessage(dayNumber);
+  const progressPct           = Math.round((dayNumber / 30) * 100);
+  const headerIllustration    = DAY_HEADER_ILLUSTRATIONS[dayNumber] ?? null;
+  const activityIllustration  = DAY_ACTIVITY_ILLUSTRATIONS[dayNumber] ?? null;
 
   return (
     <div className="min-h-screen" style={{ background: "var(--warm-white)" }}>
@@ -164,9 +180,13 @@ export function DayContent({
           className="flex items-center gap-1.5 text-[0.82rem] font-medium no-underline transition-colors hover:text-sage"
           style={{ color: "var(--text-muted)" }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-arrow-left.png"
+            alt=""
+            width={14}
+            height={14}
+            style={{ objectFit: "contain", opacity: 0.7 }}
+          />
           Journal
         </Link>
         <div
@@ -193,12 +213,38 @@ export function DayContent({
 
       {/* ── Day header ───────────────────────────────────── */}
       <div
-        className="px-6 py-10 md:px-12 md:py-12 animate-fade-in-up"
+        className="relative overflow-hidden px-6 py-10 md:px-12 md:py-12 animate-fade-in-up"
         style={{
           background: "linear-gradient(155deg, var(--sage-dark) 0%, var(--sage) 100%)",
         }}
       >
-        <div className="max-w-[680px] mx-auto">
+        {/* Header illustration — behind gradient, right-aligned */}
+        {headerIllustration && (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            aria-hidden="true"
+          >
+            <Image
+              src={headerIllustration}
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="object-cover object-right"
+              style={{ opacity: 0.15, mixBlendMode: "luminosity" }}
+              priority
+            />
+            {/* Fade illustration out towards left so text stays crisp */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--sage-dark) 0%, transparent 55%)",
+              }}
+            />
+          </div>
+        )}
+
+        <div className="max-w-[680px] mx-auto relative z-10">
           <div
             className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-3"
             style={{ color: "rgba(255,255,255,0.65)" }}
@@ -237,10 +283,13 @@ export function DayContent({
           <DaySection className="animate-fade-in-up delay-2">
             <SectionLabel
               icon={
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-3.5 h-3.5">
-                  <path d="M12 20h9" />
-                  <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4Z" />
-                </svg>
+                <Image
+                  src="/illustrations/icons/icon-pencil.png"
+                  alt=""
+                  width={14}
+                  height={14}
+                  style={{ objectFit: "contain" }}
+                />
               }
             >
               Today&apos;s Reflection
@@ -294,23 +343,47 @@ export function DayContent({
                 border: "1px solid rgba(91,123,94,0.12)",
               }}
             >
-              <SectionLabel
-                color="sage"
-                icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-3.5 h-3.5">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 8v4l3 3" />
-                  </svg>
-                }
-              >
-                Today&apos;s Activity
-              </SectionLabel>
-              <h3 className="font-serif text-[1.05rem] font-semibold text-text mb-2">
-                {day.activity_title}
-              </h3>
-              <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                {day.activity_description}
-              </p>
+              <div className={activityIllustration ? "flex gap-5 items-start" : undefined}>
+                {/* Activity spot illustration */}
+                {activityIllustration && (
+                  <div
+                    className="relative flex-shrink-0 rounded-xl overflow-hidden"
+                    style={{ width: "88px", height: "88px" }}
+                  >
+                    <Image
+                      src={activityIllustration}
+                      alt=""
+                      fill
+                      sizes="88px"
+                      className="object-cover"
+                      style={{ mixBlendMode: "multiply", opacity: 0.9 }}
+                    />
+                  </div>
+                )}
+
+                <div className="flex-1 min-w-0">
+                  <SectionLabel
+                    color="sage"
+                    icon={
+                      <Image
+                        src="/illustrations/icons/icon-clock.png"
+                        alt=""
+                        width={14}
+                        height={14}
+                        style={{ objectFit: "contain" }}
+                      />
+                    }
+                  >
+                    Today&apos;s Activity
+                  </SectionLabel>
+                  <h3 className="font-serif text-[1.05rem] font-semibold text-text mb-2">
+                    {day.activity_title}
+                  </h3>
+                  <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                    {day.activity_description}
+                  </p>
+                </div>
+              </div>
             </div>
           </DaySection>
         )}
@@ -328,11 +401,13 @@ export function DayContent({
               <SectionLabel
                 color="gold"
                 icon={
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-3.5 h-3.5">
-                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
+                  <Image
+                    src="/illustrations/icons/icon-lightbulb.png"
+                    alt=""
+                    width={14}
+                    height={14}
+                    style={{ objectFit: "contain" }}
+                  />
                 }
               >
                 Practical Tip
@@ -355,10 +430,13 @@ export function DayContent({
             <SectionLabel
               color="muted"
               icon={
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} className="w-3.5 h-3.5">
-                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
-                  <circle cx="12" cy="13" r="4" />
-                </svg>
+                <Image
+                  src="/illustrations/icons/icon-camera.png"
+                  alt=""
+                  width={14}
+                  height={14}
+                  style={{ objectFit: "contain" }}
+                />
               }
             >
               Memories
@@ -405,12 +483,18 @@ export function DayContent({
                 }}
               >
                 <span
-                  className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm ${
+                  className={`w-6 h-6 rounded-full flex items-center justify-center ${
                     justCompleted ? "animate-check-in" : ""
                   }`}
                   style={{ background: "var(--sage)" }}
                 >
-                  &#x2713;
+                  <Image
+                    src="/illustrations/icons/icon-checkmark.png"
+                    alt="Complete"
+                    width={14}
+                    height={14}
+                    style={{ objectFit: "contain" }}
+                  />
                 </span>
                 Day {dayNumber} Complete
               </div>
@@ -444,9 +528,13 @@ export function DayContent({
                     style={{ color: "var(--text-muted)" }}
                   >
                     Continue to Day {dayNumber + 1}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
+                    <Image
+                      src="/illustrations/icons/icon-arrow-right.png"
+                      alt=""
+                      width={14}
+                      height={14}
+                      style={{ objectFit: "contain", opacity: 0.7 }}
+                    />
                   </Link>
                 </div>
               )}
@@ -475,9 +563,13 @@ export function DayContent({
                   </>
                 ) : (
                   <>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4">
-                      <path d="M5 12l5 5L19 7" />
-                    </svg>
+                    <Image
+                      src="/illustrations/icons/icon-checkmark.png"
+                      alt=""
+                      width={16}
+                      height={16}
+                      style={{ objectFit: "contain" }}
+                    />
                     Mark Day {dayNumber} Complete
                   </>
                 )}

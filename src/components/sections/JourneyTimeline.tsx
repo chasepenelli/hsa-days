@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const phases = [
@@ -12,6 +13,8 @@ const phases = [
     labelColor: "var(--terracotta)",
     bgColor: "rgba(212,133,106,0.07)",
     borderColor: "rgba(212,133,106,0.25)",
+    illustration: "/illustrations/home/home-journey-phase1.png",
+    illustrationAlt: "Phone face-down with paw print stamp",
   },
   {
     days: "Days 5–10",
@@ -22,6 +25,8 @@ const phases = [
     labelColor: "var(--gold)",
     bgColor: "rgba(196,162,101,0.07)",
     borderColor: "rgba(196,162,101,0.25)",
+    illustration: "/illustrations/home/home-journey-phase2.png",
+    illustrationAlt: "Coffee mug and dog leash",
   },
   {
     days: "Days 11–17",
@@ -32,6 +37,8 @@ const phases = [
     labelColor: "var(--sage)",
     bgColor: "rgba(122,154,125,0.07)",
     borderColor: "rgba(122,154,125,0.25)",
+    illustration: "/illustrations/home/home-journey-phase3.png",
+    illustrationAlt: "Crumpled tissue beside a journal",
   },
   {
     days: "Days 18–24",
@@ -42,6 +49,8 @@ const phases = [
     labelColor: "var(--sage)",
     bgColor: "rgba(91,123,94,0.07)",
     borderColor: "rgba(91,123,94,0.25)",
+    illustration: "/illustrations/home/home-journey-phase4.png",
+    illustrationAlt: "Pen resting on an open journal page",
   },
   {
     days: "Days 25–30",
@@ -52,6 +61,8 @@ const phases = [
     labelColor: "var(--sage-dark)",
     bgColor: "rgba(62,87,64,0.07)",
     borderColor: "rgba(62,87,64,0.25)",
+    illustration: "/illustrations/home/home-journey-phase5.png",
+    illustrationAlt: "Paw print and footprint side by side",
   },
 ];
 
@@ -167,6 +178,21 @@ export function JourneyTimeline() {
                     border: `1px solid ${phase.borderColor}`,
                   }}
                 >
+                  {/* Phase spot illustration */}
+                  <div
+                    className="relative w-full mb-4 rounded-lg overflow-hidden"
+                    style={{ aspectRatio: "1/1" }}
+                  >
+                    <Image
+                      src={phase.illustration}
+                      alt={phase.illustrationAlt}
+                      fill
+                      sizes="(max-width: 1100px) 20vw, 200px"
+                      className="object-cover"
+                      style={{ mixBlendMode: "multiply", opacity: 0.88 }}
+                    />
+                  </div>
+
                   <div
                     className="text-[0.62rem] font-bold uppercase tracking-[0.1em] mb-1.5"
                     style={{ color: phase.labelColor }}
@@ -232,24 +258,43 @@ export function JourneyTimeline() {
                       border: `1px solid ${phase.borderColor}`,
                     }}
                   >
-                    <div
-                      className="text-[0.62rem] font-bold uppercase tracking-[0.1em] mb-1"
-                      style={{ color: phase.labelColor }}
-                    >
-                      {phase.days}
+                    <div className="flex items-start gap-4">
+                      {/* Phase spot illustration — smaller on mobile */}
+                      <div
+                        className="relative flex-shrink-0 rounded-lg overflow-hidden"
+                        style={{ width: "72px", height: "72px" }}
+                      >
+                        <Image
+                          src={phase.illustration}
+                          alt={phase.illustrationAlt}
+                          fill
+                          sizes="72px"
+                          className="object-cover"
+                          style={{ mixBlendMode: "multiply", opacity: 0.88 }}
+                        />
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className="text-[0.62rem] font-bold uppercase tracking-[0.1em] mb-1"
+                          style={{ color: phase.labelColor }}
+                        >
+                          {phase.days}
+                        </div>
+                        <h4
+                          className="font-serif text-base font-semibold mb-1.5"
+                          style={{ color: "var(--text)" }}
+                        >
+                          {phase.title}
+                        </h4>
+                        <p
+                          className="text-[0.88rem] leading-relaxed"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          {phase.description}
+                        </p>
+                      </div>
                     </div>
-                    <h4
-                      className="font-serif text-base font-semibold mb-1.5"
-                      style={{ color: "var(--text)" }}
-                    >
-                      {phase.title}
-                    </h4>
-                    <p
-                      className="text-[0.88rem] leading-relaxed"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      {phase.description}
-                    </p>
                   </div>
                 </div>
               ))}

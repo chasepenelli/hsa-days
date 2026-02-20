@@ -1,16 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const resources = [
   {
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-7 h-7">
-        <rect x="5" y="4" width="22" height="26" rx="3" stroke="currentColor" strokeWidth="1.7" />
-        <circle cx="16" cy="14" r="4" stroke="currentColor" strokeWidth="1.7" />
-        <path d="M9 24c1-3 4-5 7-5s6 2 7 5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-supplement.png",
     accentColor: "var(--sage)",
     accentBg: "rgba(91,123,94,0.08)",
     title: "Supplement Guide",
@@ -18,13 +13,7 @@ const resources = [
       "Research-backed supplements organized by category — what they do, suggested dosages by weight, and what to discuss with your vet.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-7 h-7">
-        <path d="M8 26V10l8-6 8 6v16H8z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-        <path d="M13 26v-7h6v7" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-        <circle cx="16" cy="14" r="2" fill="currentColor" opacity="0.4" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-food-bowl.png",
     accentColor: "var(--gold)",
     accentBg: "rgba(196,162,101,0.08)",
     title: "Food & Nutrition",
@@ -32,12 +21,7 @@ const resources = [
       "What to feed, what to avoid, and how to adjust their diet. Including homemade options, commercial foods, and appetite-boosting tips.",
   },
   {
-    icon: (
-      <svg viewBox="0 0 32 32" fill="none" className="w-7 h-7">
-        <path d="M16 5l10 5v8c0 5.5-4.4 10.7-10 12-5.6-1.3-10-6.5-10-12V10l10-5z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-        <path d="M12 16l2.5 2.5L20 13" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
+    icon: "/illustrations/icons/icon-shield.png",
     accentColor: "var(--terracotta)",
     accentBg: "rgba(212,133,106,0.08)",
     title: "House-Proofing",
@@ -120,11 +104,16 @@ export function Resources() {
                 className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
                 style={{
                   background: resource.accentBg,
-                  color: resource.accentColor,
                   border: `1px solid ${resource.accentBg.replace("0.08", "0.2")}`,
                 }}
               >
-                {resource.icon}
+                <Image
+                  src={resource.icon}
+                  alt=""
+                  width={28}
+                  height={28}
+                  style={{ objectFit: "contain" }}
+                />
               </div>
 
               <h3

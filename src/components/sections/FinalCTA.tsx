@@ -1,30 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { SignupForm } from "@/components/forms/SignupForm";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-function FloatingPaw({ style, delay }: { style: React.CSSProperties; delay: number }) {
-  return (
-    <div
-      aria-hidden="true"
-      className="absolute pointer-events-none select-none"
-      style={{
-        ...style,
-        animationName: "gentleFloat",
-        animationDuration: `${7 + delay * 1.5}s`,
-        animationDelay: `${delay}s`,
-        animationTimingFunction: "ease-in-out",
-        animationIterationCount: "infinite",
-        opacity: 0.1,
-        fontSize: "clamp(14px, 2vw, 22px)",
-        filter: "brightness(10)",
-      }}
-    >
-      🐾
-    </div>
-  );
-}
 
 export function FinalCTA() {
   const ref = useScrollReveal();
@@ -94,13 +73,21 @@ export function FinalCTA() {
         }}
       />
 
-      {/* Floating paws */}
-      <FloatingPaw style={{ top: "15%", left: "5%" }} delay={0} />
-      <FloatingPaw style={{ top: "65%", left: "2%" }} delay={2} />
-      <FloatingPaw style={{ top: "20%", right: "4%" }} delay={1.2} />
-      <FloatingPaw style={{ bottom: "20%", right: "8%" }} delay={3.5} />
-      <FloatingPaw style={{ top: "45%", left: "8%" }} delay={0.8} />
-      <FloatingPaw style={{ top: "50%", right: "6%" }} delay={4.2} />
+      {/* Paw print illustration — full bleed background at very low opacity */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{ opacity: 0.07 }}
+      >
+        <Image
+          src="/illustrations/home/home-cta-paws.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+          style={{ filter: "brightness(10) saturate(0)" }}
+        />
+      </div>
 
       {/* Content */}
       <div className="max-w-[660px] mx-auto text-center relative z-10">
@@ -208,12 +195,13 @@ export function FinalCTA() {
               background: "linear-gradient(to right, transparent, rgba(196,162,101,0.5))",
             }}
           />
-          <svg viewBox="0 0 20 20" className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "var(--gold)", opacity: 0.6 }}>
-            <circle cx="10" cy="4" r="2.2" fill="currentColor" />
-            <circle cx="4.5" cy="9" r="2" fill="currentColor" />
-            <circle cx="15.5" cy="9" r="2" fill="currentColor" />
-            <ellipse cx="10" cy="15.5" rx="3.5" ry="4" fill="currentColor" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-flower-ornament.png"
+            alt=""
+            width={14}
+            height={14}
+            style={{ objectFit: "contain", opacity: 0.6 }}
+          />
           <div
             className="h-px"
             style={{

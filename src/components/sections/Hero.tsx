@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { SignupForm } from "@/components/forms/SignupForm";
 
 /* ─── Ambient floating orb ─────────────────── */
@@ -60,12 +61,16 @@ function PawDot({
         animationDelay: `${delay}s`,
         animationTimingFunction: "ease-in-out",
         animationIterationCount: "infinite",
-        fontSize: "clamp(10px, 1.5vw, 16px)",
         opacity: 0.18,
-        filter: "grayscale(1)",
       }}
     >
-      🐾
+      <Image
+        src="/illustrations/icons/icon-paw-print.png"
+        alt=""
+        width={20}
+        height={20}
+        style={{ objectFit: "contain", filter: "grayscale(1)" }}
+      />
     </div>
   );
 }
@@ -138,7 +143,30 @@ export function Hero() {
         className="absolute inset-[-20%] pointer-events-none will-change-transform"
         aria-hidden="true"
       >
-        {/* Base warm gradient */}
+        {/* Hero illustration — person with corgi, sage ink wash */}
+        <div
+          className="absolute"
+          style={{
+            inset: "20%",
+            bottom: "0",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(900px, 120%)",
+            height: "100%",
+          }}
+        >
+          <Image
+            src="/illustrations/home/home-hero.png"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 120vw, 900px"
+            className="object-contain object-bottom"
+            style={{ opacity: 0.12, mixBlendMode: "multiply" }}
+            priority
+          />
+        </div>
+
+        {/* Base warm gradient — sits on top of illustration */}
         <div
           className="absolute inset-0"
           style={{
@@ -245,17 +273,13 @@ export function Hero() {
               opacity: 0.6,
             }}
           />
-          <svg
-            viewBox="0 0 20 20"
-            className="w-3 h-3 flex-shrink-0"
-            style={{ color: "var(--gold)", opacity: 0.7 }}
-            aria-hidden="true"
-          >
-            <circle cx="10" cy="4" r="2.2" fill="currentColor" />
-            <circle cx="4.5" cy="9" r="2" fill="currentColor" />
-            <circle cx="15.5" cy="9" r="2" fill="currentColor" />
-            <ellipse cx="10" cy="15.5" rx="3.5" ry="4" fill="currentColor" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-flower-ornament.png"
+            alt=""
+            width={14}
+            height={14}
+            style={{ objectFit: "contain", opacity: 0.65 }}
+          />
           <div
             className="h-px"
             style={{
@@ -367,9 +391,7 @@ export function Hero() {
         <span className="text-[0.65rem] uppercase tracking-[0.14em] font-medium">
           Scroll
         </span>
-        <svg
-          viewBox="0 0 24 24"
-          className="w-4 h-4"
+        <div
           style={{
             animationName: "gentleFloat",
             animationDuration: "2s",
@@ -377,15 +399,14 @@ export function Hero() {
             animationTimingFunction: "ease-in-out",
           }}
         >
-          <path
-            d="M12 5v14M5 12l7 7 7-7"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
+          <Image
+            src="/illustrations/icons/icon-scroll-arrow.png"
+            alt=""
+            width={16}
+            height={16}
+            style={{ objectFit: "contain", opacity: 0.7 }}
           />
-        </svg>
+        </div>
       </div>
     </section>
   );

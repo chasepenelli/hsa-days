@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface DayNavProps {
   currentDay: number;
@@ -24,9 +25,13 @@ export function DayNav({ currentDay }: DayNavProps) {
           className="flex items-center gap-2 no-underline transition-colors hover:text-sage min-h-11 px-2 rounded-lg"
           style={{ color: "var(--text-muted)", fontSize: "0.88rem", fontWeight: 500 }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-arrow-left.png"
+            alt=""
+            width={16}
+            height={16}
+            style={{ objectFit: "contain", opacity: 0.7 }}
+          />
           <span>
             <span className="hidden sm:inline">Day </span>
             {currentDay - 1}
@@ -37,9 +42,13 @@ export function DayNav({ currentDay }: DayNavProps) {
           className="flex items-center gap-2 px-2 min-h-11 opacity-25 text-[0.88rem]"
           style={{ color: "var(--text-muted)" }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-arrow-left.png"
+            alt=""
+            width={16}
+            height={16}
+            style={{ objectFit: "contain" }}
+          />
           Start
         </span>
       )}
@@ -65,9 +74,13 @@ export function DayNav({ currentDay }: DayNavProps) {
             <span className="hidden sm:inline">Day </span>
             {currentDay + 1}
           </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-arrow-right.png"
+            alt=""
+            width={16}
+            height={16}
+            style={{ objectFit: "contain", opacity: 0.7 }}
+          />
         </Link>
       ) : (
         <span
@@ -75,9 +88,13 @@ export function DayNav({ currentDay }: DayNavProps) {
           style={{ color: "var(--text-muted)" }}
         >
           End
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
+          <Image
+            src="/illustrations/icons/icon-arrow-right.png"
+            alt=""
+            width={16}
+            height={16}
+            style={{ objectFit: "contain" }}
+          />
         </span>
       )}
     </div>

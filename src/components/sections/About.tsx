@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export function About() {
@@ -64,31 +65,25 @@ export function About() {
                 }}
               />
 
-              {/* Center content — where the photo will go */}
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {/* Stylized paw / dog silhouette */}
+              {/* Graffiti corgi portrait illustration */}
+              <div className="absolute inset-0">
+                <Image
+                  src="/illustrations/home/home-about-graffiti.png"
+                  alt="Graffiti the corgi — a golden ink wash portrait"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 420px"
+                  className="object-cover object-top"
+                  style={{ borderRadius: "22px" }}
+                />
+                {/* Subtle warm vignette overlay to blend with frame */}
                 <div
-                  className="text-[5rem] mb-4"
+                  className="absolute inset-0 pointer-events-none"
                   style={{
-                    filter: "grayscale(0.3) opacity(0.4)",
-                    animationName: "gentleFloat",
-                    animationDuration: "6s",
-                    animationIterationCount: "infinite",
-                    animationTimingFunction: "ease-in-out",
+                    borderRadius: "22px",
+                    background:
+                      "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 55%, rgba(237,232,224,0.35) 100%)",
                   }}
-                  aria-hidden="true"
-                >
-                  🐕
-                </div>
-                <p
-                  className="text-[0.8rem] font-medium text-center px-8"
-                  style={{ opacity: 0.45 }}
-                >
-                  Graffiti&apos;s photo goes here
-                </p>
+                />
               </div>
 
               {/* Gold corner accents */}
