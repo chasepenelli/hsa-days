@@ -59,6 +59,12 @@ export function Header() {
             Community
           </Link>
           <Link
+            href="/resources"
+            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
+          >
+            Resources
+          </Link>
+          <Link
             href="/order"
             className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
           >
@@ -147,6 +153,13 @@ export function Header() {
             className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
           >
             Community
+          </Link>
+          <Link
+            href="/resources"
+            onClick={closeMenu}
+            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
+          >
+            Resources
           </Link>
           <Link
             href="/order"

@@ -35,6 +35,8 @@ export default function OnboardingWizard() {
   const [petName, setPetName] = useState("");
 
   // Step 2
+  const [breed, setBreed] = useState("");
+  const [weightLbs, setWeightLbs] = useState("");
   const [diagMonth, setDiagMonth] = useState("");
   const [diagYear, setDiagYear] = useState("");
   const [cancerStage, setCancerStage] = useState("");
@@ -107,6 +109,9 @@ export default function OnboardingWizard() {
 
     const formData = new FormData();
     formData.append("pet_name", petName.trim());
+
+    if (breed.trim()) formData.append("breed", breed.trim());
+    if (weightLbs) formData.append("weight_lbs", weightLbs);
 
     if (diagMonth && diagYear) {
       const monthIdx = MONTHS.indexOf(diagMonth) + 1;
@@ -270,10 +275,74 @@ export default function OnboardingWizard() {
               className="text-center text-[0.95rem] mb-10 leading-relaxed"
               style={{ color: "var(--text-muted)" }}
             >
-              This helps us understand where you are.
+              This helps us personalize your resources.
               <br />
-              Both fields are completely optional.
+              All fields are optional.
             </p>
+
+            {/* Breed */}
+            <div className="mb-6">
+              <label
+                htmlFor="breed"
+                className="block text-[0.8rem] font-medium mb-2"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {petName}&rsquo;s breed
+              </label>
+              <input
+                id="breed"
+                type="text"
+                value={breed}
+                onChange={(e) => setBreed(e.target.value)}
+                placeholder="e.g. Golden Retriever, Mixed breed..."
+                className="w-full px-4 py-3 rounded-xl text-[0.95rem] transition-all duration-200"
+                style={{
+                  background: "white",
+                  border: "1.5px solid var(--border-strong)",
+                  color: "var(--text)",
+                  outline: "none",
+                }}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "var(--sage)")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "var(--border-strong)")
+                }
+              />
+            </div>
+
+            {/* Weight */}
+            <div className="mb-6">
+              <label
+                htmlFor="weight"
+                className="block text-[0.8rem] font-medium mb-2"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {petName}&rsquo;s weight (lbs)
+              </label>
+              <input
+                id="weight"
+                type="number"
+                min="1"
+                max="300"
+                value={weightLbs}
+                onChange={(e) => setWeightLbs(e.target.value)}
+                placeholder="e.g. 65"
+                className="w-full px-4 py-3 rounded-xl text-[0.95rem] transition-all duration-200"
+                style={{
+                  background: "white",
+                  border: "1.5px solid var(--border-strong)",
+                  color: "var(--text)",
+                  outline: "none",
+                }}
+                onFocus={(e) =>
+                  (e.target.style.borderColor = "var(--sage)")
+                }
+                onBlur={(e) =>
+                  (e.target.style.borderColor = "var(--border-strong)")
+                }
+              />
+            </div>
 
             {/* Diagnosis date */}
             <div className="mb-6">

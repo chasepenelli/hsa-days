@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -7,7 +8,22 @@ export const metadata: Metadata = {
     "Practical guides for HSA dog owners — supplements, food & nutrition, and house-proofing.",
 };
 
-export default function ResourcesPage() {
+export default async function ResourcesPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let dogName: string | null = null;
+  if (user) {
+    const { data } = await supabase
+      .from("subscribers")
+      .select("dog_name")
+      .eq("id", user.id)
+      .single();
+    dogName = data?.dog_name ?? null;
+  }
+
   const resources = [
     {
       icon: "\uD83D\uDC8A",
@@ -42,7 +58,9 @@ export default function ResourcesPage() {
           Resources
         </div>
         <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">
-          Everything in one place.
+          {dogName
+            ? `Everything for ${dogName}, in one place.`
+            : "Everything in one place."}
         </h1>
         <p className="text-[1.05rem] text-text-muted max-w-[600px] leading-relaxed mb-10">
           Practical guides researched and organized so you don&apos;t have to

@@ -1,31 +1,46 @@
 import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
+import { DIET_PRINCIPLES, FOOD_ITEMS, FOOD_CATEGORIES } from "@/lib/resources/food";
+import type { DogProfile } from "@/lib/resources/types";
+import FoodPageClient from "@/components/resources/FoodPageClient";
 
 export const metadata: Metadata = {
   title: "Food & Nutrition Guide",
+  description:
+    "What to feed, what to avoid, and how to keep their appetite up during HSA treatment.",
 };
 
-export default function FoodPage() {
-  return (
-    <div className="min-h-screen pt-24 pb-16 px-6">
-      <div className="max-w-[800px] mx-auto">
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
-          Resources
-        </div>
-        <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">
-          {"\uD83E\uDD6A"} Food &amp; Nutrition
-        </h1>
-        <p className="text-[1.05rem] text-text-muted leading-relaxed mb-10">
-          What to feed, what to avoid, and how to adjust their diet during
-          treatment and beyond.
-        </p>
+export default async function FoodPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-        <div className="bg-cream rounded-2xl p-8 text-center text-text-muted">
-          <p className="text-lg">Content coming soon.</p>
-          <p className="text-sm mt-2">
-            This guide will be populated from the resources database.
-          </p>
-        </div>
-      </div>
-    </div>
+  let profile: DogProfile | null = null;
+
+  if (user) {
+    const { data } = await supabase
+      .from("subscribers")
+      .select("dog_name, breed, weight_lbs, cancer_stage")
+      .eq("id", user.id)
+      .single();
+
+    if (data?.dog_name) {
+      profile = {
+        dogName: data.dog_name,
+        breed: data.breed ?? null,
+        weightLbs: data.weight_lbs ?? null,
+        cancerStage: data.cancer_stage ?? null,
+      };
+    }
+  }
+
+  return (
+    <FoodPageClient
+      profile={profile}
+      dietPrinciples={DIET_PRINCIPLES}
+      foodItems={FOOD_ITEMS}
+      foodCategories={[...FOOD_CATEGORIES]}
+    />
   );
 }

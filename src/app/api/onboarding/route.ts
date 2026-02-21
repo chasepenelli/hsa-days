@@ -14,6 +14,8 @@ export async function POST(request: Request) {
 
   const formData = await request.formData();
   const petName = formData.get("pet_name") as string | null;
+  const breed = formData.get("breed") as string | null;
+  const weightLbs = formData.get("weight_lbs") as string | null;
   const diagnosisDate = formData.get("diagnosis_date") as string | null;
   const cancerStage = formData.get("cancer_stage") as string | null;
   const photo = formData.get("photo") as File | null;
@@ -55,6 +57,14 @@ export async function POST(request: Request) {
     dog_name: petName.trim(),
     onboarding_completed: true,
   };
+
+  if (breed) {
+    updateData.breed = breed;
+  }
+
+  if (weightLbs) {
+    updateData.weight_lbs = parseInt(weightLbs, 10);
+  }
 
   if (diagnosisDate) {
     updateData.diagnosis_date = diagnosisDate;
