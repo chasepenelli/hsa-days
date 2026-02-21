@@ -7,9 +7,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
 import VetCallout from "./VetCallout";
 import CategoryNav from "./CategoryNav";
-import FoodPrincipleCard from "./FoodPrincipleCard";
-import FoodGridCard from "./FoodGridCard";
-import FoodAvoidCard from "./FoodAvoidCard";
+import FoodPrincipleSection from "./FoodPrincipleSection";
+import FoodFlipCard from "./FoodFlipCard";
 import FoodTipCard from "./FoodTipCard";
 import SectionDivider from "./SectionDivider";
 
@@ -62,7 +61,6 @@ export default function FoodPageClient({
           borderBottom: "1px solid var(--border)",
         }}
       >
-        {/* Ambient orb — top right */}
         <div
           className="absolute top-0 right-0 w-64 h-64 pointer-events-none"
           style={{
@@ -72,10 +70,7 @@ export default function FoodPageClient({
         />
 
         <div className="max-w-[800px] mx-auto reveal">
-          {/* Eyebrow */}
-          <div
-            className="inline-flex items-center gap-2 mb-4"
-          >
+          <div className="inline-flex items-center gap-2 mb-4">
             <span
               className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
               style={{ color: "var(--sage)" }}
@@ -138,14 +133,14 @@ export default function FoodPageClient({
             onCategoryClick={scrollToCategory}
           />
 
-          {/* ═══ Diet Principles — Expandable Numbered Cards ═══ */}
+          {/* ═══ Diet Principles — Full Sections ═══ */}
           <section
             ref={(el) => {
               categoryRefs.current["principles"] = el;
             }}
             className="mb-6"
           >
-            <div className="reveal mb-5">
+            <div className="reveal mb-6">
               <div className="flex items-center gap-2.5 mb-1">
                 <div
                   className="w-2 h-2 rounded-full"
@@ -162,24 +157,31 @@ export default function FoodPageClient({
                 className="text-[0.85rem] ml-[18px]"
                 style={{ color: "var(--text-muted)" }}
               >
-                Tap any card to expand the details
+                Evidence-based nutritional guidance for dogs with cancer
               </p>
             </div>
 
-            <div className="space-y-3 reveal-stagger">
+            <div className="space-y-10">
               {dietPrinciples.map((principle, i) => (
-                <FoodPrincipleCard
-                  key={i}
-                  principle={principle}
-                  index={i}
-                />
+                <div key={i} className="reveal">
+                  <FoodPrincipleSection principle={principle} index={i} />
+                  {i < dietPrinciples.length - 1 && (
+                    <div
+                      className="mt-10 h-px"
+                      style={{
+                        background:
+                          "linear-gradient(to right, transparent, var(--border-strong) 30%, var(--border-strong) 70%, transparent)",
+                      }}
+                    />
+                  )}
+                </div>
               ))}
             </div>
           </section>
 
           <SectionDivider />
 
-          {/* ═══ Recommended Foods — Visual Grid ═══ */}
+          {/* ═══ Recommended Foods — Visual Grid with Flip ═══ */}
           <section
             ref={(el) => {
               categoryRefs.current["recommended"] = el;
@@ -224,7 +226,12 @@ export default function FoodPageClient({
                   profile?.breed ?? null,
                 );
                 return (
-                  <FoodGridCard key={i} item={item} breedNote={breedNote} />
+                  <FoodFlipCard
+                    key={i}
+                    item={item}
+                    variant="recommended"
+                    breedNote={breedNote}
+                  />
                 );
               })}
             </div>
@@ -232,7 +239,7 @@ export default function FoodPageClient({
 
           <SectionDivider />
 
-          {/* ═══ Foods to Avoid — Warning Cards ═══ */}
+          {/* ═══ Foods to Avoid — Grid with Flip (Terracotta) ═══ */}
           <section
             ref={(el) => {
               categoryRefs.current["avoid"] = el;
@@ -240,7 +247,7 @@ export default function FoodPageClient({
             className="mb-6"
           >
             <div
-              className="rounded-2xl px-5 py-6"
+              className="rounded-2xl px-4 sm:px-5 py-6"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(212,133,106,0.05) 0%, rgba(212,133,106,0.02) 100%)",
@@ -277,9 +284,14 @@ export default function FoodPageClient({
                 </p>
               </div>
 
-              <div className="space-y-3 reveal-stagger">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
                 {avoidItems.map((item, i) => (
-                  <FoodAvoidCard key={i} item={item} />
+                  <FoodFlipCard
+                    key={i}
+                    item={item}
+                    variant="avoid"
+                    breedNote={null}
+                  />
                 ))}
               </div>
             </div>
@@ -296,7 +308,6 @@ export default function FoodPageClient({
           >
             <div className="reveal mb-5">
               <div className="flex items-center gap-2.5 mb-1">
-                {/* Light bulb / sun icon in gold */}
                 <div
                   className="w-5 h-5 rounded-full flex items-center justify-center"
                   style={{ background: "rgba(196,162,101,0.15)" }}

@@ -42,11 +42,22 @@ export interface FoodItem {
   tip?: string;
 }
 
+export interface ClinicalReference {
+  authors: string;
+  title: string;
+  journal: string;
+  year: number;
+  pmid?: string;
+  summary: string;
+}
+
 export interface DietPrinciple {
   title: string;
   description: string;
   details: string[];
   icon: string;
+  deepDive: string[];
+  references: ClinicalReference[];
 }
 
 export interface DogProfile {
