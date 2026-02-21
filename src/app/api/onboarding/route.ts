@@ -75,6 +75,11 @@ export async function POST(request: Request) {
     } catch { /* ignore malformed */ }
   }
 
+  const avatarColor = formData.get("avatar_color") as string | null;
+  if (avatarColor && ["sage", "gold", "terracotta"].includes(avatarColor)) {
+    updateData.avatar_color = avatarColor;
+  }
+
   const { error: updateError } = await supabase
     .from("subscribers")
     .update(updateData)

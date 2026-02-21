@@ -43,10 +43,11 @@ export default function OnboardingWizard() {
   const [selectedPills, setSelectedPills] = useState<string[]>([]);
   const [pillShake, setPillShake] = useState(false);
 
-  // Step 4 — Photo
+  // Step 4 — Photo + color
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarColor, setAvatarColor] = useState<"sage" | "gold" | "terracotta">("sage");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -123,6 +124,8 @@ export default function OnboardingWizard() {
       formData.append("selected_pills", JSON.stringify(selectedPills));
     }
 
+    formData.append("avatar_color", avatarColor);
+
     if (photo) {
       formData.append("photo", photo);
     }
@@ -138,6 +141,11 @@ export default function OnboardingWizard() {
         setError(data.error || "Something went wrong");
         setIsSubmitting(false);
         return;
+      }
+
+      // Kick off avatar generation in background (fire-and-forget)
+      if (photo) {
+        fetch("/api/generate-avatar", { method: "POST" }).catch(() => {});
       }
 
       // Brief welcome moment, then redirect
@@ -504,7 +512,7 @@ export default function OnboardingWizard() {
           </div>
         )}
 
-        {/* ── Step 4: Photo Upload ── */}
+        {/* ── Step 4: Photo Upload + Color Preference ── */}
         {step === 4 && (
           <div key="step-4" className={animClass}>
             <h1
@@ -517,9 +525,9 @@ export default function OnboardingWizard() {
               className="text-center text-[0.95rem] mb-10 leading-relaxed"
               style={{ color: "var(--text-muted)" }}
             >
-              It&rsquo;ll appear on your share cards and dashboard.
+              We&rsquo;ll turn it into a hand-drawn illustration
               <br />
-              You can always add one later.
+              that follows you through your journal.
             </p>
 
             {/* Upload area */}
@@ -528,7 +536,7 @@ export default function OnboardingWizard() {
                 onClick={() => fileInputRef.current?.click()}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
-                className="mb-6 rounded-2xl p-10 text-center cursor-pointer transition-all duration-200 hover:border-sage"
+                className="mb-8 rounded-2xl p-10 text-center cursor-pointer transition-all duration-200 hover:border-sage"
                 style={{
                   border: "2px dashed var(--border-strong)",
                   background: "rgba(255,255,255,0.6)",
@@ -560,7 +568,7 @@ export default function OnboardingWizard() {
                 </p>
               </div>
             ) : (
-              <div className="mb-6 text-center">
+              <div className="mb-8 text-center">
                 <div
                   className="w-40 h-40 rounded-2xl mx-auto mb-4 overflow-hidden"
                   style={{
@@ -601,6 +609,56 @@ export default function OnboardingWizard() {
                 if (file) handlePhotoSelect(file);
               }}
             />
+
+            {/* Color preference */}
+            {photo && (
+              <div className="mb-8 animate-fade-in">
+                <p
+                  className="text-[0.8rem] font-medium mb-3 text-center"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Pick an ink color for {petName}&rsquo;s illustration
+                </p>
+                <div className="flex items-center justify-center gap-4">
+                  {([
+                    { key: "sage" as const, color: "#5B7B5E", label: "Sage" },
+                    { key: "gold" as const, color: "#C4A265", label: "Gold" },
+                    { key: "terracotta" as const, color: "#D4856A", label: "Terracotta" },
+                  ]).map((c) => (
+                    <button
+                      key={c.key}
+                      type="button"
+                      onClick={() => setAvatarColor(c.key)}
+                      className="flex flex-col items-center gap-1.5 cursor-pointer transition-all duration-200"
+                      style={{
+                        background: "none",
+                        border: "none",
+                        opacity: avatarColor === c.key ? 1 : 0.5,
+                        transform: avatarColor === c.key ? "scale(1.1)" : "scale(1)",
+                      }}
+                    >
+                      <div
+                        className="w-10 h-10 rounded-full transition-all duration-200"
+                        style={{
+                          background: c.color,
+                          boxShadow: avatarColor === c.key
+                            ? `0 0 0 3px white, 0 0 0 5px ${c.color}`
+                            : "none",
+                        }}
+                      />
+                      <span
+                        className="text-[0.72rem] font-medium"
+                        style={{
+                          color: avatarColor === c.key ? c.color : "var(--text-muted)",
+                        }}
+                      >
+                        {c.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {error && (
               <p
