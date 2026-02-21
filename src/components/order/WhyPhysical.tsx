@@ -144,21 +144,19 @@ export function WhyPhysical() {
             style={{ transitionDelay: "0.2s" }}
           >
             <div
-              className="relative rounded-2xl overflow-hidden"
+              className="relative"
               style={{
                 maxWidth: "400px",
                 width: "100%",
                 aspectRatio: "3 / 4",
-                boxShadow: "0 12px 48px rgba(0,0,0,0.08)",
-                border: "1px solid var(--border)",
               }}
             >
               <Image
-                src="/illustrations/order/order-why-physical.png"
+                src="/illustrations/order/order-why-physical.webp"
                 alt="Hands holding an open journal"
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"
-                className="object-cover"
+                className="object-contain"
                 style={{ mixBlendMode: "multiply" }}
               />
             </div>

@@ -40,15 +40,15 @@ interface DayContentProps {
 
 /* ── Day illustration mapping ────────────────────────── */
 const DAY_HEADER_ILLUSTRATIONS: Record<number, string> = {
-  1: "/illustrations/days/day01-header.png",
-  2: "/illustrations/days/day02-header.png",
-  3: "/illustrations/days/day03-header.png",
+  1: "/illustrations/days/day01-header.webp",
+  2: "/illustrations/days/day02-header.webp",
+  3: "/illustrations/days/day03-header.webp",
 };
 
 const DAY_ACTIVITY_ILLUSTRATIONS: Record<number, string> = {
-  1: "/illustrations/days/day01-activity.png",
-  2: "/illustrations/days/day02-activity.png",
-  3: "/illustrations/days/day03-activity.png",
+  1: "/illustrations/days/day01-activity.webp",
+  2: "/illustrations/days/day02-activity.webp",
+  3: "/illustrations/days/day03-activity.webp",
 };
 
 function getMilestoneMessage(dayNumber: number): string | null {

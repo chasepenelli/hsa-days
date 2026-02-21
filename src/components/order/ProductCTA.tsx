@@ -128,7 +128,7 @@ export function ProductCTA() {
             {/* Product illustration */}
             <div className="flex justify-center mb-8">
               <div
-                className="relative rounded-xl overflow-hidden"
+                className="relative"
                 style={{
                   width: "100%",
                   maxWidth: "360px",
@@ -136,11 +136,11 @@ export function ProductCTA() {
                 }}
               >
                 <Image
-                  src="/illustrations/order/order-product-mockup.png"
+                  src="/illustrations/order/order-product-mockup.webp"
                   alt="HSA Days: The Guided Journal"
                   fill
                   sizes="360px"
-                  className="object-cover"
+                  className="object-contain"
                   style={{ mixBlendMode: "multiply" }}
                 />
               </div>

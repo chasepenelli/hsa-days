@@ -26,7 +26,7 @@ const PHASES = [
     bgColor: "rgba(212,133,106,0.05)",
     borderColor: "rgba(212,133,106,0.25)",
     dotColor: "var(--terracotta)",
-    illustration: "/illustrations/home/home-journey-phase1.png",
+    illustration: "/illustrations/home/home-journey-phase1.webp",
     illustrationAlt: "Phone face-down with paw print stamp",
   },
   {
@@ -41,7 +41,7 @@ const PHASES = [
     bgColor: "rgba(196,162,101,0.05)",
     borderColor: "rgba(196,162,101,0.25)",
     dotColor: "var(--gold)",
-    illustration: "/illustrations/home/home-journey-phase2.png",
+    illustration: "/illustrations/home/home-journey-phase2.webp",
     illustrationAlt: "Coffee mug and dog leash",
   },
   {
@@ -56,7 +56,7 @@ const PHASES = [
     bgColor: "rgba(122,154,125,0.05)",
     borderColor: "rgba(122,154,125,0.25)",
     dotColor: "var(--sage-light)",
-    illustration: "/illustrations/home/home-journey-phase3.png",
+    illustration: "/illustrations/home/home-journey-phase3.webp",
     illustrationAlt: "Crumpled tissue beside a journal",
   },
   {
@@ -71,7 +71,7 @@ const PHASES = [
     bgColor: "rgba(91,123,94,0.05)",
     borderColor: "rgba(91,123,94,0.25)",
     dotColor: "var(--sage)",
-    illustration: "/illustrations/home/home-journey-phase4.png",
+    illustration: "/illustrations/home/home-journey-phase4.webp",
     illustrationAlt: "Pen resting on an open journal page",
   },
   {
@@ -86,7 +86,7 @@ const PHASES = [
     bgColor: "rgba(62,87,64,0.05)",
     borderColor: "rgba(62,87,64,0.25)",
     dotColor: "var(--sage-dark)",
-    illustration: "/illustrations/home/home-journey-phase5.png",
+    illustration: "/illustrations/home/home-journey-phase5.webp",
     illustrationAlt: "Paw print and footprint side by side",
   },
 ];

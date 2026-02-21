@@ -145,7 +145,7 @@ export function OrderHero() {
         {/* Lifestyle illustration — person with dog + journal */}
         <div className="absolute" style={{ inset: "20%" }}>
           <Image
-            src="/illustrations/order/order-hero-lifestyle.png"
+            src="/illustrations/order/order-hero-lifestyle.webp"
             alt=""
             fill
             sizes="100vw"

@@ -188,7 +188,7 @@ function ActivityPreview() {
       </div>
       <div className="flex-shrink-0 relative" style={{ width: "72px" }}>
         <Image
-          src="/illustrations/days/day01-activity.png"
+          src="/illustrations/days/day01-activity.webp"
           alt=""
           width={72}
           height={88}
@@ -892,7 +892,7 @@ export function SeeInsideV2() {
           >
             <div className="absolute inset-0 flex items-end justify-end pointer-events-none overflow-hidden">
               <Image
-                src="/illustrations/days/day01-header.png"
+                src="/illustrations/days/day01-header.webp"
                 alt=""
                 width={220}
                 height={160}

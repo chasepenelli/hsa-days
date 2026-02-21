@@ -5,25 +5,25 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const gallery = [
   {
-    src: "/illustrations/order/order-lifestyle-morning.png",
+    src: "/illustrations/order/order-lifestyle-morning.webp",
     caption: "Morning coffee. Day 7. Just us.",
     aspect: "16 / 9" as const,
     span: "full" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-writing.png",
+    src: "/illustrations/order/order-lifestyle-writing.webp",
     caption: "Writing what I couldn\u2019t say out loud.",
     aspect: "1 / 1" as const,
     span: "half" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-couch.png",
+    src: "/illustrations/order/order-lifestyle-couch.webp",
     caption: "She slept through the whole entry.",
     aspect: "3 / 4" as const,
     span: "half" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-complete.png",
+    src: "/illustrations/order/order-lifestyle-complete.webp",
     caption: "Thirty days later. Still holding on.",
     aspect: "16 / 9" as const,
     span: "full" as const,
@@ -106,12 +106,9 @@ export function LifestyleGallery() {
               className={img.span === "full" ? "md:col-span-2" : ""}
             >
               <div
-                className="relative rounded-2xl overflow-hidden"
+                className="relative"
                 style={{
                   aspectRatio: img.aspect,
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
-                  border: "1px solid var(--border)",
-                  background: "white",
                 }}
               >
                 <Image
@@ -123,7 +120,7 @@ export function LifestyleGallery() {
                       ? "(max-width: 768px) 100vw, 900px"
                       : "(max-width: 768px) 100vw, 440px"
                   }
-                  className="object-cover"
+                  className="object-contain"
                   style={{ mixBlendMode: "multiply" }}
                 />
               </div>

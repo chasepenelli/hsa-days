@@ -68,7 +68,7 @@ export function About() {
               {/* Graffiti corgi portrait illustration */}
               <div className="absolute inset-0">
                 <Image
-                  src="/illustrations/home/home-about-graffiti.png"
+                  src="/illustrations/home/home-about-graffiti.webp"
                   alt="Graffiti the corgi — a golden ink wash portrait"
                   fill
                   sizes="(max-width: 768px) 90vw, 420px"
