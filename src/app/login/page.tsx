@@ -1,126 +1,82 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-type Step = "email" | "pin";
+type Step = "email" | "sent";
 
-const PIN_LENGTH = 4;
+const RESEND_COOLDOWN = 60;
 
 export default function LoginPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [pin, setPin] = useState(Array(PIN_LENGTH).fill(""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const pinRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [resendTimer, setResendTimer] = useState(0);
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep("pin");
-    setError("");
-    setTimeout(() => pinRefs.current[0]?.focus(), 50);
-  };
+  // Resend cooldown timer
+  useEffect(() => {
+    if (resendTimer <= 0) return;
+    const interval = setInterval(() => {
+      setResendTimer((t) => t - 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resendTimer]);
 
-  const handleSignIn = useCallback(async (digits: string[]) => {
-    const pinValue = digits.join("");
-    if (pinValue.length !== PIN_LENGTH) return;
+  // Check if user is already authenticated (e.g. came back from magic link)
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        supabase
+          .from("subscribers")
+          .select("onboarding_completed")
+          .eq("id", user.id)
+          .single()
+          .then(({ data }) => {
+            if (data?.onboarding_completed) {
+              router.push("/days");
+            } else {
+              router.push("/welcome");
+            }
+          });
+      }
+    });
+  }, [router]);
 
+  const sendMagicLink = useCallback(async () => {
     setLoading(true);
     setError("");
 
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
-      password: "hsadays" + pinValue,
+      options: {
+        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+      },
     });
 
-    if (signInError) {
-      setError("Wrong PIN or email. Please try again.");
-      setLoading(false);
-      return;
+    if (error) {
+      setError(error.message);
+    } else {
+      setStep("sent");
+      setResendTimer(RESEND_COOLDOWN);
     }
+    setLoading(false);
+  }, [email]);
 
-    // Post-auth: check subscriber record and route appropriately
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        const { data: existing } = await supabase
-          .from("subscribers")
-          .select("id, onboarding_completed")
-          .eq("id", user.id)
-          .single();
-
-        if (!existing) {
-          await supabase.from("subscribers").upsert(
-            {
-              id: user.id,
-              email: user.email!,
-              signup_source: "login",
-              has_digital_access: true,
-            },
-            { onConflict: "id" }
-          );
-          router.push("/welcome");
-          return;
-        }
-
-        if (!existing.onboarding_completed) {
-          router.push("/welcome");
-          return;
-        }
-      }
-    } catch {
-      // If subscriber check fails, just go to /days
-    }
-
-    router.push("/days");
-  }, [email, router]);
-
-  const handlePinChange = (index: number, value: string) => {
-    const digit = value.replace(/\D/g, "").slice(-1);
-    const next = [...pin];
-    next[index] = digit;
-    setPin(next);
-
-    if (digit && index < PIN_LENGTH - 1) {
-      pinRefs.current[index + 1]?.focus();
-    }
-
-    // Auto-submit when all digits filled
-    if (digit && index === PIN_LENGTH - 1 && next.every((d) => d)) {
-      handleSignIn(next);
-    }
-  };
-
-  const handlePinKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !pin[index] && index > 0) {
-      pinRefs.current[index - 1]?.focus();
-    }
-    if (e.key === "Enter" && pin.every((d) => d)) {
-      handleSignIn(pin);
-    }
-  };
-
-  const handlePinPaste = (e: React.ClipboardEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, PIN_LENGTH);
-    if (!pasted) return;
-    const next = [...pin];
-    for (let i = 0; i < PIN_LENGTH; i++) {
-      next[i] = pasted[i] || "";
-    }
-    setPin(next);
-    const lastIdx = Math.min(pasted.length, PIN_LENGTH - 1);
-    pinRefs.current[lastIdx]?.focus();
+    await sendMagicLink();
+  };
 
-    if (pasted.length === PIN_LENGTH) {
-      handleSignIn(next);
-    }
+  const handleResend = async () => {
+    if (resendTimer > 0) return;
+    setError("");
+    await sendMagicLink();
   };
 
   const inputStyle = {
@@ -165,22 +121,24 @@ export default function LoginPage() {
             HSA <span style={{ color: "var(--gold)" }}>Days</span>
           </Link>
 
-          {step === "pin" ? (
+          {step === "sent" ? (
             <div className="animate-fade-in-up">
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5"
                 style={{ background: "rgba(91,123,94,0.1)" }}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7" style={{ color: "var(--sage)" }}>
-                  <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
               <h1 className="font-serif text-[1.7rem] font-semibold text-text mb-3 leading-snug">
-                Enter your PIN
+                Check your email
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                Enter the 4-digit PIN for{" "}
-                <strong style={{ color: "var(--text)" }}>{email}</strong>
+                We sent a sign-in link to{" "}
+                <strong style={{ color: "var(--text)" }}>{email}</strong>.
+                <br />
+                Click the link to sign in.
               </p>
             </div>
           ) : (
@@ -189,7 +147,8 @@ export default function LoginPage() {
                 Welcome back
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                Enter your email and 4-digit PIN to sign in.
+                Enter your email and we&apos;ll send you a link to sign in.
+                No passwords needed.
               </p>
             </>
           )}
@@ -219,7 +178,7 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-center gap-2.5 font-semibold font-sans border-none cursor-pointer transition-all active:scale-[0.98] disabled:opacity-70"
                 style={{
                   padding: "14px 24px",
-                  background: "var(--sage)",
+                  background: loading ? "var(--sage-light)" : "var(--sage)",
                   color: "white",
                   borderRadius: "14px",
                   fontSize: "0.95rem",
@@ -233,10 +192,19 @@ export default function LoginPage() {
                   if (!loading) (e.currentTarget as HTMLButtonElement).style.background = "var(--sage)";
                 }}
               >
-                Continue
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                {loading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Sign-In Link
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </>
+                )}
               </button>
 
               {error && (
@@ -273,78 +241,21 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* Step 2: PIN */}
-        {step === "pin" && (
+        {/* Step 2: Check email */}
+        {step === "sent" && (
           <div className="animate-fade-in-up">
             <div className="space-y-4">
-              {/* 4-digit PIN inputs */}
-              <div className="flex justify-center gap-2.5" onPaste={handlePinPaste}>
-                {pin.map((digit, i) => (
-                  <input
-                    key={i}
-                    ref={(el) => { pinRefs.current[i] = el; }}
-                    type="text"
-                    inputMode="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onChange={(e) => handlePinChange(i, e.target.value)}
-                    onKeyDown={(e) => handlePinKeyDown(i, e)}
-                    onFocus={(e) => {
-                      e.currentTarget.select();
-                      handleInputFocus(e);
-                    }}
-                    onBlur={handleInputBlur}
-                    className="outline-none transition-all text-center font-semibold"
-                    style={{
-                      width: "56px",
-                      height: "64px",
-                      border: "1.5px solid var(--border)",
-                      borderRadius: "12px",
-                      fontSize: "1.5rem",
-                      fontFamily: "var(--font-sans)",
-                      background: "white",
-                      color: "var(--text)",
-                      boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                    }}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={() => handleSignIn(pin)}
-                disabled={loading || !pin.every((d) => d)}
-                className="w-full flex items-center justify-center gap-2.5 font-semibold font-sans border-none cursor-pointer transition-all active:scale-[0.98] disabled:opacity-70"
+              {/* Tip */}
+              <div
+                className="rounded-xl px-4 py-3 text-[0.88rem] text-center"
                 style={{
-                  padding: "14px 24px",
-                  background: loading || !pin.every((d) => d) ? "var(--sage-light)" : "var(--sage)",
-                  color: "white",
-                  borderRadius: "14px",
-                  fontSize: "0.95rem",
-                  boxShadow: "0 4px 14px rgba(91,123,94,0.25)",
-                  minHeight: "52px",
-                }}
-                onMouseEnter={(e) => {
-                  if (!loading) (e.currentTarget as HTMLButtonElement).style.background = "var(--sage-dark)";
-                }}
-                onMouseLeave={(e) => {
-                  if (!loading) (e.currentTarget as HTMLButtonElement).style.background =
-                    pin.every((d) => d) ? "var(--sage)" : "var(--sage-light)";
+                  background: "rgba(91,123,94,0.06)",
+                  color: "var(--text-muted)",
+                  border: "1px solid rgba(91,123,94,0.12)",
                 }}
               >
-                {loading ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </>
-                )}
-              </button>
+                Check your spam folder if you don&apos;t see it in a minute.
+              </div>
 
               {error && (
                 <div
@@ -359,14 +270,22 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* Back button */}
-              <div className="flex items-center justify-center pt-2">
+              {/* Resend + back */}
+              <div className="flex items-center justify-between pt-2">
                 <button
-                  onClick={() => { setStep("email"); setPin(Array(PIN_LENGTH).fill("")); setError(""); }}
+                  onClick={() => { setStep("email"); setError(""); }}
                   className="text-[0.85rem] font-medium bg-transparent border-none cursor-pointer transition-colors"
                   style={{ color: "var(--text-muted)" }}
                 >
                   &larr; Different email
+                </button>
+                <button
+                  onClick={handleResend}
+                  disabled={resendTimer > 0}
+                  className="text-[0.85rem] font-medium bg-transparent border-none cursor-pointer transition-colors disabled:opacity-50"
+                  style={{ color: resendTimer > 0 ? "var(--text-muted)" : "var(--sage)" }}
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend link"}
                 </button>
               </div>
             </div>
@@ -379,7 +298,7 @@ export default function LoginPage() {
             className="text-center text-[0.78rem] mt-8 italic"
             style={{ color: "var(--text-muted)", opacity: 0.45 }}
           >
-            Free forever &middot; Just you and your dog
+            Free forever &middot; No passwords &middot; Just you and your dog
           </p>
         )}
       </div>
