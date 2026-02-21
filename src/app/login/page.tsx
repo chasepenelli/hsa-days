@@ -1,90 +1,50 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-type Step = "email" | "code";
+type Step = "email" | "pin";
 
-const RESEND_COOLDOWN = 60;
-const CODE_LENGTH = 8;
+const PIN_LENGTH = 4;
 
 export default function LoginPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState(Array(CODE_LENGTH).fill(""));
+  const [pin, setPin] = useState(Array(PIN_LENGTH).fill(""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [resendTimer, setResendTimer] = useState(0);
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  // Resend cooldown timer
-  useEffect(() => {
-    if (resendTimer <= 0) return;
-    const interval = setInterval(() => {
-      setResendTimer((t) => t - 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [resendTimer]);
-
-  const sendCode = useCallback(async () => {
-    setLoading(true);
-    setError("");
-
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
-      },
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      setStep("code");
-      setResendTimer(RESEND_COOLDOWN);
-      // Focus first code input after render
-      setTimeout(() => inputRefs.current[0]?.focus(), 50);
-    }
-    setLoading(false);
-  }, [email]);
+  const pinRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await sendCode();
-  };
-
-  const handleResend = async () => {
-    if (resendTimer > 0) return;
-    setCode(Array(CODE_LENGTH).fill(""));
+    setStep("pin");
     setError("");
-    await sendCode();
+    setTimeout(() => pinRefs.current[0]?.focus(), 50);
   };
 
-  const handleVerify = useCallback(async (digits: string[]) => {
-    const token = digits.join("");
-    if (token.length !== CODE_LENGTH) return;
+  const handleSignIn = useCallback(async (digits: string[]) => {
+    const pinValue = digits.join("");
+    if (pinValue.length !== PIN_LENGTH) return;
 
     setLoading(true);
     setError("");
 
     const supabase = createClient();
-    const { error: verifyError } = await supabase.auth.verifyOtp({
+    const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
-      token,
-      type: "email",
+      password: "hsadays" + pinValue,
     });
 
-    if (verifyError) {
-      setError(verifyError.message);
+    if (signInError) {
+      setError("Wrong PIN or email. Please try again.");
       setLoading(false);
       return;
     }
 
-    // Post-auth: ensure subscriber record exists and route appropriately
+    // Post-auth: check subscriber record and route appropriately
     try {
       const { data: { user } } = await supabase.auth.getUser();
 
@@ -100,7 +60,7 @@ export default function LoginPage() {
             {
               id: user.id,
               email: user.email!,
-              signup_source: "otp",
+              signup_source: "login",
               has_digital_access: true,
             },
             { onConflict: "id" }
@@ -121,47 +81,45 @@ export default function LoginPage() {
     router.push("/days");
   }, [email, router]);
 
-  const handleCodeChange = (index: number, value: string) => {
-    // Only allow digits
+  const handlePinChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, "").slice(-1);
-    const next = [...code];
+    const next = [...pin];
     next[index] = digit;
-    setCode(next);
+    setPin(next);
 
-    if (digit && index < CODE_LENGTH - 1) {
-      inputRefs.current[index + 1]?.focus();
+    if (digit && index < PIN_LENGTH - 1) {
+      pinRefs.current[index + 1]?.focus();
     }
 
     // Auto-submit when all digits filled
-    if (digit && index === CODE_LENGTH - 1 && next.every((d) => d)) {
-      handleVerify(next);
+    if (digit && index === PIN_LENGTH - 1 && next.every((d) => d)) {
+      handleSignIn(next);
     }
   };
 
-  const handleCodeKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !code[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
+  const handlePinKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !pin[index] && index > 0) {
+      pinRefs.current[index - 1]?.focus();
     }
-    if (e.key === "Enter" && code.every((d) => d)) {
-      handleVerify(code);
+    if (e.key === "Enter" && pin.every((d) => d)) {
+      handleSignIn(pin);
     }
   };
 
-  const handleCodePaste = (e: React.ClipboardEvent) => {
+  const handlePinPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, CODE_LENGTH);
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, PIN_LENGTH);
     if (!pasted) return;
-    const next = [...code];
-    for (let i = 0; i < CODE_LENGTH; i++) {
+    const next = [...pin];
+    for (let i = 0; i < PIN_LENGTH; i++) {
       next[i] = pasted[i] || "";
     }
-    setCode(next);
-    // Focus last filled or the next empty
-    const lastIdx = Math.min(pasted.length, CODE_LENGTH - 1);
-    inputRefs.current[lastIdx]?.focus();
+    setPin(next);
+    const lastIdx = Math.min(pasted.length, PIN_LENGTH - 1);
+    pinRefs.current[lastIdx]?.focus();
 
-    if (pasted.length === CODE_LENGTH) {
-      handleVerify(next);
+    if (pasted.length === PIN_LENGTH) {
+      handleSignIn(next);
     }
   };
 
@@ -207,7 +165,7 @@ export default function LoginPage() {
             HSA <span style={{ color: "var(--gold)" }}>Days</span>
           </Link>
 
-          {step === "code" ? (
+          {step === "pin" ? (
             <div className="animate-fade-in-up">
               <div
                 className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5"
@@ -218,13 +176,11 @@ export default function LoginPage() {
                 </svg>
               </div>
               <h1 className="font-serif text-[1.7rem] font-semibold text-text mb-3 leading-snug">
-                Enter your code
+                Enter your PIN
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                We sent a code to{" "}
-                <strong style={{ color: "var(--text)" }}>{email}</strong>.
-                <br />
-                Check your inbox (and spam folder).
+                Enter the 4-digit PIN for{" "}
+                <strong style={{ color: "var(--text)" }}>{email}</strong>
               </p>
             </div>
           ) : (
@@ -233,8 +189,7 @@ export default function LoginPage() {
                 Welcome back
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                Enter your email and we&apos;ll send you a code to sign in.
-                No passwords needed.
+                Enter your email and 4-digit PIN to sign in.
               </p>
             </>
           )}
@@ -264,7 +219,7 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-center gap-2.5 font-semibold font-sans border-none cursor-pointer transition-all active:scale-[0.98] disabled:opacity-70"
                 style={{
                   padding: "14px 24px",
-                  background: loading ? "var(--sage-light)" : "var(--sage)",
+                  background: "var(--sage)",
                   color: "white",
                   borderRadius: "14px",
                   fontSize: "0.95rem",
@@ -278,19 +233,10 @@ export default function LoginPage() {
                   if (!loading) (e.currentTarget as HTMLButtonElement).style.background = "var(--sage)";
                 }}
               >
-                {loading ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    Send Code
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </>
-                )}
+                Continue
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </button>
 
               {error && (
@@ -327,23 +273,22 @@ export default function LoginPage() {
           </div>
         )}
 
-        {/* Step 2: Code */}
-        {step === "code" && (
+        {/* Step 2: PIN */}
+        {step === "pin" && (
           <div className="animate-fade-in-up">
             <div className="space-y-4">
-              {/* 6-digit code inputs */}
-              <div className="flex justify-center gap-1.5" onPaste={handleCodePaste}>
-                {code.map((digit, i) => (
+              {/* 4-digit PIN inputs */}
+              <div className="flex justify-center gap-2.5" onPaste={handlePinPaste}>
+                {pin.map((digit, i) => (
                   <input
                     key={i}
-                    ref={(el) => { inputRefs.current[i] = el; }}
+                    ref={(el) => { pinRefs.current[i] = el; }}
                     type="text"
                     inputMode="numeric"
-                    autoComplete={i === 0 ? "one-time-code" : "off"}
                     maxLength={1}
                     value={digit}
-                    onChange={(e) => handleCodeChange(i, e.target.value)}
-                    onKeyDown={(e) => handleCodeKeyDown(i, e)}
+                    onChange={(e) => handlePinChange(i, e.target.value)}
+                    onKeyDown={(e) => handlePinKeyDown(i, e)}
                     onFocus={(e) => {
                       e.currentTarget.select();
                       handleInputFocus(e);
@@ -351,11 +296,11 @@ export default function LoginPage() {
                     onBlur={handleInputBlur}
                     className="outline-none transition-all text-center font-semibold"
                     style={{
-                      width: "40px",
-                      height: "50px",
+                      width: "56px",
+                      height: "64px",
                       border: "1.5px solid var(--border)",
-                      borderRadius: "10px",
-                      fontSize: "1.25rem",
+                      borderRadius: "12px",
+                      fontSize: "1.5rem",
                       fontFamily: "var(--font-sans)",
                       background: "white",
                       color: "var(--text)",
@@ -366,12 +311,12 @@ export default function LoginPage() {
               </div>
 
               <button
-                onClick={() => handleVerify(code)}
-                disabled={loading || !code.every((d) => d)}
+                onClick={() => handleSignIn(pin)}
+                disabled={loading || !pin.every((d) => d)}
                 className="w-full flex items-center justify-center gap-2.5 font-semibold font-sans border-none cursor-pointer transition-all active:scale-[0.98] disabled:opacity-70"
                 style={{
                   padding: "14px 24px",
-                  background: loading || !code.every((d) => d) ? "var(--sage-light)" : "var(--sage)",
+                  background: loading || !pin.every((d) => d) ? "var(--sage-light)" : "var(--sage)",
                   color: "white",
                   borderRadius: "14px",
                   fontSize: "0.95rem",
@@ -383,17 +328,17 @@ export default function LoginPage() {
                 }}
                 onMouseLeave={(e) => {
                   if (!loading) (e.currentTarget as HTMLButtonElement).style.background =
-                    code.every((d) => d) ? "var(--sage)" : "var(--sage-light)";
+                    pin.every((d) => d) ? "var(--sage)" : "var(--sage-light)";
                 }}
               >
                 {loading ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Verifying...
+                    Signing in...
                   </>
                 ) : (
                   <>
-                    Verify & Sign In
+                    Sign In
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
@@ -414,22 +359,14 @@ export default function LoginPage() {
                 </div>
               )}
 
-              {/* Resend + back */}
-              <div className="flex items-center justify-between pt-2">
+              {/* Back button */}
+              <div className="flex items-center justify-center pt-2">
                 <button
-                  onClick={() => { setStep("email"); setCode(Array(CODE_LENGTH).fill("")); setError(""); }}
+                  onClick={() => { setStep("email"); setPin(Array(PIN_LENGTH).fill("")); setError(""); }}
                   className="text-[0.85rem] font-medium bg-transparent border-none cursor-pointer transition-colors"
                   style={{ color: "var(--text-muted)" }}
                 >
                   &larr; Different email
-                </button>
-                <button
-                  onClick={handleResend}
-                  disabled={resendTimer > 0}
-                  className="text-[0.85rem] font-medium bg-transparent border-none cursor-pointer transition-colors disabled:opacity-50"
-                  style={{ color: resendTimer > 0 ? "var(--text-muted)" : "var(--sage)" }}
-                >
-                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend code"}
                 </button>
               </div>
             </div>
@@ -442,7 +379,7 @@ export default function LoginPage() {
             className="text-center text-[0.78rem] mt-8 italic"
             style={{ color: "var(--text-muted)", opacity: 0.45 }}
           >
-            Free forever &middot; No passwords &middot; Just you and your dog
+            Free forever &middot; Just you and your dog
           </p>
         )}
       </div>

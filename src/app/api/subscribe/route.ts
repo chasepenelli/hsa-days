@@ -3,11 +3,20 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { email, name, dog_name } = await request.json();
+    const { email, name, dog_name, pin } = await request.json();
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
+
+    if (!pin || !/^\d{4}$/.test(pin)) {
+      return NextResponse.json(
+        { error: "A 4-digit PIN is required" },
+        { status: 400 }
+      );
+    }
+
+    const password = "hsadays" + pin;
 
     // Use service role client for admin operations
     const supabase = createClient(
@@ -15,18 +24,19 @@ export async function POST(request: Request) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    // Create auth user (or get existing)
+    // Create auth user (or update existing)
     let authUserId: string;
 
     const { data: newUser, error: createError } =
       await supabase.auth.admin.createUser({
         email,
         email_confirm: true,
+        password,
       });
 
     if (createError) {
       if (createError.message.includes("already been registered")) {
-        // User exists — look up their ID
+        // User exists — look up their ID and update their PIN
         const { data: existingUsers } =
           await supabase.auth.admin.listUsers();
         const existing = existingUsers?.users?.find(
@@ -36,6 +46,11 @@ export async function POST(request: Request) {
           throw new Error("Could not find existing user");
         }
         authUserId = existing.id;
+
+        // Update their password to the new PIN
+        const { error: updateError } =
+          await supabase.auth.admin.updateUserById(authUserId, { password });
+        if (updateError) throw updateError;
       } else {
         throw createError;
       }
@@ -56,16 +71,6 @@ export async function POST(request: Request) {
       { onConflict: "id" }
     );
 
-    // Generate a magic link token server-side (no email sent)
-    // so the client can auto-authenticate immediately
-    const { data: linkData, error: linkError } =
-      await supabase.auth.admin.generateLink({
-        type: "magiclink",
-        email,
-      });
-
-    if (linkError) throw linkError;
-
     // Add to Kit (ConvertKit) if configured
     if (process.env.KIT_API_KEY && process.env.KIT_API_KEY !== "placeholder") {
       try {
@@ -85,9 +90,7 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json({
-      token_hash: linkData.properties.hashed_token,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Subscribe error:", error);
     return NextResponse.json(

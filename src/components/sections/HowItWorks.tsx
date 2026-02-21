@@ -11,7 +11,7 @@ const steps = [
     bg: "rgba(91,123,94,0.08)",
     title: "Sign up with your email",
     description:
-      "No passwords, no accounts to remember. Just your email. We'll send a sign-in code whenever you want to come back.",
+      "Just your email and a 4-digit PIN you choose. Enter them to come back anytime.",
   },
   {
     number: "02",
