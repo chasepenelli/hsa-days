@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Practical guides for HSA dog owners — supplements, food & nutrition, and house-proofing.",
+    "Practical guides for HSA dog owners — supplements, food & nutrition, house-proofing, and more.",
 };
 
 export default async function ResourcesPage() {
@@ -49,6 +49,14 @@ export default async function ResourcesPage() {
       href: "/resources/home",
       borderColor: "border-l-terracotta",
     },
+    {
+      icon: "\uD83D\uDCF1",
+      title: "Use as an App",
+      description:
+        "Add HSA Days to your home screen for quick access, offline journaling, and a full-screen experience.",
+      href: "/resources/install",
+      borderColor: "border-l-sage",
+    },
   ];
 
   return (
@@ -67,7 +75,7 @@ export default async function ResourcesPage() {
           dig through the internet at your worst moment.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {resources.map((resource, i) => (
             <Link
               key={i}
