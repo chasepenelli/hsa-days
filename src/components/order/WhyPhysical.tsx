@@ -146,7 +146,7 @@ export function WhyPhysical() {
             <div
               className="relative"
               style={{
-                maxWidth: "400px",
+                maxWidth: "480px",
                 width: "100%",
                 aspectRatio: "3 / 4",
               }}
@@ -155,9 +155,8 @@ export function WhyPhysical() {
                 src="/illustrations/order/order-why-physical.webp"
                 alt="Hands holding an open journal"
                 fill
-                sizes="(max-width: 768px) 100vw, 400px"
+                sizes="(max-width: 768px) 100vw, 480px"
                 className="object-contain"
-                style={{ mixBlendMode: "multiply" }}
               />
             </div>
           </div>

@@ -62,7 +62,7 @@ export function LifestyleGallery() {
         }}
       />
 
-      <div className="relative max-w-[900px] mx-auto">
+      <div className="relative max-w-[1080px] mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
           <div
@@ -117,11 +117,10 @@ export function LifestyleGallery() {
                   fill
                   sizes={
                     img.span === "full"
-                      ? "(max-width: 768px) 100vw, 900px"
-                      : "(max-width: 768px) 100vw, 440px"
+                      ? "(max-width: 768px) 100vw, 1080px"
+                      : "(max-width: 768px) 100vw, 528px"
                   }
                   className="object-contain"
-                  style={{ mixBlendMode: "multiply" }}
                 />
               </div>
               <p

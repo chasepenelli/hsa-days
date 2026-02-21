@@ -134,7 +134,7 @@ export function WhatsInside() {
                     className="relative"
                     style={{
                       width: "100%",
-                      maxWidth: "320px",
+                      maxWidth: "384px",
                       aspectRatio: "1 / 1",
                     }}
                   >
@@ -142,9 +142,8 @@ export function WhatsInside() {
                       src={f.image}
                       alt={f.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 320px"
+                      sizes="(max-width: 768px) 100vw, 384px"
                       className="object-contain"
-                      style={{ mixBlendMode: "multiply" }}
                     />
                   </div>
                 </div>

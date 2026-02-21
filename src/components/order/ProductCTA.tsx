@@ -113,7 +113,7 @@ export function ProductCTA() {
               className="relative"
               style={{
                 width: "100%",
-                maxWidth: "380px",
+                maxWidth: "456px",
                 aspectRatio: "4 / 3",
               }}
             >
@@ -121,9 +121,8 @@ export function ProductCTA() {
                 src="/illustrations/order/order-product-mockup.webp"
                 alt="HSA Days: The Guided Journal"
                 fill
-                sizes="380px"
+                sizes="456px"
                 className="object-contain"
-                style={{ mixBlendMode: "multiply" }}
               />
             </div>
           </div>
