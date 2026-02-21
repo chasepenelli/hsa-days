@@ -8,12 +8,13 @@ import Link from "next/link";
 type Step = "email" | "code";
 
 const RESEND_COOLDOWN = 60;
+const CODE_LENGTH = 8;
 
 export default function LoginPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [code, setCode] = useState(Array(CODE_LENGTH).fill(""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [resendTimer, setResendTimer] = useState(0);
@@ -33,7 +34,12 @@ export default function LoginPage() {
     setError("");
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({ email });
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    });
 
     if (error) {
       setError(error.message);
@@ -53,14 +59,14 @@ export default function LoginPage() {
 
   const handleResend = async () => {
     if (resendTimer > 0) return;
-    setCode(["", "", "", "", "", ""]);
+    setCode(Array(CODE_LENGTH).fill(""));
     setError("");
     await sendCode();
   };
 
   const handleVerify = useCallback(async (digits: string[]) => {
     const token = digits.join("");
-    if (token.length !== 6) return;
+    if (token.length !== CODE_LENGTH) return;
 
     setLoading(true);
     setError("");
@@ -122,12 +128,12 @@ export default function LoginPage() {
     next[index] = digit;
     setCode(next);
 
-    if (digit && index < 5) {
+    if (digit && index < CODE_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus();
     }
 
-    // Auto-submit when all 6 digits filled
-    if (digit && index === 5 && next.every((d) => d)) {
+    // Auto-submit when all digits filled
+    if (digit && index === CODE_LENGTH - 1 && next.every((d) => d)) {
       handleVerify(next);
     }
   };
@@ -143,18 +149,18 @@ export default function LoginPage() {
 
   const handleCodePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, CODE_LENGTH);
     if (!pasted) return;
     const next = [...code];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < CODE_LENGTH; i++) {
       next[i] = pasted[i] || "";
     }
     setCode(next);
     // Focus last filled or the next empty
-    const lastIdx = Math.min(pasted.length, 5);
+    const lastIdx = Math.min(pasted.length, CODE_LENGTH - 1);
     inputRefs.current[lastIdx]?.focus();
 
-    if (pasted.length === 6) {
+    if (pasted.length === CODE_LENGTH) {
       handleVerify(next);
     }
   };
@@ -215,7 +221,7 @@ export default function LoginPage() {
                 Enter your code
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                We sent a 6-digit code to{" "}
+                We sent a code to{" "}
                 <strong style={{ color: "var(--text)" }}>{email}</strong>.
                 <br />
                 Check your inbox (and spam folder).
@@ -326,7 +332,7 @@ export default function LoginPage() {
           <div className="animate-fade-in-up">
             <div className="space-y-4">
               {/* 6-digit code inputs */}
-              <div className="flex justify-center gap-2.5" onPaste={handleCodePaste}>
+              <div className="flex justify-center gap-1.5" onPaste={handleCodePaste}>
                 {code.map((digit, i) => (
                   <input
                     key={i}
@@ -345,11 +351,11 @@ export default function LoginPage() {
                     onBlur={handleInputBlur}
                     className="outline-none transition-all text-center font-semibold"
                     style={{
-                      width: "48px",
-                      height: "56px",
+                      width: "40px",
+                      height: "50px",
                       border: "1.5px solid var(--border)",
-                      borderRadius: "12px",
-                      fontSize: "1.4rem",
+                      borderRadius: "10px",
+                      fontSize: "1.25rem",
                       fontFamily: "var(--font-sans)",
                       background: "white",
                       color: "var(--text)",
@@ -411,7 +417,7 @@ export default function LoginPage() {
               {/* Resend + back */}
               <div className="flex items-center justify-between pt-2">
                 <button
-                  onClick={() => { setStep("email"); setCode(["", "", "", "", "", ""]); setError(""); }}
+                  onClick={() => { setStep("email"); setCode(Array(CODE_LENGTH).fill("")); setError(""); }}
                   className="text-[0.85rem] font-medium bg-transparent border-none cursor-pointer transition-colors"
                   style={{ color: "var(--text-muted)" }}
                 >
