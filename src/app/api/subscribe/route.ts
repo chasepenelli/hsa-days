@@ -56,20 +56,15 @@ export async function POST(request: Request) {
       { onConflict: "id" }
     );
 
-    // Send magic link
-    const anon = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    // Generate a magic link token server-side (no email sent)
+    // so the client can auto-authenticate immediately
+    const { data: linkData, error: linkError } =
+      await supabase.auth.admin.generateLink({
+        type: "magiclink",
+        email,
+      });
 
-    const { error: otpError } = await anon.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/callback`,
-      },
-    });
-
-    if (otpError) throw otpError;
+    if (linkError) throw linkError;
 
     // Add to Kit (ConvertKit) if configured
     if (process.env.KIT_API_KEY && process.env.KIT_API_KEY !== "placeholder") {
@@ -91,7 +86,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({
-      message: "Check your email for a magic link to get started!",
+      token_hash: linkData.properties.hashed_token,
     });
   } catch (error) {
     console.error("Subscribe error:", error);

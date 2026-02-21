@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 interface SignupFormProps {
   variant?: "default" | "dark";
@@ -27,12 +28,23 @@ export function SignupForm({ variant = "default" }: SignupFormProps) {
         body: JSON.stringify({ email }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const data = await res.json();
         throw new Error(data.error || "Something went wrong");
       }
 
-      router.push("/days");
+      // Auto-authenticate using the token from the subscribe route
+      if (data.token_hash) {
+        const supabase = createClient();
+        const { error: verifyError } = await supabase.auth.verifyOtp({
+          token_hash: data.token_hash,
+          type: "email",
+        });
+        if (verifyError) throw verifyError;
+      }
+
+      router.push("/welcome");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {

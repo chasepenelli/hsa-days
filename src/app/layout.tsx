@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
 import { PWAInstallPrompt } from "@/components/ui/PWAInstallPrompt";
+import { PWASplash } from "@/components/ui/PWASplash";
 import { ServiceWorkerRegistration } from "@/components/ui/ServiceWorkerRegistration";
 
 const lora = Lora({
@@ -69,6 +70,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <PWAInstallPrompt />
+        <PWASplash />
         <ServiceWorkerRegistration />
       </body>
     </html>
