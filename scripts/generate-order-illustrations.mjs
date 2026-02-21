@@ -37,94 +37,108 @@ if (!OPENROUTER_API_KEY) {
 const OUT_DIR = path.join(__dirname, "..", "public", "illustrations", "order");
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
-// Style prefixes per color accent
+// Style prefixes per color accent — strong emphasis on loose linework, no borders/frames
 const STYLE = {
-  sage: "Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green (#5B7B5E) ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks",
-  gold: "Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, warm golden (#C4A265) ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks",
-  terra: "Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted terracotta (#D4856A) ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks",
+  sage: "Simple hand-drawn ink sketch, loose confident linework, minimal ink line art with muted sage green (#5B7B5E) watercolor wash accents, white background, editorial book illustration style, soft and intimate, no text, no watermarks, no borders, no frames, no rounded corners, no boxes, no containers, no cards",
+  gold: "Simple hand-drawn ink sketch, loose confident linework, minimal ink line art with warm golden (#C4A265) watercolor wash accents, white background, editorial book illustration style, soft and intimate, no text, no watermarks, no borders, no frames, no rounded corners, no boxes, no containers, no cards",
+  terra: "Simple hand-drawn ink sketch, loose confident linework, minimal ink line art with muted terracotta (#D4856A) watercolor wash accents, white background, editorial book illustration style, soft and intimate, no text, no watermarks, no borders, no frames, no rounded corners, no boxes, no containers, no cards",
 };
 
 const BG_SUFFIX =
-  "no background, no surface, no table, no floor, no walls, no furniture, no shadows on ground, isolated subject floating on pure white";
+  "pure white background, no background elements, no surface, no table, no floor, no walls, no furniture, no shadows on ground, subject floats in empty white space, no border, no frame, no rounded rectangle, no card shape";
 
 const ILLUSTRATIONS = [
+  // HERO — skip, already perfect
   {
     file: "order-hero-lifestyle",
     aspect: "16:9",
     color: "sage",
     prompt: "Person sitting peacefully with corgi and open journal on lap, floating in wide white space, ethereal and ambient",
+    skip: true,
   },
+  // WHY PHYSICAL — a pen lying across a handwritten letter, nostalgic and analog
   {
     file: "order-why-physical",
     aspect: "3:4",
     color: "gold",
-    prompt: "Two hands gently holding open a journal, seen from above, no table underneath, warm and intimate",
+    prompt: "a single human hand holding a fountain pen writing on a blank page, seen from the side, the hand extends from the bottom of the frame, intimate and personal, loose brushwork",
   },
+  // DAILY REFLECTIONS — a candle with soft flame and a single wildflower
   {
     file: "order-inside-reflection",
     aspect: "1:1",
     color: "sage",
-    prompt: "Open journal page with ink marks suggesting writing, pen resting beside, contemplative still life",
+    prompt: "a lit candle with a soft gentle flame next to a single small wildflower in a tiny glass bottle, quiet contemplative still life, loose ink sketch",
   },
+  // GUIDED PROMPTS — a compass with a small heart at its center
   {
     file: "order-inside-prompt",
     aspect: "1:1",
     color: "gold",
-    prompt: "Journal page with a question mark drawn in warm ink, small thinking doodles, pen nearby",
+    prompt: "a vintage compass lying open with its needle pointing, a tiny heart drawn where north would be, whimsical and introspective, simple loose sketch",
   },
+  // ACTIVITIES WITH YOUR DOG — a corgi mid-play-bow with a tennis ball
   {
     file: "order-inside-activity",
     aspect: "1:1",
     color: "terra",
-    prompt: "Dog leash and tennis ball beside an open journal, playful still life",
+    prompt: "a happy corgi in a playful bow position with front paws stretched forward and butt in the air, a tennis ball in front of its nose, joyful and energetic, cute loose ink sketch",
   },
+  // RESOURCE GUIDES — a small herb garden arrangement with mortar and pestle
   {
     file: "order-inside-resources",
     aspect: "1:1",
     color: "sage",
-    prompt: "Small stack of reference cards with herb sprig and supplement capsule, organized still life",
+    prompt: "a small stack of well-loved books with a sprig of rosemary and a reading glasses resting on top, scholarly and nurturing still life, delicate ink sketch",
   },
+  // KEEPSAKES — a polaroid photo with a dog collar and dried flower
   {
     file: "order-inside-keepsakes",
     aspect: "1:1",
     color: "gold",
-    prompt: "Journal page with small photo tucked in and dog collar tag resting on it, nostalgic",
+    prompt: "a single polaroid photograph lying at an angle with a small dog collar buckle tag and one dried pressed flower next to it, sentimental keepsake arrangement, gentle ink sketch",
   },
+  // LAY-FLAT BINDING — an open book spine from the side, architectural
   {
     file: "order-inside-binding",
     aspect: "1:1",
     color: "terra",
-    prompt: "Journal lying open and perfectly flat showing lay-flat binding spine, slight angle",
+    prompt: "a single open hardcover book seen from the side showing pages fanned open and a flat spine, architectural cross-section view, clean technical ink sketch with subtle color wash",
   },
+  // LIFESTYLE: MORNING — a steaming mug with a sleeping corgi curled beside it
   {
     file: "order-lifestyle-morning",
     aspect: "16:9",
     color: "gold",
-    prompt: "Steaming coffee mug, open journal with pen, small sleeping dog nearby, morning vignette in wide white space",
+    prompt: "a steaming coffee mug with a tiny sleeping corgi curled up next to it, the dog is very small compared to the mug, cozy morning vignette floating in wide white space, warm gentle ink sketch",
   },
+  // LIFESTYLE: WRITING — a person's hands cradling a sleeping dog's face
   {
     file: "order-lifestyle-writing",
     aspect: "1:1",
     color: "sage",
-    prompt: "Hand writing in open journal from above, emotional and private, subtle teardrops near page",
+    prompt: "two gentle hands cupping and cradling a sleeping dog's face, the dog's eyes are peacefully closed, tender emotional moment, intimate close-up, soft ink sketch with green wash",
   },
+  // LIFESTYLE: COUCH — a dog asleep on a cozy blanket
   {
     file: "order-lifestyle-couch",
     aspect: "3:4",
     color: "terra",
-    prompt: "Small dog sleeping peacefully, journal and pen resting beside, tender vertical composition",
+    prompt: "a small dog curled up sleeping on a soft knitted blanket, paws tucked under chin, peaceful and tender, vertical composition, cute warm ink sketch",
   },
+  // LIFESTYLE: COMPLETE — a paw print and human handprint side by side
   {
     file: "order-lifestyle-complete",
     aspect: "16:9",
     color: "sage",
-    prompt: "Closed worn journal with paw print on cover, pressed flower beside it, wide white space, completion",
+    prompt: "a single dog paw print and a single human handprint side by side, like ink stamps pressed on paper, wide negative space around them, emotional and symbolic, minimal loose ink sketch",
   },
+  // PRODUCT MOCKUP — the journal as a beautiful object
   {
     file: "order-product-mockup",
     aspect: "4:3",
     color: "sage",
-    prompt: "Hardcover journal at three-quarter angle, subtle paw print on cover, premium product shot",
+    prompt: "a beautiful hardcover journal at a three-quarter angle, small embossed paw print on the sage green cloth cover, ribbon bookmark hanging out, premium product illustration, clean ink sketch",
   },
 ];
 
@@ -141,6 +155,11 @@ function toWebP(pngPath) {
 
 async function generateImage(item) {
   const pngPath = path.join(OUT_DIR, `${item.file}.png`);
+
+  if (item.skip) {
+    console.log(`  [keep] ${item.file}.png (marked skip)`);
+    return;
+  }
 
   if (!FORCE && fs.existsSync(pngPath)) {
     console.log(`  [skip] ${item.file}.png already exists (use --force to regenerate)`);
