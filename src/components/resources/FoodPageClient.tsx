@@ -7,6 +7,11 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
 import VetCallout from "./VetCallout";
 import CategoryNav from "./CategoryNav";
+import FoodPrincipleCard from "./FoodPrincipleCard";
+import FoodGridCard from "./FoodGridCard";
+import FoodAvoidCard from "./FoodAvoidCard";
+import FoodTipCard from "./FoodTipCard";
+import SectionDivider from "./SectionDivider";
 
 interface FoodPageClientProps {
   profile: DogProfile | null;
@@ -38,171 +43,333 @@ export default function FoodPageClient({
     }
   }, []);
 
+  const recommendedItems = foodItems.filter((f) => f.category === "recommended");
+  const avoidItems = foodItems.filter((f) => f.category === "avoid");
+  const appetiteItems = foodItems.filter((f) => f.category === "appetite");
+
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pt-24 pb-16 px-6"
+      className="min-h-screen pb-16"
+      style={{ background: "var(--warm-white)" }}
     >
-      <div className="max-w-[800px] mx-auto">
-        {/* Header */}
-        <div className="mb-8 reveal">
-          <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
-            Resources
-          </div>
-          <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">
-            Food &amp; Nutrition
-          </h1>
-          <p className="text-[1.05rem] text-text-muted leading-relaxed">
-            What to feed, what to avoid, and how to keep their appetite up
-            during treatment.
-          </p>
-        </div>
-
-        {/* Personalized banner */}
-        {profile && (
-          <div className="reveal">
-            <PersonalizedBanner profile={profile} />
-          </div>
-        )}
-
-        {/* Vet callout */}
-        <div className="reveal">
-          <VetCallout dogName={profile?.dogName} />
-        </div>
-
-        {/* Category nav */}
-        <CategoryNav
-          categories={allNavItems}
-          activeCategory=""
-          onCategoryClick={scrollToCategory}
+      {/* ═══ Hero Section ═══ */}
+      <div
+        className="pt-20 pb-10 px-6 relative overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(196,162,101,0.04) 40%, rgba(245,240,234,0.5) 70%, var(--warm-white) 100%)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        {/* Ambient orb — top right */}
+        <div
+          className="absolute top-0 right-0 w-64 h-64 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at 70% 30%, rgba(91,123,94,0.07) 0%, transparent 70%)",
+          }}
         />
 
-        {/* Diet Principles */}
-        <section
-          ref={(el) => { categoryRefs.current["principles"] = el; }}
-          className="mb-12 reveal"
-        >
-          <h2
-            className="font-serif text-[1.35rem] font-semibold mb-4"
-            style={{ color: "var(--text)" }}
+        <div className="max-w-[800px] mx-auto reveal">
+          {/* Eyebrow */}
+          <div
+            className="inline-flex items-center gap-2 mb-4"
           >
-            Diet Principles
-          </h2>
-          <div className="space-y-4">
-            {dietPrinciples.map((principle, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-2xl px-6 py-5"
-                style={{ border: "1px solid var(--border)" }}
-              >
-                <h3
-                  className="font-serif text-[1.05rem] font-semibold mb-2"
+            <span
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--sage)" }}
+            >
+              Resources
+            </span>
+            <span
+              className="w-px h-3"
+              style={{ background: "var(--border-strong)" }}
+            />
+            <span
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Food &amp; Nutrition
+            </span>
+          </div>
+
+          <h1
+            className="font-serif font-semibold mb-3"
+            style={{
+              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+              color: "var(--text)",
+              lineHeight: 1.2,
+            }}
+          >
+            What to Feed Your Dog
+          </h1>
+          <p
+            className="leading-relaxed max-w-[560px]"
+            style={{
+              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              color: "var(--text-muted)",
+            }}
+          >
+            Evidence-based guidance on what to feed, what to avoid, and how to
+            keep their appetite up through treatment.
+          </p>
+        </div>
+      </div>
+
+      <div className="px-4 sm:px-6">
+        <div className="max-w-[800px] mx-auto">
+          {/* Personalized banner */}
+          {profile && (
+            <div className="reveal mt-6">
+              <PersonalizedBanner profile={profile} />
+            </div>
+          )}
+
+          {/* Vet callout */}
+          <div className={profile ? "reveal" : "reveal mt-6"}>
+            <VetCallout dogName={profile?.dogName} />
+          </div>
+
+          {/* Category nav */}
+          <CategoryNav
+            categories={allNavItems}
+            activeCategory=""
+            onCategoryClick={scrollToCategory}
+          />
+
+          {/* ═══ Diet Principles — Expandable Numbered Cards ═══ */}
+          <section
+            ref={(el) => {
+              categoryRefs.current["principles"] = el;
+            }}
+            className="mb-6"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: "var(--sage)" }}
+                />
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
                   style={{ color: "var(--text)" }}
                 >
-                  {principle.title}
-                </h3>
+                  Diet Principles
+                </h2>
+              </div>
+              <p
+                className="text-[0.85rem] ml-[18px]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Tap any card to expand the details
+              </p>
+            </div>
+
+            <div className="space-y-3 reveal-stagger">
+              {dietPrinciples.map((principle, i) => (
+                <FoodPrincipleCard
+                  key={i}
+                  principle={principle}
+                  index={i}
+                />
+              ))}
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Recommended Foods — Visual Grid ═══ */}
+          <section
+            ref={(el) => {
+              categoryRefs.current["recommended"] = el;
+            }}
+            className="mb-6"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--sage)" }}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M2 5.5l2 2 4-4"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Recommended Foods
+                </h2>
+              </div>
+              <p
+                className="text-[0.85rem] ml-[30px]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Tap any card to learn more
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
+              {recommendedItems.map((item, i) => {
+                const breedNote = getBreedNote(
+                  item.breedNotes,
+                  profile?.breed ?? null,
+                );
+                return (
+                  <FoodGridCard key={i} item={item} breedNote={breedNote} />
+                );
+              })}
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Foods to Avoid — Warning Cards ═══ */}
+          <section
+            ref={(el) => {
+              categoryRefs.current["avoid"] = el;
+            }}
+            className="mb-6"
+          >
+            <div
+              className="rounded-2xl px-5 py-6"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(212,133,106,0.05) 0%, rgba(212,133,106,0.02) 100%)",
+                border: "1px solid rgba(212,133,106,0.15)",
+              }}
+            >
+              <div className="reveal mb-5">
+                <div className="flex items-center gap-2.5 mb-1">
+                  <div
+                    className="w-5 h-5 rounded-full flex items-center justify-center"
+                    style={{ background: "var(--terracotta)" }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path
+                        d="M2.5 2.5l5 5M7.5 2.5l-5 5"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h2
+                    className="font-serif text-[1.3rem] font-semibold"
+                    style={{ color: "var(--text)" }}
+                  >
+                    Foods to Avoid
+                  </h2>
+                </div>
                 <p
-                  className="text-[0.88rem] leading-relaxed mb-3"
+                  className="text-[0.85rem] ml-[30px]"
                   style={{ color: "var(--text-muted)" }}
                 >
-                  {principle.description}
+                  These can interfere with treatment or feed cancer cells
                 </p>
-                <ul className="space-y-1.5">
-                  {principle.details.map((detail, j) => (
-                    <li
-                      key={j}
-                      className="text-[0.85rem] flex items-start gap-2"
-                      style={{ color: "var(--text)" }}
-                    >
-                      <span
-                        className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
-                        style={{ background: "var(--sage)" }}
-                      />
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Food sections */}
-        {foodCategories.map((cat) => {
-          const items = foodItems.filter((f) => f.category === cat.key);
-          if (items.length === 0) return null;
+              <div className="space-y-3 reveal-stagger">
+                {avoidItems.map((item, i) => (
+                  <FoodAvoidCard key={i} item={item} />
+                ))}
+              </div>
+            </div>
+          </section>
 
-          return (
-            <section
-              key={cat.key}
-              ref={(el) => { categoryRefs.current[cat.key] = el; }}
-              className="mb-12 reveal"
-            >
-              <h2
-                className="font-serif text-[1.35rem] font-semibold mb-4"
-                style={{ color: "var(--text)" }}
+          <SectionDivider />
+
+          {/* ═══ Appetite Boosters — Tip Cards ═══ */}
+          <section
+            ref={(el) => {
+              categoryRefs.current["appetite"] = el;
+            }}
+            className="mb-12"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                {/* Light bulb / sun icon in gold */}
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "rgba(196,162,101,0.15)" }}
+                >
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                  >
+                    <path
+                      d="M10 2a1 1 0 011 1v1.5a1 1 0 01-2 0V3a1 1 0 011-1zM10 7.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm-6.7 1a1 1 0 011.37-.36l1.3.75a1 1 0 01-1 1.73l-1.3-.75A1 1 0 013.3 8.5zm13.4 0a1 1 0 00-1.37-.36l-1.3.75a1 1 0 001 1.73l1.3-.75a1 1 0 00.37-1.37zM10 14.5a1 1 0 011 1V17a1 1 0 01-2 0v-1.5a1 1 0 011-1z"
+                      fill="var(--gold)"
+                    />
+                  </svg>
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Appetite Boosters
+                </h2>
+              </div>
+              <p
+                className="text-[0.85rem] ml-[30px]"
+                style={{ color: "var(--text-muted)" }}
               >
-                {cat.label}
-              </h2>
-              <div className="space-y-3">
-                {items.map((item, i) => {
-                  const breedNote = getBreedNote(
-                    item.breedNotes,
-                    profile?.breed ?? null
-                  );
+                When they won&apos;t eat, try these strategies
+              </p>
+            </div>
 
-                  return (
-                    <div
-                      key={i}
-                      className="bg-white rounded-2xl px-6 py-5"
-                      style={{
-                        border: "1px solid var(--border)",
-                        borderLeft: `3px solid ${cat.accentColor}`,
-                      }}
-                    >
-                      <h3
-                        className="font-serif text-[1rem] font-semibold mb-1.5"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {item.name}
-                      </h3>
-                      <p
-                        className="text-[0.88rem] leading-relaxed"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {item.description}
-                      </p>
+            <div className="space-y-3 reveal-stagger">
+              {appetiteItems.map((item, i) => (
+                <FoodTipCard key={i} item={item} index={i} />
+              ))}
+            </div>
+          </section>
 
-                      {breedNote && (
-                        <div
-                          className="rounded-lg px-4 py-2.5 mt-3"
-                          style={{
-                            background: "rgba(196,162,101,0.06)",
-                            borderLeft: "3px solid var(--gold)",
-                          }}
-                        >
-                          <p
-                            className="text-[0.82rem]"
-                            style={{ color: "var(--text)" }}
-                          >
-                            {breedNote}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          );
-        })}
-
-        {/* Print hint */}
-        <div className="text-center mt-12 pt-8 reveal" style={{ borderTop: "1px solid var(--border)" }}>
-          <p className="text-[0.85rem]" style={{ color: "var(--text-muted)" }}>
-            Tip: Use your browser&apos;s print function to save this page as a
-            PDF to share with your vet.
-          </p>
+          {/* Print / save hint */}
+          <div
+            className="text-center mt-10 pt-8 reveal"
+            style={{ borderTop: "1px solid var(--border)" }}
+          >
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+              style={{
+                background: "rgba(91,123,94,0.05)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 16 16"
+                fill="none"
+                style={{ color: "var(--text-muted)", flexShrink: 0 }}
+              >
+                <path
+                  d="M3 4h10v7H3V4zM1 7h2M13 7h2M5 2h6M5 14h6"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <p
+                className="text-[0.82rem]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Use your browser&apos;s print function to save this page as a
+                PDF to share with your vet.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

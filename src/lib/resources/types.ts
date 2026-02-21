@@ -38,12 +38,15 @@ export interface FoodItem {
   category: "recommended" | "avoid" | "appetite";
   stageEmphasis?: StageEmphasis;
   breedNotes?: Record<string, string>;
+  icon: string;
+  tip?: string;
 }
 
 export interface DietPrinciple {
   title: string;
   description: string;
   details: string[];
+  icon: string;
 }
 
 export interface DogProfile {
