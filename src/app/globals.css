@@ -352,6 +352,19 @@ input, textarea, select {
     transform: none;
     transition: none;
   }
+  .supplement-expand {
+    transition: none;
+  }
+  .supplement-expand,
+  .supplement-expand.is-open {
+    grid-template-rows: 1fr;
+  }
+  .supplement-card {
+    transition: none;
+  }
+  .supplement-card:hover {
+    transform: none;
+  }
 }
 
 /* Animate classes */
@@ -369,6 +382,53 @@ input, textarea, select {
 
 .animate-heartbeat {
   animation: heartbeat 3s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────────
+   Supplement card expand/collapse
+────────────────────────────────────────────── */
+
+.supplement-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.supplement-expand.is-open {
+  grid-template-rows: 1fr;
+}
+
+.supplement-expand > div {
+  overflow: hidden;
+}
+
+/* Supplement card — base hover shell */
+.supplement-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.22s ease;
+}
+
+.supplement-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Tracking toggle button hover */
+.supplement-track-btn {
+  transition: background 0.18s ease, color 0.18s ease,
+              border-color 0.18s ease, opacity 0.18s ease;
+}
+
+.supplement-track-btn:hover:not(.is-tracked) {
+  background: rgba(91, 123, 94, 0.08) !important;
+}
+
+.supplement-track-btn.is-tracked:hover {
+  opacity: 0.88;
 }
 
 /* ─────────────────────────────────────────────

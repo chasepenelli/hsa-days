@@ -18,6 +18,7 @@ export default async function SupplementsPage() {
   } = await supabase.auth.getUser();
 
   let profile: DogProfile | null = null;
+  let userActiveSlugs: string[] = [];
 
   if (user) {
     const { data } = await supabase
@@ -34,6 +35,23 @@ export default async function SupplementsPage() {
         cancerStage: data.cancer_stage ?? null,
       };
     }
+
+    // Fetch user's active supplement tracking
+    const { data: userSupps } = await supabase
+      .from("subscriber_supplements")
+      .select("supplement_slug")
+      .eq("subscriber_id", user.id)
+      .is("stopped_at", null);
+    userActiveSlugs = userSupps?.map((d) => d.supplement_slug) ?? [];
+  }
+
+  // Aggregate counts (anonymous, for all visitors)
+  const { data: usageCounts } = await supabase.rpc("get_supplement_usage_counts");
+  const usageCountMap: Record<string, number> = {};
+  if (usageCounts) {
+    for (const row of usageCounts) {
+      usageCountMap[row.supplement_slug] = Number(row.active_count);
+    }
   }
 
   const supplements = profile
@@ -45,6 +63,9 @@ export default async function SupplementsPage() {
       profile={profile}
       supplements={supplements}
       categories={SUPPLEMENT_CATEGORIES}
+      usageCounts={usageCountMap}
+      userActiveSlugs={userActiveSlugs}
+      isAuthenticated={!!user}
     />
   );
 }

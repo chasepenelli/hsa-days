@@ -60,6 +60,12 @@ export interface DietPrinciple {
   references: ClinicalReference[];
 }
 
+export interface SupplementTracking {
+  supplementSlug: string;
+  startedAt: string;
+  stoppedAt: string | null;
+}
+
 export interface DogProfile {
   dogName: string;
   breed: string | null;
