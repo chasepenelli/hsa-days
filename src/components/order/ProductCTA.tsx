@@ -68,25 +68,8 @@ export function ProductCTA() {
           </h2>
         </div>
 
-        {/* Product card */}
-        <div
-          className="reveal-scale max-w-[780px] mx-auto rounded-[24px] overflow-hidden relative"
-          style={{
-            background: "white",
-            border: "1px solid var(--border)",
-            boxShadow: "0 16px 56px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)",
-            transitionDelay: "0.16s",
-          }}
-        >
-          {/* Sage accent bar */}
-          <div
-            style={{
-              height: "3px",
-              background: "var(--sage)",
-              borderRadius: "24px 24px 0 0",
-            }}
-          />
-
+        {/* Product section — unboxed, sitting naturally on the page */}
+        <div className="max-w-[640px] mx-auto relative">
           {/* Watermark */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -99,54 +82,54 @@ export function ProductCTA() {
               height={280}
               className="absolute"
               style={{
-                right: "-20px",
-                bottom: "-20px",
+                right: "-60px",
+                bottom: "10%",
                 width: "280px",
                 height: "280px",
                 objectFit: "contain",
-                opacity: 0.06,
+                opacity: 0.05,
                 mixBlendMode: "multiply",
               }}
             />
           </div>
 
-          <div className="relative p-7 md:p-12">
-            {/* Badge */}
-            <div className="text-center mb-6">
-              <span
-                className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.12em] px-3.5 py-1.5 rounded-full"
-                style={{
-                  background: "rgba(91,123,94,0.10)",
-                  color: "var(--sage)",
-                  border: "1px solid rgba(91,123,94,0.20)",
-                }}
-              >
-                PRE-ORDER NOW
-              </span>
-            </div>
+          {/* Badge */}
+          <div className="reveal text-center mb-8" style={{ transitionDelay: "0.16s" }}>
+            <span
+              className="inline-block text-[0.68rem] font-semibold uppercase tracking-[0.12em] px-3.5 py-1.5 rounded-full"
+              style={{
+                background: "rgba(91,123,94,0.10)",
+                color: "var(--sage)",
+                border: "1px solid rgba(91,123,94,0.20)",
+              }}
+            >
+              PRE-ORDER NOW
+            </span>
+          </div>
 
-            {/* Product illustration */}
-            <div className="flex justify-center mb-8">
-              <div
-                className="relative"
-                style={{
-                  width: "100%",
-                  maxWidth: "360px",
-                  aspectRatio: "4 / 3",
-                }}
-              >
-                <Image
-                  src="/illustrations/order/order-product-mockup.webp"
-                  alt="HSA Days: The Guided Journal"
-                  fill
-                  sizes="360px"
-                  className="object-contain"
-                  style={{ mixBlendMode: "multiply" }}
-                />
-              </div>
+          {/* Product illustration — sits on the page, no container */}
+          <div className="reveal-scale flex justify-center mb-10" style={{ transitionDelay: "0.24s" }}>
+            <div
+              className="relative"
+              style={{
+                width: "100%",
+                maxWidth: "380px",
+                aspectRatio: "4 / 3",
+              }}
+            >
+              <Image
+                src="/illustrations/order/order-product-mockup.webp"
+                alt="HSA Days: The Guided Journal"
+                fill
+                sizes="380px"
+                className="object-contain"
+                style={{ mixBlendMode: "multiply" }}
+              />
             </div>
+          </div>
 
-            {/* Title */}
+          {/* Title */}
+          <div className="reveal" style={{ transitionDelay: "0.32s" }}>
             <h3
               className="font-serif font-semibold text-center mb-2"
               style={{
@@ -171,85 +154,86 @@ export function ProductCTA() {
               space, thick archival pages, lay-flat binding, and room for photos
               and keepsakes.
             </p>
+          </div>
 
-            {/* Features grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-[500px] mx-auto mb-8">
-              {features.map((feature) => (
-                <div key={feature} className="flex items-center gap-2.5">
-                  <div
-                    className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[0.7rem]"
-                    style={{
-                      background: "rgba(91,123,94,0.1)",
-                      color: "var(--sage)",
-                    }}
-                  >
-                    &#x2713;
-                  </div>
-                  <span
-                    className="text-[0.88rem]"
-                    style={{ color: "var(--text-muted)" }}
-                  >
-                    {feature}
-                  </span>
+          {/* Divider */}
+          <div
+            className="reveal mx-auto mb-8"
+            style={{
+              width: "60px",
+              height: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--border-strong), transparent)",
+              transitionDelay: "0.36s",
+            }}
+          />
+
+          {/* Features grid */}
+          <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-[500px] mx-auto mb-8" style={{ transitionDelay: "0.4s" }}>
+            {features.map((feature) => (
+              <div key={feature} className="flex items-center gap-2.5">
+                <div
+                  className="w-5 h-5 rounded-md flex items-center justify-center flex-shrink-0 text-[0.7rem]"
+                  style={{
+                    background: "rgba(91,123,94,0.1)",
+                    color: "var(--sage)",
+                  }}
+                >
+                  &#x2713;
                 </div>
-              ))}
-            </div>
+                <span
+                  className="text-[0.88rem]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {feature}
+                </span>
+              </div>
+            ))}
+          </div>
 
-            {/* Divider */}
-            <div
-              className="mx-auto mb-6"
+          {/* Price */}
+          <div className="reveal text-center mb-6" style={{ transitionDelay: "0.44s" }}>
+            <span
+              className="font-serif font-semibold"
               style={{
-                width: "60px",
-                height: "1px",
-                background:
-                  "linear-gradient(to right, transparent, var(--border-strong), transparent)",
+                fontSize: "2.4rem",
+                color: "var(--sage)",
+                lineHeight: 1,
               }}
-            />
+            >
+              $49
+            </span>
+          </div>
 
-            {/* Price */}
-            <div className="text-center mb-6">
-              <span
-                className="font-serif font-semibold"
-                style={{
-                  fontSize: "2.4rem",
-                  color: "var(--sage)",
-                  lineHeight: 1,
-                }}
-              >
-                $49
-              </span>
-            </div>
-
-            {/* CTA */}
-            <div className="text-center">
-              <button
-                className="inline-block px-10 py-4 text-white border-none rounded-xl text-[1.05rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] md:w-auto w-full"
-                style={{
-                  background: "var(--terracotta)",
-                  boxShadow: "0 4px 20px rgba(212,133,106,0.3)",
-                  minHeight: "52px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "#c4775f";
-                  e.currentTarget.style.boxShadow =
-                    "0 6px 24px rgba(212,133,106,0.4)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "var(--terracotta)";
-                  e.currentTarget.style.boxShadow =
-                    "0 4px 20px rgba(212,133,106,0.3)";
-                }}
-              >
-                Pre-Order the Guided Journal
-              </button>
-              <p
-                className="mt-4 text-[0.84rem]"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Ships Spring 2026. Free digital access included with every
-                pre-order.
-              </p>
-            </div>
+          {/* CTA */}
+          <div className="reveal text-center" style={{ transitionDelay: "0.48s" }}>
+            <button
+              className="inline-block px-10 py-4 text-white border-none rounded-xl text-[1.05rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] md:w-auto w-full"
+              style={{
+                background: "var(--terracotta)",
+                boxShadow: "0 4px 20px rgba(212,133,106,0.3)",
+                minHeight: "52px",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#c4775f";
+                e.currentTarget.style.boxShadow =
+                  "0 6px 24px rgba(212,133,106,0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "var(--terracotta)";
+                e.currentTarget.style.boxShadow =
+                  "0 4px 20px rgba(212,133,106,0.3)";
+              }}
+            >
+              Pre-Order the Guided Journal
+            </button>
+            <p
+              className="mt-4 text-[0.84rem]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Ships Spring 2026. Free digital access included with every
+              pre-order.
+            </p>
           </div>
         </div>
 

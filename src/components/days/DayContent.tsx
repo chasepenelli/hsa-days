@@ -36,6 +36,8 @@ interface DayContentProps {
   journalEntry: string;
   initialMedia?: MediaItem[];
   dogName?: string;
+  pillDoodle?: string | null;
+  pillWatermark?: string | null;
 }
 
 /* ── Day illustration mapping ────────────────────────── */
@@ -123,6 +125,8 @@ export function DayContent({
   journalEntry,
   initialMedia = [],
   dogName,
+  pillDoodle,
+  pillWatermark,
 }: DayContentProps) {
   const [completed, setCompleted]         = useState(initialCompleted);
   const [justCompleted, setJustCompleted] = useState(false);
@@ -281,6 +285,14 @@ export function DayContent({
         {/* Reflection */}
         {(day.reflection_intro || day.reflection_body) && (
           <DaySection className="animate-fade-in-up delay-2">
+            <div className="relative overflow-hidden">
+              {/* Personalized pill watermark */}
+              {pillWatermark && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+                  <Image src={pillWatermark} alt="" width={280} height={280}
+                    className="object-contain" style={{ opacity: 0.06, mixBlendMode: "multiply" }} />
+                </div>
+              )}
             <SectionLabel
               icon={
                 <Image
@@ -308,6 +320,7 @@ export function DayContent({
                   {paragraph}
                 </p>
               ))}
+            </div>
             </div>
           </DaySection>
         )}
@@ -337,12 +350,19 @@ export function DayContent({
         {day.activity_title && (
           <DaySection className="animate-fade-in-up delay-4">
             <div
-              className="rounded-xl px-6 py-5"
+              className="relative rounded-xl px-6 py-5"
               style={{
                 background: "rgba(91,123,94,0.05)",
                 border: "1px solid rgba(91,123,94,0.12)",
               }}
             >
+              {/* Personalized pill doodle */}
+              {pillDoodle && (
+                <div className="absolute -right-2 -top-4 pointer-events-none hidden md:block" style={{ width: "80px" }}>
+                  <Image src={pillDoodle} alt="" width={80} height={80}
+                    className="object-contain" style={{ opacity: 0.6, mixBlendMode: "multiply" }} />
+                </div>
+              )}
               <div className={activityIllustration ? "flex gap-5 items-start" : undefined}>
                 {/* Activity spot illustration */}
                 {activityIllustration && (

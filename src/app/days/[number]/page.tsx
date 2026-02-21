@@ -42,7 +42,7 @@ export default async function DayPage({ params }: PageProps) {
   // Ensure subscriber record exists (safety net)
   const { data: subscriber } = await supabase
     .from("subscribers")
-    .select("id, dog_name")
+    .select("id, dog_name, selected_pills")
     .eq("id", user.id)
     .single();
 
@@ -108,6 +108,33 @@ export default async function DayPage({ params }: PageProps) {
     });
   }
 
+  // Resolve personalized pill illustrations for this day
+  let pillDoodle: string | null = null;
+  let pillWatermark: string | null = null;
+
+  const userPills = subscriber?.selected_pills as string[] | null;
+  if (userPills && userPills.length > 0) {
+    const { data: mappings } = await supabase
+      .from("day_pill_mapping")
+      .select("pill_slug, relevance, placement")
+      .eq("day_number", dayNum)
+      .in("pill_slug", userPills)
+      .order("relevance", { ascending: false });
+
+    if (mappings?.length) {
+      for (const m of mappings) {
+        const filePath = `/illustrations/pills/${m.pill_slug}.webp`;
+        if (m.placement === "doodle" && !pillDoodle) {
+          pillDoodle = filePath;
+        }
+        if (m.placement === "watermark" && !pillWatermark) {
+          pillWatermark = filePath;
+        }
+        if (pillDoodle && pillWatermark) break;
+      }
+    }
+  }
+
   return (
     <DayContent
       day={day}
@@ -116,6 +143,8 @@ export default async function DayPage({ params }: PageProps) {
       journalEntry={journalEntries?.[0]?.entry_text || ""}
       initialMedia={mediaWithUrls}
       dogName={subscriber?.dog_name || undefined}
+      pillDoodle={pillDoodle}
+      pillWatermark={pillWatermark}
     />
   );
 }
