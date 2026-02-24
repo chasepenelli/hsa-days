@@ -13,6 +13,7 @@ export interface Task {
   category: string;
   priority: string;
   sort_order: number;
+  task_number: number;
   created_at: string;
   updated_at: string;
   attachment_count: number;
@@ -484,12 +485,13 @@ function TaskCard({
         isDragging ? "opacity-40 scale-95" : ""
       }`}
     >
-      {/* Priority dot + title */}
+      {/* Priority dot + task number + title */}
       <div className="flex items-start gap-2 mb-1.5">
         <span
           className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${priorityDot}`}
         />
         <span className="font-semibold text-sm text-text leading-snug">
+          <span className="text-text-muted/50 font-normal text-xs mr-1">#{task.task_number}</span>
           {task.title}
         </span>
       </div>
