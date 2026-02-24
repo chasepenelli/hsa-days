@@ -5,10 +5,16 @@ import { ShopifyButton } from "@/components/ui/ShopifyButton";
 import { isShopifyConfigured } from "@/lib/shopify";
 import type { ProductSlug } from "@/lib/shopify";
 
-const amounts: { slug: ProductSlug; amount: string; label: string }[] = [
-  { slug: "support-5", amount: "$5", label: "Buy us a coffee" },
-  { slug: "support-10", amount: "$10", label: "Support the mission" },
-  { slug: "support-25", amount: "$25", label: "Champion this project" },
+const amounts: {
+  slug: ProductSlug;
+  amount: string;
+  label: string;
+  accent: string;
+  tint: string;
+}[] = [
+  { slug: "support-5", amount: "$5", label: "Buy us a coffee", accent: "var(--gold)", tint: "rgba(196,162,101,0.06)" },
+  { slug: "support-10", amount: "$10", label: "Support the mission", accent: "var(--sage)", tint: "rgba(91,123,94,0.06)" },
+  { slug: "support-25", amount: "$25", label: "Champion this project", accent: "var(--sage-dark)", tint: "rgba(62,87,64,0.06)" },
 ];
 
 export function SupportSection() {
@@ -25,7 +31,7 @@ export function SupportSection() {
         paddingBottom: "clamp(80px, 10vw, 120px)",
         paddingLeft: "24px",
         paddingRight: "24px",
-        background: "var(--warm-white)",
+        background: "var(--cream)",
       }}
     >
       {/* Ambient glow */}
@@ -85,13 +91,19 @@ export function SupportSection() {
             {amounts.map((item) => (
               <div
                 key={item.slug}
-                className="rounded-[16px] p-6 text-center flex flex-col"
+                className="relative rounded-[16px] p-6 text-center flex flex-col overflow-hidden"
+                data-card
                 style={{
-                  background: "white",
+                  background: item.tint,
                   border: "1px solid var(--border)",
                   boxShadow: "0 4px 20px rgba(0,0,0,0.04)",
                 }}
               >
+                {/* Accent top bar */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[3px]"
+                  style={{ background: item.accent }}
+                />
                 <div
                   className="font-serif font-semibold mb-1"
                   style={{

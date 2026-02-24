@@ -155,8 +155,8 @@ export function About() {
               style={{ transitionDelay: "0.2s" }}
             >
               <p
-                className="text-base leading-relaxed"
-                style={{ color: "var(--text-muted)" }}
+                className="text-[1.05rem] leading-relaxed"
+                style={{ color: "var(--text)", maxWidth: 520 }}
               >
                 Graffiti isn&apos;t just a dog. She&apos;s a personality, a
                 comfort, a best friend who communicates through side-eye and
@@ -164,8 +164,8 @@ export function About() {
                 the world didn&apos;t stop — but it felt like it should have.
               </p>
               <p
-                className="text-base leading-relaxed"
-                style={{ color: "var(--text-muted)" }}
+                className="text-[0.95rem] leading-relaxed"
+                style={{ color: "var(--text-muted)", maxWidth: 520 }}
               >
                 I built HSA Days because I needed it. I needed something that
                 wasn&apos;t a clinical research paper or a Reddit thread full of
@@ -174,8 +174,8 @@ export function About() {
                 the ways that mattered.
               </p>
               <p
-                className="text-base leading-relaxed"
-                style={{ color: "var(--text-muted)" }}
+                className="text-[0.95rem] leading-relaxed"
+                style={{ color: "var(--text-muted)", maxWidth: 520 }}
               >
                 This is that thing. It&apos;s not perfect. It&apos;s not medical
                 advice. It&apos;s just one person sharing what helped, what hurt,

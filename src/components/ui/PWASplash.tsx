@@ -23,10 +23,10 @@ export function PWASplash() {
 
     setVisible(true);
 
-    // Begin fade-out after 2.6s
-    const fadeTimer = setTimeout(() => setFadeOut(true), 2600);
+    // Begin fade-out after 3.2s
+    const fadeTimer = setTimeout(() => setFadeOut(true), 3200);
     // Unmount after fade completes
-    const removeTimer = setTimeout(() => setVisible(false), 3200);
+    const removeTimer = setTimeout(() => setVisible(false), 3800);
 
     return () => {
       clearTimeout(fadeTimer);
@@ -47,9 +47,14 @@ export function PWASplash() {
         alt=""
         className="pwa-splash-illustration"
       />
-      <span className="pwa-splash-wordmark">
-        HSA <span className="pwa-splash-accent">Days</span>
-      </span>
+      {/* Warm gradient overlay for contrast */}
+      <div className="pwa-splash-overlay" />
+      <div className="pwa-splash-content">
+        <span className="pwa-splash-wordmark">
+          HSA <span className="pwa-splash-accent">Days</span>
+        </span>
+        <span className="pwa-splash-tagline">Your 30-day companion</span>
+      </div>
 
       <style jsx>{`
         .pwa-splash {
@@ -78,18 +83,46 @@ export function PWASplash() {
           animation: illustrationIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
         }
 
-        .pwa-splash-wordmark {
-          position: relative;
+        .pwa-splash-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            rgba(62,87,64,0.3) 0%,
+            rgba(62,87,64,0.15) 40%,
+            rgba(62,87,64,0.5) 100%
+          );
           z-index: 1;
+        }
+
+        .pwa-splash-content {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .pwa-splash-wordmark {
           font-family: var(--font-lora), serif;
           font-size: 2.2rem;
           font-weight: 600;
           color: #fff;
           letter-spacing: -0.02em;
-          text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+          text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
           opacity: 0;
           animation: wordmarkIn 0.7s ease-out 0.8s forwards;
-          margin-top: 40vh;
+        }
+
+        .pwa-splash-tagline {
+          font-family: var(--font-lora), serif;
+          font-style: italic;
+          font-size: 0.88rem;
+          color: rgba(255,255,255,0.7);
+          text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+          opacity: 0;
+          animation: wordmarkIn 0.6s ease-out 1.2s forwards;
         }
 
         .pwa-splash-accent {

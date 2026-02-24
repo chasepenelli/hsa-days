@@ -92,7 +92,7 @@ export function WhyThisExists() {
           style={{ transitionDelay: "0.16s" }}
         >
           <div
-            className="relative max-w-[820px] mx-auto text-center"
+            className="relative max-w-[820px] mx-auto text-center paper-texture"
             style={{ padding: "clamp(32px, 5vw, 56px) clamp(24px, 6vw, 72px)" }}
           >
             {/* Decorative top rule */}
@@ -178,7 +178,8 @@ export function WhyThisExists() {
           {points.map((point, i) => (
             <div
               key={i}
-              className="rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1"
+              className="rounded-2xl p-7"
+              data-card
               style={{
                 background: point.bg,
                 border: `1px solid ${point.bg.replace("0.08", "0.2")}`,
@@ -203,6 +204,41 @@ export function WhyThisExists() {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* Resolution beat — tonal pivot */}
+        <div
+          className="reveal mt-16 text-center max-w-[520px] mx-auto"
+          style={{ transitionDelay: "0.32s" }}
+        >
+          {/* Gold gradient rule */}
+          <div
+            className="mx-auto mb-8"
+            style={{
+              width: "64px",
+              height: "2px",
+              borderRadius: "1px",
+              background:
+                "linear-gradient(to right, transparent, var(--gold), transparent)",
+            }}
+          />
+          <p
+            className="font-serif italic text-[1.1rem] leading-relaxed mb-3"
+            style={{ color: "var(--text)", opacity: 0.85 }}
+          >
+            HSA Days doesn&apos;t fix any of this. But it gives you something to hold onto
+            &mdash; one day at a time.
+          </p>
+          <a
+            href="#journey"
+            className="inline-flex items-center gap-1.5 text-[0.84rem] font-medium"
+            style={{ color: "var(--sage)", transition: "opacity var(--duration-fast) ease" }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
+          >
+            See the journey
+            <span aria-hidden="true" style={{ fontSize: "0.9em" }}>&darr;</span>
+          </a>
         </div>
       </div>
     </section>

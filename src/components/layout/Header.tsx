@@ -1,17 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      if (isHomepage) {
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+        setScrollProgress(docH > 0 ? Math.min(window.scrollY / docH, 1) : 0);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Check auth state
     const supabase = createClient();
@@ -20,7 +31,7 @@ export function Header() {
     });
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHomepage]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -151,6 +162,19 @@ export function Header() {
           />
         </button>
       </div>
+
+      {/* Scroll progress bar — homepage only */}
+      {isHomepage && scrollProgress > 0 && (
+        <div
+          ref={progressRef}
+          className="absolute bottom-0 left-0 h-[2px]"
+          style={{
+            width: `${scrollProgress * 100}%`,
+            background: "linear-gradient(to right, var(--sage), var(--gold))",
+            transition: "width 100ms linear",
+          }}
+        />
+      )}
 
       {/* Mobile menu — always mounted, animated via CSS */}
       <div

@@ -108,7 +108,7 @@ export function CommunityStories() {
           {stories.map((story, i) => (
             <div
               key={i}
-              className="group relative overflow-visible flex flex-col rounded-2xl p-7 hover:-translate-y-1.5"
+              className="group relative overflow-visible flex flex-col rounded-2xl p-7 paper-texture"
               data-card
               style={{
                 background: "white",

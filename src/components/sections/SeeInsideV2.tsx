@@ -873,7 +873,7 @@ export function SeeInsideV2() {
 
         {/* ── Day 1 hero card ────────────────────── */}
         <div
-          className="reveal-scale max-w-[680px] mx-auto rounded-[22px] overflow-hidden mb-12"
+          className="reveal-scale max-w-[680px] mx-auto rounded-[22px] overflow-hidden mb-12 paper-texture"
           style={{
             boxShadow:
               "0 20px 60px rgba(0,0,0,0.09), 0 4px 16px rgba(0,0,0,0.04)",

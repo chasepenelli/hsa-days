@@ -87,7 +87,8 @@ export function Resources() {
           {resources.map((resource, i) => (
             <div
               key={i}
-              className="group relative rounded-2xl p-8 overflow-hidden transition-all duration-350 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]"
+              className="group relative rounded-2xl p-8 overflow-hidden"
+              data-card
               style={{
                 background: "white",
                 border: "1px solid var(--border)",
@@ -100,12 +101,18 @@ export function Resources() {
               />
 
               {/* Icon */}
-              <div className="mb-6 transition-transform duration-300 group-hover:scale-110">
+              <div
+                className="w-14 h-14 rounded-full flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
+                style={{
+                  background: resource.accentBg,
+                  boxShadow: `0 2px 8px ${resource.accentBg.replace("0.08", "0.10")}`,
+                }}
+              >
                 <Image
                   src={resource.icon}
                   alt=""
-                  width={128}
-                  height={128}
+                  width={28}
+                  height={28}
                   style={{ objectFit: "contain" }}
                 />
               </div>

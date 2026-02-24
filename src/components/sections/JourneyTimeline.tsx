@@ -173,7 +173,8 @@ export function JourneyTimeline() {
 
                 {/* Card */}
                 <div
-                  className="w-full rounded-xl p-5 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.07)]"
+                  className="w-full rounded-xl p-5 text-left"
+                  data-card
                   style={{
                     background: phase.bgColor,
                     border: `1px solid ${phase.borderColor}`,
@@ -307,8 +308,21 @@ export function JourneyTimeline() {
         <div className="reveal text-center mt-14" style={{ transitionDelay: "0.2s" }}>
           <Link
             href="/journey"
-            className="inline-flex items-center gap-2 text-[0.9rem] font-medium no-underline transition-colors hover:opacity-80"
-            style={{ color: "var(--sage)" }}
+            className="inline-flex items-center gap-2 text-[0.88rem] font-medium no-underline px-5 py-2.5 rounded-full"
+            style={{
+              color: "var(--sage)",
+              background: "rgba(91,123,94,0.06)",
+              border: "1px solid rgba(91,123,94,0.15)",
+              transition: "background var(--duration-fast) ease, border-color var(--duration-fast) ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(91,123,94,0.12)";
+              e.currentTarget.style.borderColor = "rgba(91,123,94,0.25)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(91,123,94,0.06)";
+              e.currentTarget.style.borderColor = "rgba(91,123,94,0.15)";
+            }}
           >
             See the full journey
             <svg

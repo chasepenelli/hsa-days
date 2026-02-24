@@ -14,7 +14,7 @@ export function EmailPreview() {
         paddingBottom: "clamp(80px, 10vw, 120px)",
         paddingLeft: "24px",
         paddingRight: "24px",
-        background: "var(--cream)",
+        background: "var(--warm-white)",
       }}
     >
       {/* Ambient background */}

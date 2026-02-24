@@ -47,6 +47,14 @@
                      border-color var(--duration-normal) ease;
 }
 
+/* ── Night visitor: subtle brightness reduction for dark-mode users ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --warm-white: #F0EDE8;
+    --cream: #EBE6DF;
+  }
+}
+
 @theme inline {
   --color-sage: var(--sage);
   --color-sage-light: var(--sage-light);
@@ -517,6 +525,18 @@ input, textarea, select {
 
 .chapter-ornament::before { --dir: right; }
 .chapter-ornament::after  { --dir: left;  }
+
+/* ─────────────────────────────────────────────
+   Standard card hover
+────────────────────────────────────────────── */
+
+[data-card] {
+  transition: var(--card-transition);
+}
+[data-card]:hover {
+  transform: translateY(var(--card-lift));
+  box-shadow: var(--card-shadow-hover);
+}
 
 /* ─────────────────────────────────────────────
    Food page card focus polish

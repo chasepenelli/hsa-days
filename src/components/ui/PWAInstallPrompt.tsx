@@ -54,14 +54,29 @@ export function PWAInstallPrompt() {
   if (!showBanner) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-      <div className="max-w-lg mx-auto bg-cream border border-border rounded-xl px-5 py-4 shadow-lg flex items-center gap-4">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]"
+      style={{
+        animationName: "fadeInUp",
+        animationDuration: "0.5s",
+        animationFillMode: "both",
+        animationTimingFunction: "var(--ease-out-expo)",
+      }}
+    >
+      <div
+        className="max-w-lg mx-auto rounded-xl px-5 py-4 flex items-center gap-4"
+        style={{
+          background: "var(--cream)",
+          border: "1px solid var(--border)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)",
+        }}
+      >
         <div className="flex-1">
-          <p className="text-[0.9rem] font-semibold text-text">
-            Add HSA Days to your home screen
+          <p className="text-[0.9rem] font-semibold text-text font-serif">
+            Keep HSA Days close
           </p>
           <p className="text-[0.75rem] text-text-muted mt-0.5">
-            Quick access to your journal and daily reflections.
+            Open your journal with one tap, every morning.
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -69,11 +84,12 @@ export function PWAInstallPrompt() {
             onClick={handleDismiss}
             className="px-3 py-2 text-[0.8rem] text-text-muted bg-transparent border-none cursor-pointer hover:text-text transition-colors"
           >
-            Not now
+            Maybe later
           </button>
           <button
             onClick={handleInstall}
             className="px-4 py-2 text-[0.8rem] font-semibold text-white bg-sage border-none rounded-lg cursor-pointer hover:bg-sage-dark transition-colors"
+            style={{ boxShadow: "0 2px 8px rgba(91,123,94,0.25)" }}
           >
             Add
           </button>

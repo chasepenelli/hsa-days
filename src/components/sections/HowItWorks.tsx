@@ -78,7 +78,7 @@ export function HowItWorks() {
         <div className="relative">
           {/* Desktop connector */}
           <div
-            className="timeline-line-h hidden md:block absolute h-[2px] top-[64px] rounded-full"
+            className="timeline-line-h hidden md:block absolute h-[2px] top-[52px] rounded-full"
             style={{
               left: "calc(16.66% + 40px)",
               right: "calc(16.66% + 40px)",
@@ -94,15 +94,23 @@ export function HowItWorks() {
               <div key={i} className="flex flex-col items-center text-center md:items-center">
                 {/* Icon */}
                 <div
-                  className="relative mb-6 transition-transform duration-300 hover:scale-105 z-10"
+                  className="relative mb-6 z-10"
                 >
-                  <Image
-                    src={step.icon}
-                    alt=""
-                    width={128}
-                    height={128}
-                    style={{ objectFit: "contain" }}
-                  />
+                  <div
+                    className="w-[104px] h-[104px] rounded-full flex items-center justify-center transition-transform duration-300 hover:scale-105"
+                    style={{
+                      background: step.bg,
+                      boxShadow: `0 4px 16px ${step.bg.replace("0.08", "0.12")}`,
+                    }}
+                  >
+                    <Image
+                      src={step.icon}
+                      alt=""
+                      width={64}
+                      height={64}
+                      style={{ objectFit: "contain" }}
+                    />
+                  </div>
                   {/* Step number badge */}
                   <div
                     className="absolute -top-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center text-[0.65rem] font-bold font-sans"
