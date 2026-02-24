@@ -8,6 +8,7 @@ import { PWAInstallPrompt } from "@/components/ui/PWAInstallPrompt";
 import { PWASplash } from "@/components/ui/PWASplash";
 import { ServiceWorkerRegistration } from "@/components/ui/ServiceWorkerRegistration";
 import { PWALayoutShell } from "@/components/pwa/PWALayoutShell";
+import { MotionProvider } from "@/components/providers/MotionProvider";
 
 const lora = Lora({
   variable: "--font-lora",
@@ -66,6 +67,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="font-sans antialiased">
+        <MotionProvider>
         <PWALayoutShell header={<Header />} footer={<Footer />}>
           <OfflineIndicator />
           {children}
@@ -73,6 +75,7 @@ export default function RootLayout({
         <PWAInstallPrompt />
         <PWASplash />
         <ServiceWorkerRegistration />
+        </MotionProvider>
       </body>
     </html>
   );

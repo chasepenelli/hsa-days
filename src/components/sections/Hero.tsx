@@ -95,7 +95,7 @@ function AnimatedLine({
         animationDuration: "0.9s",
         animationDelay: `${delay}s`,
         animationFillMode: "both",
-        animationTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+        animationTimingFunction: "var(--ease-out-expo)",
         ...style,
       }}
     >
@@ -106,10 +106,13 @@ function AnimatedLine({
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
+    // If the page was already scrolled on mount (e.g. reload mid-page), hide immediately
+    if (window.scrollY > 0) setHasScrolled(true);
   }, []);
 
   // Subtle parallax on scroll — hero background moves at 40% scroll rate
@@ -120,6 +123,7 @@ export function Hero() {
     const handleScroll = () => {
       const y = window.scrollY;
       bg.style.transform = `translateY(${y * 0.35}px)`;
+      if (y > 0) setHasScrolled(true);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -228,7 +232,7 @@ export function Hero() {
 
         {/* Eyebrow — fades in first */}
         <div
-          className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-10"
+          className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
           style={{
             background: "rgba(91,123,94,0.09)",
             color: "var(--sage-dark)",
@@ -236,8 +240,8 @@ export function Hero() {
             animationName: "fadeInUp",
             animationDuration: "0.7s",
             animationFillMode: "both",
-            animationTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
-            animationDelay: "0.1s",
+            animationTimingFunction: "var(--ease-out-expo)",
+            animationDelay: "0.2s",
           }}
         >
           <span
@@ -249,20 +253,21 @@ export function Hero() {
 
         {/* Main headline — staggered line-by-line reveal */}
         <h1
-          className="font-serif font-semibold tracking-tight mb-8"
+          className="font-serif font-semibold tracking-tight mb-12"
           style={{
-            fontSize: "clamp(2.5rem, 6.5vw, 4.2rem)",
-            lineHeight: 1.12,
+            fontSize: "clamp(2.2rem, 5.5vw, 3.6rem)",
+            lineHeight: 1.18,
+            letterSpacing: "-0.02em",
             color: "var(--text)",
           }}
         >
-          <AnimatedLine delay={0.25}>
+          <AnimatedLine delay={0.5}>
             Your dog was just diagnosed.
           </AnimatedLine>
           <AnimatedLine
-            delay={0.55}
+            delay={0.85}
             className="italic"
-            style={{ color: "var(--sage)", marginTop: "0.12em" }}
+            style={{ color: "var(--sage)", marginTop: "0.15em" }}
           >
             You&apos;re not alone in this.
           </AnimatedLine>
@@ -270,11 +275,11 @@ export function Hero() {
 
         {/* Ornamental rule */}
         <div
-          className="flex items-center justify-center gap-3 mb-8"
+          className="flex items-center justify-center gap-3 mb-10"
           style={{
             animationName: "fadeIn",
             animationDuration: "0.8s",
-            animationDelay: "0.85s",
+            animationDelay: "1.1s",
             animationFillMode: "both",
           }}
         >
@@ -308,13 +313,14 @@ export function Hero() {
           className="font-serif italic leading-relaxed mx-auto mb-10"
           style={{
             fontSize: "clamp(1.08rem, 2.4vw, 1.25rem)",
-            color: "var(--text-muted)",
-            maxWidth: "580px",
+            color: "var(--text)",
+            opacity: 0.8,
+            maxWidth: "520px",
             animationName: "wordReveal",
             animationDuration: "0.9s",
-            animationDelay: "0.7s",
+            animationDelay: "1.3s",
             animationFillMode: "both",
-            animationTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+            animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
           HSA Days is a free 30-day companion for families navigating a
@@ -327,9 +333,9 @@ export function Hero() {
           style={{
             animationName: "fadeInUp",
             animationDuration: "0.75s",
-            animationDelay: "1s",
+            animationDelay: "1.6s",
             animationFillMode: "both",
-            animationTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+            animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
           <div className="mb-5">
@@ -357,7 +363,7 @@ export function Hero() {
           style={{
             animationName: "fadeIn",
             animationDuration: "1s",
-            animationDelay: "1.3s",
+            animationDelay: "2s",
             animationFillMode: "both",
           }}
         >
@@ -388,39 +394,42 @@ export function Hero() {
         </div>
       </div>
 
-      {/* ── Scroll indicator ── */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
-        style={{
-          animationName: "fadeIn",
-          animationDuration: "1s",
-          animationDelay: "1.8s",
-          animationFillMode: "both",
-          color: "var(--text-muted)",
-          opacity: 0.45,
-        }}
-        aria-hidden="true"
-      >
-        <span className="text-[0.65rem] uppercase tracking-[0.14em] font-medium">
-          Scroll
-        </span>
+      {/* ── Scroll indicator — only visible until user scrolls ── */}
+      {!hasScrolled && (
         <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
           style={{
-            animationName: "gentleFloat",
-            animationDuration: "2s",
-            animationIterationCount: "infinite",
-            animationTimingFunction: "ease-in-out",
+            animationName: "fadeIn",
+            animationDuration: "1s",
+            animationDelay: "2.4s",
+            animationFillMode: "both",
+            color: "var(--text-muted)",
+            opacity: 0.45,
+            transition: "opacity var(--duration-normal) ease",
           }}
+          aria-hidden="true"
         >
-          <Image
-            src="/illustrations/icons/icon-scroll-arrow.png"
-            alt=""
-            width={16}
-            height={16}
-            style={{ objectFit: "contain", opacity: 0.7 }}
-          />
+          <span className="text-[0.65rem] uppercase tracking-[0.14em] font-medium">
+            Scroll
+          </span>
+          <div
+            style={{
+              animationName: "arrowBounce",
+              animationDuration: "1.8s",
+              animationIterationCount: "infinite",
+              animationTimingFunction: "ease-in-out",
+            }}
+          >
+            <Image
+              src="/illustrations/icons/icon-scroll-arrow.png"
+              alt=""
+              width={16}
+              height={16}
+              style={{ objectFit: "contain", opacity: 0.7 }}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
