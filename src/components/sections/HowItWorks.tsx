@@ -110,27 +110,33 @@ function JournalMockup() {
           minHeight: 72,
         }}
       >
-        {/* Drop cap */}
-        <span
-          className="font-serif font-bold text-[1.6rem] leading-none float-left mr-1"
+        {/* Prompt label */}
+        <div
+          className="text-[0.58rem] font-semibold uppercase tracking-[0.12em] mb-1.5"
+          style={{ color: "var(--gold)" }}
+        >
+          Today&apos;s prompt
+        </div>
+        {/* Italic question */}
+        <p
+          className="font-serif italic text-[0.82rem] leading-snug mb-2.5"
           style={{ color: "var(--sage)" }}
         >
-          D
-        </span>
-        {/* Blurred placeholder lines */}
-        <div className="space-y-[6px] pt-[2px]">
-          <div className="h-[8px] rounded-full" style={{ background: "#ccc", filter: "blur(3px)", width: "85%" }} />
-          <div className="h-[8px] rounded-full" style={{ background: "#ccc", filter: "blur(3px)", width: "70%" }} />
-          <div className="h-[8px] rounded-full" style={{ background: "#ccc", filter: "blur(3px)", width: "60%" }} />
+          What did you notice about your dog today?
+        </p>
+        {/* Blurred handwriting lines */}
+        <div className="space-y-[6px]">
+          <div className="h-[7px] rounded-full" style={{ background: "#c4c0b8", filter: "blur(3px)", width: "80%" }} />
+          <div className="h-[7px] rounded-full" style={{ background: "#c4c0b8", filter: "blur(3px)", width: "55%" }} />
         </div>
         {/* Pencil icon */}
         <div className="absolute bottom-2 right-2">
           <Image
             src="/illustrations/icons/icon-pencil.png"
             alt=""
-            width={20}
-            height={20}
-            style={{ transform: "rotate(15deg)", opacity: 0.5 }}
+            width={18}
+            height={18}
+            style={{ transform: "rotate(15deg)", opacity: 0.4 }}
           />
         </div>
       </div>
