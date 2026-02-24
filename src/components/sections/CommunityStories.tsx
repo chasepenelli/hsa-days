@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const stories = [
@@ -30,6 +31,94 @@ const stories = [
   },
 ];
 
+const tickerRow1 = [
+  { quote: "Day 7 changed everything for us.", name: "Anna & Cooper", color: "var(--sage)" },
+  { quote: "I finally stopped Googling at 2 AM.", name: "David & Maple", color: "var(--gold)" },
+  { quote: "Thank you for understanding.", name: "Lisa & Bear", color: "var(--terracotta)" },
+  { quote: "This gave us permission to just... be together.", name: "Sarah & Bowie", color: "var(--sage)" },
+];
+
+const tickerRow2 = [
+  { quote: "I didn't know I needed this.", name: "Mike & Luna", color: "var(--gold)" },
+  { quote: "One day at a time. That's all we needed.", name: "Rachel & Duke", color: "var(--terracotta)" },
+  { quote: "The journal prompts broke me open — in the best way.", name: "Tom & Sadie", color: "var(--sage)" },
+  { quote: "I read Day 1 and cried. Then I kept going.", name: "Emily & Max", color: "var(--gold)" },
+];
+
+const bgIllustrations = [
+  { src: "/illustrations/icons/icon-heart.png", alt: "", top: "8%", right: "4%", size: 140, opacity: 0.05, animation: "driftSlow 12s ease-in-out infinite" },
+  { src: "/illustrations/icons/icon-paw-print.png", alt: "", bottom: "12%", left: "3%", size: 120, opacity: 0.045, animation: "driftSlow 16s ease-in-out infinite 3s" },
+  { src: "/illustrations/icons/icon-community.png", alt: "", top: "45%", right: "-2%", size: 180, opacity: 0.04, animation: "none" },
+  { src: "/illustrations/journal-blank/weekly-bloom.png", alt: "", bottom: "5%", left: "-4%", size: 200, opacity: 0.035, animation: "driftSlow 14s ease-in-out infinite 6s" },
+  { src: "/illustrations/icons/icon-flower-ornament.png", alt: "", top: "2%", left: "8%", size: 100, opacity: 0.05, animation: "none" },
+];
+
+function TickerPill({ quote, name, color }: { quote: string; name: string; color: string }) {
+  return (
+    <span
+      className="inline-flex items-center gap-2.5 flex-shrink-0 rounded-full font-serif"
+      style={{
+        background: "white",
+        border: "1px solid var(--border)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+        padding: "8px 20px",
+      }}
+    >
+      <span
+        className="flex-shrink-0 rounded-full"
+        style={{ width: 6, height: 6, background: color }}
+        aria-hidden="true"
+      />
+      <span className="italic text-[0.82rem]" style={{ color: "var(--text)" }}>
+        &ldquo;{quote}&rdquo;
+      </span>
+      <span className="text-[0.72rem] whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
+        — {name}
+      </span>
+    </span>
+  );
+}
+
+function TickerRow({
+  items,
+  direction,
+  duration,
+}: {
+  items: typeof tickerRow1;
+  direction: "left" | "right";
+  duration: string;
+}) {
+  const animationName = direction === "left" ? "marqueeLeft" : "marqueeRight";
+  // Duplicate items twice for seamless loop
+  const doubled = [...items, ...items];
+
+  return (
+    <div
+      className="overflow-hidden"
+      style={{
+        maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+        WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+      }}
+    >
+      <div
+        className="inline-flex gap-4 marquee-track"
+        style={{
+          animationName,
+          animationDuration: duration,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          whiteSpace: "nowrap",
+          willChange: "transform",
+        }}
+      >
+        {doubled.map((item, i) => (
+          <TickerPill key={`${item.name}-${i}`} {...item} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function CommunityStories() {
   const ref = useScrollReveal();
 
@@ -46,6 +135,34 @@ export function CommunityStories() {
         background: "var(--cream)",
       }}
     >
+      {/* Background illustrations */}
+      {bgIllustrations.map((ill, i) => (
+        <div
+          key={i}
+          className="absolute pointer-events-none"
+          aria-hidden="true"
+          style={{
+            top: ill.top,
+            right: ill.right,
+            bottom: ill.bottom,
+            left: ill.left,
+            width: ill.size,
+            height: ill.size,
+            opacity: ill.opacity,
+            mixBlendMode: "multiply",
+            animation: ill.animation,
+          }}
+        >
+          <Image
+            src={ill.src}
+            alt=""
+            width={ill.size}
+            height={ill.size}
+            aria-hidden="true"
+          />
+        </div>
+      ))}
+
       {/* Ambient background glows */}
       <div
         className="absolute pointer-events-none"
@@ -70,7 +187,7 @@ export function CommunityStories() {
       <div className="max-w-[1100px] mx-auto relative">
 
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <div
             className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
             style={{ color: "var(--gold)" }}
@@ -103,6 +220,12 @@ export function CommunityStories() {
           </p>
         </div>
 
+        {/* Voices ticker */}
+        <div className="reveal flex flex-col gap-3 mb-14" style={{ transitionDelay: "0.2s" }}>
+          <TickerRow items={tickerRow1} direction="left" duration="40s" />
+          <TickerRow items={tickerRow2} direction="right" duration="50s" />
+        </div>
+
         {/* Stories grid */}
         <div className="reveal-stagger grid grid-cols-1 md:grid-cols-3 gap-5">
           {stories.map((story, i) => (
@@ -113,6 +236,7 @@ export function CommunityStories() {
               style={{
                 background: "white",
                 border: "1px solid var(--border)",
+                borderLeft: story.featured ? "3px solid var(--sage)" : "1px solid var(--border)",
                 boxShadow: story.featured
                   ? "0 8px 40px rgba(91,123,94,0.12)"
                   : "var(--card-shadow-rest)",
@@ -150,8 +274,8 @@ export function CommunityStories() {
               </div>
 
               <blockquote
-                className="font-serif italic text-[0.97rem] leading-relaxed flex-1 mb-5"
-                style={{ color: "var(--text-muted)" }}
+                className="font-serif italic leading-relaxed flex-1 mb-5"
+                style={{ color: "var(--text-muted)", fontSize: "1.02rem" }}
               >
                 {story.quote}
               </blockquote>
@@ -207,6 +331,15 @@ export function CommunityStories() {
           ))}
         </div>
       </div>
+
+      {/* Ticker reduced motion override */}
+      <style jsx>{`
+        @media (prefers-reduced-motion: reduce) {
+          .marquee-track {
+            animation-play-state: paused !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
