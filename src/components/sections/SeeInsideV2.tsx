@@ -31,6 +31,7 @@ const features = [
     color: "var(--sage)",
     bg: "rgba(91,123,94,0.09)",
     borderColor: "rgba(91,123,94,0.20)",
+    shadowColor: "rgba(91,123,94,0.18)",
     title: "30 Daily Reflections",
     description:
       "Honest, grounding writing that meets you where you are \u2014 not clinical, not cold, just real.",
@@ -41,6 +42,7 @@ const features = [
     color: "var(--gold)",
     bg: "rgba(196,162,101,0.09)",
     borderColor: "rgba(196,162,101,0.22)",
+    shadowColor: "rgba(196,162,101,0.18)",
     title: "Private Journaling",
     description:
       "A writing prompt each day with a journal built right into the page. Only you can see your entries.",
@@ -51,6 +53,7 @@ const features = [
     color: "var(--terracotta)",
     bg: "rgba(212,133,106,0.09)",
     borderColor: "rgba(212,133,106,0.22)",
+    shadowColor: "rgba(212,133,106,0.18)",
     title: "Activities With Your Dog",
     description:
       "Simple, meaningful things to do together. Not bucket-list pressure \u2014 just intentional moments.",
@@ -61,6 +64,7 @@ const features = [
     color: "var(--sage)",
     bg: "rgba(91,123,94,0.09)",
     borderColor: "rgba(91,123,94,0.20)",
+    shadowColor: "rgba(91,123,94,0.18)",
     title: "Practical Guides",
     description:
       "Supplements, nutrition, house-proofing \u2014 the stuff you actually need but can\u2019t find in one place.",
@@ -71,6 +75,7 @@ const features = [
     color: "var(--gold)",
     bg: "rgba(196,162,101,0.09)",
     borderColor: "rgba(196,162,101,0.22)",
+    shadowColor: "rgba(196,162,101,0.18)",
     title: "Morning Emails",
     description:
       "A gentle nudge each morning with the day\u2019s quote and a preview. One tap to open today\u2019s page.",
@@ -81,6 +86,7 @@ const features = [
     color: "var(--terracotta)",
     bg: "rgba(212,133,106,0.09)",
     borderColor: "rgba(212,133,106,0.22)",
+    shadowColor: "rgba(212,133,106,0.18)",
     title: "Community Stories",
     description:
       "You\u2019re not the first to walk this road. Read stories from other HSA families \u2014 and share yours when ready.",
@@ -146,9 +152,9 @@ function JournalPreview() {
             height: "14px",
             background: "rgba(91,123,94,0.45)",
             borderRadius: "1px",
-            animationName: "breathe",
-            animationDuration: "1.1s",
-            animationTimingFunction: "ease-in-out",
+            animationName: "cursorBlink",
+            animationDuration: "1s",
+            animationTimingFunction: "step-end",
             animationIterationCount: "infinite",
           }}
         />
@@ -415,8 +421,7 @@ function FeatureSlide({
           maxWidth: "780px",
           background: "white",
           border: `1px solid ${feature.borderColor}`,
-          boxShadow:
-            "0 24px 72px rgba(0,0,0,0.10), 0 6px 20px rgba(0,0,0,0.04)",
+          boxShadow: `0 24px 72px ${feature.shadowColor}, 0 8px 24px rgba(0,0,0,0.06)`,
         }}
       >
         {/* Background illustration fill */}
@@ -446,13 +451,23 @@ function FeatureSlide({
         <div className="relative p-10 md:p-12">
           {/* Icon */}
           <div className="flex justify-center mb-6">
-            <Image
-              src={feature.icon}
-              alt=""
-              width={128}
-              height={128}
-              style={{ objectFit: "contain", mixBlendMode: "multiply" }}
-            />
+            <div
+              className="flex items-center justify-center rounded-full"
+              style={{
+                width: "96px",
+                height: "96px",
+                background: feature.bg,
+                boxShadow: `0 4px 16px ${feature.shadowColor}`,
+              }}
+            >
+              <Image
+                src={feature.icon}
+                alt=""
+                width={56}
+                height={56}
+                style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+              />
+            </div>
           </div>
 
           {/* Title */}
@@ -484,7 +499,14 @@ function FeatureSlide({
           />
 
           {/* Day 1 preview */}
-          <div className="mx-auto" style={{ maxWidth: "520px" }}>
+          <div
+            className="mx-auto rounded-lg"
+            style={{
+              maxWidth: "520px",
+              borderLeft: `2px solid ${feature.borderColor}`,
+              paddingLeft: "12px",
+            }}
+          >
             <Preview />
           </div>
         </div>
@@ -498,28 +520,45 @@ function FeatureSlide({
 function ProgressIndicator({
   activeIndex,
   total,
+  containerRef,
 }: {
   activeIndex: number;
   total: number;
+  containerRef?: React.RefObject<HTMLDivElement | null>;
 }) {
+  const scrollToCard = (index: number) => {
+    const container = containerRef?.current;
+    if (!container) return;
+    const containerTop = container.getBoundingClientRect().top + window.scrollY;
+    const containerHeight = container.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const scrollableDistance = containerHeight - viewportHeight;
+    const perCard = 1 / features.length;
+    // Scroll to 10% into the card's segment so it's clearly active
+    const targetProgress = perCard * index + perCard * 0.1;
+    const targetScroll = containerTop + scrollableDistance * targetProgress;
+    window.scrollTo({ top: targetScroll, behavior: "smooth" });
+  };
+
   return (
     <div className="flex flex-col items-center gap-3 mt-6">
-      {/* Dots — grow/shrink and recolor smoothly */}
+      {/* Dots — clickable, grow/shrink and recolor smoothly */}
       <div className="flex items-center gap-2" style={{ height: "10px" }}>
         {features.map((feature, i) => (
-          <div
+          <button
             key={i}
+            aria-label={`Go to ${feature.title}`}
+            onClick={() => scrollToCard(i)}
+            className="border-none bg-transparent p-0 cursor-pointer"
             style={{
               width: i === activeIndex ? "10px" : "6px",
               height: i === activeIndex ? "10px" : "6px",
               borderRadius: "50%",
               background:
                 i === activeIndex ? feature.color : "var(--border-strong)",
-              // Spring-style easing: overshoot then settle
               transition:
                 "width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, opacity 0.3s ease",
               opacity: i === activeIndex ? 1 : 0.45,
-              // Vertically center dots of varying sizes without layout shift
               alignSelf: "center",
             }}
           />
@@ -585,6 +624,7 @@ function StickyScrollSection() {
       let opacity = 0;
       let translateY = 28;   // enters from a close, natural distance
       let scale = 0.97;      // barely smaller — not a hard pop
+      let rotate = 0;        // page-turn rotation on exit
 
       if (i === activeIndex) {
         // ─── Active (current) card ─────────────────────────────────
@@ -603,6 +643,7 @@ function StickyScrollSection() {
           opacity = 1 - exitP;
           translateY = -18 * exitP;   // lifts only ~18px — subtle, not dramatic
           scale = 1 - 0.025 * exitP;  // barely perceptible scale reduction
+          rotate = 0.5 * exitP;       // slight clockwise page-turn
         }
       } else if (i === activeIndex + 1) {
         // ─── Incoming (next) card ──────────────────────────────────
@@ -624,12 +665,13 @@ function StickyScrollSection() {
         opacity = 0;
         translateY = -24;
         scale = 0.975;
+        rotate = 0.5;
       }
       // Cards more than one ahead stay at future defaults (opacity 0, below)
 
       return {
         opacity,
-        transform: `translateY(${translateY}px) scale(${scale})`,
+        transform: `translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`,
         // Active card sits above incoming; incoming above all others
         zIndex: i === activeIndex ? 2 : i === activeIndex + 1 ? 1 : 0,
         pointerEvents: (i === activeIndex ? "auto" : "none") as React.CSSProperties["pointerEvents"],
@@ -684,6 +726,7 @@ function StickyScrollSection() {
         <ProgressIndicator
           activeIndex={activeIndex}
           total={features.length}
+          containerRef={containerRef}
         />
       </div>
     </div>
@@ -708,13 +751,23 @@ function MobileCardStack() {
             }}
           >
             <div className="flex justify-center mb-4">
-              <Image
-                src={feature.icon}
-                alt=""
-                width={96}
-                height={96}
-                style={{ objectFit: "contain", mixBlendMode: "multiply" }}
-              />
+              <div
+                className="flex items-center justify-center rounded-full"
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  background: feature.bg,
+                  boxShadow: `0 4px 12px ${feature.shadowColor}`,
+                }}
+              >
+                <Image
+                  src={feature.icon}
+                  alt=""
+                  width={48}
+                  height={48}
+                  style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                />
+              </div>
             </div>
             <h3
               className="font-serif font-semibold text-center mb-1.5"
@@ -800,6 +853,10 @@ export function SeeInsideV2() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(91,123,94,0.07) 0%, transparent 68%)",
+          animationName: "ambientGlow",
+          animationDuration: "8s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
         }}
       />
       {/* Ambient radial glow -- bottom right */}
@@ -814,6 +871,11 @@ export function SeeInsideV2() {
           borderRadius: "50%",
           background:
             "radial-gradient(circle, rgba(196,162,101,0.08) 0%, transparent 68%)",
+          animationName: "ambientGlow",
+          animationDuration: "10s",
+          animationTimingFunction: "ease-in-out",
+          animationIterationCount: "infinite",
+          animationDelay: "2s",
         }}
       />
 
@@ -848,10 +910,11 @@ export function SeeInsideV2() {
           </div>
 
           <h2
-            className="reveal font-serif font-semibold tracking-tight mb-4"
+            className="reveal font-serif font-semibold mb-4"
             style={{
-              fontSize: "clamp(1.9rem, 4vw, 2.6rem)",
-              lineHeight: 1.25,
+              fontSize: "clamp(2.2rem, 5vw, 3.2rem)",
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
               color: "var(--text)",
               transitionDelay: "0.08s",
             }}
@@ -951,9 +1014,18 @@ export function SeeInsideV2() {
 
           {/* Quote strip */}
           <div
-            className="px-8 py-6 md:px-10"
+            className="px-8 py-6 md:px-10 relative"
             style={{ background: "white" }}
           >
+            {/* Sage bleed gradient from header */}
+            <div
+              className="absolute top-0 left-0 right-0 pointer-events-none"
+              aria-hidden="true"
+              style={{
+                height: "40px",
+                background: "linear-gradient(to bottom, rgba(91,123,94,0.04), transparent)",
+              }}
+            />
             <div
               className="rounded-xl px-6 py-5 text-center relative overflow-hidden"
               style={{
@@ -1019,10 +1091,11 @@ export function SeeInsideV2() {
                 display: "block",
                 width: "36px",
                 height: "1px",
-                background: "var(--border-strong)",
+                background: "linear-gradient(to right, transparent, var(--gold))",
+                opacity: 0.6,
               }}
             />
-            <span style={{ fontSize: "0.75rem", letterSpacing: "0.04em" }}>
+            <span className="font-serif italic" style={{ fontSize: "0.85rem", letterSpacing: "0.02em" }}>
               Every day includes all of these
             </span>
             <span
@@ -1030,7 +1103,8 @@ export function SeeInsideV2() {
                 display: "block",
                 width: "36px",
                 height: "1px",
-                background: "var(--border-strong)",
+                background: "linear-gradient(to left, transparent, var(--gold))",
+                opacity: 0.6,
               }}
             />
           </div>

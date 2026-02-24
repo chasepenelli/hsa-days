@@ -306,6 +306,12 @@ input, textarea, select {
   50% { transform: translateY(5px); opacity: 1; }
 }
 
+/* Cursor blink — for journal text input */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* Heartbeat — for the hero accent */
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
