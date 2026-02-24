@@ -15,6 +15,8 @@ export interface Task {
   sort_order: number;
   created_at: string;
   updated_at: string;
+  attachment_count: number;
+  has_readme: boolean;
 }
 
 // ── Constants ──────────────────────────────────────────
@@ -189,7 +191,7 @@ export function KanbanBoard() {
       });
       if (res.ok) {
         const created = await res.json();
-        setTasks((prev) => [...prev, created]);
+        setTasks((prev) => [...prev, { ...created, attachment_count: 0, has_readme: false }]);
       }
     }
     setModalOpen(false);
@@ -347,6 +349,7 @@ export function KanbanBoard() {
             setModalOpen(false);
             setEditingTask(null);
           }}
+          onAttachmentsChanged={fetchTasks}
         />
       )}
     </div>
@@ -498,7 +501,7 @@ function TaskCard({
         </p>
       )}
 
-      {/* Category badge + mobile status buttons */}
+      {/* Category badge + indicators */}
       <div className="flex items-center gap-2 ml-4">
         {cat && (
           <span
@@ -510,6 +513,22 @@ function TaskCard({
         <span className="text-[0.6rem] text-text-muted/60 uppercase tracking-wider">
           {task.priority}
         </span>
+        <div className="flex-1" />
+        {task.attachment_count > 0 && (
+          <span className="flex items-center gap-0.5 text-text-muted/60" title={`${task.attachment_count} attachment${task.attachment_count > 1 ? "s" : ""}`}>
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+            <span className="text-[0.6rem]">{task.attachment_count}</span>
+          </span>
+        )}
+        {task.has_readme && (
+          <span className="text-text-muted/60" title="Has README">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </span>
+        )}
       </div>
 
       {/* Mobile: quick status buttons */}

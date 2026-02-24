@@ -8,14 +8,28 @@ export async function GET() {
   }
 
   const supabase = createAdminClient();
-  const { data, error } = await supabase
-    .from("project_tasks")
-    .select("*")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: true });
+
+  // Fetch tasks with attachment counts via raw SQL to avoid N+1
+  const { data, error } = await supabase.rpc("get_project_tasks_with_counts");
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    // Fallback to plain query if RPC doesn't exist yet
+    const { data: fallback, error: fbErr } = await supabase
+      .from("project_tasks")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true });
+
+    if (fbErr) {
+      return NextResponse.json({ error: fbErr.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      (fallback || []).map((t: Record<string, unknown>) => ({
+        ...t,
+        attachment_count: 0,
+        has_readme: false,
+      }))
+    );
   }
 
   return NextResponse.json(data);
