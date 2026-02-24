@@ -66,13 +66,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   Connection:   "bg-gold-light/10 text-[#8B6B3A]",
 };
 
-function getWeek(dayNumber: number): number {
-  if (dayNumber <= 7)  return 1;
-  if (dayNumber <= 14) return 2;
-  if (dayNumber <= 21) return 3;
-  if (dayNumber <= 25) return 4;
-  return 5;
-}
+import { getWeek } from "@/lib/day-utils";
 
 export const metadata = {
   title: "Your 30-Day Journey",

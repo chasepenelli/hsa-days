@@ -5,9 +5,10 @@ import Image from "next/image";
 interface ShareButtonProps {
   onClick: () => void;
   variant?: "primary" | "quiet";
+  label?: string;
 }
 
-export function ShareButton({ onClick, variant = "primary" }: ShareButtonProps) {
+export function ShareButton({ onClick, variant = "primary", label }: ShareButtonProps) {
   const isPrimary = variant === "primary";
 
   return (
@@ -32,7 +33,7 @@ export function ShareButton({ onClick, variant = "primary" }: ShareButtonProps) 
         height={isPrimary ? 16 : 14}
         style={{ objectFit: "contain", opacity: 0.85 }}
       />
-      Share This Day
+      {label || "Share This Day"}
     </button>
   );
 }

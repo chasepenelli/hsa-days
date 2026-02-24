@@ -13,6 +13,13 @@ interface JournalEditorProps {
   initialEntry: string;
 }
 
+const PLACEHOLDERS = [
+  "Take your time. There\u2019s no wrong way to do this\u2026",
+  "Whatever comes to mind is enough\u2026",
+  "Start wherever feels right\u2026",
+  "Write for yourself, no one else\u2026",
+];
+
 export function JournalEditor({
   dayNumber,
   prompt,
@@ -25,6 +32,12 @@ export function JournalEditor({
   const [focused, setFocused] = useState(false);
   const saveTimeout = useRef<NodeJS.Timeout>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const wordCount = entry.trim().length > 0
+    ? entry.trim().split(/\s+/).filter(Boolean).length
+    : 0;
+
+  const placeholder = PLACEHOLDERS[(dayNumber - 1) % PLACEHOLDERS.length];
 
   // Track online/offline
   useEffect(() => {
@@ -119,10 +132,12 @@ export function JournalEditor({
     >
       {/* Editor header */}
       <div
-        className="flex items-center justify-between px-5 py-3"
+        className="flex items-center justify-between px-5 py-3 transition-colors duration-300"
         style={{
           borderBottom: "1px solid var(--border)",
-          background: "rgba(245,240,234,0.5)",
+          background: focused
+            ? "rgba(91,123,94,0.04)"
+            : "rgba(245,240,234,0.5)",
         }}
       >
         <div
@@ -174,14 +189,28 @@ export function JournalEditor({
       {/* Journal prompt */}
       {prompt && (
         <div
-          className="px-5 py-3"
+          className="relative px-5 py-4"
           style={{
             borderBottom: "1px solid var(--border)",
-            background: "rgba(196,162,101,0.04)",
+            background: "rgba(196,162,101,0.07)",
           }}
         >
+          {/* Decorative opening quote mark */}
+          <span
+            className="absolute top-2 left-3 font-serif text-[2.2rem] leading-none select-none pointer-events-none"
+            style={{ color: "var(--gold)", opacity: 0.3 }}
+            aria-hidden="true"
+          >
+            &ldquo;
+          </span>
+          <div
+            className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] mb-2"
+            style={{ color: "var(--gold)" }}
+          >
+            Today&apos;s prompt
+          </div>
           <p
-            className="text-[0.88rem] italic leading-relaxed"
+            className="font-serif text-[1.02rem] italic leading-relaxed"
             style={{ color: "var(--text-muted)" }}
           >
             {prompt}
@@ -197,7 +226,7 @@ export function JournalEditor({
           onChange={handleChange}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          placeholder="Write your thoughts here..."
+          placeholder={placeholder}
           className="w-full min-h-[160px] outline-none resize-none font-serif text-[0.98rem] leading-[32px] journal-lined"
           style={{
             border: "none",
@@ -222,12 +251,19 @@ export function JournalEditor({
         >
           Private &middot; Only you can see this
         </p>
-        {entry.trim().length > 0 && (
+        {wordCount > 0 && (
           <p
-            className="text-[0.65rem]"
-            style={{ color: "var(--text-muted)", opacity: 0.35 }}
+            className={`text-[0.65rem] transition-opacity duration-300 ${
+              wordCount >= 50 ? "animate-ink-write" : ""
+            }`}
+            style={{
+              color: wordCount >= 150 ? "var(--sage)" : "var(--text-muted)",
+              opacity: wordCount >= 50 ? 0.55 : 0.35,
+            }}
           >
-            {entry.trim().split(/\s+/).filter(Boolean).length} words
+            {wordCount >= 150
+              ? `${wordCount} words \u2014 you\u2019re really showing up today`
+              : `${wordCount} words`}
           </p>
         )}
       </div>
