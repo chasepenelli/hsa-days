@@ -35,6 +35,8 @@ const STATUS_OPTIONS = [
 
 const CATEGORY_OPTIONS = [
   { value: "website", label: "Website" },
+  { value: "frontend", label: "Front End" },
+  { value: "ux", label: "UX" },
   { value: "remotion", label: "Remotion" },
   { value: "content", label: "Content" },
   { value: "infrastructure", label: "Infrastructure" },

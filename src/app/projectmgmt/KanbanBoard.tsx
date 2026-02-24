@@ -32,6 +32,8 @@ const COLUMNS = [
 
 const CATEGORIES = [
   { id: "website", label: "Website", bg: "bg-sage/10", text: "text-sage-dark" },
+  { id: "frontend", label: "Front End", bg: "bg-purple-50", text: "text-purple-700" },
+  { id: "ux", label: "UX", bg: "bg-indigo-50", text: "text-indigo-700" },
   { id: "remotion", label: "Remotion", bg: "bg-gold/10", text: "text-[#8B7640]" },
   { id: "content", label: "Content", bg: "bg-terracotta/10", text: "text-[#A05A40]" },
   { id: "infrastructure", label: "Infra", bg: "bg-cream-deep", text: "text-text-muted" },
