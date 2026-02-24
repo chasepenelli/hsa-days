@@ -3,20 +3,21 @@ import Image from "next/image";
 
 interface DayNavProps {
   currentDay: number;
+  isStandalone?: boolean;
 }
 
-export function DayNav({ currentDay }: DayNavProps) {
+export function DayNav({ currentDay, isStandalone }: DayNavProps) {
   const hasPrev = currentDay > 1;
   const hasNext = currentDay < 30;
 
   return (
     <div
-      className="sticky bottom-0 flex justify-between items-center px-5 py-3 z-10"
+      className={`${isStandalone ? "mb-20" : "sticky bottom-0"} flex justify-between items-center px-5 py-3 z-10`}
       style={{
         background: "rgba(250,248,245,0.95)",
         backdropFilter: "blur(12px)",
         borderTop: "1px solid var(--border)",
-        paddingBottom: "calc(12px + env(safe-area-inset-bottom))",
+        paddingBottom: isStandalone ? "12px" : "calc(12px + env(safe-area-inset-bottom))",
       }}
     >
       {hasPrev ? (

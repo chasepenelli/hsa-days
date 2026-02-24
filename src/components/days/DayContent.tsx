@@ -12,6 +12,7 @@ import type { MediaItem } from "./MediaUpload";
 import { ShareButton } from "@/components/share/ShareButton";
 import { ShareCardModal } from "@/components/share/ShareCardModal";
 import type { ShareCardData } from "@/components/share/card-styles";
+import { useIsStandalone } from "@/hooks/useIsStandalone";
 
 interface DayData {
   day_number: number;
@@ -128,6 +129,7 @@ export function DayContent({
   pillDoodle,
   pillWatermark,
 }: DayContentProps) {
+  const isStandalone = useIsStandalone();
   const [completed, setCompleted]         = useState(initialCompleted);
   const [justCompleted, setJustCompleted] = useState(false);
   const [completing, setCompleting]       = useState(false);
@@ -172,7 +174,7 @@ export function DayContent({
 
       {/* ── Sticky top bar ───────────────────────────────── */}
       <div
-        className="sticky top-16 z-10 flex items-center gap-4 px-5 py-2.5"
+        className={`sticky ${isStandalone ? "top-0 pt-[env(safe-area-inset-top)]" : "top-16"} z-10 flex items-center gap-4 px-5 py-2.5`}
         style={{
           background: "rgba(250,248,245,0.94)",
           backdropFilter: "blur(12px)",
@@ -606,7 +608,7 @@ export function DayContent({
       </div>
 
       {/* Day navigation */}
-      <DayNav currentDay={dayNumber} />
+      <DayNav currentDay={dayNumber} isStandalone={isStandalone} />
 
       {/* Share card modal */}
       {completed && (

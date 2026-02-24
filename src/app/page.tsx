@@ -8,6 +8,7 @@ import { About } from "@/components/sections/About";
 import { CommunityStories } from "@/components/sections/CommunityStories";
 import { Resources } from "@/components/sections/Resources";
 import { PreOrder } from "@/components/sections/PreOrder";
+import { SupportSection } from "@/components/sections/SupportSection";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
       <CommunityStories />
       <Resources />
       <PreOrder />
+      <SupportSection />
       <FinalCTA />
     </>
   );

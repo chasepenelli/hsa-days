@@ -70,6 +70,12 @@ export function Header() {
           >
             Pre-Order
           </Link>
+          <Link
+            href="/#support"
+            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
+          >
+            Support
+          </Link>
           {isLoggedIn ? (
             <>
               <Link
@@ -167,6 +173,13 @@ export function Header() {
             className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
           >
             Pre-Order
+          </Link>
+          <Link
+            href="/#support"
+            onClick={closeMenu}
+            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
+          >
+            Support
           </Link>
           {isLoggedIn ? (
             <>

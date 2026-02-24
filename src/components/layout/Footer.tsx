@@ -32,6 +32,12 @@ export function Footer() {
           >
             Pre-Order
           </Link>
+          <Link
+            href="/#support"
+            className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+          >
+            Support
+          </Link>
           <a
             href="https://instagram.com/bradythecorgi"
             target="_blank"

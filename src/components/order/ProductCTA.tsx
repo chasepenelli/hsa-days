@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { ShopifyButton } from "@/components/ui/ShopifyButton";
 
 const features = [
   "30 daily reflections & guided prompts",
@@ -200,32 +201,17 @@ export function ProductCTA() {
                 lineHeight: 1,
               }}
             >
-              $49
+              $29
             </span>
           </div>
 
           {/* CTA */}
           <div className="reveal text-center" style={{ transitionDelay: "0.48s" }}>
-            <button
-              className="inline-block px-10 py-4 text-white border-none rounded-xl text-[1.05rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] md:w-auto w-full"
-              style={{
-                background: "var(--terracotta)",
-                boxShadow: "0 4px 20px rgba(212,133,106,0.3)",
-                minHeight: "52px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#c4775f";
-                e.currentTarget.style.boxShadow =
-                  "0 6px 24px rgba(212,133,106,0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "var(--terracotta)";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 20px rgba(212,133,106,0.3)";
-              }}
-            >
-              Pre-Order the Guided Journal
-            </button>
+            <ShopifyButton
+              productSlug="guided-journal"
+              label="Pre-Order the Guided Journal"
+              colorScheme="terracotta"
+            />
             <p
               className="mt-4 text-[0.84rem]"
               style={{ color: "var(--text-muted)" }}

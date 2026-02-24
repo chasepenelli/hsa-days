@@ -7,6 +7,7 @@ import { OfflineIndicator } from "@/components/ui/OfflineIndicator";
 import { PWAInstallPrompt } from "@/components/ui/PWAInstallPrompt";
 import { PWASplash } from "@/components/ui/PWASplash";
 import { ServiceWorkerRegistration } from "@/components/ui/ServiceWorkerRegistration";
+import { PWALayoutShell } from "@/components/pwa/PWALayoutShell";
 
 const lora = Lora({
   variable: "--font-lora",
@@ -65,10 +66,10 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="font-sans antialiased">
-        <Header />
-        <OfflineIndicator />
-        <main>{children}</main>
-        <Footer />
+        <PWALayoutShell header={<Header />} footer={<Footer />}>
+          <OfflineIndicator />
+          {children}
+        </PWALayoutShell>
         <PWAInstallPrompt />
         <PWASplash />
         <ServiceWorkerRegistration />

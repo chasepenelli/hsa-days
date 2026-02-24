@@ -298,7 +298,7 @@ export function OrderHero() {
           }}
         >
           {[
-            { number: "$49", label: "Pre-Order" },
+            { number: "$29", label: "Pre-Order" },
             { number: "30", label: "Days of Guided Space" },
             { number: "Free", label: "Digital Access Included" },
           ].map((stat) => (

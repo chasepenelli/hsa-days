@@ -69,6 +69,7 @@ export async function POST(request: Request) {
     // Add to Kit (ConvertKit) if configured
     if (process.env.KIT_API_KEY && process.env.KIT_API_KEY !== "placeholder") {
       try {
+        // Subscribe to the main form
         await fetch(
           `https://api.convertkit.com/v3/forms/${process.env.KIT_FORM_ID}/subscribe`,
           {
@@ -80,6 +81,21 @@ export async function POST(request: Request) {
             }),
           }
         );
+
+        // Add to 30-day drip sequence if configured
+        if (process.env.KIT_SEQUENCE_ID && process.env.KIT_SEQUENCE_ID !== "placeholder") {
+          await fetch(
+            `https://api.convertkit.com/v3/sequences/${process.env.KIT_SEQUENCE_ID}/subscribe`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                api_key: process.env.KIT_API_KEY,
+                email,
+              }),
+            }
+          );
+        }
       } catch {
         // Kit subscription failure shouldn't block signup
       }

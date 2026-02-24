@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { ShopifyButton } from "@/components/ui/ShopifyButton";
 
 const faqs = [
   {
@@ -201,26 +202,12 @@ export function OrderFAQ() {
           </p>
 
           {/* CTA */}
-          <button
-            className="inline-block px-10 py-4 text-white border-none rounded-xl text-[1.05rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] md:w-auto w-full mb-4"
-            style={{
-              background: "var(--terracotta)",
-              boxShadow: "0 4px 20px rgba(212,133,106,0.3)",
-              minHeight: "52px",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#c4775f";
-              e.currentTarget.style.boxShadow =
-                "0 6px 24px rgba(212,133,106,0.4)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "var(--terracotta)";
-              e.currentTarget.style.boxShadow =
-                "0 4px 20px rgba(212,133,106,0.3)";
-            }}
-          >
-            Pre-Order the Guided Journal &mdash; $49
-          </button>
+          <ShopifyButton
+            productSlug="guided-journal"
+            label="Pre-Order the Guided Journal — $29"
+            colorScheme="terracotta"
+            className="mb-4"
+          />
           <p
             className="text-[0.82rem]"
             style={{ color: "rgba(255,255,255,0.5)" }}

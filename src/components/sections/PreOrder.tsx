@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { ShopifyButton } from "@/components/ui/ShopifyButton";
+import type { ProductSlug } from "@/lib/shopify";
 
 /* ── Product data ─────────────────────────────────────── */
 
 type Product = {
+  slug: ProductSlug;
   badge: string;
   badgeBg: string;
   badgeColor: string;
@@ -19,15 +22,13 @@ type Product = {
   price: string;
   priceColor: string;
   ctaLabel: string;
-  ctaBg: string;
-  ctaHoverBg: string;
-  ctaShadow: string;
-  ctaHoverShadow: string;
   ctaStyle: "solid" | "outline";
+  ctaColorScheme: "sage" | "terracotta" | "gold";
   subtext: string;
 };
 
 const guidedJournal: Product = {
+  slug: "guided-journal",
   badge: "AVAILABLE NOW",
   badgeBg: "rgba(91,123,94,0.10)",
   badgeColor: "var(--sage)",
@@ -55,19 +56,17 @@ const guidedJournal: Product = {
       description: "Thick archival pages with lay-flat binding.",
     },
   ],
-  price: "$49",
+  price: "$29",
   priceColor: "var(--sage)",
   ctaLabel: "Pre-Order the Guided Journal",
-  ctaBg: "var(--terracotta)",
-  ctaHoverBg: "#c4775f",
-  ctaShadow: "rgba(212,133,106,0.3)",
-  ctaHoverShadow: "rgba(212,133,106,0.4)",
   ctaStyle: "solid" as const,
+  ctaColorScheme: "terracotta",
   subtext: "Ships Spring 2026. Free digital access included.",
 };
 
 const keepsakeBook: Product = {
-  badge: "COMING SOON",
+  slug: "keepsake-edition",
+  badge: "PRE-ORDER",
   badgeBg: "rgba(196,162,101,0.10)",
   badgeColor: "var(--gold)",
   badgeBorder: "rgba(196,162,101,0.22)",
@@ -94,15 +93,49 @@ const keepsakeBook: Product = {
       description: "Printed on premium paper with hardcover binding.",
     },
   ],
-  price: "Coming 2026",
+  price: "$49",
   priceColor: "var(--gold)",
-  ctaLabel: "Get Notified When Available",
-  ctaBg: "transparent",
-  ctaHoverBg: "rgba(196,162,101,0.08)",
-  ctaShadow: "none",
-  ctaHoverShadow: "none",
+  ctaLabel: "Pre-Order the Keepsake Edition",
   ctaStyle: "outline" as const,
-  subtext: "We\u2019ll email you when the Keepsake Book is ready.",
+  ctaColorScheme: "gold",
+  subtext: "Ships Spring 2026. Your journey, bound forever.",
+};
+
+const storyEdition: Product = {
+  slug: "story-edition-ebook",
+  badge: "NEW",
+  badgeBg: "rgba(212,133,106,0.10)",
+  badgeColor: "var(--terracotta)",
+  badgeBorder: "rgba(212,133,106,0.22)",
+  accentColor: "var(--terracotta)",
+  watermark: "/illustrations/icons/icon-pencil.png",
+  title: "The Story Edition",
+  subtitle: "Chase & Graffiti\u2019s journey, in full.",
+  description:
+    "The complete memoir behind HSA Days \u2014 30 chapters of the unfiltered, honest story of one man and his dog navigating what it means to truly show up.",
+  features: [
+    {
+      icon: "/illustrations/icons/icon-journal.png",
+      title: "30 Chapters",
+      description: "The full story behind every day of the program.",
+    },
+    {
+      icon: "/illustrations/icons/icon-heart.png",
+      title: "The Full Story",
+      description: "Raw, honest, and unfiltered \u2014 the real journey.",
+    },
+    {
+      icon: "/illustrations/icons/icon-star.png",
+      title: "Instant Download",
+      description: "Digital delivery \u2014 start reading immediately.",
+    },
+  ],
+  price: "$9.99",
+  priceColor: "var(--terracotta)",
+  ctaLabel: "Get the Story Edition",
+  ctaStyle: "solid" as const,
+  ctaColorScheme: "terracotta",
+  subtext: "Instant digital delivery. Read on any device.",
 };
 
 /* ── Sub-components ───────────────────────────────────── */
@@ -126,7 +159,9 @@ function FeatureBlock({
           background:
             accentColor === "var(--sage)"
               ? "rgba(91,123,94,0.09)"
-              : "rgba(196,162,101,0.09)",
+              : accentColor === "var(--terracotta)"
+                ? "rgba(212,133,106,0.09)"
+                : "rgba(196,162,101,0.09)",
         }}
       >
         <Image
@@ -277,44 +312,12 @@ function ProductCard({
           </div>
 
           {/* CTA Button */}
-          {product.ctaStyle === "solid" ? (
-            <button
-              className="w-full md:w-auto md:mx-auto md:px-10 px-6 py-4 text-white border-none rounded-xl text-[1rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] block"
-              style={{
-                background: product.ctaBg,
-                boxShadow: `0 4px 20px ${product.ctaShadow}`,
-                minHeight: "52px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = product.ctaHoverBg;
-                e.currentTarget.style.boxShadow = `0 6px 24px ${product.ctaHoverShadow}`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = product.ctaBg;
-                e.currentTarget.style.boxShadow = `0 4px 20px ${product.ctaShadow}`;
-              }}
-            >
-              {product.ctaLabel}
-            </button>
-          ) : (
-            <button
-              className="w-full md:w-auto md:mx-auto md:px-10 px-6 py-4 rounded-xl text-[1rem] font-semibold font-sans cursor-pointer transition-all hover:-translate-y-0.5 active:scale-[0.98] block"
-              style={{
-                background: "transparent",
-                color: "var(--gold)",
-                border: "2px solid var(--gold)",
-                minHeight: "52px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = product.ctaHoverBg;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-              }}
-            >
-              {product.ctaLabel}
-            </button>
-          )}
+          <ShopifyButton
+            productSlug={product.slug}
+            label={product.ctaLabel}
+            variant={product.ctaStyle}
+            colorScheme={product.ctaColorScheme}
+          />
 
           {/* Subtext */}
           <p
@@ -375,7 +378,7 @@ export function PreOrder() {
         }}
       />
 
-      <div className="relative max-w-[1100px] mx-auto">
+      <div className="relative max-w-[1200px] mx-auto">
         {/* ── Zone A: Empathy Opening ───────────────── */}
         <div className="text-center mb-10">
           <div
@@ -459,9 +462,10 @@ export function PreOrder() {
         </div>
 
         {/* ── Zone C: Product Cards ─────────────────── */}
-        <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 gap-8 mb-14">
+        <div className="reveal-stagger grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-14">
           <ProductCard product={guidedJournal} isPrimary={true} />
           <ProductCard product={keepsakeBook} isPrimary={false} />
+          <ProductCard product={storyEdition} isPrimary={false} />
         </div>
 
         {/* ── Zone D: Trust Strip ───────────────────── */}

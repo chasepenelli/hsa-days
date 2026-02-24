@@ -18,6 +18,13 @@ export async function middleware(request: NextRequest) {
       gateUrl.pathname = "/gate";
       return NextResponse.redirect(gateUrl);
     }
+  } else {
+    // When password gate is disabled, redirect /gate to home
+    if (request.nextUrl.pathname === "/gate") {
+      const homeUrl = request.nextUrl.clone();
+      homeUrl.pathname = "/";
+      return NextResponse.redirect(homeUrl);
+    }
   }
 
   return await updateSession(request);

@@ -6,6 +6,7 @@ import { WhatsInside } from "./WhatsInside";
 import { LifestyleGallery } from "./LifestyleGallery";
 import { Voices } from "./Voices";
 import { ProductCTA } from "./ProductCTA";
+import { StoryEditionSection } from "./StoryEditionSection";
 import { OrderFAQ } from "./OrderFAQ";
 
 export function OrderPageClient() {
@@ -17,6 +18,7 @@ export function OrderPageClient() {
       <LifestyleGallery />
       <Voices />
       <ProductCTA />
+      <StoryEditionSection />
       <OrderFAQ />
     </>
   );
