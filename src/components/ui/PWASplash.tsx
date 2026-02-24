@@ -2,6 +2,11 @@
 
 import { useState, useEffect } from "react";
 
+function getSplashKey(): string {
+  const d = new Date();
+  return `hsa-splash-${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+}
+
 export function PWASplash() {
   const [visible, setVisible] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
@@ -14,19 +19,28 @@ export function PWASplash() {
 
     if (!isStandalone) return;
 
-    // Only show once per session
-    if (sessionStorage.getItem("hsa-splash-shown")) return;
-    sessionStorage.setItem("hsa-splash-shown", "1");
+    // Show once per day (survives iOS force-quit)
+    const key = getSplashKey();
+    if (localStorage.getItem(key)) return;
+    localStorage.setItem(key, "1");
 
-    // Respect reduced motion
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     setVisible(true);
 
-    // Begin fade-out after 3.2s
-    const fadeTimer = setTimeout(() => setFadeOut(true), 3200);
-    // Unmount after fade completes
-    const removeTimer = setTimeout(() => setVisible(false), 3800);
+    if (reducedMotion) {
+      // Static hold 1.5s then fade
+      const fadeTimer = setTimeout(() => setFadeOut(true), 1500);
+      const removeTimer = setTimeout(() => setVisible(false), 2000);
+      return () => {
+        clearTimeout(fadeTimer);
+        clearTimeout(removeTimer);
+      };
+    }
+
+    // Animated: 2.4s display + 0.5s fade = 2.9s
+    const fadeTimer = setTimeout(() => setFadeOut(true), 2400);
+    const removeTimer = setTimeout(() => setVisible(false), 2900);
 
     return () => {
       clearTimeout(fadeTimer);
@@ -64,13 +78,13 @@ export function PWASplash() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: transparent;
+          background: var(--sage-dark, #3E5740);
           overflow: hidden;
           animation: splashIn 0.4s ease-out;
         }
 
         .pwa-splash-out {
-          animation: splashOut 0.6s ease-in forwards;
+          animation: splashOut 0.5s ease-in forwards;
         }
 
         .pwa-splash-illustration {
@@ -80,7 +94,7 @@ export function PWASplash() {
           height: 100%;
           object-fit: cover;
           opacity: 0;
-          animation: illustrationIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+          animation: illustrationIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
         .pwa-splash-overlay {
@@ -112,7 +126,7 @@ export function PWASplash() {
           letter-spacing: -0.02em;
           text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
           opacity: 0;
-          animation: wordmarkIn 0.7s ease-out 0.8s forwards;
+          animation: wordmarkIn 0.6s ease-out 0.6s forwards;
         }
 
         .pwa-splash-tagline {
@@ -122,7 +136,7 @@ export function PWASplash() {
           color: rgba(255,255,255,0.7);
           text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
           opacity: 0;
-          animation: wordmarkIn 0.6s ease-out 1.2s forwards;
+          animation: wordmarkIn 0.5s ease-out 0.9s forwards;
         }
 
         .pwa-splash-accent {
@@ -158,6 +172,24 @@ export function PWASplash() {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .pwa-splash {
+            animation: none;
+          }
+          .pwa-splash-out {
+            animation: splashOut 0.5s ease-in forwards;
+          }
+          .pwa-splash-illustration {
+            animation: none;
+            opacity: 1;
+          }
+          .pwa-splash-wordmark,
+          .pwa-splash-tagline {
+            animation: none;
+            opacity: 1;
           }
         }
       `}</style>

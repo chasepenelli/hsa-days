@@ -32,9 +32,11 @@ export async function syncPendingEntries(): Promise<number> {
           await markJournalSynced(entry.day_number, entry.prompt_type);
           syncedCount++;
         }
-      } catch {
-        // Individual entry failed, continue with others
-        break; // If one fails (likely offline again), stop trying
+      } catch (err) {
+        // Network error (TypeError from fetch) means we're offline — stop trying
+        if (err instanceof TypeError) break;
+        // Other errors (5xx, etc.) — skip this entry and continue with others
+        continue;
       }
     }
 

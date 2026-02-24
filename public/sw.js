@@ -1,17 +1,27 @@
-const CACHE_NAME = "hsadays-v1";
+// HSA Days Service Worker — bump version on significant deploys
+const CACHE_VERSION = "2026-02-24";
+const CACHE_NAME = `hsadays-v${CACHE_VERSION}`;
 
 // App shell assets to precache
 const PRECACHE_ASSETS = [
   "/",
   "/manifest.json",
+  "/offline",
+  "/icons/icon-192.png",
+  "/icons/apple-touch-icon.png",
+  "/illustrations/icons/icon-paw-print.png",
+  "/illustrations/icons/icon-journal.png",
+  "/illustrations/icons/icon-heart.png",
 ];
 
-// Install: precache app shell
+// Install: precache app shell, then activate
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_ASSETS))
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.addAll(PRECACHE_ASSETS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 // Activate: clean up old caches
@@ -28,7 +38,7 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch: cache-first for static assets, network-only for everything else
+// Fetch: cache-first for static assets, network-first with offline fallback for navigation
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
@@ -57,6 +67,16 @@ self.addEventListener("fetch", (event) => {
           return response;
         });
       })
+    );
+    return;
+  }
+
+  // Navigation requests: network-first with offline fallback
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match("/offline").then((cached) => cached || caches.match("/"))
+      )
     );
     return;
   }

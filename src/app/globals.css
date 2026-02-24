@@ -88,7 +88,6 @@ body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
   padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Prevent iOS zoom on input focus */
@@ -141,6 +140,17 @@ input, textarea, select {
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
 @keyframes scaleIn {

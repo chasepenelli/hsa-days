@@ -181,16 +181,17 @@ function PlatformSection({
   icon,
   title,
   children,
-  borderColor,
+  accentColor,
 }: {
   icon: React.ReactNode;
   title: string;
   children: React.ReactNode;
-  borderColor: string;
+  accentColor: string;
 }) {
   return (
     <div
-      className={`bg-white border border-border border-l-[3px] ${borderColor} rounded-2xl p-7 md:p-9`}
+      className="bg-white border border-border border-l-[3px] rounded-2xl p-7 md:p-9"
+      style={{ borderLeftColor: accentColor }}
     >
       <div className="flex items-center gap-3 mb-6 text-text">
         {icon}
@@ -311,7 +312,7 @@ export default function InstallGuidePage() {
           <PlatformSection
             icon={<IPhoneIcon />}
             title="iPhone & iPad"
-            borderColor="border-l-sage"
+            accentColor="var(--sage)"
           >
             <Step number={1}>
               Open{" "}
@@ -349,7 +350,7 @@ export default function InstallGuidePage() {
           <PlatformSection
             icon={<AndroidIcon />}
             title="Android"
-            borderColor="border-l-gold"
+            accentColor="var(--gold)"
           >
             <Step number={1}>
               Open{" "}
@@ -387,7 +388,7 @@ export default function InstallGuidePage() {
           <PlatformSection
             icon={<DesktopIcon />}
             title="Desktop (Chrome or Edge)"
-            borderColor="border-l-terracotta"
+            accentColor="var(--terracotta)"
           >
             <Step number={1}>
               Open{" "}

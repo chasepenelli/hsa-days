@@ -40,6 +40,13 @@ export function JournalEditor({
     };
   }, []);
 
+  // Cleanup save timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    };
+  }, []);
+
   // Auto-grow textarea
   useEffect(() => {
     if (textareaRef.current) {
