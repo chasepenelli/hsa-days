@@ -369,10 +369,9 @@ export function HowItWorks() {
                   } as React.CSSProperties}
                 >
                   <div
-                    className="relative paper-texture rounded-2xl p-6 transition-all duration-300"
+                    className="relative paper-texture rounded-2xl p-6 transition-all duration-300 h-full flex flex-col"
                     style={{
                       background: "white",
-                      borderLeft: `3px solid ${step.colorHex}`,
                       boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
                     }}
                     onMouseEnter={(e) => {
@@ -429,14 +428,16 @@ export function HowItWorks() {
 
                     {/* Description */}
                     <p
-                      className="text-[0.91rem] leading-relaxed"
+                      className="text-[0.91rem] leading-relaxed flex-1"
                       style={{ color: "var(--text-muted)" }}
                     >
                       {step.description}
                     </p>
 
                     {/* Mini mockup */}
-                    <Mockup />
+                    <div className="mt-auto">
+                      <Mockup />
+                    </div>
 
                     {/* Closing ornament rule */}
                     <div className="flex justify-center mt-5">
