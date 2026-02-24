@@ -108,13 +108,15 @@ export function CommunityStories() {
           {stories.map((story, i) => (
             <div
               key={i}
-              className="group relative flex flex-col rounded-2xl p-7 transition-all duration-350 hover:-translate-y-1.5"
+              className="group relative overflow-visible flex flex-col rounded-2xl p-7 hover:-translate-y-1.5"
+              data-card
               style={{
                 background: "white",
                 border: "1px solid var(--border)",
                 boxShadow: story.featured
                   ? "0 8px 40px rgba(91,123,94,0.12)"
-                  : "0 2px 12px rgba(0,0,0,0.03)",
+                  : "var(--card-shadow-rest)",
+                transition: "var(--card-transition)",
               }}
             >
               {/* Featured accent */}
@@ -140,8 +142,8 @@ export function CommunityStories() {
 
               {/* Quote mark */}
               <div
-                className="font-serif text-[2.2rem] leading-none mb-2"
-                style={{ color: "var(--border-strong)", lineHeight: 1 }}
+                className="font-serif text-[3rem] leading-none absolute -top-1 left-6"
+                style={{ color: "rgba(196,162,101,0.28)", lineHeight: 1 }}
                 aria-hidden="true"
               >
                 &ldquo;

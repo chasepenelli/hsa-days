@@ -347,7 +347,7 @@ export function Hero() {
             className="text-[0.84rem] mb-1.5"
             style={{ color: "var(--text-muted)" }}
           >
-            Free forever &middot; No passwords &middot; Start immediately
+            Free forever &middot; Start immediately
           </p>
           <p
             className="text-[0.78rem] italic"

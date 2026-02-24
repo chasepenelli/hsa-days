@@ -196,13 +196,24 @@ function ProductCard({
 }) {
   return (
     <div
-      className="relative rounded-[20px] overflow-hidden flex flex-col"
+      className="relative rounded-[20px] overflow-hidden flex flex-col group"
       style={{
         background: "white",
         border: "1px solid var(--border)",
         boxShadow: isPrimary
           ? "0 12px 48px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)"
           : "0 4px 24px rgba(0,0,0,0.05)",
+        transition: "var(--card-transition)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.transform = `translateY(var(--card-lift))`;
+        e.currentTarget.style.boxShadow = "var(--card-shadow-hover)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateY(0)";
+        e.currentTarget.style.boxShadow = isPrimary
+          ? "0 12px 48px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)"
+          : "0 4px 24px rgba(0,0,0,0.05)";
       }}
     >
       {/* Accent top bar */}
@@ -302,7 +313,7 @@ function ProductCard({
             <span
               className="font-serif font-semibold"
               style={{
-                fontSize: isPrimary ? "2rem" : "1.15rem",
+                fontSize: isPrimary ? "2rem" : "1.6rem",
                 color: product.priceColor,
                 lineHeight: 1,
               }}

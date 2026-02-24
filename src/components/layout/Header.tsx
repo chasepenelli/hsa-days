@@ -26,9 +26,11 @@ export function Header() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 bg-warm-white/92 backdrop-blur-[12px] border-b border-border transition-shadow ${
-        scrolled ? "shadow-[0_2px_20px_rgba(0,0,0,0.06)]" : ""
-      }`}
+      className="fixed top-0 w-full z-50 bg-warm-white/92 backdrop-blur-[12px] border-b border-border"
+      style={{
+        boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "0 0 0 rgba(0,0,0,0)",
+        transition: "box-shadow var(--duration-normal) ease",
+      }}
     >
       <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between md:px-6 px-4 md:h-16 h-14">
         <Link
@@ -103,7 +105,21 @@ export function Header() {
               </Link>
               <Link
                 href="/days"
-                className="bg-sage text-white px-5 py-2 rounded-lg font-medium hover:bg-sage-dark transition-colors text-[0.9rem]"
+                className="bg-sage text-white px-5 py-2 rounded-[10px] font-medium text-[0.9rem]"
+                style={{
+                  boxShadow: "0 2px 10px rgba(91,123,94,0.28)",
+                  transition: "background var(--duration-fast) ease, transform var(--duration-fast) var(--ease-out-expo), box-shadow var(--duration-fast) var(--ease-out-expo)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(91,123,94,0.35)";
+                  e.currentTarget.style.background = "var(--sage-dark)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 2px 10px rgba(91,123,94,0.28)";
+                  e.currentTarget.style.background = "var(--sage)";
+                }}
               >
                 Start Free
               </Link>
@@ -136,89 +152,98 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="md:hidden flex flex-col bg-warm-white border-b border-border shadow-[0_8px_20px_rgba(0,0,0,0.06)]">
+      {/* Mobile menu — always mounted, animated via CSS */}
+      <div
+        className="md:hidden flex flex-col bg-warm-white overflow-hidden"
+        style={{
+          maxHeight: menuOpen ? "600px" : "0",
+          opacity: menuOpen ? 1 : 0,
+          transition: menuOpen
+            ? "max-height 0.3s var(--ease-out-expo), opacity 0.25s ease"
+            : "max-height 0.2s var(--ease-in-gentle), opacity 0.15s ease",
+          borderBottom: menuOpen ? "1px solid var(--border)" : "1px solid transparent",
+          boxShadow: menuOpen ? "0 8px 20px rgba(0,0,0,0.06)" : "none",
+        }}
+      >
+        {[
+          { href: "/about", label: "Our Story" },
+          { href: "/journey", label: "The Journey" },
+          { href: "/community", label: "Community" },
+          { href: "/resources", label: "Resources" },
+          { href: "/order", label: "Pre-Order" },
+          { href: "/#support", label: "Support" },
+        ].map((item, i) => (
           <Link
-            href="/about"
+            key={item.href}
+            href={item.href}
             onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
+            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border hover:text-text hover:bg-cream/50"
+            style={{
+              transition: "color var(--duration-fast) ease, background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
+              opacity: menuOpen ? 1 : 0,
+              transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
+              transitionDelay: menuOpen ? `${i * 40}ms` : "0ms",
+            }}
           >
-            Our Story
+            {item.label}
           </Link>
-          <Link
-            href="/journey"
-            onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-          >
-            The Journey
-          </Link>
-          <Link
-            href="/community"
-            onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-          >
-            Community
-          </Link>
-          <Link
-            href="/resources"
-            onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-          >
-            Resources
-          </Link>
-          <Link
-            href="/order"
-            onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-          >
-            Pre-Order
-          </Link>
-          <Link
-            href="/#support"
-            onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-          >
-            Support
-          </Link>
-          {isLoggedIn ? (
-            <>
-              <Link
-                href="/days"
-                onClick={closeMenu}
-                className="px-6 py-3.5 text-[0.95rem] text-sage no-underline font-medium border-b border-border"
+        ))}
+        {isLoggedIn ? (
+          <>
+            <Link
+              href="/days"
+              onClick={closeMenu}
+              className="px-6 py-3.5 text-[0.95rem] text-sage no-underline font-medium border-b border-border hover:text-sage-dark hover:bg-cream/50"
+              style={{
+                transition: "color var(--duration-fast) ease, background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
+                opacity: menuOpen ? 1 : 0,
+                transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
+                transitionDelay: menuOpen ? "240ms" : "0ms",
+              }}
+            >
+              My Journey
+            </Link>
+            <form action="/api/auth/logout" method="POST" className="px-6 py-3">
+              <button
+                type="submit"
+                className="w-full text-center py-3.5 text-[0.95rem] text-text-muted font-medium bg-transparent border border-border rounded-[10px] cursor-pointer hover:border-sage hover:text-sage"
+                style={{ transition: "all var(--duration-fast) ease" }}
               >
-                My Journey
-              </Link>
-              <form action="/api/auth/logout" method="POST" className="px-6 py-3">
-                <button
-                  type="submit"
-                  className="w-full text-center py-3.5 text-[0.95rem] text-text-muted font-medium bg-transparent border border-border rounded-[10px] cursor-pointer"
-                >
-                  Sign Out
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                onClick={closeMenu}
-                className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border"
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/days"
-                onClick={closeMenu}
-                className="mx-6 my-3 bg-sage text-white text-center py-3.5 rounded-[10px] font-medium text-[0.95rem]"
-              >
-                Start Free
-              </Link>
-            </>
-          )}
-        </div>
-      )}
+                Sign Out
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              onClick={closeMenu}
+              className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border hover:text-text hover:bg-cream/50"
+              style={{
+                transition: "color var(--duration-fast) ease, background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
+                opacity: menuOpen ? 1 : 0,
+                transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
+                transitionDelay: menuOpen ? "240ms" : "0ms",
+              }}
+            >
+              Sign In
+            </Link>
+            <Link
+              href="/days"
+              onClick={closeMenu}
+              className="mx-6 my-3 bg-sage text-white text-center py-3.5 rounded-[10px] font-medium text-[0.95rem] hover:bg-sage-dark"
+              style={{
+                transition: "background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
+                opacity: menuOpen ? 1 : 0,
+                transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
+                transitionDelay: menuOpen ? "280ms" : "0ms",
+              }}
+            >
+              Start Free
+            </Link>
+          </>
+        )}
+      </div>
     </nav>
   );
 }
