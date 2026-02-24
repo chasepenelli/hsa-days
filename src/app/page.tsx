@@ -3,6 +3,7 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { WhyThisExists } from "@/components/sections/WhyThisExists";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
 import { SeeInsideV2 } from "@/components/sections/SeeInsideV2";
+import { WhatsInside } from "@/components/sections/WhatsInside";
 import { EmailPreview } from "@/components/sections/EmailPreview";
 import { About } from "@/components/sections/About";
 import { CommunityStories } from "@/components/sections/CommunityStories";
@@ -32,6 +33,7 @@ export default function Home() {
       <WhyThisExists />
       <JourneyTimeline />
       <SeeInsideV2 />
+      <WhatsInside />
       <ChapterDivider />
       <EmailPreview />
       <About />
