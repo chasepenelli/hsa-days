@@ -316,19 +316,14 @@ export function Resources() {
                     />
                   </div>
 
-                  {/* Icon circle */}
-                  <div
-                    className="relative w-14 h-14 rounded-full flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
-                    style={{
-                      background: `${resource.colorHex}14`,
-                    }}
-                  >
+                  {/* Hero illustration */}
+                  <div className="relative mb-5 transition-transform duration-300 group-hover:scale-105 origin-bottom-left">
                     <Image
                       src={resource.icon}
                       alt=""
-                      width={28}
-                      height={28}
-                      style={{ objectFit: "contain" }}
+                      width={100}
+                      height={100}
+                      style={{ objectFit: "contain", mixBlendMode: "multiply" }}
                     />
                   </div>
 
