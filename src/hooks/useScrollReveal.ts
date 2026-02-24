@@ -16,7 +16,7 @@ export function useScrollReveal(threshold = 0.12) {
     if (!container) return;
 
     const targets = container.querySelectorAll<HTMLElement>(
-      ".reveal, .reveal-scale, .reveal-stagger, .timeline-line-h, .timeline-line-v"
+      ".reveal, .reveal-scale, .reveal-stagger, .timeline-line-h, .timeline-line-v, .step-path"
     );
 
     if (targets.length === 0) return;

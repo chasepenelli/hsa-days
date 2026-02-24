@@ -399,6 +399,22 @@ input, textarea, select {
   transform: scaleY(1);
 }
 
+/* Step card stagger — desktop only */
+@media (min-width: 768px) {
+  .step-card-wrapper {
+    transform: translateY(var(--step-offset, 0));
+  }
+}
+
+/* SVG step-path draw animation */
+.step-path path {
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+}
+
+.step-path.is-visible path {
+  stroke-dashoffset: 0 !important;
+}
+
 /* Reduced motion overrides */
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal-scale, .reveal-stagger > * {
@@ -408,6 +424,10 @@ input, textarea, select {
   }
   .timeline-line-h, .timeline-line-v {
     transform: none;
+    transition: none;
+  }
+  .step-path path {
+    stroke-dashoffset: 0 !important;
     transition: none;
   }
   .supplement-expand {
