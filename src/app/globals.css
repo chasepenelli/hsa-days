@@ -902,3 +902,30 @@ input, textarea, select {
     animation: none;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Day 1 preview fade-bottom
+────────────────────────────────────────────── */
+
+.preview-fade-bottom {
+  position: relative;
+}
+
+.preview-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, white);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 20;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-fade-bottom::after {
+    height: 40px;
+  }
+}

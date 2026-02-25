@@ -7,11 +7,11 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "The Journey — 30 Days of Healing | HSA Days",
   description:
-    "Explore the full 30-day HSA Days journey. Five phases of healing — from the shock of diagnosis to finding meaning — with daily guidance, reflections, and community.",
+    "A free 30-day companion for the hardest season with your dog. Daily reflections, journaling prompts, and practical guidance — starting from the moment of diagnosis.",
   openGraph: {
     title: "The Journey — 30 Days of Healing | HSA Days",
     description:
-      "Five phases. Thirty days. A companion through the hardest season with your dog.",
+      "Your dog was just diagnosed. There's a path through this. A free 30-day companion that walks beside you — one day at a time.",
     type: "website",
   },
 };
@@ -19,10 +19,13 @@ export const metadata: Metadata = {
 export default async function JourneyPage() {
   const supabase = await createClient();
 
-  const { data: days } = await supabase
+  const { data: day1 } = await supabase
     .from("daily_content")
-    .select("day_number, title, subtitle, category, quote, quote_author")
-    .order("day_number", { ascending: true });
+    .select(
+      "day_number, title, subtitle, category, quote, quote_author, reflection_intro, journal_prompt"
+    )
+    .eq("day_number", 1)
+    .single();
 
-  return <JourneyPageClient days={days ?? []} />;
+  return <JourneyPageClient day1={day1} />;
 }
