@@ -13,7 +13,7 @@ export function EmailQuoteBlock({
 }: EmailQuoteBlockProps) {
   return (
     <tr>
-      <td style={{ padding: "28px 28px 0 28px" }}>
+      <td style={{ padding: "24px 32px 0 32px" }}>
         <table
           role="presentation"
           cellPadding="0"
@@ -32,11 +32,11 @@ export function EmailQuoteBlock({
               <div
                 style={{
                   fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-                  fontSize: "20px",
+                  fontSize: "18px",
                   fontStyle: "italic",
                   color: "#2D2D2D",
-                  lineHeight: "1.55",
-                  marginBottom: "12px",
+                  lineHeight: "1.5",
+                  marginBottom: "10px",
                 }}
                 className="body-text"
               >
@@ -49,7 +49,7 @@ export function EmailQuoteBlock({
                   fontSize: "12px",
                   fontWeight: 600,
                   color: "#C4A265",
-                  letterSpacing: "0.12em",
+                  letterSpacing: "0.1em",
                   textTransform: "uppercase" as const,
                 }}
               >

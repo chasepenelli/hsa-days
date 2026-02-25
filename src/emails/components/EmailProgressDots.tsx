@@ -10,7 +10,7 @@ export function EmailProgressDots({ day }: EmailProgressDotsProps) {
 
   return (
     <tr>
-      <td style={{ padding: "24px 28px 0 28px", textAlign: "center" }}>
+      <td style={{ padding: "24px 32px 0 32px", textAlign: "center" }}>
         <table
           role="presentation"
           cellPadding="0"
@@ -51,10 +51,12 @@ export function EmailProgressDots({ day }: EmailProgressDotsProps) {
           style={{
             fontFamily:
               "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-            fontSize: "12px",
-            color: "#6B6B6B",
+            fontSize: "11px",
+            fontWeight: 600,
+            color: "#9A9490",
             marginTop: "8px",
-            letterSpacing: "0.02em",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase" as const,
           }}
           className="muted-text"
         >

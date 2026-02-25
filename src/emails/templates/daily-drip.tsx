@@ -54,7 +54,7 @@ export function DailyDripEmail({
 
         {/* Day label + title */}
         <tr>
-          <td style={{ padding: "28px 28px 0 28px" }}>
+          <td style={{ padding: "24px 32px 0 32px" }}>
             <div
               style={{
                 fontFamily:
@@ -62,7 +62,7 @@ export function DailyDripEmail({
                 fontSize: "11px",
                 fontWeight: 600,
                 color: "#C4A265",
-                letterSpacing: "0.12em",
+                letterSpacing: "0.1em",
                 textTransform: "uppercase" as const,
                 marginBottom: "8px",
               }}
@@ -72,10 +72,10 @@ export function DailyDripEmail({
             <div
               style={{
                 fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-                fontSize: "30px",
+                fontSize: "26px",
                 fontWeight: 400,
                 color: "#2D2D2D",
-                lineHeight: "1.2",
+                lineHeight: "1.25",
               }}
               className="body-text"
             >
@@ -93,22 +93,22 @@ export function DailyDripEmail({
 
         {/* Body paragraphs */}
         <tr>
-          <td style={{ padding: "24px 28px 0 28px" }}>
+          <td style={{ padding: "24px 32px 0 32px" }}>
             <div
               style={{
                 fontFamily:
                   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                fontSize: "17px",
+                fontSize: "16px",
                 color: "#2D2D2D",
-                lineHeight: "1.65",
+                lineHeight: "1.6",
               }}
               className="body-text"
             >
-              <p style={{ margin: "0 0 16px 0" }}>
+              <p style={{ margin: "0 0 14px 0" }}>
                 Hey {firstName},
               </p>
               {bodyParagraphs.map((p, i) => (
-                <p key={i} style={{ margin: "0 0 16px 0" }}>
+                <p key={i} style={{ margin: "0 0 14px 0" }}>
                   {p}
                 </p>
               ))}
@@ -118,7 +118,7 @@ export function DailyDripEmail({
 
         {/* "Today includes" teaser card */}
         <tr>
-          <td style={{ padding: "12px 28px 0 28px" }}>
+          <td style={{ padding: "20px 32px 0 32px" }}>
             <table
               role="presentation"
               cellPadding="0"
@@ -137,10 +137,10 @@ export function DailyDripEmail({
                     style={{
                       fontFamily:
                         "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                      fontSize: "12px",
+                      fontSize: "11px",
                       fontWeight: 600,
                       color: "#C4A265",
-                      letterSpacing: "0.12em",
+                      letterSpacing: "0.1em",
                       textTransform: "uppercase" as const,
                       marginBottom: "12px",
                     }}
@@ -156,7 +156,7 @@ export function DailyDripEmail({
                       border={0}
                       width="100%"
                       style={{
-                        marginBottom: i < teaserItems.length - 1 ? "8px" : "0",
+                        marginBottom: i < teaserItems.length - 1 ? "6px" : "0",
                       }}
                     >
                       <tr>
@@ -165,10 +165,10 @@ export function DailyDripEmail({
                             verticalAlign: "top",
                             paddingRight: "10px",
                             width: "16px",
-                            fontFamily: "serif",
+                            fontFamily: "Lora, Georgia, 'Times New Roman', serif",
                             fontSize: "12px",
                             color: "#C4A265",
-                            lineHeight: "1.65",
+                            lineHeight: "1.6",
                           }}
                         >
                           &#10047;
@@ -180,7 +180,7 @@ export function DailyDripEmail({
                               "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
                             fontSize: "15px",
                             color: "#2D2D2D",
-                            lineHeight: "1.65",
+                            lineHeight: "1.6",
                           }}
                           className="body-text"
                         >

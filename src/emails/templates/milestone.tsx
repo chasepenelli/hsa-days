@@ -58,7 +58,7 @@ export function MilestoneEmail({
         <tr>
           <td
             style={{
-              padding: "36px 28px 0 28px",
+              padding: "32px 32px 0 32px",
               textAlign: "center",
             }}
           >
@@ -69,9 +69,9 @@ export function MilestoneEmail({
                 fontSize: "11px",
                 fontWeight: 600,
                 color: "#C4A265",
-                letterSpacing: "0.12em",
+                letterSpacing: "0.1em",
                 textTransform: "uppercase" as const,
-                marginBottom: "12px",
+                marginBottom: "10px",
               }}
             >
               Day {day} &mdash; A Milestone
@@ -79,10 +79,10 @@ export function MilestoneEmail({
             <div
               style={{
                 fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-                fontSize: "30px",
+                fontSize: "26px",
                 fontWeight: 400,
                 color: "#2D2D2D",
-                lineHeight: "1.2",
+                lineHeight: "1.25",
                 marginBottom: "6px",
               }}
               className="body-text"
@@ -92,10 +92,10 @@ export function MilestoneEmail({
             <div
               style={{
                 fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-                fontSize: "20px",
+                fontSize: "18px",
                 fontStyle: "italic",
                 color: "#5B7B5E",
-                lineHeight: "1.3",
+                lineHeight: "1.35",
               }}
             >
               {subheading}
@@ -108,28 +108,28 @@ export function MilestoneEmail({
 
         {/* Greeting + body */}
         <tr>
-          <td style={{ padding: "28px 28px 0 28px" }}>
+          <td style={{ padding: "24px 32px 0 32px" }}>
             <div
               style={{
                 fontFamily:
                   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                fontSize: "17px",
+                fontSize: "16px",
                 color: "#2D2D2D",
-                lineHeight: "1.65",
+                lineHeight: "1.6",
               }}
               className="body-text"
             >
-              <p style={{ margin: "0 0 16px 0" }}>
+              <p style={{ margin: "0 0 14px 0" }}>
                 {firstName},
               </p>
               {bodyParagraphs.map((p, i) => (
-                <p key={i} style={{ margin: "0 0 16px 0" }}>
+                <p key={i} style={{ margin: "0 0 14px 0" }}>
                   {p}
                 </p>
               ))}
               <p
                 style={{
-                  margin: "0 0 16px 0",
+                  margin: "0 0 14px 0",
                   fontWeight: "bold",
                   color: "#5B7B5E",
                 }}
@@ -159,7 +159,7 @@ export function MilestoneEmail({
 
         {/* Signature */}
         <tr>
-          <td style={{ padding: "24px 28px 0 28px" }}>
+          <td style={{ padding: "24px 32px 0 32px" }}>
             <div
               style={{
                 fontFamily:

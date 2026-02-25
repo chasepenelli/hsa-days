@@ -8,7 +8,7 @@ interface EmailCTAProps {
 export function EmailCTA({ href, children }: EmailCTAProps) {
   return (
     <tr>
-      <td style={{ padding: "28px 28px 0 28px" }} align="center">
+      <td style={{ padding: "24px 32px 0 32px" }} align="center">
         {/* Outlook VML fallback */}
         <div
           dangerouslySetInnerHTML={{

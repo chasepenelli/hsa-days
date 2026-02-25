@@ -8,10 +8,10 @@ export function EmailDivider({ ornament }: EmailDividerProps) {
   if (ornament) {
     return (
       <tr>
-        <td style={{ padding: "32px 28px 0 28px", textAlign: "center" }}>
+        <td style={{ padding: "24px 32px 0 32px", textAlign: "center" }}>
           <div
             style={{
-              fontFamily: "serif",
+              fontFamily: "Lora, Georgia, 'Times New Roman', serif",
               fontSize: "11px",
               color: "#C4A265",
               opacity: 0.4,
@@ -28,7 +28,7 @@ export function EmailDivider({ ornament }: EmailDividerProps) {
 
   return (
     <tr>
-      <td style={{ padding: "32px 0 0 0", textAlign: "center" }}>
+      <td style={{ padding: "24px 0 0 0", textAlign: "center" }}>
         <div
           style={{
             width: "60px",

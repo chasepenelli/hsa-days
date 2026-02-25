@@ -17,10 +17,10 @@ export function EmailHeader({
     <tr>
       <td
         style={{
-          backgroundColor: "#F5F0EA",
+          backgroundColor: "#5B7B5E",
           textAlign: "center",
           ...(isMilestone
-            ? { borderTop: "2px solid #C4A265" }
+            ? { borderTop: "3px solid #C4A265" }
             : {}),
           ...(illustrationUrl
             ? {
@@ -32,27 +32,27 @@ export function EmailHeader({
             : {}),
         }}
       >
-        {/* Cream wash overlay — ghosts the background illustration to ~18% visibility */}
+        {/* Green gradient wash — ghosts illustration + adds soft gradient */}
         <div
           style={{
-            backgroundColor: illustrationUrl
-              ? "rgba(245, 240, 234, 0.82)"
-              : "transparent",
-            padding: "32px 28px 28px 28px",
+            background:
+              "linear-gradient(180deg, rgba(74, 107, 77, 0.93) 0%, rgba(91, 123, 94, 0.86) 100%)",
+            padding: "28px 32px 24px 32px",
           }}
         >
           {/* Paw print brand mark */}
           <img
             src="https://hsadays.com/illustrations/icons/icon-paw-print.png"
             alt=""
-            width="24"
-            height="24"
+            width="22"
+            height="22"
             style={{
               display: "block",
-              margin: "0 auto 12px auto",
-              width: "24px",
-              height: "24px",
-              opacity: 0.6,
+              margin: "0 auto 10px auto",
+              width: "22px",
+              height: "22px",
+              opacity: 0.7,
+              filter: "brightness(10)",
             }}
           />
 
@@ -60,13 +60,14 @@ export function EmailHeader({
           <div
             style={{
               fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-              fontSize: "28px",
+              fontSize: "26px",
               fontWeight: 400,
               lineHeight: "1.2",
+              letterSpacing: "0.01em",
             }}
           >
-            <span style={{ color: "#5B7B5E" }}>HSA</span>
-            <span style={{ color: "#C4A265" }}> Days</span>
+            <span style={{ color: "#FFFFFF" }}>HSA</span>
+            <span style={{ color: "#E2C882" }}> Days</span>
           </div>
 
           {tagline && (
@@ -75,8 +76,8 @@ export function EmailHeader({
                 fontFamily:
                   "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
                 fontSize: "13px",
-                color: "#8A8580",
-                letterSpacing: "0.04em",
+                color: "rgba(255, 255, 255, 0.7)",
+                letterSpacing: "0.03em",
                 marginTop: "6px",
               }}
             >
@@ -87,11 +88,11 @@ export function EmailHeader({
           {/* Gold hairline separator */}
           <div
             style={{
-              width: "60px",
+              width: "48px",
               height: "1px",
               backgroundColor: "#C4A265",
-              opacity: 0.3,
-              margin: "20px auto 0 auto",
+              opacity: 0.5,
+              margin: "16px auto 0 auto",
             }}
           />
         </div>
