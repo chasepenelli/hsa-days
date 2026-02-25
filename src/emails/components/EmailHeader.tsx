@@ -36,7 +36,7 @@ export function EmailHeader({
         <div
           style={{
             background:
-              "linear-gradient(180deg, rgba(74, 107, 77, 0.93) 0%, rgba(91, 123, 94, 0.86) 100%)",
+              "linear-gradient(180deg, rgba(74, 107, 77, 0.94) 0%, rgba(91, 123, 94, 0.90) 100%)",
             padding: "28px 32px 24px 32px",
           }}
         >

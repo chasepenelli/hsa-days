@@ -67,8 +67,10 @@ export function NudgeEmail({
         border={0}
         width="100%"
       >
-        {/* Header — generic, no day-specific illustration */}
-        <EmailHeader />
+        {/* Header — sealed envelope illustration ghosted behind sage */}
+        <EmailHeader
+          illustrationUrl="https://hsadays.com/illustrations/journal-blank/letter-envelope.png"
+        />
 
         {/* Ornament divider */}
         <EmailDivider ornament />

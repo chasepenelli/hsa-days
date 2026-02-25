@@ -22,7 +22,10 @@ export function LaunchEmail({
         width="100%"
       >
         {/* Header */}
-        <EmailHeader tagline="The wait is over" />
+        <EmailHeader
+          tagline="The wait is over"
+          illustrationUrl="https://hsadays.com/illustrations/home/home-hero-bg.png"
+        />
 
         {/* Ornament divider */}
         <EmailDivider ornament />
