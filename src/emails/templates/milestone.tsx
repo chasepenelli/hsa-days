@@ -39,6 +39,8 @@ export function MilestoneEmail({
   const chapter = getChapter(day);
   const resolvedPreheader =
     preheader || `${day} days. You\u2019re doing this.`;
+  const dayPadded = String(day).padStart(2, "0");
+  const illustrationUrl = `https://hsadays.com/illustrations/journal/day${dayPadded}-illust.png`;
 
   return (
     <EmailLayout preview={resolvedPreheader}>
@@ -49,91 +51,8 @@ export function MilestoneEmail({
         border={0}
         width="100%"
       >
-        {/* Header with gold left accent */}
-        <tr>
-          <td
-            className="header-bg"
-            style={{
-              background: "linear-gradient(135deg, #3E5740, #5B7B5E, #7A9A7D)",
-              padding: "0",
-            }}
-          >
-            <table
-              role="presentation"
-              cellPadding="0"
-              cellSpacing="0"
-              border={0}
-              width="100%"
-            >
-              <tr>
-                <td
-                  style={{
-                    width: "4px",
-                    backgroundColor: "#C4A265",
-                  }}
-                />
-                <td style={{ padding: "28px 28px 28px 24px" }}>
-                  <table
-                    role="presentation"
-                    cellPadding="0"
-                    cellSpacing="0"
-                    border={0}
-                    width="100%"
-                  >
-                    <tr>
-                      <td style={{ verticalAlign: "middle" }}>
-                        <div
-                          style={{
-                            fontFamily:
-                              "Lora, Georgia, 'Times New Roman', serif",
-                            fontSize: "28px",
-                            fontWeight: 400,
-                            lineHeight: "1.2",
-                          }}
-                        >
-                          <span style={{ color: "#FFFFFF" }}>HSA</span>
-                          <span style={{ color: "#C4A265" }}> Days</span>
-                        </div>
-                        <div
-                          style={{
-                            fontFamily:
-                              "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                            fontSize: "13px",
-                            color: "rgba(255,255,255,0.7)",
-                            letterSpacing: "0.04em",
-                            marginTop: "4px",
-                          }}
-                        >
-                          Day {day} &mdash; A Milestone
-                        </div>
-                      </td>
-                      <td
-                        style={{
-                          verticalAlign: "middle",
-                          textAlign: "right",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontFamily:
-                              "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                            fontSize: "11px",
-                            fontWeight: 600,
-                            color: "#C4A265",
-                            letterSpacing: "0.12em",
-                            textTransform: "uppercase" as const,
-                          }}
-                        >
-                          DAY {day}
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
+        {/* Header with milestone gold top border */}
+        <EmailHeader illustrationUrl={illustrationUrl} variant="milestone" />
 
         {/* Milestone heading */}
         <tr>
@@ -143,6 +62,20 @@ export function MilestoneEmail({
               textAlign: "center",
             }}
           >
+            <div
+              style={{
+                fontFamily:
+                  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+                fontSize: "11px",
+                fontWeight: 600,
+                color: "#C4A265",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase" as const,
+                marginBottom: "12px",
+              }}
+            >
+              Day {day} &mdash; A Milestone
+            </div>
             <div
               style={{
                 fontFamily: "Lora, Georgia, 'Times New Roman', serif",

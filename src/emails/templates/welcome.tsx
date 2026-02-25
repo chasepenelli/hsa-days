@@ -27,7 +27,10 @@ export function WelcomeEmail({
         width="100%"
       >
         {/* Header */}
-        <EmailHeader centered tagline="A 30-day companion for what you're going through" />
+        <EmailHeader
+          illustrationUrl="https://hsadays.com/illustrations/journal/day01-illust.png"
+          tagline="A 30-day companion for what you're going through"
+        />
 
         {/* Ornament divider */}
         <EmailDivider ornament />

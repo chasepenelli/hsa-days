@@ -17,8 +17,8 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
   return (
     <Html lang="en">
       <Head>
-        <meta name="color-scheme" content="light dark" />
-        <meta name="supported-color-schemes" content="light dark" />
+        <meta name="color-scheme" content="light only" />
+        <meta name="supported-color-schemes" content="light" />
         <Font
           fontFamily="Lora"
           fallbackFontFamily={["Georgia", "Times New Roman", "serif"]}
@@ -33,18 +33,6 @@ export function EmailLayout({ preview, children }: EmailLayoutProps) {
           dangerouslySetInnerHTML={{
             __html: `
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-
-@media (prefers-color-scheme: dark) {
-  .email-body { background-color: #1C1A17 !important; }
-  .email-container { background-color: #242220 !important; border-color: #3A3836 !important; }
-  .quote-block { background-color: #2E2B26 !important; }
-  .body-text { color: #E8E4DF !important; }
-  .muted-text { color: #9A9490 !important; }
-  .cta-button { background-color: #7A9A7D !important; }
-  .header-bg { background: linear-gradient(135deg, #2E3F30, #3E5740, #4E6A50) !important; }
-  .footer-bg { background-color: #1F1D1A !important; }
-  .teaser-card { background-color: #2E2B26 !important; }
-}
 `,
           }}
         />

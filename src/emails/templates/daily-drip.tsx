@@ -34,6 +34,8 @@ export function DailyDripEmail({
   teaserItems = ["A short reflection", "A grounding activity", "A journal prompt"],
 }: DailyDripEmailProps) {
   const phase = getPhase(day);
+  const dayPadded = String(day).padStart(2, "0");
+  const illustrationUrl = `https://hsadays.com/illustrations/journal/day${dayPadded}-illust.png`;
 
   return (
     <EmailLayout preview={preheader}>
@@ -44,8 +46,8 @@ export function DailyDripEmail({
         border={0}
         width="100%"
       >
-        {/* Header with day badge */}
-        <EmailHeader day={day} />
+        {/* Header with day illustration */}
+        <EmailHeader illustrationUrl={illustrationUrl} />
 
         {/* Ornament divider */}
         <EmailDivider ornament />
