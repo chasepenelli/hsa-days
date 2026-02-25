@@ -84,6 +84,12 @@ export function Header() {
             Pre-Order
           </Link>
           <Link
+            href="/emails"
+            className="text-[0.9rem] text-gold no-underline font-medium hover:text-gold/70 transition-colors"
+          >
+            Emails
+          </Link>
+          <Link
             href="/#support"
             className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
           >
@@ -189,19 +195,20 @@ export function Header() {
           boxShadow: menuOpen ? "0 8px 20px rgba(0,0,0,0.06)" : "none",
         }}
       >
-        {[
+        {([
           { href: "/about", label: "Our Story" },
           { href: "/journey", label: "The Journey" },
           { href: "/community", label: "Community" },
           { href: "/resources", label: "Resources" },
           { href: "/order", label: "Pre-Order" },
+          { href: "/emails", label: "Emails", dev: true },
           { href: "/#support", label: "Support" },
-        ].map((item, i) => (
+        ] as { href: string; label: string; dev?: boolean }[]).map((item, i) => (
           <Link
             key={item.href}
             href={item.href}
             onClick={closeMenu}
-            className="px-6 py-3.5 text-[0.95rem] text-text-muted no-underline font-medium border-b border-border hover:text-text hover:bg-cream/50"
+            className={`px-6 py-3.5 text-[0.95rem] no-underline font-medium border-b border-border hover:bg-cream/50 ${item.dev ? "text-gold hover:text-gold/70" : "text-text-muted hover:text-text"}`}
             style={{
               transition: "color var(--duration-fast) ease, background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
               opacity: menuOpen ? 1 : 0,
