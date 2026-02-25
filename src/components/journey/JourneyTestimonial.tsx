@@ -6,7 +6,7 @@ interface JourneyTestimonialProps {
 export function JourneyTestimonial({ quote, author }: JourneyTestimonialProps) {
   return (
     <div
-      className="rounded-2xl px-6 py-7 sm:px-8"
+      className="rounded-2xl px-7 py-8 sm:px-9"
       style={{
         background: "white",
         border: "1px solid var(--border)",

@@ -98,7 +98,7 @@ export function JourneyArcBar() {
 
       {/* Phase rows */}
       <div
-        className="mt-8 space-y-4 mx-auto"
+        className="mt-10 space-y-5 mx-auto"
         style={{ maxWidth: "520px" }}
       >
         {PHASES.map((phase, i) => (

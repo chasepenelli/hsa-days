@@ -66,8 +66,8 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       <section
         className="relative"
         style={{
-          paddingTop: "clamp(56px, 8vw, 96px)",
-          paddingBottom: "clamp(56px, 8vw, 96px)",
+          paddingTop: "clamp(72px, 10vw, 120px)",
+          paddingBottom: "clamp(72px, 10vw, 120px)",
           paddingLeft: "24px",
           paddingRight: "24px",
           background: "var(--warm-white)",
@@ -75,10 +75,10 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       >
         <div className="max-w-[600px] mx-auto text-center">
           <h2
-            className="reveal font-serif font-semibold tracking-tight mb-8"
+            className="reveal font-serif font-semibold tracking-tight mb-10"
             style={{
-              fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
-              lineHeight: 1.2,
+              fontSize: "clamp(1.8rem, 4.5vw, 2.5rem)",
+              lineHeight: 1.15,
               color: "var(--text)",
             }}
           >
@@ -103,20 +103,20 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       <section
         className="relative"
         style={{
-          paddingTop: "clamp(48px, 7vw, 80px)",
-          paddingBottom: "clamp(56px, 8vw, 96px)",
+          paddingTop: "clamp(72px, 10vw, 120px)",
+          paddingBottom: "clamp(72px, 10vw, 120px)",
           paddingLeft: "0",
           paddingRight: "0",
           background:
             "linear-gradient(to bottom, var(--warm-white) 0%, var(--cream) 100%)",
         }}
       >
-        <div className="text-center mb-8 px-6">
+        <div className="text-center mb-10 px-6">
           <h2
-            className="reveal font-serif font-semibold tracking-tight mb-3"
+            className="reveal font-serif font-semibold tracking-tight mb-4"
             style={{
-              fontSize: "clamp(1.4rem, 3.5vw, 1.8rem)",
-              lineHeight: 1.25,
+              fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
+              lineHeight: 1.2,
               color: "var(--text)",
             }}
           >
@@ -198,8 +198,8 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       <section
         className="relative"
         style={{
-          paddingTop: "clamp(48px, 7vw, 80px)",
-          paddingBottom: "clamp(48px, 7vw, 80px)",
+          paddingTop: "clamp(72px, 10vw, 120px)",
+          paddingBottom: "clamp(72px, 10vw, 120px)",
           paddingLeft: "24px",
           paddingRight: "24px",
           background: "var(--cream)",
@@ -222,7 +222,7 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
         />
 
         <div className="max-w-[680px] mx-auto relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {TESTIMONIALS.map((t, i) => (
               <div
                 key={i}
@@ -242,8 +242,8 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       <section
         className="relative overflow-hidden"
         style={{
-          paddingTop: "clamp(64px, 9vw, 112px)",
-          paddingBottom: "clamp(64px, 9vw, 112px)",
+          paddingTop: "clamp(80px, 11vw, 132px)",
+          paddingBottom: "clamp(80px, 11vw, 132px)",
           paddingLeft: "24px",
           paddingRight: "24px",
           background:
@@ -283,10 +283,10 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
 
         <div className="max-w-[520px] mx-auto text-center relative z-10">
           <h2
-            className="reveal font-serif font-semibold tracking-tight mb-4"
+            className="reveal font-serif font-semibold tracking-tight mb-6"
             style={{
-              fontSize: "clamp(1.9rem, 4.5vw, 2.6rem)",
-              lineHeight: 1.2,
+              fontSize: "clamp(2.1rem, 5vw, 2.8rem)",
+              lineHeight: 1.15,
               color: "white",
             }}
           >
@@ -299,7 +299,7 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
 
           {/* Ornamental rule */}
           <div
-            className="reveal flex items-center justify-center gap-3 mb-5"
+            className="reveal flex items-center justify-center gap-3 mb-6"
             aria-hidden="true"
             style={{ transitionDelay: "0.08s" }}
           >

@@ -36,8 +36,8 @@ export function WhatEachDayHolds() {
     <section
       className="relative"
       style={{
-        paddingTop: "clamp(56px, 8vw, 96px)",
-        paddingBottom: "clamp(56px, 8vw, 96px)",
+        paddingTop: "clamp(72px, 10vw, 120px)",
+        paddingBottom: "clamp(72px, 10vw, 120px)",
         paddingLeft: "24px",
         paddingRight: "24px",
         background: "var(--cream)",
@@ -45,9 +45,9 @@ export function WhatEachDayHolds() {
     >
       <div className="mx-auto" style={{ maxWidth: "460px" }}>
         {/* Eyebrow + heading */}
-        <div className="reveal text-center mb-8">
+        <div className="reveal text-center mb-10">
           <p
-            className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] mb-2"
+            className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] mb-3"
             style={{ color: "var(--text-muted)", opacity: 0.6 }}
           >
             Every day includes
@@ -55,8 +55,8 @@ export function WhatEachDayHolds() {
           <h2
             className="font-serif font-semibold tracking-tight"
             style={{
-              fontSize: "clamp(1.4rem, 3.5vw, 1.8rem)",
-              lineHeight: 1.25,
+              fontSize: "clamp(1.6rem, 4vw, 2.2rem)",
+              lineHeight: 1.2,
               color: "var(--text)",
             }}
           >
@@ -68,7 +68,7 @@ export function WhatEachDayHolds() {
         </div>
 
         {/* Vignette list */}
-        <div className="reveal-stagger space-y-4">
+        <div className="reveal-stagger space-y-5">
           {ITEMS.map((item, i) => (
             <div
               key={i}
