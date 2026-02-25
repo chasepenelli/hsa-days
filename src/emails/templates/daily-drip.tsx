@@ -23,6 +23,41 @@ const TEASER_ICONS: Record<TeaserType, string> = {
   resource: "https://hsadays.com/illustrations/icons/icon-heart.png",
 };
 
+/* ---------- Teaser rotation ----------
+   5 combos so the "Today includes" card feels different each day.
+   Cycles through all 5 types: reflection, activity, journal, insight, resource. */
+const TEASER_COMBOS: TeaserItem[][] = [
+  [
+    { type: "reflection", label: "A short reflection" },
+    { type: "activity", label: "A grounding activity" },
+    { type: "journal", label: "A journal prompt" },
+  ],
+  [
+    { type: "reflection", label: "Today\u2019s reflection" },
+    { type: "journal", label: "A journal prompt" },
+    { type: "insight", label: "A practical insight" },
+  ],
+  [
+    { type: "activity", label: "A gentle activity" },
+    { type: "journal", label: "A journal prompt" },
+    { type: "insight", label: "A helpful tip" },
+  ],
+  [
+    { type: "reflection", label: "A quiet reflection" },
+    { type: "activity", label: "Something to try" },
+    { type: "insight", label: "A practical tip" },
+  ],
+  [
+    { type: "reflection", label: "Today\u2019s reflection" },
+    { type: "insight", label: "A practical insight" },
+    { type: "resource", label: "A helpful resource" },
+  ],
+];
+
+function getDefaultTeaserItems(day: number): TeaserItem[] {
+  return TEASER_COMBOS[(day - 1) % TEASER_COMBOS.length];
+}
+
 interface DailyDripEmailProps {
   day?: number;
   firstName?: string;
@@ -46,12 +81,9 @@ export function DailyDripEmail({
     "Today isn\u2019t about having a plan. Today is about one thing: giving yourself permission to feel whatever you\u2019re feeling right now.",
     "Shock. Anger. Nothing at all. All of it is correct.",
   ],
-  teaserItems = [
-    { type: "reflection", label: "A short reflection" },
-    { type: "activity", label: "A grounding activity" },
-    { type: "journal", label: "A journal prompt" },
-  ],
+  teaserItems,
 }: DailyDripEmailProps) {
+  const resolvedTeaserItems = teaserItems ?? getDefaultTeaserItems(day);
   const phase = getPhase(day);
   const dayPadded = String(day).padStart(2, "0");
   const illustrationUrl = `https://hsadays.com/illustrations/journal/day${dayPadded}-illust.png`;
@@ -174,12 +206,12 @@ export function DailyDripEmail({
                     width="100%"
                   >
                     <tr>
-                      {teaserItems.map((item, i) => (
+                      {resolvedTeaserItems.map((item, i) => (
                         <td
                           key={i}
                           align="center"
                           valign="top"
-                          width={`${Math.floor(100 / teaserItems.length)}%`}
+                          width={`${Math.floor(100 / resolvedTeaserItems.length)}%`}
                           style={{ padding: "0 4px" }}
                         >
                           <img
