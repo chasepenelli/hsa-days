@@ -690,3 +690,215 @@ input, textarea, select {
     transform: none;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Journey line system — /days page
+────────────────────────────────────────────── */
+
+/* Container for the 3-layer line overlay */
+.journey-line-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Layer 1: Completed fill — gradient spans all 5 chapter colors */
+.journey-line-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  transform-origin: top;
+  will-change: transform;
+  background: linear-gradient(
+    to bottom,
+    #D4856A 0%,
+    #C4A265 23%,
+    #7A9A7D 47%,
+    #5B7B5E 70%,
+    #3E5740 100%
+  );
+  border-radius: 1px;
+}
+
+/* Layer 2: Future gossamer — dashed whisper line */
+.journey-line-future {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1.5px;
+  height: 100%;
+  transform-origin: bottom;
+  border-left: 1.5px dashed var(--border-strong);
+  opacity: 0.28;
+}
+
+/* Layer 3: Frontier node — pulsing circle at current day */
+@keyframes journeyNodePulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 5px rgba(91,123,94,0.08),
+      0 0 0 10px rgba(91,123,94,0.04),
+      0 0 22px 6px rgba(91,123,94,0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 0 7px rgba(91,123,94,0.12),
+      0 0 0 14px rgba(91,123,94,0.06),
+      0 0 28px 8px rgba(91,123,94,0.14);
+  }
+}
+
+.journey-node-current {
+  position: absolute;
+  left: -9px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--sage);
+  box-shadow:
+    0 0 0 5px rgba(91,123,94,0.08),
+    0 0 0 10px rgba(91,123,94,0.04),
+    0 0 22px 6px rgba(91,123,94,0.10);
+  animation: journeyNodePulse 3.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* CSS border-left fallback for no-JS; hidden when line mounts */
+.day-card-wrapper {
+  border-left: 1.5px solid var(--border-strong);
+}
+
+[data-line-ready] ~ [data-chapter] .day-card-wrapper {
+  border-left: none;
+}
+
+/* Timeline container — position context for the line */
+.journey-timeline {
+  position: relative;
+}
+
+/* Thread dots — positioned on the line */
+.journey-thread-dot {
+  position: absolute;
+  left: -1px;
+  top: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.journey-thread-dot--current {
+  box-shadow: 0 0 0 4px rgba(91,123,94,0.12);
+}
+
+/* Chapter diamond on the line */
+.journey-chapter-diamond {
+  position: absolute;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: var(--diamond-color, var(--sage));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--diamond-color, var(--sage)) 30%, transparent);
+  z-index: 2;
+  margin-top: -4px;
+}
+
+/* Current card inner tint */
+.journey-current-card {
+  background-image: linear-gradient(to bottom, rgba(91,123,94,0.04) 0%, transparent 24px);
+  background-blend-mode: normal;
+}
+
+/* ── Chapter color tokens ── */
+[data-chapter="1"] { --chapter-colour: #D4856A; --chapter-orb: rgba(212,133,106,0.055); }
+[data-chapter="2"] { --chapter-colour: #C4A265; --chapter-orb: rgba(196,162,101,0.065); }
+[data-chapter="3"] { --chapter-colour: #7A9A7D; --chapter-orb: rgba(122,154,125,0.065); }
+[data-chapter="4"] { --chapter-colour: #5B7B5E; --chapter-orb: rgba(91,123,94,0.060); }
+[data-chapter="5"] { --chapter-colour: #3E5740; --chapter-orb: rgba(62,87,64,0.050); }
+
+/* ── Chapter ambient orbs ── */
+[data-chapter]::before {
+  content: '';
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  left: -80px;
+  top: 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--chapter-orb) 0%, transparent 70%);
+  pointer-events: none;
+  animation: driftSlow 20s ease-in-out infinite;
+  z-index: 0;
+}
+
+[data-chapter] {
+  position: relative;
+}
+
+[data-chapter="1"]::before { animation-duration: 22s; animation-delay: 0s; }
+[data-chapter="2"]::before { animation-duration: 18s; animation-delay: -4s; }
+[data-chapter="3"]::before { animation-duration: 24s; animation-delay: -8s; }
+[data-chapter="4"]::before { animation-duration: 20s; animation-delay: -12s; }
+[data-chapter="5"]::before { animation-duration: 26s; animation-delay: -6s; }
+
+/* Only show orb on the first day of each chapter (hide when same chapter follows) */
+[data-chapter="1"] + [data-chapter="1"]::before,
+[data-chapter="2"] + [data-chapter="2"]::before,
+[data-chapter="3"] + [data-chapter="3"]::before,
+[data-chapter="4"] + [data-chapter="4"]::before,
+[data-chapter="5"] + [data-chapter="5"]::before {
+  display: none;
+}
+
+/* ── Variable card spacing by chapter (emotional pacing) ── */
+[data-chapter="1"] .day-card-wrapper { margin-bottom: 8px; }
+[data-chapter="2"] .day-card-wrapper { margin-bottom: 12px; }
+[data-chapter="3"] .day-card-wrapper { margin-bottom: 20px; }
+[data-chapter="4"] .day-card-wrapper { margin-bottom: 14px; }
+[data-chapter="5"] .day-card-wrapper { margin-bottom: 18px; }
+
+/* ── Floating paw prints at milestone positions ── */
+.journey-paw-milestone {
+  position: absolute;
+  left: -22px;
+  z-index: 0;
+  animation: gentleFloat 16s ease-in-out infinite;
+  filter: grayscale(1);
+  opacity: 0.055;
+}
+
+.journey-paw-milestone:nth-child(2) { top: 23%; }
+.journey-paw-milestone:nth-child(3) { top: 47%; }
+.journey-paw-milestone:nth-child(4) { top: 70%; }
+
+/* ── Scroll-to-current-day margin ── */
+#current-day {
+  scroll-margin-top: 30vh;
+}
+
+/* ── Journey reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .journey-node-current {
+    animation: none;
+    background: rgba(91,123,94,0.2);
+  }
+
+  [data-chapter]::before {
+    animation: none;
+  }
+
+  .journey-paw-milestone {
+    animation: none;
+  }
+}

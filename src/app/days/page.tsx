@@ -1,9 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 
 import { ScrollToCurrentDay } from "@/components/days/ScrollToCurrentDay";
-import { AnimatedDayCard } from "@/components/days/AnimatedDayCard";
+import { DaysTimelineClient } from "@/components/days/DaysTimelineClient";
 
 interface DayContent {
   day_number: number;
@@ -26,47 +25,6 @@ const MILESTONES: Record<number, string> = {
   21: "Three weeks. Your dog is lucky to have you.",
   30: "You made it. Thirty days of love, presence, and courage.",
 };
-
-const WEEK_CONFIG: Record<
-  number,
-  { title: string; subtitle: string; epigraph: string }
-> = {
-  1: {
-    title: "Chapter One",
-    subtitle: "The Beginning",
-    epigraph: "You start with survival.",
-  },
-  2: {
-    title: "Chapter Two",
-    subtitle: "Finding Structure",
-    epigraph: "Structure becomes your anchor.",
-  },
-  3: {
-    title: "Chapter Three",
-    subtitle: "The Deep Middle",
-    epigraph: "The hardest part is also the deepest.",
-  },
-  4: {
-    title: "Chapter Four",
-    subtitle: "Coming Home",
-    epigraph: "You begin to see what this has taught you.",
-  },
-  5: {
-    title: "The Final Days",
-    subtitle: "What Remains",
-    epigraph: "Love doesn\u2019t end. It transforms.",
-  },
-};
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Reflection:   "bg-sage/10 text-sage-dark",
-  Understanding:"bg-gold/10 text-[#8B6B3A]",
-  Activity:     "bg-terracotta/10 text-terracotta",
-  Practical:    "bg-sage-dark/10 text-sage-dark",
-  Connection:   "bg-gold-light/10 text-[#8B6B3A]",
-};
-
-import { getWeek } from "@/lib/day-utils";
 
 export const metadata = {
   title: "Your 30-Day Journey",
@@ -132,11 +90,14 @@ export default async function DaysDashboard() {
       .eq("subscriber_id", user.id),
   ]);
 
-  const progressMap = new Map<number, DayProgress>();
-  progress?.forEach((p: DayProgress) => progressMap.set(p.day_number, p));
+  // Build progress map as a plain object for serialization
+  const progressMap: Record<number, DayProgress> = {};
+  progress?.forEach((p: DayProgress) => {
+    progressMap[p.day_number] = p;
+  });
 
   // Build journal snippet map (100 chars)
-  const journalMap = new Map<number, string>();
+  const journalMap: Record<number, string> = {};
   journalEntries?.forEach(
     (j: { day_number: number; entry_text: string }) => {
       if (j.entry_text && j.entry_text.length > 10) {
@@ -144,8 +105,8 @@ export default async function DaysDashboard() {
           j.entry_text.length > 100
             ? j.entry_text.slice(0, 100).trim() + "\u2026"
             : j.entry_text;
-        if (!journalMap.has(j.day_number)) {
-          journalMap.set(j.day_number, snippet);
+        if (!journalMap[j.day_number]) {
+          journalMap[j.day_number] = snippet;
         }
       }
     }
@@ -157,7 +118,7 @@ export default async function DaysDashboard() {
   // Find the current day: first day not completed
   const currentDay =
     (days as DayContent[] | null)?.find(
-      (d) => !progressMap.get(d.day_number)?.completed_at
+      (d) => !progressMap[d.day_number]?.completed_at
     )?.day_number ?? 31;
 
   const currentDayContent = (days as DayContent[] | null)?.find(
@@ -166,8 +127,6 @@ export default async function DaysDashboard() {
 
   // Progress percentage for arc fill
   const progressPct = Math.round((completedCount / 30) * 100);
-
-  let lastWeek = 0;
 
   return (
     <div className="min-h-screen pb-20" style={{ background: "var(--warm-white)" }}>
@@ -253,7 +212,7 @@ export default async function DaysDashboard() {
           <div className="mt-8 mb-3">
             <div className="flex items-center justify-center gap-[6px] flex-wrap max-w-[400px] mx-auto">
               {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => {
-                const isCompleted = !!progressMap.get(day)?.completed_at;
+                const isCompleted = !!progressMap[day]?.completed_at;
                 const isCurrent   = day === currentDay;
                 const isMilestone = day in MILESTONES;
 
@@ -345,350 +304,13 @@ export default async function DaysDashboard() {
       )}
 
       {/* ─── Journal timeline ─── */}
-      <div className="max-w-[600px] mx-auto px-5">
-        <div className="relative">
-          {(days as DayContent[] | null)?.map((day) => {
-            const dayProgress  = progressMap.get(day.day_number);
-            const isCompleted  = !!dayProgress?.completed_at;
-            const isStarted    = !!dayProgress?.started_at;
-            const isCurrent    = day.day_number === currentDay;
-            const isFuture     = day.day_number > currentDay;
-            const isMilestone  = day.day_number in MILESTONES;
-            const week         = getWeek(day.day_number);
-            const showWeekDivider = week !== lastWeek;
-            lastWeek = week;
-
-            const weekInfo = showWeekDivider ? WEEK_CONFIG[week] : null;
-
-            const journalSnippet = journalMap.get(day.day_number);
-
-            const categoryColor =
-              CATEGORY_COLORS[day.category] || "bg-sage/10 text-sage-dark";
-
-            // Thread line color
-            const threadColor = isFuture
-              ? "rgba(232,228,223,0.5)"
-              : isCompleted
-                ? "rgba(91,123,94,0.25)"
-                : "rgba(91,123,94,0.4)";
-
-            // Week-local index for stagger delay
-            const weekStart =
-              week === 1 ? 1 : week === 2 ? 8 : week === 3 ? 15 : week === 4 ? 22 : 26;
-            const weekLocalIdx = day.day_number - weekStart;
-
-            return (
-              <div key={day.day_number}>
-
-                {/* ─── Chapter break ─── */}
-                {weekInfo && (
-                  <div className={`text-center ${day.day_number > 1 ? "mt-16 mb-10" : "mb-10"}`}>
-
-                    {/* Decorative chapter ornament */}
-                    <div className="flex items-center justify-center gap-3 mb-5">
-                      <div
-                        className="flex-1 h-px"
-                        style={{
-                          background: "linear-gradient(to right, transparent, var(--border-strong))",
-                          maxWidth: "80px",
-                        }}
-                      />
-                      <div
-                        className="w-1.5 h-1.5 rounded-full rotate-45"
-                        style={{ background: "var(--gold)", opacity: 0.7 }}
-                      />
-                      <div
-                        className="flex-1 h-px"
-                        style={{
-                          background: "linear-gradient(to left, transparent, var(--border-strong))",
-                          maxWidth: "80px",
-                        }}
-                      />
-                    </div>
-
-                    <div
-                      className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] mb-1"
-                      style={{ color: "var(--gold)" }}
-                    >
-                      {weekInfo.title}
-                    </div>
-                    <div className="font-serif text-[1.2rem] font-semibold text-text mb-2">
-                      {weekInfo.subtitle}
-                    </div>
-                    <p
-                      className="text-[0.88rem] italic mx-auto max-w-[260px] leading-relaxed"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      &ldquo;{weekInfo.epigraph}&rdquo;
-                    </p>
-
-                    {/* Bottom ornament */}
-                    <div className="flex items-center justify-center gap-3 mt-5">
-                      <div
-                        className="flex-1 h-px"
-                        style={{
-                          background: "linear-gradient(to right, transparent, var(--border))",
-                          maxWidth: "40px",
-                        }}
-                      />
-                      <div
-                        className="w-1 h-1 rounded-full"
-                        style={{ background: "var(--border-strong)" }}
-                      />
-                      <div
-                        className="flex-1 h-px"
-                        style={{
-                          background: "linear-gradient(to left, transparent, var(--border))",
-                          maxWidth: "40px",
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* ─── Day entry with thread ─── */}
-                <AnimatedDayCard delay={weekLocalIdx * 55}>
-                  <div
-                    className={`relative pl-10 pb-4 border-l-[1.5px] ml-2.5 ${day.day_number === 30 ? "border-l-transparent" : ""}`}
-                    style={{ borderColor: threadColor }}
-                    id={isCurrent ? "current-day" : undefined}
-                  >
-                    {/* Thread dot */}
-                    <div
-                      className={`absolute -left-[10px] top-[18px] w-[19px] h-[19px] rounded-full flex items-center justify-center transition-all ${
-                        isCompleted
-                          ? "shadow-sm"
-                          : isCurrent
-                            ? "shadow-[0_0_0_4px_rgba(91,123,94,0.12)]"
-                            : ""
-                      }`}
-                      style={{
-                        background: isCompleted
-                          ? isMilestone ? "var(--gold)" : "var(--sage)"
-                          : isCurrent
-                            ? "white"
-                            : "var(--cream)",
-                        border: isCompleted
-                          ? "none"
-                          : isCurrent
-                            ? "2px solid var(--sage)"
-                            : "1.5px solid var(--border-strong)",
-                      }}
-                    >
-                      {isCompleted && (
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={3} className="w-2.5 h-2.5">
-                          <path d="M5 12l5 5L19 7" />
-                        </svg>
-                      )}
-                      {isCurrent && (
-                        <div className="w-[7px] h-[7px] rounded-full" style={{ background: "var(--sage)" }} />
-                      )}
-                    </div>
-
-                    {/* Card content */}
-                    {isCurrent ? (
-                      /* ═══ CURRENT DAY — primary action card ═══ */
-                      <Link href={`/days/${day.day_number}`} className="block no-underline">
-                        <div
-                          className="card-shimmer rounded-2xl p-6 transition-all duration-300 hover:-translate-y-[2px]"
-                          style={{
-                            background: "white",
-                            border: "2px solid rgba(91,123,94,0.22)",
-                            boxShadow: "0 4px 28px rgba(91,123,94,0.10), 0 1px 4px rgba(0,0,0,0.04)",
-                          }}
-                        >
-                          {/* Top meta row */}
-                          <div className="flex items-center gap-2 mb-4">
-                            <span
-                              className={`text-[0.62rem] font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full ${categoryColor}`}
-                            >
-                              {day.category}
-                            </span>
-                            <span
-                              className="text-[0.62rem] font-medium"
-                              style={{ color: "var(--text-muted)", opacity: 0.5 }}
-                            >
-                              Day {day.day_number}
-                            </span>
-                          </div>
-
-                          <h3 className="font-serif text-[1.15rem] font-semibold text-text mb-1.5 leading-snug">
-                            {day.title}
-                          </h3>
-                          <p
-                            className="text-[0.9rem] leading-relaxed mb-3"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {day.subtitle}
-                          </p>
-
-                          {day.quote && (
-                            <p
-                              className="font-serif text-[0.82rem] italic line-clamp-1 mb-5"
-                              style={{ color: "var(--text-muted)", opacity: 0.65 }}
-                            >
-                              &ldquo;{day.quote}&rdquo;
-                            </p>
-                          )}
-
-                          {/* CTA button */}
-                          <span
-                            className="inline-flex items-center gap-2 px-5 py-2.5 text-white text-[0.85rem] font-semibold rounded-xl transition-all"
-                            style={{ background: "var(--sage)" }}
-                          >
-                            {isStarted ? `Continue Day ${day.day_number}` : `Begin Day ${day.day_number}`}
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4">
-                              <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                          </span>
-                        </div>
-                      </Link>
-
-                    ) : isCompleted ? (
-                      /* ═══ COMPLETED DAY ═══ */
-                      <Link href={`/days/${day.day_number}`} className="group block no-underline">
-                        <div
-                          className="rounded-xl px-5 py-4 transition-all duration-250 group-hover:-translate-y-[1px]"
-                          style={{
-                            background: "white",
-                            borderLeft: `3px solid ${isMilestone ? "var(--gold)" : "rgba(91,123,94,0.35)"}`,
-                            border: "1px solid var(--border)",
-                            borderLeftWidth: "3px",
-                            borderLeftColor: isMilestone ? "var(--gold)" : "rgba(91,123,94,0.35)",
-                            boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
-                          }}
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="flex-1 min-w-0">
-                              {/* Meta */}
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className={`text-[0.6rem] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-full ${categoryColor}`}>
-                                  {day.category}
-                                </span>
-                                <span
-                                  className="text-[0.6rem] font-medium"
-                                  style={{ color: "var(--text-muted)", opacity: 0.4 }}
-                                >
-                                  Day {day.day_number}
-                                </span>
-                              </div>
-
-                              <h3
-                                className="font-serif text-[0.98rem] font-semibold text-text transition-colors group-hover:text-sage"
-                              >
-                                {day.title}
-                              </h3>
-
-                              {/* Quote peek */}
-                              {day.quote && !journalSnippet && (
-                                <p
-                                  className="font-serif text-[0.76rem] italic line-clamp-1 mt-1"
-                                  style={{ color: "var(--text-muted)", opacity: 0.55 }}
-                                >
-                                  &ldquo;{day.quote}&rdquo;
-                                </p>
-                              )}
-
-                              {/* Journal snippet */}
-                              {journalSnippet && (
-                                <div
-                                  className="mt-2 pt-2"
-                                  style={{ borderTop: "1px solid var(--border)" }}
-                                >
-                                  <p
-                                    className="font-serif text-[0.78rem] italic line-clamp-2 leading-relaxed"
-                                    style={{ color: "var(--text-muted)", opacity: 0.8 }}
-                                  >
-                                    {journalSnippet}
-                                  </p>
-                                </div>
-                              )}
-
-                            </div>
-
-                            {/* Checkmark badge */}
-                            <div
-                              className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5"
-                              style={{ background: "rgba(91,123,94,0.1)" }}
-                            >
-                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-3 h-3 text-sage">
-                                <path d="M5 12l5 5L19 7" />
-                              </svg>
-                            </div>
-                          </div>
-
-                          {/* Milestone message */}
-                          {isMilestone && (
-                            <div
-                              className="mt-3 pt-3 flex items-center gap-2 text-[0.78rem] italic"
-                              style={{
-                                color: "var(--gold)",
-                                borderTop: "1px solid rgba(196,162,101,0.2)",
-                              }}
-                            >
-                              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 shrink-0">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                              </svg>
-                              {MILESTONES[day.day_number]}
-                            </div>
-                          )}
-                        </div>
-                      </Link>
-
-                    ) : (
-                      /* ═══ FUTURE DAY — unwritten pages ═══ */
-                      <Link href={`/days/${day.day_number}`} className="group block no-underline">
-                        <div
-                          className="rounded-xl px-5 py-3.5 transition-all duration-250 group-hover:opacity-60"
-                          style={{
-                            background: "rgba(245,240,234,0.5)",
-                            border: "1px dashed var(--border)",
-                            opacity: 0.4,
-                          }}
-                        >
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span
-                              className={`text-[0.58rem] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-full opacity-70 ${categoryColor}`}
-                            >
-                              {day.category}
-                            </span>
-                            <span
-                              className="text-[0.58rem]"
-                              style={{ color: "var(--text-muted)", opacity: 0.35 }}
-                            >
-                              Day {day.day_number}
-                            </span>
-                          </div>
-                          <h3
-                            className="font-serif text-[0.95rem] leading-snug"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {day.title}
-                          </h3>
-                        </div>
-                      </Link>
-                    )}
-                  </div>
-                </AnimatedDayCard>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* End of journal mark */}
-        <div className="text-center mt-12 mb-4">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px flex-1" style={{ background: "var(--border)", maxWidth: "60px" }} />
-            <div className="w-1 h-1 rounded-full" style={{ background: "var(--border-strong)" }} />
-            <div className="h-px flex-1" style={{ background: "var(--border)", maxWidth: "60px" }} />
-          </div>
-          <p className="text-[0.8rem] italic" style={{ color: "var(--text-muted)", opacity: 0.5 }}>
-            {completedCount === 30
-              ? "The end of this chapter. Not the end of the story."
-              : "Your story continues, one day at a time."}
-          </p>
-        </div>
-      </div>
+      <DaysTimelineClient
+        days={(days as DayContent[]) ?? []}
+        progressMap={progressMap}
+        journalMap={journalMap}
+        completedCount={completedCount}
+        currentDay={currentDay}
+      />
 
       <ScrollToCurrentDay />
     </div>
