@@ -3,7 +3,7 @@ import Image from "next/image";
 const PHASES = [
   {
     title: "The Shock",
-    days: "Days 1-4",
+    days: "Days 1–4",
     description: "Permission to feel. Guided reflections, your first journal entries, and practical next steps.",
     color: "var(--terracotta)",
     illustration: "/illustrations/home/home-journey-phase1.webp",
@@ -11,7 +11,7 @@ const PHASES = [
   },
   {
     title: "Building Ground",
-    days: "Days 5-10",
+    days: "Days 5–10",
     description: "Finding your footing. Daily routines, supplement guides, feeding tips, and making home safer.",
     color: "var(--gold)",
     illustration: "/illustrations/home/home-journey-phase2.webp",
@@ -19,7 +19,7 @@ const PHASES = [
   },
   {
     title: "The Emotions",
-    days: "Days 11-17",
+    days: "Days 11–17",
     description: "Confronting guilt, anger, and unsolicited advice. A video activity, building a care routine, finding your people.",
     color: "var(--sage-light)",
     illustration: "/illustrations/home/home-journey-phase3.webp",
@@ -27,7 +27,7 @@ const PHASES = [
   },
   {
     title: "Going Deeper",
-    days: "Days 18-24",
+    days: "Days 18–24",
     description: "Hard conversations. A paw print project, a slow walk, writing a letter, documenting what matters.",
     color: "var(--sage)",
     illustration: "/illustrations/home/home-journey-phase4.webp",
@@ -35,7 +35,7 @@ const PHASES = [
   },
   {
     title: "Finding Meaning",
-    days: "Days 25-30",
+    days: "Days 25–30",
     description: "Gratitude, legacy, and what comes next. Reflecting on what they taught you and stepping forward.",
     color: "var(--sage-dark)",
     illustration: "/illustrations/home/home-journey-phase5.webp",
@@ -45,9 +45,9 @@ const PHASES = [
 
 export function JourneyArcBar() {
   return (
-    <div className="reveal">
+    <div>
       {/* Gradient bar */}
-      <div className="mx-auto" style={{ maxWidth: "480px" }}>
+      <div className="reveal mx-auto" style={{ maxWidth: "480px" }}>
         {/* Phase labels */}
         <div
           className="flex justify-between mb-2 text-[0.6rem] font-semibold uppercase tracking-[0.1em]"
@@ -96,63 +96,69 @@ export function JourneyArcBar() {
         </div>
       </div>
 
-      {/* Phase rows */}
-      <div
-        className="mt-10 space-y-5 mx-auto"
-        style={{ maxWidth: "520px" }}
-      >
-        {PHASES.map((phase, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-3 md:gap-4"
-          >
-            {/* Color dot */}
+      {/* Phase vignettes — centered, vertical */}
+      <div className="mt-14 mx-auto" style={{ maxWidth: "400px" }}>
+        <div className="space-y-12">
+          {PHASES.map((phase, i) => (
             <div
-              className="shrink-0"
-              style={{
-                width: "8px",
-                height: "8px",
-                borderRadius: "50%",
-                background: phase.color,
-              }}
-            />
-
-            {/* Thumbnail illustration */}
-            <div className="shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden relative">
-              <Image
-                src={phase.illustration}
-                alt={phase.alt}
-                fill
-                className="object-cover"
-                sizes="48px"
-              />
-            </div>
-
-            {/* Text */}
-            <div className="min-w-0 flex-1">
-              <div className="flex items-baseline gap-2">
-                <span
-                  className="font-serif font-semibold text-[0.92rem]"
-                  style={{ color: "var(--text)" }}
-                >
-                  {phase.title}
-                </span>
-                <span
-                  className="text-[0.72rem] font-medium"
-                  style={{ color: "var(--text-muted)", opacity: 0.7 }}
-                >
-                  {phase.days}
-                </span>
+              key={i}
+              className="reveal flex flex-col items-center text-center"
+              style={{ transitionDelay: `${i * 0.07}s` }}
+            >
+              {/* Illustration */}
+              <div
+                className="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden"
+                style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
+              >
+                <Image
+                  src={phase.illustration}
+                  alt={phase.alt}
+                  fill
+                  className="object-cover"
+                  sizes="96px"
+                />
               </div>
+
+              {/* Color dot */}
+              <div
+                className="mt-3 mb-1"
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  background: phase.color,
+                }}
+              />
+
+              {/* Title */}
+              <span
+                className="font-serif font-semibold text-[1.08rem]"
+                style={{ color: "var(--text)" }}
+              >
+                {phase.title}
+              </span>
+
+              {/* Days */}
+              <span
+                className="text-[0.75rem] font-medium mt-1"
+                style={{ color: "var(--text-muted)", opacity: 0.7 }}
+              >
+                {phase.days}
+              </span>
+
+              {/* Description */}
               <p
-                className="text-[0.82rem] leading-snug mt-0.5"
-                style={{ color: "var(--text-muted)" }}
+                className="text-[0.9rem] leading-relaxed mt-2 mx-auto"
+                style={{
+                  color: "var(--text-muted)",
+                  maxWidth: "320px",
+                }}
               >
                 {phase.description}
               </p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
