@@ -3,6 +3,7 @@
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { JourneyHero } from "./JourneyHero";
 import { JourneyArcBar } from "./JourneyArcBar";
+import { WhatEachDayHolds } from "./WhatEachDayHolds";
 import { Day1Preview } from "./Day1Preview";
 import { JourneyTestimonial } from "./JourneyTestimonial";
 import { SignupForm } from "@/components/forms/SignupForm";
@@ -32,6 +33,16 @@ const TESTIMONIALS = [
     quote:
       "I didn\u2019t think I was ready for something like this. Turns out, Day 1 doesn\u2019t ask you to be ready. It just meets you where you are.",
     author: "Mike T., Luna\u2019s dad",
+  },
+  {
+    quote:
+      "The journal prompts were the thing that got me through. I didn\u2019t know how to put any of this into words, and having a question to answer each morning made it feel manageable.",
+    author: "Rachel K., Cooper\u2019s mom",
+  },
+  {
+    quote:
+      "I thought the food guide alone was worth it. But then the daily reflections became the thing I looked forward to most.",
+    author: "David L., Penny\u2019s dad",
   },
 ];
 
@@ -82,7 +93,12 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       </section>
 
       {/* ═══════════════════════════════════════════
-          Section 3: Day 1 Preview — "The trailer scene"
+          Section 3: What Each Day Holds — "Here's what's inside"
+      ═══════════════════════════════════════════ */}
+      <WhatEachDayHolds />
+
+      {/* ═══════════════════════════════════════════
+          Section 4: Day 1 Preview — "The trailer scene"
       ═══════════════════════════════════════════ */}
       <section
         className="relative"
@@ -152,10 +168,32 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
         >
           This is Day 1. Twenty-nine more are waiting.
         </p>
+
+        {/* Whispered day titles */}
+        <div className="text-center mt-4 space-y-1">
+          {[
+            "Day 9 \u2014 The Photo Walk",
+            "Day 16 \u2014 The Video",
+            "Day 24 \u2014 What I Want You to Know",
+          ].map((title, i) => (
+            <p
+              key={i}
+              className="reveal font-serif"
+              style={{
+                fontSize: "0.85rem",
+                color: "var(--text-muted)",
+                opacity: 0.45,
+                transitionDelay: `${0.28 + i * 0.12}s`,
+              }}
+            >
+              {title}
+            </p>
+          ))}
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════
-          Section 4: Social Proof — "You're not the only one"
+          Section 5: Social Proof — "You're not the only one"
       ═══════════════════════════════════════════ */}
       <section
         className="relative"
@@ -199,7 +237,7 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       </section>
 
       {/* ═══════════════════════════════════════════
-          Section 5: Signup CTA — "The door is open"
+          Section 6: Signup CTA — "The door is open"
       ═══════════════════════════════════════════ */}
       <section
         className="relative overflow-hidden"
@@ -299,8 +337,9 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
               transitionDelay: "0.12s",
             }}
           >
-            A free 30-day companion for the hardest season with your dog. Just
-            your email to save your place.
+            Thirty days of reflections, journal prompts, gentle activities, and
+            practical guidance — starting from the moment of diagnosis. Just
+            your email to begin.
           </p>
 
           <div
@@ -310,12 +349,26 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
             <SignupForm variant="dark" />
           </div>
 
+          {/* Resource line */}
+          <p
+            className="reveal mt-5 mx-auto leading-relaxed"
+            style={{
+              fontSize: "0.82rem",
+              color: "rgba(255,255,255,0.55)",
+              maxWidth: "380px",
+              transitionDelay: "0.2s",
+            }}
+          >
+            You&rsquo;ll also get access to our supplement guide, food safety
+            reference, and a private community.
+          </p>
+
           {/* Trust line */}
           <p
-            className="reveal mt-5 text-[0.78rem]"
+            className="reveal mt-4 text-[0.78rem]"
             style={{
               color: "rgba(255,255,255,0.4)",
-              transitionDelay: "0.2s",
+              transitionDelay: "0.24s",
             }}
           >
             Free forever &middot; No credit card &middot; Unsubscribe anytime

@@ -4,7 +4,7 @@ const PHASES = [
   {
     title: "The Shock",
     days: "Days 1-4",
-    description: "Processing the diagnosis and catching your breath.",
+    description: "Permission to feel. Guided reflections, your first journal entries, and practical next steps.",
     color: "var(--terracotta)",
     illustration: "/illustrations/home/home-journey-phase1.webp",
     alt: "Phone face-down with paw print stamp",
@@ -12,7 +12,7 @@ const PHASES = [
   {
     title: "Building Ground",
     days: "Days 5-10",
-    description: "Creating routines and finding your footing.",
+    description: "Finding your footing. Daily routines, supplement guides, feeding tips, and making home safer.",
     color: "var(--gold)",
     illustration: "/illustrations/home/home-journey-phase2.webp",
     alt: "Coffee mug and dog leash",
@@ -20,7 +20,7 @@ const PHASES = [
   {
     title: "The Emotions",
     days: "Days 11-17",
-    description: "Confronting guilt, anger, and the weight of love.",
+    description: "Confronting guilt, anger, and unsolicited advice. A video activity, building a care routine, finding your people.",
     color: "var(--sage-light)",
     illustration: "/illustrations/home/home-journey-phase3.webp",
     alt: "Crumpled tissue beside a journal",
@@ -28,7 +28,7 @@ const PHASES = [
   {
     title: "Going Deeper",
     days: "Days 18-24",
-    description: "Hard conversations and documenting what matters.",
+    description: "Hard conversations. A paw print project, a slow walk, writing a letter, documenting what matters.",
     color: "var(--sage)",
     illustration: "/illustrations/home/home-journey-phase4.webp",
     alt: "Pen resting on an open journal page",
@@ -36,7 +36,7 @@ const PHASES = [
   {
     title: "Finding Meaning",
     days: "Days 25-30",
-    description: "Gratitude, legacy, and stepping forward with grace.",
+    description: "Gratitude, legacy, and what comes next. Reflecting on what they taught you and stepping forward.",
     color: "var(--sage-dark)",
     illustration: "/illustrations/home/home-journey-phase5.webp",
     alt: "Paw print and footprint side by side",
@@ -98,7 +98,7 @@ export function JourneyArcBar() {
 
       {/* Phase rows */}
       <div
-        className="mt-8 space-y-3 mx-auto"
+        className="mt-8 space-y-4 mx-auto"
         style={{ maxWidth: "520px" }}
       >
         {PHASES.map((phase, i) => (
