@@ -200,33 +200,33 @@ export function WhatEachDayHolds() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 70%",
-            end: "bottom 30%",
+            end: "bottom 80%",
             scrub: 0.6,
           },
         });
 
-        // Phase: Heading fade in (0-8%)
+        // Phase: Heading fade in (0-10%)
         if (headingRef.current) {
           tl.fromTo(
             headingRef.current,
             { opacity: 0, y: 24 },
-            { opacity: 1, y: 0, duration: 0.08, ease: "power2.out" },
+            { opacity: 1, y: 0, duration: 0.10, ease: "power2.out" },
             0
           );
         }
 
-        // Phase: Trunk draw (8-20%)
+        // Phase: Trunk draw (10-22%)
         if (trunkRef.current) {
           tl.to(
             trunkRef.current,
             { strokeDashoffset: 0, duration: 0.12, ease: "none" },
-            0.08
+            0.10
           );
         }
 
-        // Phase: Branches + icons + items cascade (20-83%)
-        const branchStarts = [0.20, 0.32, 0.44, 0.56, 0.68];
-        const branchDurations = [0.15, 0.15, 0.15, 0.15, 0.15];
+        // Phase: Branches + icons + items cascade (22-76%)
+        const branchStarts = [0.22, 0.32, 0.42, 0.52, 0.62];
+        const branchDurations = [0.14, 0.14, 0.14, 0.14, 0.14];
 
         ITEMS.forEach((_, i) => {
           const start = branchStarts[i];
@@ -270,13 +270,13 @@ export function WhatEachDayHolds() {
           }
         });
 
-        // Phase: Closer (83-95%)
+        // Phase: Closer (76-88%)
         if (closerRef.current) {
           tl.fromTo(
             closerRef.current,
             { opacity: 0, y: 16 },
             { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" },
-            0.83
+            0.76
           );
         }
       });
@@ -409,7 +409,7 @@ export function WhatEachDayHolds() {
       className="relative"
       style={{
         paddingTop: "clamp(72px, 10vw, 120px)",
-        paddingBottom: "clamp(72px, 10vw, 120px)",
+        paddingBottom: "clamp(96px, 12vw, 160px)",
         paddingLeft: "24px",
         paddingRight: "24px",
         background: "var(--cream)",
@@ -468,7 +468,7 @@ export function WhatEachDayHolds() {
                 ref={(el) => { branchRefs.current[i] = el; }}
                 fill="none"
                 stroke={item.colorHex}
-                strokeWidth={1.5}
+                strokeWidth={2.5}
                 strokeLinecap="round"
                 style={{ opacity: 0.45 }}
               />
