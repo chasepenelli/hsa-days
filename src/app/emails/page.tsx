@@ -6,34 +6,48 @@ const TEMPLATES = [
   { id: "welcome", label: "Welcome" },
   { id: "daily-drip", label: "Daily Drip" },
   { id: "milestone", label: "Milestone" },
+  { id: "launch", label: "Launch" },
+  { id: "nudge", label: "Nudge" },
+  { id: "completion", label: "Completion" },
 ] as const;
 
 type TemplateId = (typeof TEMPLATES)[number]["id"];
+type NudgeVariant = "not-started" | "dropped-off";
 
 export default function EmailsPage() {
   const [template, setTemplate] = useState<TemplateId>("welcome");
   const [day, setDay] = useState(1);
   const [name, setName] = useState("Alex");
   const [dog, setDog] = useState("Sage");
+  const [nudgeVariant, setNudgeVariant] = useState<NudgeVariant>("not-started");
+  const [lastDay, setLastDay] = useState(5);
   const [copied, setCopied] = useState(false);
   const [iframeKey, setIframeKey] = useState(0);
 
-  const previewUrl = buildUrl(template, day, name, dog);
+  const previewUrl = buildUrl(template, day, name, dog, nudgeVariant, lastDay);
 
   // Debounce iframe reloads when inputs change
   useEffect(() => {
     const t = setTimeout(() => setIframeKey((k) => k + 1), 300);
     return () => clearTimeout(t);
-  }, [template, day, name, dog]);
+  }, [template, day, name, dog, nudgeVariant, lastDay]);
 
   const copyHtml = useCallback(async () => {
-    const url = `/api/email-html/${template}?day=${day}&name=${encodeURIComponent(name)}&dog=${encodeURIComponent(dog)}`;
+    const url = buildUrl(template, day, name, dog, nudgeVariant, lastDay).replace(
+      "/api/email-preview/",
+      "/api/email-html/"
+    );
     const res = await fetch(url);
     const html = await res.text();
     await navigator.clipboard.writeText(html);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  }, [template, day, name, dog]);
+  }, [template, day, name, dog, nudgeVariant, lastDay]);
+
+  const showDaySlider = template === "daily-drip" || template === "milestone";
+  const showDogName = template === "milestone" || template === "completion";
+  const showNudgeVariant = template === "nudge";
+  const showLastDay = template === "nudge" && nudgeVariant === "dropped-off";
 
   return (
     <div className="min-h-screen bg-cream pt-20 pb-12 px-4">
@@ -48,7 +62,7 @@ export default function EmailsPage() {
         {/* Controls */}
         <div className="bg-warm-white border border-border rounded-xl p-5 mb-6">
           {/* Template tabs */}
-          <div className="flex gap-2 mb-5">
+          <div className="flex flex-wrap gap-2 mb-5">
             {TEMPLATES.map((t) => (
               <button
                 key={t.id}
@@ -66,8 +80,8 @@ export default function EmailsPage() {
 
           {/* Inputs row */}
           <div className="flex flex-wrap gap-5 items-end">
-            {/* Day slider — hidden for welcome */}
-            {template !== "welcome" && (
+            {/* Day slider — only for daily-drip and milestone */}
+            {showDaySlider && (
               <label className="flex flex-col gap-1.5 text-sm text-text-muted font-medium">
                 Day {day}
                 <input
@@ -91,7 +105,7 @@ export default function EmailsPage() {
               />
             </label>
 
-            {template === "milestone" && (
+            {showDogName && (
               <label className="flex flex-col gap-1.5 text-sm text-text-muted font-medium">
                 Dog name
                 <input
@@ -99,6 +113,34 @@ export default function EmailsPage() {
                   value={dog}
                   onChange={(e) => setDog(e.target.value)}
                   className="border border-border rounded-lg px-3 py-1.5 text-text text-sm w-36 bg-warm-white focus:outline-sage"
+                />
+              </label>
+            )}
+
+            {showNudgeVariant && (
+              <label className="flex flex-col gap-1.5 text-sm text-text-muted font-medium">
+                Variant
+                <select
+                  value={nudgeVariant}
+                  onChange={(e) => setNudgeVariant(e.target.value as NudgeVariant)}
+                  className="border border-border rounded-lg px-3 py-1.5 text-text text-sm bg-warm-white focus:outline-sage"
+                >
+                  <option value="not-started">Not Started</option>
+                  <option value="dropped-off">Dropped Off</option>
+                </select>
+              </label>
+            )}
+
+            {showLastDay && (
+              <label className="flex flex-col gap-1.5 text-sm text-text-muted font-medium">
+                Last Day {lastDay}
+                <input
+                  type="range"
+                  min={1}
+                  max={29}
+                  value={lastDay}
+                  onChange={(e) => setLastDay(Number(e.target.value))}
+                  className="w-40 accent-sage"
                 />
               </label>
             )}
@@ -130,11 +172,24 @@ export default function EmailsPage() {
   );
 }
 
-function buildUrl(template: string, day: number, name: string, dog: string) {
+function buildUrl(
+  template: string,
+  day: number,
+  name: string,
+  dog: string,
+  nudgeVariant: NudgeVariant,
+  lastDay: number
+) {
   const p = new URLSearchParams();
-  if (template !== "welcome") p.set("day", String(day));
+  if (template === "daily-drip" || template === "milestone") p.set("day", String(day));
   if (name) p.set("name", name);
-  if (template === "milestone" && dog) p.set("dog", dog);
+  if (template === "milestone" || template === "completion") {
+    if (dog) p.set("dog", dog);
+  }
+  if (template === "nudge") {
+    p.set("variant", nudgeVariant);
+    if (nudgeVariant === "dropped-off") p.set("lastDay", String(lastDay));
+  }
   const qs = p.toString();
   return `/api/email-preview/${template}${qs ? `?${qs}` : ""}`;
 }
