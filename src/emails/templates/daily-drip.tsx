@@ -8,6 +8,21 @@ import { EmailFooter } from "../components/EmailFooter";
 import { EmailProgressDots } from "../components/EmailProgressDots";
 import { getPhase } from "../lib/phases";
 
+type TeaserType = "reflection" | "activity" | "journal" | "insight" | "resource";
+
+interface TeaserItem {
+  type: TeaserType;
+  label: string;
+}
+
+const TEASER_ICONS: Record<TeaserType, string> = {
+  reflection: "https://hsadays.com/illustrations/icons/icon-read-reflect.png",
+  activity: "https://hsadays.com/illustrations/icons/icon-dog-person.png",
+  journal: "https://hsadays.com/illustrations/icons/icon-journal.png",
+  insight: "https://hsadays.com/illustrations/icons/icon-lightbulb.png",
+  resource: "https://hsadays.com/illustrations/icons/icon-heart.png",
+};
+
 interface DailyDripEmailProps {
   day?: number;
   firstName?: string;
@@ -16,7 +31,7 @@ interface DailyDripEmailProps {
   quoteAuthor?: string;
   preheader?: string;
   bodyParagraphs?: string[];
-  teaserItems?: string[];
+  teaserItems?: TeaserItem[];
 }
 
 export function DailyDripEmail({
@@ -31,7 +46,11 @@ export function DailyDripEmail({
     "Today isn\u2019t about having a plan. Today is about one thing: giving yourself permission to feel whatever you\u2019re feeling right now.",
     "Shock. Anger. Nothing at all. All of it is correct.",
   ],
-  teaserItems = ["A short reflection", "A grounding activity", "A journal prompt"],
+  teaserItems = [
+    { type: "reflection", label: "A short reflection" },
+    { type: "activity", label: "A grounding activity" },
+    { type: "journal", label: "A journal prompt" },
+  ],
 }: DailyDripEmailProps) {
   const phase = getPhase(day);
   const dayPadded = String(day).padStart(2, "0");
@@ -147,48 +166,50 @@ export function DailyDripEmail({
                   >
                     Today includes
                   </div>
-                  {teaserItems.map((item, i) => (
-                    <table
-                      key={i}
-                      role="presentation"
-                      cellPadding="0"
-                      cellSpacing="0"
-                      border={0}
-                      width="100%"
-                      style={{
-                        marginBottom: i < teaserItems.length - 1 ? "6px" : "0",
-                      }}
-                    >
-                      <tr>
+                  <table
+                    role="presentation"
+                    cellPadding="0"
+                    cellSpacing="0"
+                    border={0}
+                    width="100%"
+                  >
+                    <tr>
+                      {teaserItems.map((item, i) => (
                         <td
-                          style={{
-                            verticalAlign: "top",
-                            paddingRight: "10px",
-                            width: "16px",
-                            fontFamily: "Lora, Georgia, 'Times New Roman', serif",
-                            fontSize: "12px",
-                            color: "#C4A265",
-                            lineHeight: "1.6",
-                          }}
+                          key={i}
+                          align="center"
+                          valign="top"
+                          width={`${Math.floor(100 / teaserItems.length)}%`}
+                          style={{ padding: "0 4px" }}
                         >
-                          &#10047;
+                          <img
+                            src={TEASER_ICONS[item.type]}
+                            alt={item.label}
+                            width="36"
+                            height="36"
+                            style={{
+                              display: "block",
+                              margin: "0 auto",
+                              opacity: 0.8,
+                              border: "0",
+                            }}
+                          />
+                          <div
+                            style={{
+                              fontFamily:
+                                "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
+                              fontSize: "13px",
+                              color: "#5B5550",
+                              marginTop: "8px",
+                              lineHeight: "1.4",
+                            }}
+                          >
+                            {item.label}
+                          </div>
                         </td>
-                        <td
-                          style={{
-                            verticalAlign: "top",
-                            fontFamily:
-                              "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif",
-                            fontSize: "15px",
-                            color: "#2D2D2D",
-                            lineHeight: "1.6",
-                          }}
-                          className="body-text"
-                        >
-                          {item}
-                        </td>
-                      </tr>
-                    </table>
-                  ))}
+                      ))}
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>
