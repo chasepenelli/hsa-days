@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { JourneyHero } from "./JourneyHero";
 import { JourneyArcBar } from "./JourneyArcBar";
 import { Day1Preview } from "./Day1Preview";
 import { JourneyTestimonial } from "./JourneyTestimonial";
@@ -45,133 +45,9 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══════════════════════════════════════════
-          Section 1: Hero — "Meet them in crisis"
+          Section 1: Hero — Scroll-driven GSAP
       ═══════════════════════════════════════════ */}
-      <section
-        className="relative overflow-hidden flex flex-col items-center justify-center text-center"
-        style={{
-          minHeight: "100svh",
-          paddingLeft: "24px",
-          paddingRight: "24px",
-          background:
-            "linear-gradient(to bottom, var(--cream) 0%, var(--warm-white) 100%)",
-        }}
-      >
-        {/* Sage radial glow */}
-        <div
-          className="absolute pointer-events-none"
-          aria-hidden="true"
-          style={{
-            top: "30%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: "600px",
-            height: "400px",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(ellipse, rgba(91,123,94,0.06) 0%, transparent 70%)",
-          }}
-        />
-
-        {/* Desktop watermark — Day 1 journal illustration */}
-        <div
-          className="absolute pointer-events-none hidden lg:block"
-          aria-hidden="true"
-          style={{
-            top: "50%",
-            right: "6%",
-            transform: "translateY(-50%)",
-            opacity: 0.06,
-          }}
-        >
-          <Image
-            src="/illustrations/journal/day01-illust.png"
-            alt=""
-            width={320}
-            height={320}
-            priority={false}
-          />
-        </div>
-
-        <div className="max-w-[640px] mx-auto relative z-10">
-          {/* Eyebrow */}
-          <div
-            className="reveal inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-5"
-            style={{ color: "var(--gold)" }}
-          >
-            <span
-              style={{
-                display: "inline-block",
-                width: "24px",
-                height: "1px",
-                background: "var(--gold)",
-                opacity: 0.6,
-              }}
-            />
-            HSA Days &mdash; A Free 30-Day Companion
-            <span
-              style={{
-                display: "inline-block",
-                width: "24px",
-                height: "1px",
-                background: "var(--gold)",
-                opacity: 0.6,
-              }}
-            />
-          </div>
-
-          {/* Headline */}
-          <h1
-            className="reveal font-serif font-semibold tracking-tight mb-5"
-            style={{
-              fontSize: "clamp(2rem, 6vw, 3.2rem)",
-              lineHeight: 1.18,
-              color: "var(--text)",
-              transitionDelay: "0.08s",
-            }}
-          >
-            Your dog was just diagnosed.
-            <br />
-            <em className="italic" style={{ color: "var(--sage)" }}>
-              There&rsquo;s a path through this.
-            </em>
-          </h1>
-
-          {/* Body */}
-          <p
-            className="reveal leading-relaxed mx-auto mb-10"
-            style={{
-              fontSize: "clamp(0.95rem, 2.2vw, 1.05rem)",
-              color: "var(--text-muted)",
-              maxWidth: "480px",
-              transitionDelay: "0.16s",
-            }}
-          >
-            HSA Days walks beside you &mdash; one day at a time. Reflections,
-            journaling, and practical guidance for the hardest season with your
-            dog.
-          </p>
-        </div>
-
-        {/* Scroll indicator */}
-        <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          aria-hidden="true"
-          style={{ animation: "arrowBounce 2s ease-in-out infinite" }}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--text-muted)"
-            strokeWidth={1.5}
-            width={24}
-            height={24}
-            style={{ opacity: 0.4 }}
-          >
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
-        </div>
-      </section>
+      <JourneyHero />
 
       {/* ═══════════════════════════════════════════
           Section 2: The Arc — "The emotional map"
@@ -197,7 +73,7 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
           >
             Five phases.{" "}
             <em className="italic" style={{ color: "var(--sage)" }}>
-              Your pace.
+              No rush.
             </em>
           </h2>
 

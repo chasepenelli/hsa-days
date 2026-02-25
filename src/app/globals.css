@@ -929,3 +929,19 @@ input, textarea, select {
     height: 40px;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Journey hero — gold ornament breathing
+────────────────────────────────────────────── */
+
+@keyframes heroOrnamentBreathe {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gold-ornament {
+    animation: none !important;
+    opacity: 0.6;
+  }
+}
