@@ -26,6 +26,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
 import VetCallout from "./VetCallout";
 import DietOvalNav from "./DietOvalNav";
+import DietHeroPanel from "./DietHeroPanel";
 import FoodFlipCard from "./FoodFlipCard";
 import SectionDivider from "./SectionDivider";
 import WarburgIllustration from "./WarburgIllustration";
@@ -260,11 +261,10 @@ export default function DietPageClient({
     >
       {/* ═══ Hero ═══ */}
       <div
-        className="pt-20 pb-10 px-6 relative overflow-hidden"
+        className="pt-20 pb-8 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.09) 0%, rgba(196,162,101,0.05) 40%, rgba(245,240,234,0.6) 70%, var(--warm-white) 100%)",
-          borderBottom: "1px solid var(--border)",
         }}
       >
         {/* Ambient radial glows */}
@@ -286,68 +286,101 @@ export default function DietPageClient({
         {/* Decorative petri-dish accent */}
         <DietHeroAccent />
 
-        <div className="max-w-[800px] mx-auto reveal relative z-10 flex flex-col items-center text-center">
-          {/* Breadcrumb */}
-          <div className="inline-flex items-center gap-2 mb-5">
-            <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "var(--sage)" }}
-            >
-              Resources
-            </span>
-            <span
-              className="w-px h-3"
-              style={{ background: "var(--border-strong)" }}
-            />
-            <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Diet &amp; Nutrition
-            </span>
+        {/* Two-column editorial grid */}
+        <div className="max-w-[1100px] mx-auto relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-[380px_1fr] gap-8 md:gap-12 items-center">
+
+            {/* LEFT — botanical illustration panel */}
+            <DietHeroPanel />
+
+            {/* RIGHT — editorial text */}
+            <div className="flex flex-col order-first md:order-last reveal">
+              {/* Breadcrumb */}
+              <div className="inline-flex items-center gap-2 mb-4">
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--sage)" }}
+                >
+                  Resources
+                </span>
+                <span
+                  className="w-px h-3"
+                  style={{ background: "var(--border-strong)" }}
+                />
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Diet &amp; Nutrition
+                </span>
+              </div>
+
+              {/* Eyebrow */}
+              <p
+                className="mb-2"
+                style={{
+                  fontSize: "0.68rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.14em",
+                  color: "var(--sage)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Nutrition &amp; Diet
+              </p>
+
+              <h1
+                className="font-serif font-semibold mb-3"
+                style={{
+                  fontSize: "clamp(2rem, 4vw, 2.8rem)",
+                  color: "var(--text)",
+                  lineHeight: 1.12,
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                Feeding Against the Tumor
+              </h1>
+
+              {/* Accent rule */}
+              <div
+                className="mb-4"
+                style={{
+                  width: 48,
+                  height: 2.5,
+                  borderRadius: 2,
+                  background: "linear-gradient(to right, var(--sage), var(--gold))",
+                }}
+              />
+
+              <p
+                className="leading-relaxed italic"
+                style={{
+                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  color: "var(--text-muted)",
+                  maxWidth: 460,
+                }}
+              >
+                No diet cures hemangiosarcoma. But what your dog eats every day
+                shapes the metabolic environment that tumor lives in — and there is
+                real science behind changing it. This guide gives you the honest
+                evidence, without oversimplifying it, so you can make decisions you
+                feel confident about.
+              </p>
+            </div>
+
           </div>
-
-          <h1
-            className="font-serif font-semibold mb-3"
-            style={{
-              fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
-              color: "var(--text)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            Feeding Against the Tumor
-          </h1>
-
-          {/* Warm accent rule — sage-to-gold gradient */}
-          <div
-            className="mb-4 mx-auto"
-            style={{
-              width: 48,
-              height: 2.5,
-              borderRadius: 2,
-              background: "linear-gradient(to right, var(--sage), var(--gold))",
-            }}
-          />
-
-          <p
-            className="leading-relaxed max-w-[500px] mx-auto italic"
-            style={{
-              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
-              color: "var(--text-muted)",
-            }}
-          >
-            No diet cures hemangiosarcoma. But what your dog eats every day
-            shapes the metabolic environment that tumor lives in — and there is
-            real science behind changing it. This guide gives you the honest
-            evidence, without oversimplifying it, so you can make decisions you
-            feel confident about.
-          </p>
         </div>
 
       </div>
 
-      <div className="px-4 sm:px-6">
+      {/* Oval nav band — full-bleed, sticky */}
+      <DietOvalNav
+        categories={NAV_ITEMS}
+        activeCategory={activeCategory}
+        onCategoryClick={scrollToSection}
+      />
+
+      <div className="px-6">
         <div className="max-w-[800px] mx-auto">
           {/* Personalized Banner */}
           {profile && (
@@ -360,13 +393,6 @@ export default function DietPageClient({
           <div className={profile ? "reveal" : "reveal mt-6"}>
             <VetCallout dogName={profile?.dogName} />
           </div>
-
-          {/* Oval Nav */}
-          <DietOvalNav
-            categories={NAV_ITEMS}
-            activeCategory={activeCategory}
-            onCategoryClick={scrollToSection}
-          />
 
           {/* ═══ Section 1: The Science — Warburg Effect ═══ */}
           <section
