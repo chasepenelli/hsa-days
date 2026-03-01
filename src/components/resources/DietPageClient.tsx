@@ -78,6 +78,16 @@ const DIET_STYLES: { key: DietStyle; label: string; description: string }[] = [
   },
 ];
 
+const HERO_OVAL_ITEMS = [
+  { key: "fish", label: "Fatty Fish", icon: "fish.png" },
+  { key: "broccoli", label: "Cruciferous", icon: "broccoli.png" },
+  { key: "berries", label: "Berries", icon: "blueberries.png" },
+  { key: "eggs", label: "Eggs", icon: "egg.png" },
+  { key: "greens", label: "Leafy Greens", icon: "leafy-greens.png" },
+  { key: "organs", label: "Organ Meats", icon: "organ-meats.png" },
+  { key: "mushrooms", label: "Mushrooms", icon: "whole-foods.png" },
+];
+
 const VERDICT_CONFIG = {
   recommended: { color: "var(--sage)", rgb: "91,123,94", dot: "bg-sage" },
   good: { color: "var(--gold)", rgb: "196,162,101", dot: "bg-gold" },
@@ -260,7 +270,7 @@ export default function DietPageClient({
     >
       {/* ═══ Hero ═══ */}
       <div
-        className="pt-20 pb-12 px-6 relative overflow-hidden"
+        className="pt-20 pb-0 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.09) 0%, rgba(196,162,101,0.05) 40%, rgba(245,240,234,0.6) 70%, var(--warm-white) 100%)",
@@ -286,7 +296,7 @@ export default function DietPageClient({
         {/* Decorative petri-dish accent */}
         <DietHeroAccent />
 
-        <div className="max-w-[800px] mx-auto reveal relative z-10">
+        <div className="max-w-[800px] mx-auto reveal relative z-10 flex flex-col items-center text-center">
           {/* Breadcrumb */}
           <div className="inline-flex items-center gap-2 mb-5">
             <span
@@ -321,7 +331,7 @@ export default function DietPageClient({
 
           {/* Warm accent rule — sage-to-gold gradient */}
           <div
-            className="mb-4"
+            className="mb-4 mx-auto"
             style={{
               width: 48,
               height: 2.5,
@@ -331,15 +341,67 @@ export default function DietPageClient({
           />
 
           <p
-            className="leading-relaxed max-w-[520px]"
+            className="leading-relaxed max-w-[500px] mx-auto italic"
             style={{
               fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
               color: "var(--text-muted)",
             }}
           >
-            What the research says about diet, metabolism, and cancer in dogs
-            with HSA — so you can feed with intention.
+            No diet cures hemangiosarcoma. But what your dog eats every day
+            shapes the metabolic environment that tumor lives in — and there is
+            real science behind changing it. This guide gives you the honest
+            evidence, without oversimplifying it, so you can make decisions you
+            feel confident about.
           </p>
+        </div>
+
+        {/* ── Oval food strip ── */}
+        <div
+          className="relative z-10 -mx-6 px-6 pt-4 pb-6"
+          style={{ overflowX: "auto", scrollbarWidth: "none" }}
+        >
+          <style>{`.hero-oval-strip::-webkit-scrollbar { display: none; }`}</style>
+          <div className="hero-oval-strip flex items-end justify-center gap-5 min-w-max mx-auto">
+            {HERO_OVAL_ITEMS.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => scrollToSection("best-foods")}
+                className="group flex flex-col items-center gap-2 bg-transparent border-none p-0 cursor-pointer"
+                aria-label={`Scroll to ${item.label}`}
+              >
+                <div
+                  className="transition-transform duration-200 group-hover:-translate-y-1.5"
+                  style={{
+                    width: 76,
+                    height: 104,
+                    borderRadius: "50%",
+                    background: "rgba(250,248,245,0.95)",
+                    border: "1.5px solid rgba(91,123,94,0.15)",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Image
+                    src={`/illustrations/food/${item.icon}`}
+                    alt={item.label}
+                    width={52}
+                    height={72}
+                    className="p-3.5"
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+                <span
+                  className="text-[0.58rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
