@@ -3,6 +3,9 @@ import type {
   MealPlanMap,
   MealFormOption,
   DietCaution,
+  DietSupplement,
+  ResearchSpotlight,
+  DietSource,
 } from "./types";
 
 // ── Best Foods & Avoid Foods ──────────────────────────────────────────────────
@@ -480,4 +483,226 @@ export const CAUTIONS: DietCaution[] = [
     title: "Small Amounts of Garlic",
     note: "Very small amounts (less than one small clove per 20 lbs, a few times per week) are sometimes used by integrative practitioners for allicin and quercetin benefits. Given the hemorrhagic risk profile of HSA, many practitioners omit garlic entirely. If you use it, keep amounts minimal and stop at any sign of anemia.",
   },
+];
+
+// ── Diet Supplements (Evidence-Graded) ────────────────────────────────────────
+
+export const DIET_SUPPLEMENTS: DietSupplement[] = [
+  {
+    slug: "turkey-tail",
+    name: "Turkey Tail (I'm-Yunity)",
+    tagline: "The only supplement with a published RCT specifically in dogs with splenic HSA",
+    priority: "first",
+    evidenceTier: "strong",
+    evidenceNote: "The only supplement with a published randomized clinical trial specifically in dogs with splenic HSA.",
+    whatItDoes: "Contains PSP (polysaccharopeptide) and PSK, two immunomodulatory compounds that bind to immune cell receptors, restoring immune surveillance and activating macrophages against tumor cells. In a 2012 University of Pennsylvania randomized pilot trial, dogs receiving 100 mg/kg/day showed a median survival of 199 days — more than double the 86-day median for dogs receiving no further treatment post-splenectomy.",
+    whyHSA: "Directly studied in dogs with splenic hemangiosarcoma. The immune surveillance mechanisms are especially relevant for a cancer that spreads hematogenously (through the bloodstream).",
+    dosing: {
+      under25: "25 mg/kg daily (e.g. ~500mg for a 20 lb dog)",
+      "25to50": "50–100 mg/kg daily (use I'm-Yunity brand)",
+      "50to75": "100 mg/kg daily — the clinical trial dose",
+      over75: "100 mg/kg daily — the clinical trial dose (e.g. ~9g for an 90 lb dog)",
+    },
+    keyStudy: "Brown DC, Reetz J. Single agent polysaccharopeptide delays metastases and improves survival in naturally occurring hemangiosarcoma. Evidence-Based Complementary and Alternative Medicine, 2012.",
+    sourcingNote: "Use I'm-Yunity brand specifically if possible — it was the product studied. If using another brand, look for fruiting body extract (not mycelium on grain) with a Certificate of Analysis for PSP content.",
+    cautions: "A 2022 follow-up study found PSP did not significantly improve outcomes when added to doxorubicin. It may be most useful for dogs not on chemotherapy or between chemo cycles — discuss timing with your oncologist.",
+  },
+  {
+    slug: "fish-oil",
+    name: "Fish Oil (EPA/DHA)",
+    tagline: "The intervention where conventional and integrative oncology most agree",
+    priority: "first",
+    evidenceTier: "moderate",
+    evidenceNote: "Broad veterinary oncology evidence base; the only supplement where integrative and conventional oncology communities largely agree.",
+    whatItDoes: "EPA and DHA reduce production of prostaglandin E2 (PGE2), the primary inflammatory driver of tumor growth. They directly inhibit endothelial cell migration and angiogenesis, reduce cancer cell proliferation, promote apoptosis, and may reduce cancer-associated muscle wasting (cachexia). Multiple veterinary oncology studies support inclusion in cancer diets.",
+    whyHSA: "HSA is a tumor of endothelial cells — EPA/DHA directly inhibits endothelial cell migration and new vessel formation, attacking the cancer's core biology. It's the dietary intervention most directly matched to HSA's vascular nature.",
+    dosing: {
+      under25: "~750–1,500 mg EPA+DHA daily (roughly 300 mg per 10 lbs body weight)",
+      "25to50": "~1,500–3,000 mg EPA+DHA daily",
+      "50to75": "~3,000–4,500 mg EPA+DHA daily",
+      over75: "~4,500–6,000 mg EPA+DHA daily",
+    },
+    keyStudy: "Reference dose: 450 mg EPA+DHA per 100 kcal daily energy requirement. Colorado State University Flint Animal Cancer Center.",
+    sourcingNote: "Marine fish oil from sardine, anchovy, or salmon — NOT plant-derived flax or hemp (dogs convert ALA to EPA/DHA poorly). Refrigerate to prevent rancidity. Krill oil has higher bioavailability per gram but costs more.",
+    cautions: "High doses have mild anticoagulant properties. Around surgery, active bleeding, or suspected tumor rupture, reduce dose and discuss with your vet. Introduce gradually rather than starting at full therapeutic dose.",
+  },
+  {
+    slug: "yunnan-baiyao",
+    name: "Yunnan Baiyao",
+    tagline: "Traditional hemostatic herb with documented in vitro HSA cell-killing activity",
+    priority: "second",
+    evidenceTier: "moderate",
+    evidenceNote: "Strong clinical track record for hemostasis in HSA dogs; in vitro evidence of direct HSA cell-killing activity.",
+    whatItDoes: "A traditional Chinese herbal blend used for over 114 years, primarily for hemostasis — it activates platelets and enhances clot formation. A 2014 NC State study found Yunnan Baiyao causes dose- and time-dependent apoptosis in canine hemangiosarcoma cell lines through caspase-mediated pathways, suggesting it may directly kill HSA cells in addition to managing bleeding.",
+    whyHSA: "HSA tumors are prone to internal rupture and hemorrhage — Yunnan Baiyao is uniquely relevant to this specific life-threatening complication. No other commonly used supplement directly addresses the bleeding risk of HSA.",
+    dosing: {
+      under25: "1 capsule (0.25g) once daily",
+      "25to50": "1 capsule twice daily (10–30 lbs) or 2 capsules twice daily (30–50 lbs)",
+      "50to75": "2 capsules twice daily to three times daily",
+      over75: "2 capsules three times daily",
+    },
+    keyStudy: "Wirth KA et al. In vitro effects of Yunnan Baiyao on canine hemangiosarcoma cell lines. Veterinary and Comparative Oncology, 2014.",
+    sourcingNote: "Source from a reputable Chinese medicine supplier. Cycling is commonly recommended (10 days on, 3–5 days off) to prevent tolerance. The box includes a red 'emergency pill' — many practitioners advise giving it at the first sign of an acute bleed.",
+    cautions: "The formula contains undisclosed proprietary ingredients classified by the Chinese government. Use under veterinary guidance. Monitor liver enzymes over time with extended use.",
+  },
+  {
+    slug: "modified-citrus-pectin",
+    name: "Modified Citrus Pectin (MCP)",
+    tagline: "Anti-metastatic Galectin-3 inhibitor with strong mechanistic rationale for HSA",
+    priority: "second",
+    evidenceTier: "emerging",
+    evidenceNote: "Strong mechanistic rationale for metastatic HSA specifically; limited canine clinical trial data but compelling in vitro and mouse model evidence.",
+    whatItDoes: "MCP binds to and inhibits Galectin-3 — a protein cancer cells use to adhere to distant tissues, evade apoptosis, and promote angiogenesis. Multiple in vitro and mouse model studies show MCP reduces tumor cell adhesion, invasion, and metastatic spread. 2023 research found MCP may modulate gene expression in apoptosis and tumor suppression pathways.",
+    whyHSA: "HSA spreads through the bloodstream (hematogenously) — exactly the metastatic route that Galectin-3 facilitates. The anti-metastatic mechanism of MCP is more directly relevant to vascular cancers like HSA than to many other tumor types.",
+    dosing: {
+      under25: "0.5–1g daily mixed into food",
+      "25to50": "1–2g daily",
+      "50to75": "2–3g daily",
+      over75: "3–5g daily",
+    },
+    keyStudy: "Glinsky VV, Raz A. Modified citrus pectin anti-metastatic properties: one bullet, multiple targets. Carcinogenesis, 2009.",
+    sourcingNote: "PectaSol-C is the most clinically studied brand. Look for low-molecular-weight MCP specifically — regular pectin is not absorbed. Available as a powder easily added to food.",
+    cautions: undefined,
+  },
+  {
+    slug: "curcumin",
+    name: "Curcumin",
+    tagline: "Powerful anti-angiogenic compound limited by bioavailability — form matters enormously",
+    priority: "context",
+    evidenceTier: "moderate",
+    evidenceNote: "Extensive pre-clinical evidence for anti-angiogenic and anti-tumor activity, but clinically limited by severe bioavailability challenges.",
+    whatItDoes: "Curcumin inhibits NF-κB (a master regulator of inflammation and tumor survival), directly inhibits VEGF/VEGFR2 signaling (the primary driver of tumor blood vessel formation), and induces apoptosis in multiple cancer cell lines. A pilot trial of liposomal IV curcumin in 10 cancer-bearing dogs found 4 of 6 completing treatment had stable disease.",
+    whyHSA: "Curcumin directly inhibits endothelial cell viability, migration, and tube formation — all processes central to HSA survival. Its anti-VEGF mechanism attacks the same angiogenic pathway that defines this cancer's behavior.",
+    dosing: {
+      under25: "200–300mg standardized extract daily",
+      "25to50": "300–500mg daily",
+      "50to75": "500–750mg daily",
+      over75: "750–1,000mg daily",
+    },
+    keyStudy: "Cekanova M et al. In vitro activity of liposome-encapsulated curcumin for naturally occurring canine cancers. Journal of Veterinary Internal Medicine, 2014.",
+    sourcingNote: "Plain turmeric powder is NOT adequate — systemic absorption is negligible. Use a standardized, bioenhanced form: liposomal curcumin, BCM-95/Biocurcumax, or nano-curcumin. Avoid curcumin + piperine formulations during active chemotherapy.",
+    cautions: "Piperine (black pepper extract) dramatically increases curcumin absorption but also inhibits drug metabolism enzymes — this can raise chemotherapy drug levels to potentially toxic concentrations. If your dog is on doxorubicin, use piperine-free formulations and discuss with your oncologist.",
+  },
+  {
+    slug: "anti-angiogenic-trio",
+    name: "Anti-Angiogenic Trio: Resveratrol, Quercetin & EGCG",
+    tagline: "Three plant compounds that block tumor blood vessel formation from overlapping angles",
+    priority: "context",
+    evidenceTier: "emerging",
+    evidenceNote: "Mechanistically compelling anti-angiogenic activity across overlapping pathways; primarily in vitro evidence with limited canine clinical data.",
+    whatItDoes: "These three plant compounds inhibit HIF-1α (which drives tumor blood vessel formation in low-oxygen environments), suppress VEGF signaling, inhibit matrix metalloproteinases that tumors use to invade tissue, and promote cancer cell apoptosis. They are often included together in integrative protocols because their mechanisms are synergistic.",
+    whyHSA: "Anti-angiogenic compounds are directly targeted against HSA's core survival mechanism — the cancer's ability to continuously build new blood vessels. These three compounds attack this pathway from multiple angles simultaneously.",
+    dosing: {
+      under25: "Obtain from food sources primarily: blueberries, parsley, broccoli, green tea",
+      "25to50": "Food sources first; supplemental quercetin 25–50mg daily if desired",
+      "50to75": "Food sources first; supplemental quercetin 50–100mg daily if desired",
+      over75: "Food sources first; supplemental quercetin 100mg daily if desired",
+    },
+    keyStudy: "Lamy S et al. Natural health products that inhibit angiogenesis: a potential source for investigational new agents. Evidence-Based Complementary and Alternative Medicine, 2007.",
+    sourcingNote: "Obtain resveratrol from blueberries (not grapes — toxic to dogs). Quercetin is richest in parsley and blueberries. For EGCG, use decaffeinated green tea extract rather than brewed tea — caffeine sensitivity is a concern in dogs.",
+    cautions: "Grapes are toxic to dogs — never feed grapes for resveratrol. Use supplemental trans-resveratrol if supplementing beyond food sources.",
+  },
+];
+
+// ── Protocol Gap ──────────────────────────────────────────────────────────────
+
+export const PROTOCOL_GAP = {
+  headline: "The Two Most Overlooked Interventions",
+  subhead: "Across publicly shared HSA protocols, these two are consistently absent — despite having some of the strongest mechanistic rationale.",
+  items: [
+    {
+      name: "Fish Oil at Therapeutic Dose",
+      icon: "fish.png",
+      why: "Turkey tail and Yunnan Baiyao get most of the attention in HSA communities — both deservedly — but EPA/DHA has a broader evidence base across veterinary oncology and is the supplement where conventional and integrative oncology most agree. Its mechanisms attack HSA specifically: it inhibits endothelial cell migration, reduces PGE2-driven inflammation, and has anti-angiogenic effects through multiple pathways. The reason it gets overlooked is that it lacks the disease-specific drama of the turkey tail study. It just quietly does a lot of things well.",
+      action: "If your current protocol doesn't include fish oil at therapeutic dose (roughly 300mg EPA+DHA per 10 lbs body weight daily), adding it is likely the highest-value next step.",
+    },
+    {
+      name: "Modified Citrus Pectin",
+      icon: "pumpkin.png",
+      why: "MCP is less well known than the other supplements, but its mechanism — blocking Galectin-3, the protein cancer cells use to metastasize through the bloodstream — is particularly relevant for HSA. This cancer spreads hematogenously (through the blood), which is exactly the route MCP may impede. For dogs with confirmed metastatic disease, the mechanistic argument for MCP is as strong as anything in the emerging evidence tier.",
+      action: "MCP is available as a powder (look for PectaSol-C brand) that mixes easily into food. It's generally well-tolerated and has no significant interactions with standard HSA protocols.",
+    },
+  ],
+};
+
+// ── Glycine / Collagen Debate ─────────────────────────────────────────────────
+
+export const GLYCINE_SECTION = {
+  headline: "Should You Worry About Bone Broth?",
+  subhead: "The Collagen & Glycine Question",
+  concern: {
+    label: "The Concern",
+    text: "Research from human oncology (primarily 2011–2014) showed that some fast-proliferating cancers upregulate the serine synthesis pathway (SSP), using serine and glycine as raw material for rapid cell division. Collagen-rich foods like bone broth and gelatin are high in glycine — collagen is approximately 33% glycine by composition. Mouse model studies showed dietary serine and glycine restriction slowed growth in SSP-amplified cancers. Some have concluded that bone broth might be feeding the tumor.",
+  },
+  counterargument: {
+    label: "The HSA-Specific Counterargument",
+    text: "Glycine has also been documented as an anti-angiogenic compound. A FASEB Journal study found glycine supplementation inhibited tumor angiogenesis in mice by approximately 50%, acting directly on endothelial cell proliferation. For HSA — a tumor that is endothelial cells, dependent on continuous new vessel formation to survive and spread — this anti-angiogenic mechanism is mechanistically compelling. The same amino acid that might theoretically fuel SSP-dependent biosynthesis could simultaneously be starving the vascular network HSA requires.",
+  },
+  addedComplexity: "A third layer: many SSP-dependent cancers can synthesize serine from glucose de novo. If glucose is already being restricted through a low-carbohydrate diet, you're attacking serine synthesis upstream. In that context, additional dietary glycine restriction may add little, since the tumor is already losing access to the glucose substrate SSP ultimately requires.",
+  verdict: {
+    label: "The Practical Verdict",
+    text: "The serine/glycine tension is real but unresolved for canine HSA specifically — no studies have mapped SSP activity in this tumor type. The anti-angiogenic signal on glycine provides a meaningful counterargument to aggressive restriction. A reasonable approach: neither eliminate collagen-rich foods entirely nor make them the dominant feature of the diet. Bone broth as a palatability aid and hydration supplement is reasonable. The more impactful dietary lever is carbohydrate reduction, which attacks the glucose supply chain SSP ultimately depends on.",
+  },
+};
+
+// ── Oncologist Consensus ──────────────────────────────────────────────────────
+
+export const ONCOLOGIST_CONSENSUS = {
+  headline: "What Veterinary Oncologists Actually Say",
+  subhead: "The evidence-based community's position is measured — not dismissive.",
+  intro: "There's a perception that conventional veterinary oncologists dismiss nutrition entirely. That's not accurate. Their position is measured: they acknowledge the mechanistic plausibility of dietary interventions while honestly noting the absence of large randomized controlled trial data in dogs. Here's where they stand.",
+  agreements: [
+    "Fish oil (EPA/DHA) is widely supported as reasonable and potentially beneficial — the Colorado State University Flint Animal Cancer Center explicitly recommends it",
+    "High-protein diets are appropriate for dogs with cancer; maintaining caloric intake and muscle mass is critical",
+    "I'm-Yunity at 100 mg/kg is considered reasonable by many oncologists given the published pilot trial data",
+    "Yunnan Baiyao is widely used in integrative-leaning oncology practices specifically for HSA's bleeding management",
+    "Eliminating high-glycemic carbohydrates is broadly supported as reasonable, even without RCT proof",
+  ],
+  skepticisms: [
+    "Extreme ketogenic diets without nutritional guidance from a DACVN — deficiency risk is real",
+    "High-dose antioxidant supplementation during chemotherapy — may blunt doxorubicin's mechanism",
+    "Raw diets for immunocompromised dogs undergoing chemotherapy — infection risk is legitimate",
+    "Any supplement claiming to cure or eliminate HSA tumors",
+  ],
+  csuQuote: "\"It seems reasonable to include omega-3 fatty acids (EPA, DHA) in foods for pets with cancer.\" — Colorado State University Flint Animal Cancer Center",
+  closingThought: "The most effective protocol is the one you can actually implement consistently, with your vet's full knowledge and support. Supplements that your oncologist doesn't know about can't be managed if an interaction or problem arises.",
+};
+
+// ── Active Research Spotlights ────────────────────────────────────────────────
+
+export const ACTIVE_RESEARCH: ResearchSpotlight[] = [
+  {
+    institution: "University of Pennsylvania / Morris Animal Foundation",
+    title: "Hemangiosarcoma Initiative",
+    summary: "A multimillion-dollar, multiyear initiative with five new research proposals selected in 2025 focused specifically on HSA diagnosis and treatment. Basic science into HSA biology — including metabolic pathway mapping — will have direct dietary implications as it matures.",
+    relevance: "Any future dietary intervention trials for HSA will build on this biological foundation.",
+    status: "Active 2024–2026",
+  },
+  {
+    institution: "Cornell University",
+    title: "Molecular Landscape of Canine HSA",
+    summary: "A project characterizing HSA at the single-cell and spatial omics level, mapping gene expression patterns including metabolic pathways. This is the kind of work that will eventually tell us whether HSA specifically upregulates the serine synthesis pathway — resolving the glycine/collagen debate with actual HSA data.",
+    relevance: "Will directly inform future targeted dietary interventions and clarify which metabolic pathways are most active in HSA.",
+    status: "Active",
+  },
+  {
+    institution: "Multiple institutions",
+    title: "Propranolol + Doxorubicin Trial",
+    summary: "Propranolol (a beta-blocker) has shown ability to kill HSA cells in vitro and reduce disease progression in human angiosarcoma. Active trials are testing it alongside standard doxorubicin chemotherapy. Propranolol's mechanisms overlap with dietary anti-angiogenic interventions — future work may explore synergistic dietary protocols.",
+    relevance: "If propranolol proves effective, its anti-angiogenic mechanism parallels the dietary approach of starving tumor vasculature.",
+    status: "Active 2024–2025",
+  },
+];
+
+// ── Key Sources ────────────────────────────────────────────────────────────────
+
+export const DIET_SOURCES: DietSource[] = [
+  { title: "Single Agent PSP Delays Metastases in HSA (Penn, 2012)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3440946/", type: "clinical", year: 2012 },
+  { title: "I'm-Yunity ± Doxorubicin for Splenic HSA (2022)", url: "https://pubmed.ncbi.nlm.nih.gov/35442554/", type: "clinical", year: 2022 },
+  { title: "EPA/DHA Supplementation in Companion Animal Cancer: Systematic Review", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8193331/", type: "review", year: 2021 },
+  { title: "Yunnan Baiyao on Canine HSA Cell Lines (NC State, 2014)", url: "https://pubmed.ncbi.nlm.nih.gov/24976212/", type: "clinical", year: 2014 },
+  { title: "Liposomal Curcumin for Canine Cancers", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6234083/", type: "clinical", year: 2014 },
+  { title: "Nutrition & Oncology in Dogs and Cats: Comprehensive Review (2024)", url: "https://www.frontiersin.org/journals/veterinary-science/articles/10.3389/fvets.2024.1490290/full", type: "review", year: 2024 },
+  { title: "CSU Flint Animal Cancer Center — Dietary Considerations", url: "https://www.csuanimalcancercenter.org/2020/11/18/dietary-considerations-for-pets-with-cancer/", type: "organization", year: 2020 },
+  { title: "Natural Health Products Inhibiting Angiogenesis (Parts 1 & 2)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC1891166/", type: "review", year: 2007 },
 ];

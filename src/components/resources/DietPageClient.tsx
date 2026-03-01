@@ -11,7 +11,16 @@ import type {
   DietCaution,
   DietStyle,
   WeightBracket,
+  DietSource,
 } from "@/lib/resources/types";
+import {
+  DIET_SUPPLEMENTS,
+  PROTOCOL_GAP,
+  GLYCINE_SECTION,
+  ONCOLOGIST_CONSENSUS,
+  ACTIVE_RESEARCH,
+  DIET_SOURCES,
+} from "@/lib/resources/diet";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
 import VetCallout from "./VetCallout";
@@ -20,6 +29,7 @@ import FoodFlipCard from "./FoodFlipCard";
 import SectionDivider from "./SectionDivider";
 import WarburgIllustration from "./WarburgIllustration";
 import DietHeroAccent from "./DietHeroAccent";
+import DietSupplementCard from "./DietSupplementCard";
 
 interface DietPageClientProps {
   profile: DogProfile | null;
@@ -33,8 +43,12 @@ const NAV_ITEMS = [
   { key: "science", label: "The Science", accentColor: "var(--sage)" },
   { key: "best-foods", label: "Best Foods", accentColor: "var(--sage)" },
   { key: "avoid", label: "Foods to Avoid", accentColor: "var(--terracotta)" },
+  { key: "supplements", label: "Supplements", accentColor: "var(--sage)" },
+  { key: "the-debate", label: "The Debate", accentColor: "var(--gold)" },
   { key: "meal-form", label: "Meal Form", accentColor: "var(--gold)" },
-  { key: "meal-plan", label: "Build a Meal Plan", accentColor: "var(--gold)" },
+  { key: "meal-plan", label: "Build a Plan", accentColor: "var(--gold)" },
+  { key: "vets", label: "What Vets Say", accentColor: "var(--sage)" },
+  { key: "research", label: "Research", accentColor: "var(--sage)" },
   { key: "cautions", label: "Cautions", accentColor: "var(--terracotta)" },
 ];
 
@@ -69,33 +83,35 @@ const VERDICT_CONFIG = {
   avoid: { color: "var(--terracotta)", rgb: "212,133,106", dot: "bg-terracotta" },
 };
 
-function IllustrationPlaceholder({
-  label,
-  size = 100,
-}: {
-  label: string;
-  size?: number;
-}) {
-  return (
-    <div
-      className="flex items-center justify-center rounded-2xl flex-shrink-0"
-      style={{
-        width: size,
-        height: size,
-        background:
-          "linear-gradient(135deg, rgba(245,240,234,1) 0%, rgba(196,162,101,0.08) 100%)",
-        border: "1px solid var(--border)",
-      }}
-    >
-      <span
-        className="text-[0.65rem] font-medium text-center px-2 leading-tight"
-        style={{ color: "var(--text-muted)" }}
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
+const SOURCE_TYPE_CONFIG: Record<
+  DietSource["type"],
+  { label: string; bg: string; color: string; border: string }
+> = {
+  clinical: {
+    label: "Clinical",
+    bg: "rgba(91,123,94,0.08)",
+    color: "var(--sage)",
+    border: "rgba(91,123,94,0.2)",
+  },
+  review: {
+    label: "Review",
+    bg: "rgba(196,162,101,0.08)",
+    color: "var(--gold)",
+    border: "rgba(196,162,101,0.2)",
+  },
+  organization: {
+    label: "Organization",
+    bg: "rgba(245,240,234,0.9)",
+    color: "var(--text-muted)",
+    border: "rgba(0,0,0,0.1)",
+  },
+  integrative: {
+    label: "Integrative",
+    bg: "rgba(212,133,106,0.08)",
+    color: "var(--terracotta)",
+    border: "rgba(212,133,106,0.2)",
+  },
+};
 
 function MacroBar({
   label,
@@ -140,6 +156,13 @@ export default function DietPageClient({
   mealFormGuide,
   cautions,
 }: DietPageClientProps) {
+  // New v2 data — imported directly from the data layer
+  const supplements = DIET_SUPPLEMENTS;
+  const protocolGap = PROTOCOL_GAP;
+  const glycineSection = GLYCINE_SECTION;
+  const oncologistConsensus = ONCOLOGIST_CONSENSUS;
+  const activeResearch = ACTIVE_RESEARCH;
+  const dietSources = DIET_SOURCES;
   const sectionRef = useScrollReveal();
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -150,6 +173,13 @@ export default function DietPageClient({
   const [activeCategory, setActiveCategory] = useState<string>("");
   const planResultRef = useRef<HTMLDivElement | null>(null);
 
+  // Collapse-all signal for supplement dosing tables
+  const [collapseAllSignal, setCollapseAllSignal] = useState(false);
+  const handleCollapseAll = () => {
+    setCollapseAllSignal(true);
+    requestAnimationFrame(() => setCollapseAllSignal(false));
+  };
+
   const recommendedItems = foodItems.filter((f) => f.category === "recommended");
   const avoidItems = foodItems.filter((f) => f.category === "avoid");
 
@@ -158,12 +188,9 @@ export default function DietPageClient({
     const sectionKeys = NAV_ITEMS.map((n) => n.key);
     const observers: IntersectionObserver[] = [];
 
-    // Track which sections are currently intersecting so we can pick the
-    // topmost visible one rather than whichever fires last.
     const visibleSections = new Set<string>();
 
     const pickActive = () => {
-      // Walk the nav order and pick the first visible section
       for (const key of sectionKeys) {
         if (visibleSections.has(key)) {
           setActiveCategory(key);
@@ -185,8 +212,6 @@ export default function DietPageClient({
           pickActive();
         },
         {
-          // Fire when the section top crosses the 40% mark from the top of
-          // the viewport (just below the sticky nav)
           rootMargin: "-20% 0px -55% 0px",
           threshold: 0,
         }
@@ -211,11 +236,8 @@ export default function DietPageClient({
   const handleGeneratePlan = () => {
     if (!selectedWeight || !selectedStyle) return;
     const plan = mealPlanMap[selectedStyle][selectedWeight];
-    // Reset visibility first so re-generating triggers the fade again
     setPlanVisible(false);
     setGeneratedPlan(plan);
-    // Small tick to let React commit the new plan before triggering fade-in,
-    // then scroll after the card has appeared.
     requestAnimationFrame(() => {
       setTimeout(() => {
         setPlanVisible(true);
@@ -604,7 +626,404 @@ export default function DietPageClient({
 
           <SectionDivider />
 
-          {/* ═══ Section 4: Meal Form Guide ═══ */}
+          {/* ═══ Section 4: Supplements ═══ */}
+          <section
+            id="supplements"
+            ref={(el) => { categoryRefs.current["supplements"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal mb-2">
+              <div className="flex items-center gap-2 mb-4">
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--sage)" }}
+                >
+                  Supplements
+                </span>
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] px-2 py-0.5 rounded-full"
+                  style={{
+                    color: "var(--text-muted)",
+                    background: "var(--border)",
+                  }}
+                >
+                  Evidence-Graded
+                </span>
+                <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+              </div>
+
+              <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div>
+                  <h2
+                    className="font-serif font-semibold mb-1"
+                    style={{ fontSize: "clamp(1.2rem, 3vw, 1.45rem)", color: "var(--text)" }}
+                  >
+                    What to Take, and Why
+                  </h2>
+                  <p
+                    className="text-[0.92rem] leading-relaxed mb-0 max-w-[560px]"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    What to take, what the evidence actually says, and what most protocols are missing.
+                  </p>
+                </div>
+                {/* Collapse-all button — useful once users have opened multiple dosing tables */}
+                <button
+                  type="button"
+                  onClick={handleCollapseAll}
+                  className="flex-shrink-0 inline-flex items-center gap-1.5 text-[0.76rem] font-medium cursor-pointer transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-sage"
+                  style={{
+                    color: "var(--text-muted)",
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    marginTop: "0.2rem",
+                  }}
+                  aria-label="Collapse all dosing tables"
+                >
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M2 8l4-4 4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Collapse all
+                </button>
+              </div>
+            </div>
+
+            {/* Supplement cards grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal-stagger mb-8 mt-6">
+              {supplements.map((supp) => (
+                <DietSupplementCard
+                  key={supp.slug}
+                  supplement={supp}
+                  profileWeightLbs={profile?.weightLbs}
+                  collapseAll={collapseAllSignal}
+                />
+              ))}
+            </div>
+
+            {/* Protocol Gap callout — insider tip box, slightly darker treatment */}
+            <div
+              className="rounded-2xl overflow-hidden reveal"
+              style={{
+                border: "1.5px solid rgba(91,123,94,0.28)",
+                background: "var(--cream-deep)",
+              }}
+            >
+              {/* Header bar — more distinct than surrounding content */}
+              <div
+                className="px-5 py-4"
+                style={{
+                  background: "linear-gradient(135deg, rgba(91,123,94,0.12) 0%, rgba(91,123,94,0.06) 100%)",
+                  borderBottom: "1px solid rgba(91,123,94,0.15)",
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  {/* Alert icon in tinted circle */}
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{
+                      background: "var(--sage)",
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M7 2.5L2 11.5h10L7 2.5z" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M7 6v3" stroke="white" strokeWidth="1.3" strokeLinecap="round"/>
+                      <circle cx="7" cy="10" r="0.5" fill="white"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p
+                      className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-0.5"
+                      style={{ color: "var(--sage)" }}
+                    >
+                      Protocol Gap
+                    </p>
+                    <h3
+                      className="font-serif font-semibold"
+                      style={{ fontSize: "1.08rem", color: "var(--text)", lineHeight: 1.3 }}
+                    >
+                      {protocolGap.headline}
+                    </h3>
+                  </div>
+                </div>
+                <p
+                  className="text-[0.85rem] leading-relaxed mt-2.5 ml-11"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {protocolGap.subhead}
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4">
+                {protocolGap.items.map((item, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl px-4 py-4 flex flex-col"
+                    style={{
+                      background: "white",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
+                    <div className="flex items-center gap-2.5 mb-2.5">
+                      <div
+                        className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
+                        style={{
+                          background: "rgba(91,123,94,0.08)",
+                          border: "1.5px solid rgba(91,123,94,0.15)",
+                        }}
+                      >
+                        <Image
+                          src={`/illustrations/food/${item.icon}`}
+                          alt={item.name}
+                          width={22}
+                          height={22}
+                          className="object-contain"
+                          style={{ padding: 3 }}
+                        />
+                      </div>
+                      <h4
+                        className="font-serif font-semibold text-[0.95rem]"
+                        style={{ color: "var(--text)" }}
+                      >
+                        {item.name}
+                      </h4>
+                    </div>
+                    <p
+                      className="text-[0.82rem] leading-relaxed mb-3 flex-1"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {item.why}
+                    </p>
+                    {/* Action callout — visually distinct, "what you do" */}
+                    <div
+                      className="rounded-lg px-3 py-2.5 text-[0.8rem] leading-relaxed"
+                      style={{
+                        background: "rgba(91,123,94,0.07)",
+                        borderLeft: "2.5px solid var(--sage)",
+                        borderTop: "1px solid rgba(91,123,94,0.12)",
+                        borderRight: "1px solid rgba(91,123,94,0.08)",
+                        borderBottom: "1px solid rgba(91,123,94,0.08)",
+                      }}
+                    >
+                      <span
+                        className="block text-[0.62rem] font-black uppercase tracking-[0.12em] mb-0.5"
+                        style={{ color: "var(--sage)", opacity: 0.7 }}
+                      >
+                        Action
+                      </span>
+                      <span className="flex items-start gap-1.5" style={{ color: "var(--sage)", fontWeight: 500 }}>
+                        {/* Arrow prefix — visually anchors the action */}
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          aria-hidden="true"
+                          style={{ flexShrink: 0, marginTop: "0.15rem" }}
+                        >
+                          <path
+                            d="M2 6h8M7 3l3 3-3 3"
+                            stroke="currentColor"
+                            strokeWidth="1.4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        {item.action}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 5: The Debate — Glycine/Collagen ═══ */}
+          <section
+            id="the-debate"
+            ref={(el) => { categoryRefs.current["the-debate"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal">
+              {/* Section label row with "The Debate" expert-content signal */}
+              <div className="flex items-center gap-2.5 mb-4">
+                {/* Nuanced content badge — distinct from regular section labels */}
+                <span
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-[0.1em] flex-shrink-0"
+                  style={{
+                    background: "rgba(196,162,101,0.1)",
+                    color: "var(--gold)",
+                    border: "1.5px solid rgba(196,162,101,0.25)",
+                  }}
+                >
+                  {/* Balance scale icon */}
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                    <path d="M5 1.5v7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                    <path d="M2 8.5h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                    <path d="M5 2.5L2 4.5M5 2.5L8 4.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                    <path d="M1 4.5c0 1 1 1.5 1 1.5s1-.5 1-1.5H1z" fill="currentColor" opacity="0.5"/>
+                    <path d="M7 4.5c0 1 1 1.5 1 1.5s1-.5 1-1.5H7z" fill="currentColor" opacity="0.5"/>
+                  </svg>
+                  The Debate
+                </span>
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--gold)" }}
+                >
+                  The Bone Broth Question
+                </span>
+                <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+              </div>
+
+              <h2
+                className="font-serif font-semibold mb-1"
+                style={{ fontSize: "clamp(1.2rem, 3vw, 1.4rem)", color: "var(--text)" }}
+              >
+                {glycineSection.headline}
+              </h2>
+              <p
+                className="text-[0.88rem] italic mb-5"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {glycineSection.subhead}
+              </p>
+
+              {/* One-sentence orientation before the two-column debate layout */}
+              <p
+                className="text-[0.88rem] leading-relaxed mb-4"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Some protocols flag glycine and collagen (bone broth) as potentially tumor-feeding. The argument is less settled for HSA than it first appears — here is the concern and the HSA-specific counterargument side by side.
+              </p>
+
+              {/* Two-column concern/counterargument — more visual structure */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                {/* Concern — terracotta tinted */}
+                <div
+                  className="rounded-2xl px-4 py-4"
+                  style={{
+                    background: "linear-gradient(160deg, rgba(212,133,106,0.08) 0%, rgba(212,133,106,0.03) 100%)",
+                    border: "1px solid rgba(212,133,106,0.22)",
+                  }}
+                >
+                  {/* Header row with icon */}
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(212,133,106,0.15)", border: "1.5px solid rgba(212,133,106,0.3)" }}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                        <path d="M4.5 1.5v3.5M4.5 7v.5" stroke="var(--terracotta)" strokeWidth="1.4" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <p
+                      className="text-[0.68rem] font-bold uppercase tracking-[0.1em]"
+                      style={{ color: "var(--terracotta)" }}
+                    >
+                      {glycineSection.concern.label}
+                    </p>
+                  </div>
+                  <p
+                    className="text-[0.85rem] leading-relaxed"
+                    style={{ color: "var(--text)" }}
+                  >
+                    {glycineSection.concern.text}
+                  </p>
+                </div>
+
+                {/* Counterargument — sage tinted */}
+                <div
+                  className="rounded-2xl px-4 py-4"
+                  style={{
+                    background: "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(91,123,94,0.03) 100%)",
+                    border: "1px solid rgba(91,123,94,0.2)",
+                  }}
+                >
+                  {/* Header row with icon */}
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(91,123,94,0.15)", border: "1.5px solid rgba(91,123,94,0.3)" }}
+                    >
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                        <path d="M2 4.5l1.8 1.8 3.2-3.2" stroke="var(--sage)" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <p
+                      className="text-[0.68rem] font-bold uppercase tracking-[0.1em]"
+                      style={{ color: "var(--sage)" }}
+                    >
+                      {glycineSection.counterargument.label}
+                    </p>
+                  </div>
+                  <p
+                    className="text-[0.85rem] leading-relaxed"
+                    style={{ color: "var(--text)" }}
+                  >
+                    {glycineSection.counterargument.text}
+                  </p>
+                </div>
+              </div>
+
+              {/* Added complexity paragraph */}
+              <p
+                className="text-[0.87rem] leading-relaxed mb-5 italic"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {glycineSection.addedComplexity}
+              </p>
+
+              {/* Verdict — expert final word, gold-accented, more authoritative */}
+              <div
+                className="relative rounded-2xl px-5 py-5"
+                style={{
+                  background: "linear-gradient(135deg, rgba(196,162,101,0.1) 0%, rgba(196,162,101,0.05) 100%)",
+                  border: "1.5px solid rgba(196,162,101,0.3)",
+                }}
+              >
+                {/* Top gold accent rule — centered, signals "here's the answer" */}
+                <div className="flex items-center justify-center gap-2.5 mb-4">
+                  <div className="h-px flex-1" style={{ background: "rgba(196,162,101,0.3)", maxWidth: 40 }} />
+                  <span
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-black uppercase tracking-[0.12em] flex-shrink-0"
+                    style={{
+                      background: "var(--gold)",
+                      color: "white",
+                    }}
+                  >
+                    {/* Gavel-style checkmark */}
+                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+                      <path d="M1.5 4.5l2 2 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    {glycineSection.verdict.label}
+                  </span>
+                  <div className="h-px flex-1" style={{ background: "rgba(196,162,101,0.3)", maxWidth: 40 }} />
+                </div>
+                <p
+                  className="font-serif italic text-center leading-relaxed max-w-[560px] mx-auto"
+                  style={{
+                    fontSize: "clamp(0.9rem, 2vw, 1rem)",
+                    color: "var(--text)",
+                    lineHeight: 1.75,
+                  }}
+                >
+                  <strong
+                    className="not-italic"
+                    style={{ color: "var(--gold)", fontWeight: 700 }}
+                  >
+                    Bottom line:{" "}
+                  </strong>
+                  {glycineSection.verdict.text}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 6: Meal Form Guide ═══ */}
           <section
             id="meal-form"
             ref={(el) => { categoryRefs.current["meal-form"] = el; }}
@@ -642,7 +1061,7 @@ export default function DietPageClient({
 
           <SectionDivider />
 
-          {/* ═══ Section 5: Meal Plan Generator ═══ */}
+          {/* ═══ Section 7: Meal Plan Generator ═══ */}
           <section
             id="meal-plan"
             ref={(el) => { categoryRefs.current["meal-plan"] = el; }}
@@ -677,7 +1096,7 @@ export default function DietPageClient({
                   Answer two questions and get a weekly feeding framework
                   tailored to your dog&apos;s weight.
                 </p>
-                {/* Warmth bridge — acknowledges the weight of what they're doing */}
+                {/* Warmth bridge */}
                 <p
                   className="font-serif italic text-[0.9rem] leading-relaxed mt-3 max-w-[440px]"
                   style={{ color: "var(--text-muted)", opacity: 0.85 }}
@@ -867,7 +1286,7 @@ export default function DietPageClient({
                   transform: planVisible ? "translateY(0)" : "translateY(12px)",
                 }}
               >
-                {/* Result header — dark sage gradient, white text */}
+                {/* Result header */}
                 <div
                   className="px-5 sm:px-7 py-5"
                   style={{
@@ -927,7 +1346,7 @@ export default function DietPageClient({
                   </div>
                 </div>
 
-                {/* Result body — each section separated by a ruled divider */}
+                {/* Result body */}
                 <div className="bg-white">
                   {/* Daily portions */}
                   <div
@@ -1075,16 +1494,17 @@ export default function DietPageClient({
                         </span>
                       ))}
                     </div>
-                    <Link
-                      href="/resources/supplements"
-                      className="inline-flex items-center gap-1.5 text-[0.82rem] font-medium no-underline transition-opacity hover:opacity-70"
-                      style={{ color: "var(--sage)" }}
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection("supplements")}
+                      className="inline-flex items-center gap-1.5 text-[0.82rem] font-medium no-underline transition-opacity hover:opacity-70 cursor-pointer"
+                      style={{ color: "var(--sage)", background: "none", border: "none", padding: 0 }}
                     >
-                      See full supplement guide
+                      See supplement guide above
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                        <path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M5 8L5 2M2.5 4.5L5 2l2.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1093,7 +1513,324 @@ export default function DietPageClient({
 
           <SectionDivider />
 
-          {/* ═══ Section 6: Critical Cautions ═══ */}
+          {/* ═══ Section 8: What Veterinary Oncologists Say ═══ */}
+          <section
+            id="vets"
+            ref={(el) => { categoryRefs.current["vets"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal">
+              <div className="flex items-center gap-2 mb-4">
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--sage)" }}
+                >
+                  What Vets Say
+                </span>
+                <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+              </div>
+
+              <h2
+                className="font-serif font-semibold mb-1"
+                style={{ fontSize: "clamp(1.2rem, 3vw, 1.4rem)", color: "var(--text)" }}
+              >
+                {oncologistConsensus.headline}
+              </h2>
+              <p
+                className="text-[0.88rem] italic mb-4"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {oncologistConsensus.subhead}
+              </p>
+
+              <p
+                className="text-[0.9rem] leading-relaxed mb-6"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {oncologistConsensus.intro}
+              </p>
+
+              {/* Two-column agreements / skepticisms */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                {/* Agreements — sage dots */}
+                <div
+                  className="rounded-2xl px-4 py-4"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(91,123,94,0.06) 0%, rgba(91,123,94,0.02) 100%)",
+                    border: "1px solid rgba(91,123,94,0.18)",
+                  }}
+                >
+                  <p
+                    className="text-[0.68rem] font-bold uppercase tracking-[0.1em] mb-3"
+                    style={{ color: "var(--sage)" }}
+                  >
+                    Areas of Agreement
+                  </p>
+                  <ul className="space-y-2.5">
+                    {oncologistConsensus.agreements.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-[6px]"
+                          style={{ background: "var(--sage)" }}
+                        />
+                        <span
+                          className="text-[0.84rem] leading-relaxed"
+                          style={{ color: "var(--text)" }}
+                        >
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Skepticisms — terracotta dots */}
+                <div
+                  className="rounded-2xl px-4 py-4"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(212,133,106,0.06) 0%, rgba(212,133,106,0.02) 100%)",
+                    border: "1px solid rgba(212,133,106,0.18)",
+                  }}
+                >
+                  <p
+                    className="text-[0.68rem] font-bold uppercase tracking-[0.1em] mb-3"
+                    style={{ color: "var(--terracotta)" }}
+                  >
+                    Areas of Skepticism
+                  </p>
+                  <ul className="space-y-2.5">
+                    {oncologistConsensus.skepticisms.map((item, i) => (
+                      <li key={i} className="flex items-start gap-2.5">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-[6px]"
+                          style={{ background: "var(--terracotta)" }}
+                        />
+                        <span
+                          className="text-[0.84rem] leading-relaxed"
+                          style={{ color: "var(--text)" }}
+                        >
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* CSU Quote — editorial pull-quote (same treatment as Warburg quote) */}
+              <div
+                className="relative rounded-2xl px-6 py-5 mb-5"
+                style={{
+                  background: "linear-gradient(135deg, rgba(196,162,101,0.08) 0%, rgba(245,240,234,0.95) 100%)",
+                  border: "1px solid rgba(196,162,101,0.2)",
+                }}
+              >
+                {/* Oversized decorative opening quote — gold, low opacity */}
+                <span
+                  className="absolute font-serif select-none pointer-events-none"
+                  style={{
+                    top: -8,
+                    left: 18,
+                    fontSize: "5rem",
+                    lineHeight: 1,
+                    color: "var(--gold)",
+                    opacity: 0.2,
+                    fontStyle: "italic",
+                  }}
+                >
+                  &ldquo;
+                </span>
+                {/* Top-center gold accent bar */}
+                <div
+                  className="mx-auto mb-3"
+                  style={{
+                    width: 32,
+                    height: 2,
+                    borderRadius: 2,
+                    background: "var(--gold)",
+                    opacity: 0.65,
+                  }}
+                />
+                <p
+                  className="font-serif text-center leading-relaxed italic"
+                  style={{
+                    fontSize: "clamp(0.92rem, 2vw, 1.02rem)",
+                    color: "var(--text)",
+                    lineHeight: 1.75,
+                  }}
+                >
+                  {oncologistConsensus.csuQuote}
+                </p>
+              </div>
+
+              {/* Closing thought — warm and human, lightly tinted */}
+              <div
+                className="rounded-xl px-4 py-3.5"
+                style={{
+                  background: "rgba(91,123,94,0.04)",
+                  border: "1px solid rgba(91,123,94,0.1)",
+                }}
+              >
+                <p
+                  className="font-serif italic text-[0.9rem] leading-relaxed"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {oncologistConsensus.closingThought}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 9: Active Research ═══ */}
+          <section
+            id="research"
+            ref={(el) => { categoryRefs.current["research"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2 mb-4">
+                <span
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                  style={{ color: "var(--sage)" }}
+                >
+                  Research
+                </span>
+                <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+              </div>
+
+              <h2
+                className="font-serif font-semibold mb-1"
+                style={{ fontSize: "clamp(1.2rem, 3vw, 1.4rem)", color: "var(--text)" }}
+              >
+                Active Research
+              </h2>
+              <p
+                className="text-[0.88rem] leading-relaxed mb-2"
+                style={{ color: "var(--text-muted)" }}
+              >
+                This field is moving faster than most people realize. Multiple major institutions have active trials and funded initiatives underway right now — and the results will directly reshape dietary guidance for HSA dogs.
+              </p>
+              <p
+                className="text-[0.85rem] leading-relaxed mb-5 italic"
+                style={{ color: "var(--text-muted)", opacity: 0.8 }}
+              >
+                The studies below were active or recently published as of early 2026.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 reveal-stagger">
+                {activeResearch.map((study, i) => (
+                  <div
+                    key={i}
+                    className="rounded-2xl px-4 py-4 transition-all duration-200 cursor-default"
+                    style={{
+                      background: "white",
+                      border: "1px solid var(--border)",
+                      borderTop: "3px solid var(--sage)",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 24px rgba(91,123,94,0.1)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLDivElement).style.transform = "";
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "";
+                    }}
+                  >
+                    {/* Institution — small caps, visually separated from title */}
+                    <p
+                      className="text-[0.62rem] font-black uppercase tracking-[0.14em] mb-1.5"
+                      style={{ color: "var(--sage)", letterSpacing: "0.12em" }}
+                    >
+                      {study.institution}
+                    </p>
+                    {/* Thin separator rule between institution and title */}
+                    <div
+                      className="mb-2"
+                      style={{ height: 1, background: "var(--border)" }}
+                    />
+
+                    <h3
+                      className="font-serif font-semibold mb-2 leading-snug"
+                      style={{ fontSize: "0.95rem", color: "var(--text)" }}
+                    >
+                      {study.title}
+                    </h3>
+
+                    <p
+                      className="text-[0.82rem] leading-relaxed mb-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {study.summary}
+                    </p>
+
+                    {/* Relevance — italic with microscope icon prefix */}
+                    <div
+                      className="rounded-lg px-3 py-2.5 mb-3 text-[0.78rem] leading-relaxed"
+                      style={{
+                        background: "rgba(91,123,94,0.06)",
+                        borderLeft: "2px solid var(--sage)",
+                      }}
+                    >
+                      <div className="flex items-start gap-1.5">
+                        {/* Microscope / diet relevance icon */}
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: 1, color: "var(--sage)", opacity: 0.7 }}>
+                          <path d="M4 2h4M4 2v2M8 2v2M4 4h4M6 4v4M3 10h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span className="italic" style={{ color: "var(--text)" }}>
+                          {study.relevance}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Status badge — pulsing dot for active, gold for completed */}
+                    {(() => {
+                      const isActive = study.status.toLowerCase().includes("active");
+                      return (
+                        <span
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.68rem] font-semibold"
+                          style={{
+                            background: isActive ? "rgba(91,123,94,0.08)" : "rgba(196,162,101,0.1)",
+                            color: isActive ? "var(--sage)" : "var(--gold)",
+                            border: `1px solid ${isActive ? "rgba(91,123,94,0.2)" : "rgba(196,162,101,0.25)"}`,
+                          }}
+                        >
+                          {isActive ? (
+                            /* Pulsing live indicator for active research */
+                            <span
+                              className="relative flex-shrink-0 inline-flex"
+                              style={{ width: 8, height: 8 }}
+                              aria-hidden="true"
+                            >
+                              <span
+                                className="animate-ping absolute inline-flex w-full h-full rounded-full opacity-40"
+                                style={{ background: "var(--sage)" }}
+                              />
+                              <span
+                                className="relative inline-flex rounded-full"
+                                style={{ width: 8, height: 8, background: "var(--sage)" }}
+                              />
+                            </span>
+                          ) : (
+                            <span
+                              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                              style={{ background: "var(--gold)" }}
+                            />
+                          )}
+                          {study.status}
+                        </span>
+                      );
+                    })()}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 10: Critical Cautions ═══ */}
           <section
             id="cautions"
             ref={(el) => { categoryRefs.current["cautions"] = el; }}
@@ -1126,9 +1863,8 @@ export default function DietPageClient({
               </p>
             </div>
 
-            {/* Never Give — danger treatment with container header */}
+            {/* Never Give */}
             <div className="mb-4 reveal">
-              {/* Compassionate framing */}
               <p
                 className="text-[0.85rem] leading-relaxed mb-4 italic"
                 style={{ color: "var(--text-muted)" }}
@@ -1155,7 +1891,6 @@ export default function DietPageClient({
                     className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
                     style={{ background: "var(--terracotta)" }}
                   >
-                    {/* Minus / stop icon */}
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                       <path d="M2 5h6" stroke="white" strokeWidth="2" strokeLinecap="round"/>
                     </svg>
@@ -1168,7 +1903,6 @@ export default function DietPageClient({
                   </span>
                 </div>
 
-                {/* Items */}
                 <div
                   className="divide-y"
                   style={{ background: "rgba(212,133,106,0.02)", borderColor: "rgba(212,133,106,0.12)" }}
@@ -1205,13 +1939,12 @@ export default function DietPageClient({
               </div>
             </div>
 
-            {/* Use with Care — amber/gold treatment */}
+            {/* Use with Care */}
             <div className="reveal">
               <div
                 className="rounded-2xl overflow-hidden"
                 style={{ border: "1px solid rgba(196,162,101,0.25)" }}
               >
-                {/* Caution header bar */}
                 <div
                   className="flex items-center gap-2.5 px-4 py-3"
                   style={{
@@ -1239,7 +1972,6 @@ export default function DietPageClient({
                   </span>
                 </div>
 
-                {/* Items */}
                 <div
                   className="divide-y"
                   style={{ background: "rgba(196,162,101,0.02)", borderColor: "rgba(196,162,101,0.12)" }}
@@ -1277,7 +2009,100 @@ export default function DietPageClient({
             </div>
           </section>
 
-          {/* Print hint — matches food page pattern */}
+          {/* ═══ Key Sources strip — grouped by type ═══ */}
+          <section className="mb-8 reveal">
+            <div className="flex items-center gap-2 mb-3">
+              <span
+                className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Key Sources
+              </span>
+              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+            </div>
+            <p
+              className="text-[0.82rem] mb-4 leading-relaxed"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Everything on this page is grounded in peer-reviewed research and guidance from board-certified veterinary oncologists.
+            </p>
+
+            {/* Grouped by type — clinical, review, organization */}
+            {(["clinical", "review", "organization", "integrative"] as const).map((type) => {
+              const sourcesOfType = dietSources.filter((s) => s.type === type);
+              if (sourcesOfType.length === 0) return null;
+              const cfg = SOURCE_TYPE_CONFIG[type];
+              return (
+                <div key={type} className="mb-3 last:mb-0">
+                  {/* Type group label */}
+                  <p
+                    className="text-[0.62rem] font-bold uppercase tracking-[0.12em] mb-1.5 flex items-center gap-1.5"
+                    style={{ color: cfg.color }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                      style={{ background: cfg.color }}
+                    />
+                    {cfg.label}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {sourcesOfType.map((source, i) => (
+                      <a
+                        key={i}
+                        href={source.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[0.74rem] font-medium no-underline transition-all duration-150"
+                        style={{
+                          background: cfg.bg,
+                          color: cfg.color,
+                          border: `1px solid ${cfg.border}`,
+                        }}
+                        aria-label={`${source.title} (opens in new tab)`}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLAnchorElement).style.opacity = "0.75";
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLAnchorElement).style.opacity = "";
+                        }}
+                      >
+                        {/* Year badge */}
+                        <span
+                          className="text-[0.62rem] font-black rounded px-1 py-px"
+                          style={{
+                            background: cfg.border,
+                            color: cfg.color,
+                            lineHeight: 1.3,
+                          }}
+                        >
+                          {source.year}
+                        </span>
+                        {source.title}
+                        <svg
+                          width="8"
+                          height="8"
+                          viewBox="0 0 9 9"
+                          fill="none"
+                          className="flex-shrink-0"
+                          style={{ opacity: 0.5 }}
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M1.5 7.5L7.5 1.5M7.5 1.5H4M7.5 1.5V5"
+                            stroke="currentColor"
+                            strokeWidth="1.2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+
+          {/* Print hint */}
           <div
             className="text-center mb-12 reveal"
             style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem" }}
@@ -1418,8 +2243,6 @@ export default function DietPageClient({
 
 /**
  * MacroCard — one of three macronutrient cards in the framework grid.
- * Big display percentage at top, colored top-border accent, icon + label row,
- * hover lift state via JS to stay compatible with Tailwind v4 custom vars.
  */
 function MacroCard({
   label,
@@ -1461,7 +2284,7 @@ function MacroCard({
         el.style.borderColor = "";
       }}
     >
-      {/* Large display percentage — the hero number */}
+      {/* Large display percentage */}
       <div
         className="font-serif font-semibold mb-2.5 leading-none"
         style={{
@@ -1509,7 +2332,6 @@ function MacroCard({
 
 /**
  * MealFormCard — a single row in the meal form guide.
- * Tinted icon circle, bordered verdict pill, hover lift state.
  */
 function MealFormCard({ option }: { option: MealFormOption }) {
   const cfg = VERDICT_CONFIG[option.verdict];
@@ -1535,7 +2357,7 @@ function MealFormCard({ option }: { option: MealFormOption }) {
         el.style.borderColor = "";
       }}
     >
-      {/* Icon area — tinted circle with border */}
+      {/* Icon area */}
       <div
         className="flex items-center justify-center rounded-2xl flex-shrink-0 mt-0.5"
         style={{
@@ -1563,7 +2385,6 @@ function MealFormCard({ option }: { option: MealFormOption }) {
           >
             {option.label}
           </h3>
-          {/* Verdict pill — border makes it more defined and confident */}
           <span
             className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.72rem] font-bold"
             style={{

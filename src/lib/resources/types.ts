@@ -103,3 +103,44 @@ export interface DietCaution {
   title: string;
   note: string;
 }
+
+// ── Diet v2 Types ──────────────────────────────────────────────────────────────
+
+export type EvidenceTier = "strong" | "moderate" | "emerging";
+
+export type SupplementPriority = "first" | "second" | "context";
+
+export interface DietSupplement {
+  slug: string;
+  name: string;
+  tagline: string;
+  priority: SupplementPriority;  // first = start here; second = add next; context = situational
+  evidenceTier: EvidenceTier;
+  evidenceNote: string;     // 1 sentence explaining why this tier
+  whatItDoes: string;       // 2-3 sentences, mechanistic
+  whyHSA: string;           // 1-2 sentences, why specifically relevant to HSA
+  dosing: {                 // weight-based dosing
+    under25: string;
+    "25to50": string;
+    "50to75": string;
+    over75: string;
+  };
+  keyStudy: string;         // 1 sentence citation
+  sourcingNote: string;     // what to look for when buying
+  cautions?: string;        // optional caution note
+}
+
+export interface ResearchSpotlight {
+  institution: string;
+  title: string;
+  summary: string;         // 2-3 sentences
+  relevance: string;       // 1 sentence on why it matters for diet
+  status: string;          // e.g. "Active 2024–2025" or "Published 2022"
+}
+
+export interface DietSource {
+  title: string;
+  url: string;
+  type: "clinical" | "review" | "organization" | "integrative";
+  year: number;
+}
