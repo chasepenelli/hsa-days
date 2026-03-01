@@ -114,7 +114,7 @@ export const MEAL_FORM_GUIDE: MealFormOption[] = [
     verdict: "good",
     verdictLabel: "Good option",
     note:
-      "Darwin's Natural Pet Products, Volhard Dog Nutrition, and similar fresh/gently-cooked brands offer whole-food ingredients with lower carbohydrate content than kibble. Look for meat as the first three ingredients and verify the AAFCO completeness statement. Still check labels — carb content varies widely by formulation.",
+      "Gently-cooked brands like Farmer's Dog, Ollie, and JustFoodForDogs use whole-food ingredients with lower carbohydrate content than kibble and are safer for immunocompromised dogs. Avoid raw and high-pressure-processed brands — a September 2024 FDA advisory on Darwin's Natural Pet Products for Salmonella and Listeria makes it unsuitable for dogs on chemotherapy. Look for meat as the first three ingredients and verify the AAFCO completeness statement.",
   },
   {
     label: "Home-Cooked",
@@ -542,7 +542,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
       over75: "2 capsules three times daily",
     },
     keyStudy: "Wirth KA et al. In vitro effects of Yunnan Baiyao on canine hemangiosarcoma cell lines. Veterinary and Comparative Oncology, 2014.",
-    sourcingNote: "Source from a reputable Chinese medicine supplier. Cycling is commonly recommended (10 days on, 3–5 days off) to prevent tolerance. The box includes a red 'emergency pill' — many practitioners advise giving it at the first sign of an acute bleed.",
+    sourcingNote: "Source from a reputable Chinese medicine supplier. Cycling is commonly recommended (5 days on, 5 days off) to prevent tolerance — 2024 practitioner sources favor equal on/off intervals. The box includes a red 'emergency pill' — many practitioners advise giving it at the first sign of an acute bleed.",
     cautions: "The formula contains undisclosed proprietary ingredients classified by the Chinese government. Use under veterinary guidance. Monitor liver enzymes over time with extended use.",
   },
   {
@@ -636,7 +636,7 @@ export const GLYCINE_SECTION = {
   },
   counterargument: {
     label: "The HSA-Specific Counterargument",
-    text: "Glycine has also been documented as an anti-angiogenic compound. A FASEB Journal study found glycine supplementation inhibited tumor angiogenesis in mice by approximately 50%, acting directly on endothelial cell proliferation. For HSA — a tumor that is endothelial cells, dependent on continuous new vessel formation to survive and spread — this anti-angiogenic mechanism is mechanistically compelling. The same amino acid that might theoretically fuel SSP-dependent biosynthesis could simultaneously be starving the vascular network HSA requires.",
+    text: "Glycine has also been documented as an anti-angiogenic compound. A FASEB Journal study found glycine supplementation inhibited tumor angiogenesis in mice by 55% — and VEGF-driven tube formation was completely neutralized — acting directly on endothelial cell proliferation. For HSA — a tumor that is endothelial cells, dependent on continuous new vessel formation to survive and spread — this anti-angiogenic mechanism is mechanistically compelling. The same amino acid that might theoretically fuel SSP-dependent biosynthesis could simultaneously be starving the vascular network HSA requires.",
   },
   addedComplexity: "A third layer: many SSP-dependent cancers can synthesize serine from glucose de novo. If glucose is already being restricted through a low-carbohydrate diet, you're attacking serine synthesis upstream. In that context, additional dietary glycine restriction may add little, since the tumor is already losing access to the glucose substrate SSP ultimately requires.",
   verdict: {
@@ -688,9 +688,9 @@ export const ACTIVE_RESEARCH: ResearchSpotlight[] = [
   {
     institution: "Multiple institutions",
     title: "Propranolol + Doxorubicin Trial",
-    summary: "Propranolol (a beta-blocker) has shown ability to kill HSA cells in vitro and reduce disease progression in human angiosarcoma. Active trials are testing it alongside standard doxorubicin chemotherapy. Propranolol's mechanisms overlap with dietary anti-angiogenic interventions — future work may explore synergistic dietary protocols.",
-    relevance: "If propranolol proves effective, its anti-angiogenic mechanism parallels the dietary approach of starving tumor vasculature.",
-    status: "Active 2024–2025",
+    summary: "Propranolol (a beta-blocker) showed HSA cell-killing activity in vitro and was trialed alongside doxorubicin. Results published May 2025 showed no overall survival benefit (134 days vs. 152 days for doxorubicin alone). A notable secondary finding: dogs under 6 years of age had dramatically better outcomes — 5 of 5 survived beyond 365 days — suggesting age may be a key variable in future protocol design.",
+    relevance: "The trial's age-stratified findings may reshape how future anti-angiogenic protocols, including dietary ones, are studied in younger versus older dogs.",
+    status: "Published May 2025",
   },
 ];
 
