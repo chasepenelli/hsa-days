@@ -25,7 +25,7 @@ import {
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
 import VetCallout from "./VetCallout";
-import CategoryNav from "./CategoryNav";
+import DietOvalNav from "./DietOvalNav";
 import FoodFlipCard from "./FoodFlipCard";
 import SectionDivider from "./SectionDivider";
 import WarburgIllustration from "./WarburgIllustration";
@@ -41,16 +41,16 @@ interface DietPageClientProps {
 }
 
 const NAV_ITEMS = [
-  { key: "science", label: "The Science", accentColor: "var(--sage)" },
-  { key: "best-foods", label: "Best Foods", accentColor: "var(--sage)" },
-  { key: "avoid", label: "Foods to Avoid", accentColor: "var(--terracotta)" },
-  { key: "supplements", label: "Supplements", accentColor: "var(--sage)" },
-  { key: "the-debate", label: "The Debate", accentColor: "var(--gold)" },
-  { key: "meal-form", label: "Meal Form", accentColor: "var(--gold)" },
-  { key: "meal-plan", label: "Build a Plan", accentColor: "var(--gold)" },
-  { key: "vets", label: "What Vets Say", accentColor: "var(--sage)" },
-  { key: "research", label: "Research", accentColor: "var(--sage)" },
-  { key: "cautions", label: "Cautions", accentColor: "var(--terracotta)" },
+  { key: "science",     label: "The Science",    accentColor: "var(--sage)",       icon: "broccoli.png"     },
+  { key: "best-foods",  label: "Best Foods",      accentColor: "var(--sage)",       icon: "fish.png"         },
+  { key: "avoid",       label: "Foods to Avoid",  accentColor: "var(--terracotta)", icon: "grains.png"       },
+  { key: "supplements", label: "Supplements",     accentColor: "var(--sage)",       icon: "healthy-fats.png" },
+  { key: "the-debate",  label: "The Debate",      accentColor: "var(--gold)",       icon: "bone-broth.png"   },
+  { key: "meal-form",   label: "Meal Form",       accentColor: "var(--gold)",       icon: "warm-bowl.png"    },
+  { key: "meal-plan",   label: "Build a Plan",    accentColor: "var(--gold)",       icon: "whole-foods.png"  },
+  { key: "vets",        label: "What Vets Say",   accentColor: "var(--sage)",       icon: "egg.png"          },
+  { key: "research",    label: "Research",        accentColor: "var(--sage)",       icon: "protein.png"      },
+  { key: "cautions",    label: "Cautions",        accentColor: "var(--terracotta)", icon: "raw-meat.png"     },
 ];
 
 const WEIGHT_BRACKETS: { key: WeightBracket; label: string }[] = [
@@ -76,16 +76,6 @@ const DIET_STYLES: { key: DietStyle; label: string; description: string }[] = [
     label: "Balanced Fresh",
     description: "Whole-food variety, under 15% carbs",
   },
-];
-
-const HERO_OVAL_ITEMS = [
-  { key: "fish", label: "Fatty Fish", icon: "fish.png" },
-  { key: "broccoli", label: "Cruciferous", icon: "broccoli.png" },
-  { key: "berries", label: "Berries", icon: "blueberries.png" },
-  { key: "eggs", label: "Eggs", icon: "egg.png" },
-  { key: "greens", label: "Leafy Greens", icon: "leafy-greens.png" },
-  { key: "organs", label: "Organ Meats", icon: "organ-meats.png" },
-  { key: "mushrooms", label: "Mushrooms", icon: "whole-foods.png" },
 ];
 
 const VERDICT_CONFIG = {
@@ -270,7 +260,7 @@ export default function DietPageClient({
     >
       {/* ═══ Hero ═══ */}
       <div
-        className="pt-20 pb-0 px-6 relative overflow-hidden"
+        className="pt-20 pb-10 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.09) 0%, rgba(196,162,101,0.05) 40%, rgba(245,240,234,0.6) 70%, var(--warm-white) 100%)",
@@ -355,54 +345,6 @@ export default function DietPageClient({
           </p>
         </div>
 
-        {/* ── Oval food strip ── */}
-        <div
-          className="relative z-10 -mx-6 px-6 pt-4 pb-6"
-          style={{ overflowX: "auto", scrollbarWidth: "none" }}
-        >
-          <style>{`.hero-oval-strip::-webkit-scrollbar { display: none; }`}</style>
-          <div className="hero-oval-strip flex items-end justify-center gap-5 min-w-max mx-auto">
-            {HERO_OVAL_ITEMS.map((item) => (
-              <button
-                key={item.key}
-                onClick={() => scrollToSection("best-foods")}
-                className="group flex flex-col items-center gap-2 bg-transparent border-none p-0 cursor-pointer"
-                aria-label={`Scroll to ${item.label}`}
-              >
-                <div
-                  className="transition-transform duration-200 group-hover:-translate-y-1.5"
-                  style={{
-                    width: 76,
-                    height: 104,
-                    borderRadius: "50%",
-                    background: "rgba(250,248,245,0.95)",
-                    border: "1.5px solid rgba(91,123,94,0.15)",
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    src={`/illustrations/food/${item.icon}`}
-                    alt={item.label}
-                    width={52}
-                    height={72}
-                    className="p-3.5"
-                    style={{ objectFit: "contain" }}
-                  />
-                </div>
-                <span
-                  className="text-[0.58rem] font-semibold uppercase tracking-[0.14em]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
 
       <div className="px-4 sm:px-6">
@@ -419,8 +361,8 @@ export default function DietPageClient({
             <VetCallout dogName={profile?.dogName} />
           </div>
 
-          {/* Category Nav */}
-          <CategoryNav
+          {/* Oval Nav */}
+          <DietOvalNav
             categories={NAV_ITEMS}
             activeCategory={activeCategory}
             onCategoryClick={scrollToSection}
