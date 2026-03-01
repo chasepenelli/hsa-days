@@ -60,6 +60,14 @@ export const DIET_FOOD_ITEMS: FoodItem[] = [
     icon: "organ-meats.png",
     tip: "Lightly sear — makes a high-value treat or meal topper",
   },
+  {
+    name: "Mushrooms (Shiitake & Maitake)",
+    description:
+      "Beyond I'm-Yunity as a supplement, culinary mushrooms — particularly shiitake and maitake — provide beta-glucans that directly interact with the immune system. Beta-glucans bind to receptors on macrophages and natural killer cells, activating anti-tumor immune responses. Maitake's D-fraction beta-glucan has been studied in the context of canine cancer and immune stimulation. Cook mushrooms before feeding: raw mushrooms have chitin cell walls that resist digestion and reduce bioavailability significantly. A few tablespoons of lightly cooked shiitake or maitake, chopped fine, makes a meaningful addition to the rotation.",
+    category: "recommended",
+    icon: "whole-foods.png",
+    tip: "Sauté briefly in water (no oil) until softened, then chop or blend into food",
+  },
 
   // Foods to Avoid
   {
@@ -483,6 +491,21 @@ export const CAUTIONS: DietCaution[] = [
     title: "Small Amounts of Garlic",
     note: "Very small amounts (less than one small clove per 20 lbs, a few times per week) are sometimes used by integrative practitioners for allicin and quercetin benefits. Given the hemorrhagic risk profile of HSA, many practitioners omit garlic entirely. If you use it, keep amounts minimal and stop at any sign of anemia.",
   },
+  {
+    severity: "never",
+    title: "High-Dose Vitamin D (Without Testing First)",
+    note: "Vitamin D toxicity threshold is narrow in dogs. Many dogs with cancer are deficient — an active Morris Animal Foundation study is evaluating whether correcting this improves outcomes. But supplementing without knowing your dog's baseline 25-OH vitamin D blood level risks overshooting into toxicity. If you want to address vitamin D, get a baseline panel first and work with your vet on the appropriate form and dose.",
+  },
+  {
+    severity: "never",
+    title: "Any Supplement Claiming to 'Cure' or 'Eliminate' HSA",
+    note: "No supplement has been demonstrated in a clinical trial to cure or eliminate hemangiosarcoma. Anyone claiming otherwise is either misinformed or exploiting desperate owners. The interventions on this page modify the metabolic environment, support immune function, and may slow progression — honest goals that deserve honest framing.",
+  },
+  {
+    severity: "care",
+    title: "Running All Supplements at Full Dose Indefinitely",
+    note: "Many integrative practitioners recommend cycling supplements — Yunnan Baiyao at 5 days on, 5 days off is the most common example — to prevent tolerance and allow organ recovery time. Some herbal compounds can elevate liver enzymes over time without visible symptoms. Dogs on significant supplement protocols should have periodic CBC and blood chemistry panels to monitor liver (ALT, AST, ALP) and kidney (BUN, creatinine) function.",
+  },
 ];
 
 // ── Diet Supplements (Evidence-Graded) ────────────────────────────────────────
@@ -706,3 +729,10 @@ export const DIET_SOURCES: DietSource[] = [
   { title: "CSU Flint Animal Cancer Center — Dietary Considerations", url: "https://www.csuanimalcancercenter.org/2020/11/18/dietary-considerations-for-pets-with-cancer/", type: "organization", year: 2020 },
   { title: "Natural Health Products Inhibiting Angiogenesis (Parts 1 & 2)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC1891166/", type: "review", year: 2007 },
 ];
+
+// ── Monitoring Callout ────────────────────────────────────────────────────────
+
+export const MONITORING_CALLOUT = {
+  headline: "Monitoring Your Dog's Bloodwork",
+  body: "Dogs on significant supplement protocols — particularly if they include multiple herbal compounds alongside chemotherapy — should have periodic complete blood count (CBC) and chemistry panels to monitor liver function (ALT, AST, alkaline phosphatase) and kidney function (BUN, creatinine). Some herbal products can elevate liver enzymes over time without visible symptoms. Your oncologist will likely be running regular bloodwork regardless; make sure they know the full list of supplements your dog is receiving so they can interpret the results in context.",
+};
