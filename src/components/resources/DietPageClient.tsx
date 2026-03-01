@@ -1,0 +1,1592 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import type {
+  DogProfile,
+  FoodItem,
+  MealPlanMap,
+  MealFormOption,
+  DietCaution,
+  DietStyle,
+  WeightBracket,
+} from "@/lib/resources/types";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+import PersonalizedBanner from "./PersonalizedBanner";
+import VetCallout from "./VetCallout";
+import CategoryNav from "./CategoryNav";
+import FoodFlipCard from "./FoodFlipCard";
+import SectionDivider from "./SectionDivider";
+import WarburgIllustration from "./WarburgIllustration";
+import DietHeroAccent from "./DietHeroAccent";
+
+interface DietPageClientProps {
+  profile: DogProfile | null;
+  foodItems: FoodItem[];
+  mealPlanMap: MealPlanMap;
+  mealFormGuide: MealFormOption[];
+  cautions: DietCaution[];
+}
+
+const NAV_ITEMS = [
+  { key: "science", label: "The Science", accentColor: "var(--sage)" },
+  { key: "best-foods", label: "Best Foods", accentColor: "var(--sage)" },
+  { key: "avoid", label: "Foods to Avoid", accentColor: "var(--terracotta)" },
+  { key: "meal-form", label: "Meal Form", accentColor: "var(--gold)" },
+  { key: "meal-plan", label: "Build a Meal Plan", accentColor: "var(--gold)" },
+  { key: "cautions", label: "Cautions", accentColor: "var(--terracotta)" },
+];
+
+const WEIGHT_BRACKETS: { key: WeightBracket; label: string }[] = [
+  { key: "under25", label: "Under 25 lbs" },
+  { key: "25to50", label: "25–50 lbs" },
+  { key: "50to75", label: "50–75 lbs" },
+  { key: "over75", label: "75+ lbs" },
+];
+
+const DIET_STYLES: { key: DietStyle; label: string; description: string }[] = [
+  {
+    key: "low-carb",
+    label: "Low-Carb",
+    description: "High protein, minimal carbs, moderate fat",
+  },
+  {
+    key: "keto",
+    label: "Ketogenic",
+    description: "Very high fat, very low carb — work with a DACVN",
+  },
+  {
+    key: "balanced-fresh",
+    label: "Balanced Fresh",
+    description: "Whole-food variety, under 15% carbs",
+  },
+];
+
+const VERDICT_CONFIG = {
+  recommended: { color: "var(--sage)", rgb: "91,123,94", dot: "bg-sage" },
+  good: { color: "var(--gold)", rgb: "196,162,101", dot: "bg-gold" },
+  avoid: { color: "var(--terracotta)", rgb: "212,133,106", dot: "bg-terracotta" },
+};
+
+function IllustrationPlaceholder({
+  label,
+  size = 100,
+}: {
+  label: string;
+  size?: number;
+}) {
+  return (
+    <div
+      className="flex items-center justify-center rounded-2xl flex-shrink-0"
+      style={{
+        width: size,
+        height: size,
+        background:
+          "linear-gradient(135deg, rgba(245,240,234,1) 0%, rgba(196,162,101,0.08) 100%)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <span
+        className="text-[0.65rem] font-medium text-center px-2 leading-tight"
+        style={{ color: "var(--text-muted)" }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function MacroBar({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: number;
+  color: string;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        className="text-[0.78rem] font-medium w-14 flex-shrink-0"
+        style={{ color: "var(--text-muted)" }}
+      >
+        {label}
+      </span>
+      <div
+        className="flex-1 rounded-full overflow-hidden"
+        style={{ height: 8, background: "var(--border)" }}
+      >
+        <div
+          className="h-full rounded-full transition-all duration-700"
+          style={{ width: `${value}%`, background: color }}
+        />
+      </div>
+      <span
+        className="text-[0.78rem] font-semibold w-8 text-right flex-shrink-0"
+        style={{ color: "var(--text)" }}
+      >
+        {value}%
+      </span>
+    </div>
+  );
+}
+
+export default function DietPageClient({
+  profile,
+  foodItems,
+  mealPlanMap,
+  mealFormGuide,
+  cautions,
+}: DietPageClientProps) {
+  const sectionRef = useScrollReveal();
+  const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
+
+  const [selectedWeight, setSelectedWeight] = useState<WeightBracket | null>(null);
+  const [selectedStyle, setSelectedStyle] = useState<DietStyle | null>(null);
+  const [generatedPlan, setGeneratedPlan] = useState<import("@/lib/resources/types").MealPlanTemplate | null>(null);
+  const [planVisible, setPlanVisible] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>("");
+  const planResultRef = useRef<HTMLDivElement | null>(null);
+
+  const recommendedItems = foodItems.filter((f) => f.category === "recommended");
+  const avoidItems = foodItems.filter((f) => f.category === "avoid");
+
+  // ── IntersectionObserver: highlight active nav pill as user scrolls ──
+  useEffect(() => {
+    const sectionKeys = NAV_ITEMS.map((n) => n.key);
+    const observers: IntersectionObserver[] = [];
+
+    // Track which sections are currently intersecting so we can pick the
+    // topmost visible one rather than whichever fires last.
+    const visibleSections = new Set<string>();
+
+    const pickActive = () => {
+      // Walk the nav order and pick the first visible section
+      for (const key of sectionKeys) {
+        if (visibleSections.has(key)) {
+          setActiveCategory(key);
+          return;
+        }
+      }
+    };
+
+    sectionKeys.forEach((key) => {
+      const el = categoryRefs.current[key];
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            visibleSections.add(key);
+          } else {
+            visibleSections.delete(key);
+          }
+          pickActive();
+        },
+        {
+          // Fire when the section top crosses the 40% mark from the top of
+          // the viewport (just below the sticky nav)
+          rootMargin: "-20% 0px -55% 0px",
+          threshold: 0,
+        }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const scrollToSection = useCallback((key: string) => {
+    const el = categoryRefs.current[key];
+    if (el) {
+      const offset = 140;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  }, []);
+
+  const handleGeneratePlan = () => {
+    if (!selectedWeight || !selectedStyle) return;
+    const plan = mealPlanMap[selectedStyle][selectedWeight];
+    // Reset visibility first so re-generating triggers the fade again
+    setPlanVisible(false);
+    setGeneratedPlan(plan);
+    // Small tick to let React commit the new plan before triggering fade-in,
+    // then scroll after the card has appeared.
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        setPlanVisible(true);
+        planResultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    });
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <div
+      ref={sectionRef as React.RefObject<HTMLDivElement>}
+      className="min-h-screen pb-16"
+      style={{ background: "var(--warm-white)" }}
+    >
+      {/* ═══ Hero ═══ */}
+      <div
+        className="pt-20 pb-12 px-6 relative overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(160deg, rgba(91,123,94,0.09) 0%, rgba(196,162,101,0.05) 40%, rgba(245,240,234,0.6) 70%, var(--warm-white) 100%)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        {/* Ambient radial glows */}
+        <div
+          className="absolute top-0 right-0 w-80 h-80 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at 70% 20%, rgba(91,123,94,0.09) 0%, transparent 65%)",
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-64 h-48 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle at 20% 80%, rgba(196,162,101,0.07) 0%, transparent 65%)",
+          }}
+        />
+
+        {/* Decorative petri-dish accent */}
+        <DietHeroAccent />
+
+        <div className="max-w-[800px] mx-auto reveal relative z-10">
+          {/* Breadcrumb */}
+          <div className="inline-flex items-center gap-2 mb-5">
+            <span
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--sage)" }}
+            >
+              Resources
+            </span>
+            <span
+              className="w-px h-3"
+              style={{ background: "var(--border-strong)" }}
+            />
+            <span
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Diet &amp; Nutrition
+            </span>
+          </div>
+
+          <h1
+            className="font-serif font-semibold mb-3"
+            style={{
+              fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
+              color: "var(--text)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Feeding Against the Tumor
+          </h1>
+
+          {/* Warm accent rule — sage-to-gold gradient */}
+          <div
+            className="mb-4"
+            style={{
+              width: 48,
+              height: 2.5,
+              borderRadius: 2,
+              background: "linear-gradient(to right, var(--sage), var(--gold))",
+            }}
+          />
+
+          <p
+            className="leading-relaxed max-w-[520px]"
+            style={{
+              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              color: "var(--text-muted)",
+            }}
+          >
+            What the research says about diet, metabolism, and cancer in dogs
+            with HSA — so you can feed with intention.
+          </p>
+        </div>
+      </div>
+
+      <div className="px-4 sm:px-6">
+        <div className="max-w-[800px] mx-auto">
+          {/* Personalized Banner */}
+          {profile && (
+            <div className="reveal mt-6">
+              <PersonalizedBanner profile={profile} />
+            </div>
+          )}
+
+          {/* Vet Callout */}
+          <div className={profile ? "reveal" : "reveal mt-6"}>
+            <VetCallout dogName={profile?.dogName} />
+          </div>
+
+          {/* Category Nav */}
+          <CategoryNav
+            categories={NAV_ITEMS}
+            activeCategory={activeCategory}
+            onCategoryClick={scrollToSection}
+          />
+
+          {/* ═══ Section 1: The Science — Warburg Effect ═══ */}
+          <section
+            id="science"
+            ref={(el) => { categoryRefs.current["science"] = el; }}
+            className="mb-6 reveal"
+          >
+            {/* Section label */}
+            <div className="flex items-center gap-2 mb-4">
+              <span
+                className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                style={{ color: "var(--sage)" }}
+              >
+                The Science
+              </span>
+              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+            </div>
+
+            {/* Responsive: stacks vertically on mobile, side-by-side on sm+ */}
+            <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-5 mb-5">
+              <div className="flex-shrink-0">
+                <WarburgIllustration />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                  style={{ color: "var(--sage)" }}
+                >
+                  The Warburg Effect
+                </p>
+                <h2
+                  className="font-serif font-semibold leading-snug"
+                  style={{
+                    fontSize: "clamp(1.2rem, 3vw, 1.45rem)",
+                    color: "var(--text)",
+                  }}
+                >
+                  Cancer Cells Are Hungry — For Glucose
+                </h2>
+              </div>
+            </div>
+
+            <div className="space-y-4 mb-6">
+              <p
+                className="leading-relaxed"
+                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+              >
+                The <strong style={{ color: "var(--text)" }}>Warburg Effect</strong> — described
+                in the 1920s and present in over 80% of cancer types — is the observation that
+                cancer cells preferentially consume glucose at abnormally high rates and convert
+                it to lactate even in the presence of oxygen. This is metabolically inefficient,
+                but it gives rapidly dividing cells the building blocks they need to grow:
+                nucleotides, lipids, and amino acids.
+              </p>
+              <p
+                className="leading-relaxed"
+                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+              >
+                The practical implications are significant: elevated blood glucose and insulin
+                activate IGF-1, a growth signaling protein that accelerates tumor proliferation.
+                The lactate that tumor cells produce acidifies the local environment, helping cancer
+                evade the immune system. HSA, originating from vascular endothelial cells, is
+                inherently angiogenic — it builds its own blood supply. Anything that reduces
+                glucose availability or impairs new vessel formation is mechanistically relevant
+                to this tumor type.
+              </p>
+            </div>
+
+            {/* Editorial pull-quote */}
+            <div
+              className="relative rounded-2xl px-6 py-5 mb-8"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(196,162,101,0.08) 0%, rgba(245,240,234,0.95) 100%)",
+                border: "1px solid rgba(196,162,101,0.2)",
+              }}
+            >
+              {/* Oversized decorative opening quote — gold, low opacity */}
+              <span
+                className="absolute font-serif select-none pointer-events-none"
+                style={{
+                  top: -8,
+                  left: 18,
+                  fontSize: "5rem",
+                  lineHeight: 1,
+                  color: "var(--gold)",
+                  opacity: 0.22,
+                  fontStyle: "italic",
+                }}
+              >
+                &ldquo;
+              </span>
+              {/* Top-center gold accent bar */}
+              <div
+                className="mx-auto mb-3"
+                style={{
+                  width: 32,
+                  height: 2,
+                  borderRadius: 2,
+                  background: "var(--gold)",
+                  opacity: 0.7,
+                }}
+              />
+              <p
+                className="font-serif text-center leading-relaxed italic"
+                style={{
+                  fontSize: "clamp(0.98rem, 2.2vw, 1.08rem)",
+                  color: "var(--text)",
+                }}
+              >
+                A low-carbohydrate diet limits tumor fuel while nourishing your
+                dog&apos;s healthy cells — starving the disease without starving the dog.
+              </p>
+            </div>
+
+            {/* ── Macronutrient Framework ── */}
+            <div>
+              <h3
+                className="font-serif font-semibold mb-4"
+                style={{ fontSize: "1.1rem", color: "var(--text)" }}
+              >
+                The Macronutrient Framework
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* Protein */}
+                <MacroCard
+                  label="Protein"
+                  range="60–70%"
+                  color="var(--sage)"
+                  rgb="91,123,94"
+                  icon="/illustrations/food/protein.png"
+                  iconAlt="Lean meat representing dietary protein"
+                  note="Lean meats, fish, eggs, organ meats"
+                />
+
+                {/* Fat */}
+                <MacroCard
+                  label="Healthy Fat"
+                  range="20–30%"
+                  color="var(--gold)"
+                  rgb="196,162,101"
+                  icon="/illustrations/food/healthy-fats.png"
+                  iconAlt="Fish oil and omega-3 rich foods representing healthy dietary fat"
+                  note="Wild fish, fish oil, coconut oil"
+                />
+
+                {/* Carbs */}
+                <MacroCard
+                  label="Carbs"
+                  range="< 15%"
+                  color="var(--terracotta)"
+                  rgb="212,133,106"
+                  icon="/illustrations/food/corn.png"
+                  iconAlt="Starchy grain representing carbohydrates to limit"
+                  note="Non-starchy vegetables only"
+                  iconFilter="hue-rotate(30deg) saturate(0.6)"
+                />
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 2: Best Foods ═══ */}
+          <section
+            id="best-foods"
+            ref={(el) => { categoryRefs.current["best-foods"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--sage)" }}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M2 5.5l2 2 4-4"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Best Foods
+                </h2>
+              </div>
+              <p className="text-[0.85rem] ml-[30px]" style={{ color: "var(--text-muted)" }}>
+                Anti-angiogenic, anti-tumor whole foods supported by research — tap any card to learn more
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
+              {recommendedItems.map((item, i) => (
+                <FoodFlipCard
+                  key={i}
+                  item={item}
+                  variant="recommended"
+                  breedNote={null}
+                />
+              ))}
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 3: Foods to Avoid ═══ */}
+          <section
+            id="avoid"
+            ref={(el) => { categoryRefs.current["avoid"] = el; }}
+            className="mb-6"
+          >
+            <div
+              className="rounded-2xl px-4 sm:px-5 py-6 reveal"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(212,133,106,0.05) 0%, rgba(212,133,106,0.02) 100%)",
+                border: "1px solid rgba(212,133,106,0.15)",
+              }}
+            >
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--terracotta)" }}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M2.5 2.5l5 5M7.5 2.5l-5 5"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Foods to Avoid
+                </h2>
+              </div>
+              <p className="text-[0.85rem] ml-[30px] mb-5" style={{ color: "var(--text-muted)" }}>
+                These foods fuel cancer metabolism, cause inflammation, or carry safety risks
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
+                {avoidItems.map((item, i) => (
+                  <FoodFlipCard
+                    key={i}
+                    item={item}
+                    variant="avoid"
+                    breedNote={null}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 4: Meal Form Guide ═══ */}
+          <section
+            id="meal-form"
+            ref={(el) => { categoryRefs.current["meal-form"] = el; }}
+            className="mb-6"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{
+                    background: "rgba(196,162,101,0.15)",
+                    border: "1.5px solid rgba(196,162,101,0.3)",
+                  }}
+                >
+                  <div className="w-2 h-2 rounded-full" style={{ background: "var(--gold)" }} />
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Meal Form Guide
+                </h2>
+              </div>
+              <p className="text-[0.85rem] ml-[30px]" style={{ color: "var(--text-muted)" }}>
+                Not all food is equal — the form matters as much as the ingredients
+              </p>
+            </div>
+
+            <div className="space-y-3 reveal-stagger">
+              {mealFormGuide.map((option, i) => (
+                <MealFormCard key={i} option={option} />
+              ))}
+            </div>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 5: Meal Plan Generator ═══ */}
+          <section
+            id="meal-plan"
+            ref={(el) => { categoryRefs.current["meal-plan"] = el; }}
+            className="mb-6"
+          >
+            <div
+              className="rounded-2xl px-5 sm:px-7 py-8 reveal"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(91,123,94,0.06) 0%, rgba(196,162,101,0.05) 100%)",
+                border: "1px solid rgba(91,123,94,0.12)",
+              }}
+            >
+              {/* Header */}
+              <div className="mb-6">
+                <div
+                  className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] mb-1"
+                  style={{ color: "var(--sage)" }}
+                >
+                  Interactive Tool
+                </div>
+                <h2
+                  className="font-serif text-[1.35rem] font-semibold mb-1.5"
+                  style={{ color: "var(--text)" }}
+                >
+                  Build a Meal Plan
+                </h2>
+                <p
+                  className="text-[0.9rem] leading-relaxed max-w-[480px]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Answer two questions and get a weekly feeding framework
+                  tailored to your dog&apos;s weight.
+                </p>
+                {/* Warmth bridge — acknowledges the weight of what they're doing */}
+                <p
+                  className="font-serif italic text-[0.9rem] leading-relaxed mt-3 max-w-[440px]"
+                  style={{ color: "var(--text-muted)", opacity: 0.85 }}
+                >
+                  Every bowl you prepare is an act of care. This plan gives
+                  you a starting framework — adjust it with your vet as you
+                  learn what your dog loves.
+                </p>
+              </div>
+
+              {/* Step 1: Weight */}
+              <div className="mb-6">
+                <p
+                  className="text-[0.82rem] font-semibold mb-3 flex items-center gap-2"
+                  style={{ color: "var(--text)" }}
+                >
+                  <span
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[0.65rem] font-bold flex-shrink-0"
+                    style={{ background: "var(--sage)", color: "white" }}
+                  >
+                    1
+                  </span>
+                  How much does your dog weigh?
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {WEIGHT_BRACKETS.map((wb) => (
+                    <button
+                      key={wb.key}
+                      type="button"
+                      onClick={() => setSelectedWeight(wb.key)}
+                      aria-pressed={selectedWeight === wb.key}
+                      className="min-h-[40px] rounded-full text-[0.83rem] font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
+                      style={{
+                        padding: "8px 18px",
+                        background: selectedWeight === wb.key ? "var(--sage)" : "white",
+                        color: selectedWeight === wb.key ? "white" : "var(--text-muted)",
+                        border: selectedWeight === wb.key
+                          ? "1.5px solid var(--sage)"
+                          : "1.5px solid var(--border)",
+                        boxShadow: selectedWeight === wb.key
+                          ? "0 3px 10px rgba(91,123,94,0.22)"
+                          : "0 1px 3px rgba(0,0,0,0.04)",
+                        transform: selectedWeight === wb.key ? "scale(1.02)" : "scale(1)",
+                        fontWeight: selectedWeight === wb.key ? 600 : 500,
+                      }}
+                      onMouseEnter={(e) => {
+                        if (selectedWeight !== wb.key) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--sage-light)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--sage)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedWeight !== wb.key) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
+                        }
+                      }}
+                    >
+                      {wb.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Step 2: Diet Style */}
+              <div className="mb-7">
+                <p
+                  className="text-[0.82rem] font-semibold mb-3 flex items-center gap-2"
+                  style={{ color: "var(--text)" }}
+                >
+                  <span
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[0.65rem] font-bold flex-shrink-0"
+                    style={{ background: "var(--gold)", color: "white" }}
+                  >
+                    2
+                  </span>
+                  Which diet style fits your situation?
+                </p>
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+                  {DIET_STYLES.map((ds) => (
+                    <button
+                      key={ds.key}
+                      type="button"
+                      onClick={() => setSelectedStyle(ds.key)}
+                      aria-pressed={selectedStyle === ds.key}
+                      className="text-left transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gold"
+                      style={{
+                        padding: "10px 16px",
+                        borderRadius: 14,
+                        minWidth: 140,
+                        background: selectedStyle === ds.key ? "var(--gold)" : "white",
+                        color: selectedStyle === ds.key ? "white" : "var(--text-muted)",
+                        border: selectedStyle === ds.key
+                          ? "1.5px solid var(--gold)"
+                          : "1.5px solid var(--border)",
+                        boxShadow: selectedStyle === ds.key
+                          ? "0 3px 12px rgba(196,162,101,0.25)"
+                          : "0 1px 3px rgba(0,0,0,0.04)",
+                        transform: selectedStyle === ds.key ? "scale(1.01)" : "scale(1)",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (selectedStyle !== ds.key) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--gold)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text)";
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedStyle !== ds.key) {
+                          (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+                          (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
+                        }
+                      }}
+                    >
+                      <span className="text-[0.84rem] font-semibold block leading-snug"
+                        style={{ color: selectedStyle === ds.key ? "white" : "var(--text)" }}>
+                        {ds.label}
+                      </span>
+                      <span
+                        className="text-[0.72rem] block leading-snug mt-0.5"
+                        style={{
+                          color: selectedStyle === ds.key
+                            ? "rgba(255,255,255,0.78)"
+                            : "var(--text-muted)",
+                        }}
+                      >
+                        {ds.description}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Generate button */}
+              <button
+                type="button"
+                onClick={handleGeneratePlan}
+                disabled={!selectedWeight || !selectedStyle}
+                title={
+                  !selectedWeight && !selectedStyle
+                    ? "Select weight and diet style above"
+                    : !selectedWeight
+                    ? "Select your dog's weight above"
+                    : !selectedStyle
+                    ? "Select a diet style above"
+                    : undefined
+                }
+                className="inline-flex items-center gap-2.5 font-semibold transition-all duration-150 cursor-pointer disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
+                style={{
+                  padding: "12px 28px",
+                  borderRadius: 999,
+                  fontSize: "0.92rem",
+                  background: selectedWeight && selectedStyle ? "var(--sage)" : "var(--border)",
+                  color: selectedWeight && selectedStyle ? "white" : "var(--text-muted)",
+                  boxShadow: selectedWeight && selectedStyle
+                    ? "0 4px 18px rgba(91,123,94,0.28)"
+                    : "none",
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedWeight && selectedStyle) {
+                    (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-1px) scale(1.01)";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 6px 22px rgba(91,123,94,0.32)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedWeight && selectedStyle) {
+                    (e.currentTarget as HTMLButtonElement).style.transform = "";
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 4px 18px rgba(91,123,94,0.28)";
+                  }
+                }}
+              >
+                Build My Plan
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            {/* ── Result Card ── */}
+            {generatedPlan && (
+              <div
+                ref={planResultRef}
+                className="mt-5 rounded-2xl overflow-hidden print:block transition-all duration-500"
+                style={{
+                  border: "1px solid rgba(91,123,94,0.18)",
+                  boxShadow: "0 8px 40px rgba(91,123,94,0.1)",
+                  opacity: planVisible ? 1 : 0,
+                  transform: planVisible ? "translateY(0)" : "translateY(12px)",
+                }}
+              >
+                {/* Result header — dark sage gradient, white text */}
+                <div
+                  className="px-5 sm:px-7 py-5"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, var(--sage-dark) 0%, var(--sage) 60%, var(--sage-light) 100%)",
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-3 flex-wrap">
+                    <div>
+                      <div
+                        className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-1"
+                        style={{ color: "rgba(255,255,255,0.65)" }}
+                      >
+                        Your Personalised Plan
+                      </div>
+                      <h3
+                        className="font-serif font-semibold leading-snug"
+                        style={{ fontSize: "1.15rem", color: "white" }}
+                      >
+                        {generatedPlan.title}
+                      </h3>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handlePrint}
+                      aria-label="Print this meal plan"
+                      className="flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-full text-[0.78rem] font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
+                      style={{
+                        background: "rgba(255,255,255,0.15)",
+                        border: "1px solid rgba(255,255,255,0.25)",
+                        color: "rgba(255,255,255,0.9)",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.22)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.15)";
+                      }}
+                    >
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                        style={{ flexShrink: 0 }}
+                      >
+                        <path
+                          d="M3 4h10v7H3V4zM1 7h2M13 7h2M5 2h6M5 14h6"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                      Print
+                    </button>
+                  </div>
+                </div>
+
+                {/* Result body — each section separated by a ruled divider */}
+                <div className="bg-white">
+                  {/* Daily portions */}
+                  <div
+                    className="px-5 sm:px-7 py-5"
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                  >
+                    <h4
+                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Daily Portions
+                    </h4>
+                    <div className="space-y-2">
+                      {[
+                        { label: "Protein", value: generatedPlan.dailyProtein, color: "var(--sage)" },
+                        { label: "Vegetables", value: generatedPlan.dailyVeg, color: "var(--sage-light)" },
+                        { label: "Fat", value: generatedPlan.dailyFat, color: "var(--gold)" },
+                      ].map((row) => (
+                        <div key={row.label} className="flex items-start gap-3">
+                          <span
+                            className="w-2 h-2 rounded-full flex-shrink-0 mt-[6px]"
+                            style={{ background: row.color }}
+                          />
+                          <div>
+                            <span
+                              className="text-[0.82rem] font-semibold"
+                              style={{ color: "var(--text)" }}
+                            >
+                              {row.label}:{" "}
+                            </span>
+                            <span
+                              className="text-[0.83rem]"
+                              style={{ color: "var(--text-muted)" }}
+                            >
+                              {row.value}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Week at a Glance */}
+                  <div
+                    className="px-5 sm:px-7 py-5"
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                  >
+                    <h4
+                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Week at a Glance
+                    </h4>
+                    <div className="space-y-0.5">
+                      {generatedPlan.weeklyRotation.map((day, i) => (
+                        <div
+                          key={i}
+                          className="flex items-baseline gap-0 text-[0.83rem] py-2 px-3 rounded-xl"
+                          style={{
+                            background: i % 2 === 0 ? "rgba(91,123,94,0.04)" : "transparent",
+                          }}
+                        >
+                          <span
+                            className="font-semibold flex-shrink-0 text-[0.72rem] uppercase tracking-[0.09em]"
+                            style={{ color: "var(--sage)", minWidth: "3rem" }}
+                          >
+                            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][i]}
+                          </span>
+                          <span
+                            className="flex-shrink-0 self-center mr-3"
+                            style={{
+                              display: "inline-block",
+                              width: 1,
+                              height: "0.75em",
+                              background: "var(--border-strong)",
+                            }}
+                            aria-hidden="true"
+                          />
+                          <span style={{ color: "var(--text-muted)", lineHeight: 1.4 }}>
+                            {day.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s*[—–\-]\s*/, "")}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Estimated Macros */}
+                  <div
+                    className="px-5 sm:px-7 py-5"
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                  >
+                    <h4
+                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Estimated Macros
+                    </h4>
+                    <div className="space-y-2.5">
+                      <MacroBar label="Protein" value={generatedPlan.macros.protein} color="var(--sage)" />
+                      <MacroBar label="Fat" value={generatedPlan.macros.fat} color="var(--gold)" />
+                      <MacroBar label="Carbs" value={generatedPlan.macros.carbs} color="var(--terracotta)" />
+                    </div>
+                  </div>
+
+                  {/* Calorie note */}
+                  <div
+                    className="px-5 sm:px-7 py-5"
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                  >
+                    <div
+                      className="rounded-xl px-4 py-3 text-[0.82rem] leading-relaxed"
+                      style={{
+                        background: "rgba(196,162,101,0.07)",
+                        border: "1px solid rgba(196,162,101,0.15)",
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      <span className="font-semibold" style={{ color: "var(--gold)" }}>
+                        Calorie note:{" "}
+                      </span>
+                      {generatedPlan.calorieNote}
+                    </div>
+                  </div>
+
+                  {/* Supplement pairings */}
+                  <div className="px-5 sm:px-7 py-5">
+                    <h4
+                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Pair With These Supplements
+                    </h4>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {generatedPlan.supplementPairings.map((supp, i) => (
+                        <span
+                          key={i}
+                          className="px-3 py-1 rounded-full text-[0.78rem] font-medium"
+                          style={{
+                            background: "rgba(91,123,94,0.08)",
+                            color: "var(--sage)",
+                            border: "1px solid rgba(91,123,94,0.15)",
+                          }}
+                        >
+                          {supp}
+                        </span>
+                      ))}
+                    </div>
+                    <Link
+                      href="/resources/supplements"
+                      className="inline-flex items-center gap-1.5 text-[0.82rem] font-medium no-underline transition-opacity hover:opacity-70"
+                      style={{ color: "var(--sage)" }}
+                    >
+                      See full supplement guide
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                        <path d="M2 5h6M5.5 2.5L8 5l-2.5 2.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Section 6: Critical Cautions ═══ */}
+          <section
+            id="cautions"
+            ref={(el) => { categoryRefs.current["cautions"] = el; }}
+            className="mb-12"
+          >
+            <div className="reveal mb-5">
+              <div className="flex items-center gap-2.5 mb-1">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: "var(--terracotta)" }}
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path
+                      d="M5 2v4M5 7.5v.5"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+                <h2
+                  className="font-serif text-[1.3rem] font-semibold"
+                  style={{ color: "var(--text)" }}
+                >
+                  Critical Cautions
+                </h2>
+              </div>
+              <p className="text-[0.85rem] ml-[30px]" style={{ color: "var(--text-muted)" }}>
+                Things that could cause serious harm — please read these carefully
+              </p>
+            </div>
+
+            {/* Never Give — danger treatment with container header */}
+            <div className="mb-4 reveal">
+              {/* Compassionate framing */}
+              <p
+                className="text-[0.85rem] leading-relaxed mb-4 italic"
+                style={{ color: "var(--text-muted)" }}
+              >
+                You are almost certainly not doing any of these — most are
+                obvious dangers. We include them here because a well-meaning
+                friend or family member may not know.
+              </p>
+
+              <div
+                className="rounded-2xl overflow-hidden"
+                style={{ border: "1px solid rgba(212,133,106,0.25)" }}
+              >
+                {/* Danger header bar */}
+                <div
+                  className="flex items-center gap-2.5 px-4 py-3"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(212,133,106,0.12) 0%, rgba(212,133,106,0.06) 100%)",
+                    borderBottom: "1px solid rgba(212,133,106,0.2)",
+                  }}
+                >
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{ background: "var(--terracotta)" }}
+                  >
+                    {/* Minus / stop icon */}
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5h6" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <span
+                    className="text-[0.78rem] font-bold uppercase tracking-[0.14em]"
+                    style={{ color: "var(--terracotta)" }}
+                  >
+                    Never Give
+                  </span>
+                </div>
+
+                {/* Items */}
+                <div
+                  className="divide-y"
+                  style={{ background: "rgba(212,133,106,0.02)", borderColor: "rgba(212,133,106,0.12)" }}
+                >
+                  {cautions
+                    .filter((c) => c.severity === "never")
+                    .map((caution, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 px-4 py-3.5"
+                        style={{ borderColor: "rgba(212,133,106,0.12)" }}
+                      >
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0 mt-[6px]"
+                          style={{ background: "#e05c3a" }}
+                        />
+                        <div>
+                          <span
+                            className="font-semibold text-[0.88rem]"
+                            style={{ color: "var(--text)" }}
+                          >
+                            {caution.title}
+                          </span>
+                          <p
+                            className="text-[0.82rem] leading-relaxed mt-0.5"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {caution.note}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Use with Care — amber/gold treatment */}
+            <div className="reveal">
+              <div
+                className="rounded-2xl overflow-hidden"
+                style={{ border: "1px solid rgba(196,162,101,0.25)" }}
+              >
+                {/* Caution header bar */}
+                <div
+                  className="flex items-center gap-2.5 px-4 py-3"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, rgba(196,162,101,0.1) 0%, rgba(196,162,101,0.05) 100%)",
+                    borderBottom: "1px solid rgba(196,162,101,0.18)",
+                  }}
+                >
+                  <div
+                    className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: "rgba(196,162,101,0.18)",
+                      border: "1.5px solid var(--gold)",
+                    }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M5 2.5v3M5 7v.5" stroke="var(--gold)" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <span
+                    className="text-[0.78rem] font-bold uppercase tracking-[0.14em]"
+                    style={{ color: "var(--gold)" }}
+                  >
+                    Use with Care
+                  </span>
+                </div>
+
+                {/* Items */}
+                <div
+                  className="divide-y"
+                  style={{ background: "rgba(196,162,101,0.02)", borderColor: "rgba(196,162,101,0.12)" }}
+                >
+                  {cautions
+                    .filter((c) => c.severity === "care")
+                    .map((caution, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 px-4 py-3.5"
+                        style={{ borderColor: "rgba(196,162,101,0.12)" }}
+                      >
+                        <div
+                          className="w-2 h-2 rounded-full flex-shrink-0 mt-[6px]"
+                          style={{ background: "var(--gold)" }}
+                        />
+                        <div>
+                          <span
+                            className="font-semibold text-[0.88rem]"
+                            style={{ color: "var(--text)" }}
+                          >
+                            {caution.title}
+                          </span>
+                          <p
+                            className="text-[0.82rem] leading-relaxed mt-0.5"
+                            style={{ color: "var(--text-muted)" }}
+                          >
+                            {caution.note}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Print hint — matches food page pattern */}
+          <div
+            className="text-center mb-12 reveal"
+            style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem" }}
+          >
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+              style={{
+                background: "rgba(91,123,94,0.05)",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 16 16"
+                fill="none"
+                style={{ color: "var(--text-muted)", flexShrink: 0 }}
+              >
+                <path
+                  d="M3 4h10v7H3V4zM1 7h2M13 7h2M5 2h6M5 14h6"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <p className="text-[0.82rem]" style={{ color: "var(--text-muted)" }}>
+                Use your browser&apos;s print function to save this page as a PDF to share with your vet.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ═══ Bottom CTA ═══ */}
+      <div
+        className="relative overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(155deg, var(--sage-dark) 0%, var(--sage) 60%, var(--sage-light) 100%)",
+        }}
+      >
+        {/* Ambient glow orb */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            top: "-30%",
+            right: "-10%",
+            width: 400,
+            height: 400,
+            background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 65%)",
+          }}
+        />
+        {/* Bottom-left warm accent */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            bottom: "-20%",
+            left: "-5%",
+            width: 300,
+            height: 300,
+            background: "radial-gradient(circle, rgba(196,162,101,0.12) 0%, transparent 65%)",
+          }}
+        />
+
+        <div className="max-w-[800px] mx-auto px-6 py-16 text-center relative z-10">
+          {/* Ornamental divider */}
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-10" style={{ background: "rgba(255,255,255,0.25)" }} />
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: "rgba(255,255,255,0.45)" }} />
+            <div className="h-px w-10" style={{ background: "rgba(255,255,255,0.25)" }} />
+          </div>
+
+          <p
+            className="font-serif italic mb-3"
+            style={{
+              fontSize: "clamp(0.88rem, 2vw, 0.95rem)",
+              color: "rgba(255,255,255,0.65)",
+              letterSpacing: "0.01em",
+            }}
+          >
+            You&apos;re doing everything you can
+          </p>
+          <h2
+            className="font-serif font-semibold mb-3"
+            style={{
+              fontSize: "clamp(1.5rem, 4vw, 2.1rem)",
+              color: "white",
+              lineHeight: 1.2,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            Each meal is an act of love.
+          </h2>
+          <p
+            className="mb-8 max-w-[380px] mx-auto leading-relaxed"
+            style={{
+              fontSize: "clamp(0.9rem, 2vw, 1rem)",
+              color: "rgba(255,255,255,0.72)",
+            }}
+          >
+            Your daily journal is here whenever you need it — one day at a time.
+          </p>
+          <Link
+            href="/days/today"
+            className="inline-flex items-center gap-2 no-underline font-semibold transition-all duration-200"
+            style={{
+              padding: "14px 32px",
+              borderRadius: 999,
+              fontSize: "clamp(0.9rem, 2vw, 1rem)",
+              background: "white",
+              color: "var(--sage)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.transform = "";
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.15)";
+            }}
+          >
+            Continue Your Journey
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Sub-components
+────────────────────────────────────────────── */
+
+/**
+ * MacroCard — one of three macronutrient cards in the framework grid.
+ * Big display percentage at top, colored top-border accent, icon + label row,
+ * hover lift state via JS to stay compatible with Tailwind v4 custom vars.
+ */
+function MacroCard({
+  label,
+  range,
+  color,
+  rgb,
+  icon,
+  iconAlt,
+  note,
+  iconFilter,
+}: {
+  label: string;
+  range: string;
+  color: string;
+  rgb: string;
+  icon: string;
+  iconAlt: string;
+  note: string;
+  iconFilter?: string;
+}) {
+  return (
+    <div
+      className="rounded-2xl p-4 cursor-default transition-all duration-200"
+      style={{
+        background: "white",
+        border: "1px solid var(--border)",
+        borderTop: `3px solid ${color}`,
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-2px)";
+        el.style.boxShadow = `0 8px 24px rgba(${rgb},0.13)`;
+        el.style.borderColor = color;
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "";
+        el.style.boxShadow = "";
+        el.style.borderColor = "";
+      }}
+    >
+      {/* Large display percentage — the hero number */}
+      <div
+        className="font-serif font-semibold mb-2.5 leading-none"
+        style={{
+          fontSize: "clamp(1.9rem, 4vw, 2.3rem)",
+          color,
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {range}
+      </div>
+
+      {/* Label + icon row */}
+      <div className="flex items-center gap-2 mb-2.5">
+        <div
+          className="rounded-lg overflow-hidden flex-shrink-0"
+          style={{
+            width: 24,
+            height: 24,
+            background: `rgba(${rgb},0.1)`,
+            filter: iconFilter ?? "none",
+          }}
+        >
+          <Image
+            src={icon}
+            alt={iconAlt}
+            width={24}
+            height={24}
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <span
+          className="text-[0.72rem] font-bold uppercase tracking-[0.1em]"
+          style={{ color }}
+        >
+          {label}
+        </span>
+      </div>
+
+      <p className="text-[0.8rem] leading-snug" style={{ color: "var(--text-muted)" }}>
+        {note}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * MealFormCard — a single row in the meal form guide.
+ * Tinted icon circle, bordered verdict pill, hover lift state.
+ */
+function MealFormCard({ option }: { option: MealFormOption }) {
+  const cfg = VERDICT_CONFIG[option.verdict];
+
+  return (
+    <div
+      className="flex items-start gap-4 rounded-2xl px-5 py-4 transition-all duration-200 cursor-default"
+      style={{
+        background: "white",
+        border: "1px solid var(--border)",
+        borderLeft: `3px solid ${cfg.color}`,
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-1px)";
+        el.style.boxShadow = `0 6px 20px rgba(${cfg.rgb},0.1)`;
+        el.style.borderColor = cfg.color;
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "";
+        el.style.boxShadow = "";
+        el.style.borderColor = "";
+      }}
+    >
+      {/* Icon area — tinted circle with border */}
+      <div
+        className="flex items-center justify-center rounded-2xl flex-shrink-0 mt-0.5"
+        style={{
+          width: 48,
+          height: 48,
+          background: `rgba(${cfg.rgb},0.08)`,
+          border: `1.5px solid rgba(${cfg.rgb},0.15)`,
+        }}
+      >
+        <Image
+          src={`/illustrations/food/${option.icon}`}
+          alt={option.label}
+          width={32}
+          height={32}
+          className="object-contain"
+          style={{ padding: 4 }}
+        />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+          <h3
+            className="font-serif text-[0.98rem] font-semibold"
+            style={{ color: "var(--text)" }}
+          >
+            {option.label}
+          </h3>
+          {/* Verdict pill — border makes it more defined and confident */}
+          <span
+            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.72rem] font-bold"
+            style={{
+              background: `rgba(${cfg.rgb},0.08)`,
+              color: cfg.color,
+              border: `1.5px solid rgba(${cfg.rgb},0.2)`,
+              letterSpacing: "0.02em",
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ background: cfg.color }}
+            />
+            {option.verdictLabel}
+          </span>
+        </div>
+        <p
+          className="text-[0.83rem] leading-relaxed"
+          style={{ color: "var(--text-muted)" }}
+        >
+          {option.note}
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -72,3 +72,34 @@ export interface DogProfile {
   weightLbs: number | null;
   cancerStage: string | null;
 }
+
+// ── Diet Page Types ───────────────────────────────────────────────────────────
+
+export type DietStyle = "low-carb" | "keto" | "balanced-fresh";
+
+export interface MealPlanTemplate {
+  title: string;
+  dailyProtein: string;
+  dailyVeg: string;
+  dailyFat: string;
+  weeklyRotation: string[];
+  macros: { protein: number; fat: number; carbs: number };
+  supplementPairings: string[];
+  calorieNote: string;
+}
+
+export type MealPlanMap = Record<DietStyle, Record<WeightBracket, MealPlanTemplate>>;
+
+export interface MealFormOption {
+  label: string;
+  icon: string;
+  verdict: "recommended" | "good" | "avoid";
+  verdictLabel: string;
+  note: string;
+}
+
+export interface DietCaution {
+  severity: "never" | "care";
+  title: string;
+  note: string;
+}

@@ -50,6 +50,14 @@ export default async function ResourcesPage() {
       borderColor: "border-l-terracotta",
     },
     {
+      icon: "\uD83E\uDD66",
+      title: "Diet & Nutrition",
+      description:
+        "The science of feeding against the tumor — the Warburg Effect, anti-cancer foods, meal form comparisons, and a personalized meal plan generator.",
+      href: "/resources/diet",
+      borderColor: "border-l-terracotta",
+    },
+    {
       icon: "\uD83D\uDCF1",
       title: "Use as an App",
       description:
@@ -75,7 +83,7 @@ export default async function ResourcesPage() {
           dig through the internet at your worst moment.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {resources.map((resource, i) => (
             <Link
               key={i}
