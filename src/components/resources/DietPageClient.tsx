@@ -20,6 +20,7 @@ import {
   ONCOLOGIST_CONSENSUS,
   ACTIVE_RESEARCH,
   DIET_SOURCES,
+  MONITORING_CALLOUT,
 } from "@/lib/resources/diet";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import PersonalizedBanner from "./PersonalizedBanner";
@@ -163,6 +164,7 @@ export default function DietPageClient({
   const oncologistConsensus = ONCOLOGIST_CONSENSUS;
   const activeResearch = ACTIVE_RESEARCH;
   const dietSources = DIET_SOURCES;
+  const monitoringCallout = MONITORING_CALLOUT;
   const sectionRef = useScrollReveal();
   const categoryRefs = useRef<Record<string, HTMLElement | null>>({});
 
@@ -2006,6 +2008,39 @@ export default function DietPageClient({
                     ))}
                 </div>
               </div>
+            </div>
+
+            {/* Monitoring callout */}
+            <div
+              className="mt-4 rounded-2xl px-5 py-4 reveal"
+              style={{
+                background: "rgba(91,123,94,0.05)",
+                border: "1px solid rgba(91,123,94,0.18)",
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div
+                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={{ background: "rgba(91,123,94,0.15)", border: "1.5px solid var(--sage)" }}
+                >
+                  <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+                    <circle cx="5" cy="5" r="3.5" stroke="var(--sage)" strokeWidth="1.4" />
+                    <path d="M5 3.5v2.5" stroke="var(--sage)" strokeWidth="1.4" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span
+                  className="text-[0.8rem] font-semibold"
+                  style={{ color: "var(--sage)" }}
+                >
+                  {monitoringCallout.headline}
+                </span>
+              </div>
+              <p
+                className="text-[0.82rem] leading-relaxed"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {monitoringCallout.body}
+              </p>
             </div>
           </section>
 
