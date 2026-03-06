@@ -27,7 +27,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
           style={{ color: "var(--text-muted)", fontSize: "0.88rem", fontWeight: 500 }}
         >
           <Image
-            src="/illustrations/icons/icon-arrow-left.png"
+            src="/illustrations/icons/icon-arrow-left.webp"
             alt=""
             width={16}
             height={16}
@@ -44,7 +44,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
           style={{ color: "var(--text-muted)" }}
         >
           <Image
-            src="/illustrations/icons/icon-arrow-left.png"
+            src="/illustrations/icons/icon-arrow-left.webp"
             alt=""
             width={16}
             height={16}
@@ -76,7 +76,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
             {currentDay + 1}
           </span>
           <Image
-            src="/illustrations/icons/icon-arrow-right.png"
+            src="/illustrations/icons/icon-arrow-right.webp"
             alt=""
             width={16}
             height={16}
@@ -90,7 +90,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
         >
           End
           <Image
-            src="/illustrations/icons/icon-arrow-right.png"
+            src="/illustrations/icons/icon-arrow-right.webp"
             alt=""
             width={16}
             height={16}

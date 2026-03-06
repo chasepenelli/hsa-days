@@ -299,7 +299,7 @@ export function JourneyHero() {
         >
           <div className="hero-watermark-inner" style={{ opacity: 0.045 }}>
             <Image
-              src="/illustrations/journal/day01-illust.png"
+              src="/illustrations/journal/day01-illust.webp"
               alt=""
               width={300}
               height={300}

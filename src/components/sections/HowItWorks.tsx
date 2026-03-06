@@ -9,7 +9,7 @@ const steps = [
   {
     number: "01",
     label: "Step One",
-    icon: "/illustrations/icons/icon-email-signup.png",
+    icon: "/illustrations/icons/icon-email-signup.webp",
     color: "var(--sage)",
     colorHex: "#5B7B5E",
     title: "Sign up with your email",
@@ -19,7 +19,7 @@ const steps = [
   {
     number: "02",
     label: "Step Two",
-    icon: "/illustrations/icons/icon-read-reflect.png",
+    icon: "/illustrations/icons/icon-read-reflect.webp",
     color: "var(--gold)",
     colorHex: "#C4A265",
     title: "Read, reflect, and journal",
@@ -29,7 +29,7 @@ const steps = [
   {
     number: "03",
     label: "Step Three",
-    icon: "/illustrations/icons/icon-morning-nudge.png",
+    icon: "/illustrations/icons/icon-morning-nudge.webp",
     color: "var(--terracotta)",
     colorHex: "#D4856A",
     title: "A gentle nudge each morning",
@@ -132,7 +132,7 @@ function JournalMockup() {
         {/* Pencil icon */}
         <div className="absolute bottom-2 right-2">
           <Image
-            src="/illustrations/icons/icon-pencil.png"
+            src="/illustrations/icons/icon-pencil.webp"
             alt=""
             width={18}
             height={18}
@@ -297,7 +297,7 @@ export function HowItWorks() {
         />
         {/* Floating decorative illustrations */}
         <Image
-          src="/illustrations/icons/icon-paw-print.png"
+          src="/illustrations/icons/icon-paw-print.webp"
           alt=""
           width={100}
           height={100}
@@ -305,7 +305,7 @@ export function HowItWorks() {
           style={{ top: "8%", right: "6%", opacity: 0.035 }}
         />
         <Image
-          src="/illustrations/icons/icon-heart.png"
+          src="/illustrations/icons/icon-heart.webp"
           alt=""
           width={90}
           height={90}
@@ -345,7 +345,7 @@ export function HowItWorks() {
               style={{ background: "linear-gradient(to right, transparent, var(--gold-light))" }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.png"
+              src="/illustrations/icons/icon-flower-ornament.webp"
               alt=""
               width={14}
               height={14}
@@ -471,7 +471,7 @@ export function HowItWorks() {
               style={{ background: "linear-gradient(to right, transparent, var(--gold-light))" }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.png"
+              src="/illustrations/icons/icon-flower-ornament.webp"
               alt=""
               width={14}
               height={14}

@@ -8,7 +8,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 const resources = [
   {
     label: "Guide",
-    icon: "/illustrations/icons/icon-supplement.png",
+    icon: "/illustrations/icons/icon-supplement.webp",
     color: "var(--sage)",
     colorHex: "#5B7B5E",
     title: "Supplement Guide",
@@ -19,7 +19,7 @@ const resources = [
   },
   {
     label: "Guide",
-    icon: "/illustrations/icons/icon-food-bowl.png",
+    icon: "/illustrations/icons/icon-food-bowl.webp",
     color: "var(--gold)",
     colorHex: "#C4A265",
     title: "Food & Nutrition",
@@ -30,7 +30,7 @@ const resources = [
   },
   {
     label: "Guide",
-    icon: "/illustrations/icons/icon-shield.png",
+    icon: "/illustrations/icons/icon-shield.webp",
     color: "var(--terracotta)",
     colorHex: "#D4856A",
     title: "House-Proofing",
@@ -199,7 +199,7 @@ export function Resources() {
         />
         {/* Floating ghost icons */}
         <Image
-          src="/illustrations/icons/icon-paw-print.png"
+          src="/illustrations/icons/icon-paw-print.webp"
           alt=""
           width={90}
           height={90}
@@ -207,7 +207,7 @@ export function Resources() {
           style={{ top: "6%", right: "7%", opacity: 0.03 }}
         />
         <Image
-          src="/illustrations/icons/icon-heart.png"
+          src="/illustrations/icons/icon-heart.webp"
           alt=""
           width={80}
           height={80}
@@ -246,7 +246,7 @@ export function Resources() {
               style={{ background: "linear-gradient(to right, transparent, var(--gold-light))" }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.png"
+              src="/illustrations/icons/icon-flower-ornament.webp"
               alt=""
               width={14}
               height={14}
@@ -392,7 +392,7 @@ export function Resources() {
               style={{ background: "linear-gradient(to right, transparent, var(--gold-light))" }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.png"
+              src="/illustrations/icons/icon-flower-ornament.webp"
               alt=""
               width={14}
               height={14}

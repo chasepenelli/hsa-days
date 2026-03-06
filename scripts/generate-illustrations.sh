@@ -2,14 +2,17 @@
 set -euo pipefail
 
 # ── HSA Days Illustration Generator ──────────────────────────────────────────
-# Uses OpenRouter API with FLUX models from Black Forest Labs
+# Uses OpenRouter API with Nano Banana 2 (Gemini 3.1 Flash Image Preview)
 #
 # Usage:
-#   ./scripts/generate-illustrations.sh                    # Generate all missing
-#   ./scripts/generate-illustrations.sh --force            # Regenerate everything
-#   ./scripts/generate-illustrations.sh --only home-hero   # Single illustration
-#   ./scripts/generate-illustrations.sh --model flux.2-pro # Use cheaper model
+#   ./scripts/generate-illustrations.sh                          # Generate all missing
+#   ./scripts/generate-illustrations.sh --force                  # Regenerate everything
+#   ./scripts/generate-illustrations.sh --only home-hero         # Single illustration
 #   ./scripts/generate-illustrations.sh --only day04-header --prompt "your prompt"
+#   ./scripts/generate-illustrations.sh --category icons         # All icons
+#   ./scripts/generate-illustrations.sh --category days          # All day content
+#   ./scripts/generate-illustrations.sh --model google/other-model
+#   ./scripts/generate-illustrations.sh --dry-run                # Show what would generate
 #
 # Requires: OPENROUTER_API_KEY env var, jq, base64
 
@@ -18,16 +21,18 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ILLUST_DIR="$PROJECT_ROOT/public/illustrations"
 
 # ── Defaults ─────────────────────────────────────────────────────────────────
-DEFAULT_MODEL="black-forest-labs/flux.2-max"
+DEFAULT_MODEL="google/gemini-3.1-flash-image-preview"
 FORCE=false
 ONLY=""
+CATEGORY=""
 CUSTOM_PROMPT=""
+DRY_RUN=false
 
 # ── Parse flags ──────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --model)
-      DEFAULT_MODEL="black-forest-labs/$2"
+      DEFAULT_MODEL="$2"
       shift 2
       ;;
     --force)
@@ -38,18 +43,28 @@ while [[ $# -gt 0 ]]; do
       ONLY="$2"
       shift 2
       ;;
+    --category)
+      CATEGORY="$2"
+      shift 2
+      ;;
     --prompt)
       CUSTOM_PROMPT="$2"
       shift 2
       ;;
+    --dry-run)
+      DRY_RUN=true
+      shift
+      ;;
     --help|-h)
-      echo "Usage: $0 [--model flux.2-pro|flux.2-max] [--force] [--only NAME] [--prompt \"...\"]"
+      echo "Usage: $0 [OPTIONS]"
       echo ""
-      echo "Flags:"
-      echo "  --model MODEL   FLUX model to use (default: flux.2-max)"
-      echo "  --force         Overwrite existing files"
-      echo "  --only NAME     Generate only one illustration (e.g. home-hero, day01-header)"
-      echo "  --prompt TEXT   Custom prompt (only with --only)"
+      echo "Options:"
+      echo "  --model MODEL      Model to use (default: google/gemini-3.1-flash-image-preview)"
+      echo "  --force            Overwrite existing files"
+      echo "  --only NAME        Generate only one illustration (e.g. home-hero, day01-header)"
+      echo "  --category CAT     Generate all in a category (home, icons, days, food, supplements, order)"
+      echo "  --prompt TEXT      Custom prompt (only with --only)"
+      echo "  --dry-run          Show what would be generated without calling the API"
       echo ""
       echo "Environment:"
       echo "  OPENROUTER_API_KEY   Required. Your OpenRouter API key."
@@ -64,7 +79,6 @@ done
 
 # ── Validate ─────────────────────────────────────────────────────────────────
 if [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
-  # Try loading from .env.local
   if [[ -f "$PROJECT_ROOT/.env.local" ]]; then
     KEY=$(grep '^OPENROUTER_API_KEY=' "$PROJECT_ROOT/.env.local" | cut -d'=' -f2- | tr -d '"' | tr -d "'")
     if [[ -n "$KEY" ]]; then
@@ -82,38 +96,236 @@ fi
 
 command -v jq >/dev/null 2>&1 || { echo "ERROR: jq is required. Install with: brew install jq"; exit 1; }
 
+# ── Universal System Prompt ──────────────────────────────────────────────────
+# This is sent as the system message for every generation to ensure style consistency.
+
+SYSTEM_PROMPT='You are an illustration artist generating assets for "HSA Days," a 30-day guided journal for people caring for a dog with cancer. Every image you create must follow these rules exactly:
+
+STYLE
+- Loose, flowing watercolor washes with visible wet-on-wet bleeding and soft color transitions — this should feel like a real watercolor painting, not a digital illustration
+- Thin, confident ink lines serve as the structural skeleton beneath translucent watercolor layers — the ink lines should be clearly visible but delicate
+- Let watercolor pools, bleeds, and soft edges be prominent — color should feel like it was applied with a wet brush on textured paper
+- Watercolor fills are translucent and layered, with visible paper texture bleeding through
+- Subtle drop shadow or soft gray wash beneath objects to give gentle depth
+- The overall feeling is warm, tender, comforting, and quietly hopeful — never clinical, cartoonish, or heavy
+
+COLOR PALETTE (strict)
+- Primary: sage green (#7A9B8D), muted olive (#8B9A7B)
+- Warm accents: soft coral/peach (#D4A98A), warm tan (#C8AA82), muted gold (#B8A070)
+- Neutrals: warm charcoal ink lines (#3A3A3A), light gray wash (#C5C5C5), cream paper tone (#F5F0E8)
+- For the corgi character specifically: golden-tan (#C8A060) and cream-white fur with warm brown (#8B6B4A) markings
+- NEVER use saturated primaries (no bright red, blue, yellow). NEVER use neon colors. NEVER use pure black fills.
+
+BACKGROUND
+- ALL images must be on a fully TRANSPARENT background (alpha channel)
+- No paper texture, no colored backdrop, no gradient fill behind the subject
+- The subject should float cleanly on transparency with only its own subtle drop shadow
+- No border, frame, or vignette
+
+COMPOSITION
+- Center the subject within the canvas
+- Leave generous breathing room / negative space around the subject (at least 15% margin on all sides)
+- Single focal subject per image unless the prompt specifies a scene
+- Objects should feel naturally scaled and grounded (not floating unless the prompt says otherwise)
+
+WHAT TO AVOID
+- No text, lettering, watermarks, or signatures anywhere in the image
+- No photorealistic rendering — maintain the hand-drawn illustration quality throughout
+- No thick outlines or bold strokes — keep line weight delicate and consistent
+- No flat vector style — everything should feel hand-painted with visible watercolor texture
+- No busy patterns or decorative fills inside objects — use simple, translucent washes
+- No multiple art styles within a single image
+- No humans with detailed facial features — when people appear, keep faces minimal (dot eyes, simple line features) in the same ink-wash style
+
+SPECIAL NOTES FOR ICONS (when the prompt says "icon")
+- Render as a single isolated object, perfectly centered
+- Extra generous negative space (subject should occupy ~50-60% of the canvas)
+- Slightly heavier line weight than scene illustrations for legibility at small sizes
+- Simple, immediately recognizable silhouette
+
+SPECIAL NOTES FOR SCENE ILLUSTRATIONS (when the prompt describes a scene)
+- Can include multiple objects arranged in a natural composition
+- Use atmospheric perspective (lighter/softer wash on distant elements)
+- Ground the scene with a subtle shadow plane beneath objects
+- Maintain the same ink-line + watercolor-wash technique throughout
+
+SPECIAL NOTES FOR BANNER/HEADER FORMAT (when the prompt says "banner" or "header")
+- Compose for a wide panoramic crop (roughly 16:9)
+- Place the focal subject slightly off-center for visual interest
+- Use negative space intentionally to leave room for potential text overlay areas
+
+The dog in HSA Days is a Pembroke Welsh Corgi with golden-tan and white coloring, bright expressive eyes, and a sweet, gentle demeanor. When the prompt mentions "the dog," "Graffiti," or "the corgi," render this specific dog consistently.'
+
 # ── Illustration manifest ───────────────────────────────────────────────────
-# Format: NAME|SUBFOLDER|ASPECT|MODEL_TIER|PROMPT
-# MODEL_TIER: "max" uses flux.2-max, "pro" uses flux.2-pro (unless --model overrides)
+# Format: NAME|SUBFOLDER|ASPECT|PROMPT
+# SUBFOLDER determines the category for --category filtering
 
 ILLUSTRATIONS=(
-  'home-hero|home|16:9|max|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a person sitting cross-legged on the floor with a small corgi dog curled up beside them, quiet intimate moment, gentle and peaceful, warm domestic scene, lots of white space'
+  # ── Home Page ──────────────────────────────────────────────────────────────
+  'home-hero|home|16:9|A person sitting cross-legged on the ground, gently cradling a single Pembroke Welsh Corgi (tri-colored: golden-tan, cream-white, and warm brown markings) in their lap. The person wears a cozy sweater. Warm, tender moment between human and dog. Only one dog in the scene. Banner format, compose for wide panoramic crop. Leave space on the left side for text overlay. Emphasize loose, flowing watercolor washes with visible wet-on-wet bleeding and soft color transitions. The ink lines should be thin and confident but clearly visible as the structural skeleton beneath translucent watercolor layers.'
 
-  'home-about-graffiti|home|3:4|max|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, warm golden ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — portrait of a welsh corgi dog with expressive eyes, warm and characterful, the dog looks gentle and wise, head slightly tilted, soft golden light, centered composition'
+  'home-hero-bg|home|16:9|A very subtle, barely-visible abstract watercolor texture. Extremely soft sage green and cream washes blending gently. No objects, no shapes — just atmospheric watercolor paper texture. Banner format. This is a background layer, so keep it very light and airy.'
 
-  'home-journey-phase1|home|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted terracotta ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a mobile phone lying face-down on a piece of paper with a small paw print stamp, quiet and still composition, sense of shock and pause'
+  'home-about-graffiti|home|3:4|A front-facing portrait of a Pembroke Welsh Corgi named Graffiti. The dog sits upright looking directly at the viewer with bright, warm eyes and a gentle smile. Golden-tan and cream-white fur rendered in pen-and-ink with rich watercolor washes. NOTE: This specific image should have a SOLID BLACK background instead of transparent, as it is displayed in a dark section of the site. Rich saturation — this is the most colorful piece in the set.'
 
-  'home-journey-phase2|home|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, warm golden ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a coffee mug with gentle steam rising next to a coiled dog leash, soft morning light falling across the scene, peaceful morning still life'
+  'home-cta-paws|home|16:9|A loose scattering of dog paw prints in very soft, translucent watercolor. Warm peach and sage tones. The paw prints should feel organic and randomly placed, like a dog walked across watercolor paper. Banner format. Very light and airy — this is a decorative background element.'
 
-  'home-journey-phase3|home|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a crumpled tissue beside an open journal notebook, a pen nearby, emotional but gentle, quiet moment of feeling'
+  'home-journey-phase1|home|1:1|A smartphone lying on a soft piece of paper or cloth napkin that has a subtle paw print on it. The phone screen is blank/off. Warm peach and cream tones. Icon-style single object composition, centered. Represents "signing up" for a digital journey.'
 
-  'home-journey-phase4|home|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a pen resting on a journal page filled with gentle ink marks suggesting handwriting, warm and contemplative, sense of depth and reflection'
+  'home-journey-phase2|home|1:1|A cozy still life: a coffee mug with steam rising and a coiled dog leash with a metal clasp, sitting on a surface together. Warm golden and amber watercolor tones. Represents receiving a meaningful email during a quiet morning moment. Icon-style single scene composition, centered.'
 
-  'home-journey-phase5|home|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a single paw print and a human footprint side by side on a simple path, gentle and meaningful, sense of companionship and peace'
+  'home-journey-phase3|home|1:1|A warm coffee or tea cup with gentle steam curling upward, sitting on a saucer. A few loose pages or a folded letter rest nearby. Light sage and cream tones. Represents a quiet morning reading ritual. Icon-style, centered.'
 
-  'home-cta-paws|home|16:9|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — scattered dog paw prints across the composition, whimsical and decorative, varying sizes, playful trail pattern, lots of white space, delicate and light'
+  'home-journey-phase4|home|1:1|A pair of hands writing in an open journal with a pen. A Pembroke Welsh Corgi rests its head nearby, watching peacefully. Warm sage green and tan tones. Represents the act of journaling and reflection. Scene composition, slightly wider than icon-style.'
 
-  'day01-header|days|16:9|max|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted terracotta ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — car keys resting on a piece of paper on a car dashboard, view suggesting looking through a windshield, quiet stunned moment, still and heavy'
+  'home-journey-phase5|home|1:1|A closed hardcover journal or book with a sage green cover and a small paw print emblem embossed on the front. A ribbon bookmark trails from the pages. The book looks well-loved and complete. Represents a treasured keepsake. Icon-style single object, centered.'
 
-  'day01-activity|days|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a mobile phone set aside face-down on a wooden floor, a coiled dog leash nearby, sense of putting distractions away, peaceful and intentional'
+  # ── Icons ───────────────────────────────────────────────────────────────────
+  'icon-paw-print|icons|1:1|Icon: A single dog paw print. Four toe pads and one larger heel pad. Subtle sage green watercolor fill inside the paw shape. Soft gray drop shadow beneath. Clean, immediately recognizable silhouette.'
 
-  'day02-header|days|16:9|max|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, warm golden ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — morning light streaming through a window onto a windowsill, a coffee cup catching the warm light, gentle dawn, hopeful but tender'
+  'icon-flower-ornament|icons|1:1|Icon: A delicate single flower with thin curling stems and small leaves. Very fine pen lines. Minimal sage-gray watercolor wash on petals. Decorative ornament style — symmetrical, elegant. Used as a section divider throughout a website.'
 
-  'day02-activity|days|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, warm golden ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a hand holding a pen writing on the back of a small envelope, intimate and personal, capturing a fleeting moment, warm and gentle'
+  'icon-heart|icons|1:1|Icon: A simple heart shape with slightly imperfect, overlapping hand-drawn pen outlines. Very light sage-green watercolor wash fill. The multiple overlapping strokes give it a casual, sketch-like warmth.'
 
-  'day03-header|days|16:9|max|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted terracotta ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — an open laptop with many browser tabs suggested at the top, a small notebook and pen beside it, sense of information overwhelm but the notebook offering grounding'
+  'icon-pencil|icons|1:1|Icon: A single pencil, slightly angled, with a sharpened tip. Pen-and-ink line drawing with subtle gray-sage watercolor shading. Clean and simple. Represents writing and journaling.'
 
-  'day03-activity|days|1:1|pro|Simple hand-drawn ink sketch illustration, cute and warm, minimal line art style, muted sage green ink wash accents on white background, editorial book illustration, soft and intimate, no text, no watermarks — a small notebook open with three short lines suggesting handwritten questions, a pen resting on the page, simple and intentional, sense of clarity emerging'
+  'icon-arrow-left|icons|1:1|Icon: A left-pointing arrow with a slightly curved, hand-drawn line quality. Thin pen-ink stroke with subtle sage wash. Simple chevron or arrow shape — not a full decorative arrow, just a navigation indicator.'
+
+  'icon-arrow-right|icons|1:1|Icon: A right-pointing arrow with a slightly curved, hand-drawn line quality. Thin pen-ink stroke with subtle sage wash. Mirror of the left arrow — simple navigation indicator.'
+
+  'icon-checkmark|icons|1:1|Icon: A single checkmark (tick mark) in hand-drawn ink. Confident single stroke with a slight bounce at the end. Subtle sage-green watercolor glow around it. Represents completion and success.'
+
+  'icon-camera|icons|1:1|Icon: A simple camera viewed from the front. Rectangular body with a circular lens in the center and a small flash bump on top. Pen-and-ink line drawing with light gray-sage watercolor shading. Represents photo capture.'
+
+  'icon-clock|icons|1:1|Icon: A simple round analog clock face with minimal hour markers and two hands (hour and minute). Pen-and-ink outline with very light sage watercolor fill. Represents time or daily routine.'
+
+  'icon-close|icons|1:1|Icon: A simple X shape (close/dismiss). Two crossing lines in hand-drawn ink with a slight curve. Minimal — no circle around it. Light gray wash at the intersection. Represents closing a dialog.'
+
+  'icon-community|icons|1:1|Icon: Three to four simplified human figures standing close together in a small group. Pen-and-ink with sage and warm-tan watercolor. Figures should be gender-neutral, minimal facial detail. Represents community and togetherness.'
+
+  'icon-dog-person|icons|1:1|Icon: A simplified person kneeling or crouching next to a small dog (Corgi-like shape). Both figures in profile view. Pen-and-ink with warm-tan and sage watercolor. Represents shared activities between human and dog.'
+
+  'icon-download|icons|1:1|Icon: A downward-pointing arrow with a horizontal line beneath it (standard download symbol). Hand-drawn ink lines with slight imperfection. Light sage wash. Represents downloading or saving content.'
+
+  'icon-email-signup|icons|1:1|Icon: An envelope (mail icon) with a small upward arrow or sparkle emerging from it. Pen-and-ink with warm peach and sage watercolor fills. Represents signing up to receive emails. Slightly more detailed than a minimal icon.'
+
+  'icon-food-bowl|icons|1:1|Icon: A round dog food bowl seen from a slight above angle. Small bone shape or paw print detail on the side of the bowl. Pen-and-ink with sage and warm-tan watercolor. Represents nutrition and feeding.'
+
+  'icon-house|icons|1:1|Icon: A simple house shape — triangular roof, rectangular body, small door in center. Pen-and-ink line drawing with sage watercolor fill on the roof. Represents the home/main page. Clean silhouette.'
+
+  'icon-journal|icons|1:1|Icon: An open book or journal lying flat, pages spread. Delicate cursive squiggles on the pages suggesting handwritten text (not legible). Pen-and-ink with very light sage wash on the pages. Represents the guided journal product.'
+
+  'icon-lightbulb|icons|1:1|Icon: A classic lightbulb shape with a screw base. Small radiating lines around the bulb suggesting gentle light. Pen-and-ink outline with warm-gold watercolor glow inside the bulb. Represents tips, ideas, and practical insights.'
+
+  'icon-morning-nudge|icons|1:1|Icon: A sunrise — half circle of sun peeking above a horizon line with small radiating beams. Warm peach and gold watercolor for the sun, sage for the ground line. Represents a morning email notification or daily nudge.'
+
+  'icon-read-reflect|icons|1:1|Icon: An open book with a small heart floating above the pages. Pen-and-ink with sage and warm-peach watercolor. The heart is subtle and small. Represents reading and emotional reflection.'
+
+  'icon-scroll-arrow|icons|1:1|Icon: A downward-pointing arrow or chevron, inviting the viewer to scroll down. Hand-drawn ink lines, slightly bouncy. Very light sage wash. Decorative scroll-down indicator for hero sections.'
+
+  'icon-share|icons|1:1|Icon: A share symbol — an upward-pointing arrow emerging from an open box or tray shape. Hand-drawn ink with sage wash. Simple, standard share iconography.'
+
+  'icon-shield|icons|1:1|Icon: A shield shape with a small cross or heart inside it. Pen-and-ink outline with sage-green watercolor fill. Represents safety, protection, and care guides for dog health.'
+
+  'icon-star|icons|1:1|Icon: A five-pointed star with slightly rounded points, hand-drawn feel. Warm-gold watercolor fill with pen-ink outline. Represents something special or highlighted in the daily content.'
+
+  'icon-supplement|icons|1:1|Icon: A small supplement bottle or vitamin jar with a simple label area. Pen-and-ink line drawing with sage and warm-tan watercolor. Represents supplements and health resources.'
+
+  'icon-upload-cloud|icons|1:1|Icon: A fluffy cloud shape with an upward-pointing arrow inside or emerging from it. Pen-and-ink with light sage-gray watercolor on the cloud. Represents uploading a photo to the cloud.'
+
+  'icon-calendar|icons|1:1|Icon: A calendar page or small desk calendar with a grid of small dots or marks suggesting dates. A subtle paw print watermark on the calendar face. Pen-and-ink with sage watercolor accents. Represents daily scheduling and morning emails.'
+
+  # ── Day Content (Days 1-3) ─────────────────────────────────────────────────
+  'day01-header|days|16:9|Banner/header: Car keys resting on a soft folded cloth or envelope on a table surface. Warm peach and coral watercolor tones with ink-line detail on the keys and metal ring. Represents the moment everything changes — the start of a difficult journey. Panoramic composition with space for text on the right side.'
+
+  'day01-activity|days|1:1|A comforting scene related to the first day of a caregiving journey with a sick dog. Perhaps a hand reaching out to touch a sleeping corgi, or a quiet moment of togetherness. Warm sage and tan tones. Square composition.'
+
+  'day02-header|days|16:9|Banner/header: Scene representing Day 2 theme of early adjustment and settling into a new normal with a sick dog. Objects and setting that evoke quiet courage. Panoramic watercolor-ink composition.'
+
+  'day02-activity|days|1:1|Activity illustration for Day 2 of a dog cancer caregiving journey. A gentle interactive moment. Square composition in watercolor-ink style.'
+
+  'day03-header|days|16:9|Banner/header: Scene for Day 3, exploring the theme of finding small routines and comfort in daily care. Watercolor-ink panoramic scene.'
+
+  'day03-activity|days|1:1|Activity illustration for Day 3. A simple, heartwarming moment of care or companionship. Square watercolor-ink composition.'
+
+  # ── Food Illustrations ─────────────────────────────────────────────────────
+  'protein|food|1:1|Icon: A lean cut of meat or protein source (like a chicken breast or steak) on a small plate. Minimal pen-and-ink with very light sage-gray watercolor wash. Represents protein as a nutritional category.'
+
+  'chicken|food|1:1|Icon: A whole roasted chicken or chicken leg quarter. Pen-and-ink line drawing with warm-tan and light sage watercolor. Clean, appetizing.'
+
+  'fish|food|1:1|Icon: A whole fish lying on its side. Simple, clean pen-and-ink line drawing with very subtle gray-sage watercolor shading along the body. Minimal detail — gill line, eye, tail fin.'
+
+  'egg|food|1:1|Icon: A single egg, slightly tilted. Clean pen-and-ink outline with a very faint warm-cream watercolor fill and subtle shadow beneath. Simple and elegant.'
+
+  'organ-meats|food|1:1|Icon: A small plate or cutting board with sliced organ meat (liver). Pen-and-ink with warm brownish-red and sage watercolor tones. Represents organ meats as a nutritional food.'
+
+  'blueberries|food|1:1|Icon: A small cluster of blueberries (5-7 berries) with a tiny leaf. Pen-and-ink outlines with subtle blue-purple and sage-green watercolor. Fresh and natural feeling.'
+
+  'leafy-greens|food|1:1|Icon: A bundle of leafy greens (like kale or chard) with curly, ruffled edges. Pen-and-ink with sage-green watercolor wash on the leaves. Represents vegetables and leafy greens.'
+
+  'broccoli|food|1:1|Icon: A single broccoli floret with a short stem. Pen-and-ink with green watercolor on the crown and lighter sage on the stem. Fresh and natural.'
+
+  'bone-broth|food|1:1|Icon: A small bowl of warm broth with gentle steam wisps rising. Pen-and-ink with warm golden-tan watercolor for the broth and sage for the bowl. Comforting and nourishing.'
+
+  'pumpkin|food|1:1|Icon: A small pumpkin with subtle ridges and a short stem. Pen-and-ink outline with warm orange-tan watercolor fill. Autumnal and natural.'
+
+  'warm-bowl|food|1:1|Icon: A round food bowl from a slight above angle with steam curling up. Contents suggest a warm prepared meal. Pen-and-ink with warm-tan and sage watercolor. Represents prepared meals and warm feeding.'
+
+  'healthy-fats|food|1:1|Icon: A small collection representing healthy fats — perhaps an avocado half and a small bottle of oil. Pen-and-ink with sage-green and golden watercolor accents.'
+
+  'whole-foods|food|1:1|Icon: A small arrangement of natural whole foods — a carrot, an apple, and a leafy green. Pen-and-ink with gentle multicolor watercolor (greens, oranges, reds all muted). Represents a whole-foods approach.'
+
+  'small-meals|food|1:1|Icon: Two or three small food bowls of different sizes arranged together, suggesting portioned meals. Pen-and-ink with sage and tan watercolor. Represents feeding in small portions.'
+
+  'grains|food|1:1|Icon: A few stalks of wheat or grain with drooping seed heads. Pen-and-ink with warm golden watercolor on the grain heads. Represents grains and carbohydrates.'
+
+  'corn|food|1:1|Icon: A single ear of corn, partially husked to reveal kernels. Pen-and-ink with warm golden-yellow watercolor on the kernels and sage-green on the husk. Represents corn as a food ingredient.'
+
+  'sugar|food|1:1|Icon: A small sugar bowl or sugar cubes with a few loose crystals. Pen-and-ink with white-gray watercolor. Slightly understated to suggest this is a food to limit. Represents sugar and sweeteners.'
+
+  'processed-treats|food|1:1|Icon: A few commercial dog biscuits or processed treats. Pen-and-ink with warm-tan watercolor. Generic, simple shapes. Represents processed treats that should be limited.'
+
+  'raw-meat|food|1:1|Icon: A raw cut of red meat on a cutting surface. Pen-and-ink with subtle reddish-tan watercolor. Represents raw meat as a food to approach with caution.'
+
+  'hand-feeding|food|1:1|Icon: A human hand offering food to a small dog mouth. The dog looks up gently. Pen-and-ink with warm-tan and sage watercolor. Represents hand-feeding as a caregiving technique. Slightly more scene-like than other food icons.'
+
+  # ── Supplement Banners ─────────────────────────────────────────────────────
+  'blood-support|supplements|21:9|Banner: A windowsill or shelf arrangement of small supplement bottles, jars, and a potted herb plant. Pen-and-ink with very subtle sage-gray watercolor. Represents blood support supplements. Panoramic composition. Peaceful, apothecary-like feel.'
+
+  'anti-cancer|supplements|21:9|Banner: A gentle arrangement of supplement bottles, a mortar and pestle, and dried herbs on a shelf. Pen-and-ink with sage and warm watercolor. Represents anti-cancer supplements. Hopeful and natural — not clinical. Panoramic composition.'
+
+  'immune-support|supplements|21:9|Banner: Supplement bottles and small potted plants arranged on a windowsill with soft light streaming through. Pen-and-ink with sage-green and cream watercolor. Represents immune support. Panoramic, warm and inviting.'
+
+  'liver-organ|supplements|21:9|Banner: A collection of supplement capsules, a small dropper bottle, and herbs arranged on a wooden surface. Pen-and-ink with warm-tan and sage watercolor. Represents liver and organ support. Panoramic composition.'
+
+  'quality-of-life|supplements|21:9|Banner: A cozy arrangement of supplement bottles alongside a soft blanket and a dog toy, suggesting comfort and quality of life. Pen-and-ink with warm sage and peach watercolor. Panoramic. The most emotionally warm of the supplement banners.'
+
+  # ── Order Page ─────────────────────────────────────────────────────────────
+  'order-hero-lifestyle|order|16:9|Banner/header: A warm lifestyle scene — a journal resting on a cozy blanket or table next to a cup of coffee, with soft morning light. A corgi rests nearby. Inviting and aspirational. Panoramic.'
+
+  'order-product-mockup|order|3:4|A closed hardcover journal at a slight 3/4 angle. Sage green linen cover with a small embossed paw print in the center. A ribbon bookmark in sage green trails from between the pages. The book has visible page edges showing quality paper. Pen-and-ink with rich sage-green and cream watercolor. This is the hero product image — it must look premium and desirable.'
+
+  'order-inside-reflection|order|1:1|An open journal spread showing a reflection page. One side has watercolor-style lined areas for writing, the other has a soft illustration. Pen-and-ink with sage and cream watercolor. Represents the journaling experience.'
+
+  'order-inside-prompt|order|1:1|An open journal page showing a daily prompt — a few lines of text (represented as squiggles) with decorative watercolor elements around the margins. A small illustrated icon in the corner. Represents the daily prompt feature.'
+
+  'order-inside-activity|order|1:1|An open journal page showing an activity section — a checkbox-style list and a small illustration of a person with a dog. Pen-and-ink with sage watercolor accents. Represents daily activities.'
+
+  'order-inside-resources|order|1:1|An open journal page with a resources section — small icons of a book, shield, and food bowl with lines of text (squiggles). Organized, helpful layout. Pen-and-ink with sage accents.'
+
+  'order-inside-keepsakes|order|1:1|An open journal spread showing a keepsakes area — a photo frame outline, a space for a paw print impression, and pressed flower outlines. Represents preserving memories. Warm peach and sage watercolor.'
+
+  'order-inside-binding|order|1:1|A close-up view of a journal spine and binding, showing quality stitching and thick cream pages. Pen-and-ink detail drawing with sage and warm-tan watercolor. Represents craftsmanship and durability.'
+
+  'order-lifestyle-morning|order|16:9|Banner: A morning scene — hands holding a warm cup of coffee next to an open journal on a table. Soft morning light. A dog leash hangs on a hook in the background. Warm, cozy atmosphere. Panoramic.'
+
+  'order-lifestyle-writing|order|1:1|A person hands writing in an open journal with a pen. Close-up of the writing action. Warm sage and tan watercolor tones. Represents active engagement with the journal. Square composition.'
+
+  'order-lifestyle-couch|order|3:4|A cozy couch scene — a person curled up reading/writing in a journal with a corgi resting beside them. Warm blanket, soft light. Pen-and-ink with sage, peach, and warm-tan watercolor. Portrait orientation.'
+
+  'order-lifestyle-complete|order|16:9|Banner: A completed journal displayed on a shelf or mantle like a treasured keepsake, alongside a framed photo and a small plant. Warm, nostalgic feeling. The journal is the completed HSA Days book. Panoramic.'
+
+  'order-why-physical|order|3:4|A pair of hands holding a closed journal against their chest, hugging it close. Emotional, intimate. Pen-and-ink with warm sage and peach watercolor. Represents the tactile, emotional value of a physical journal vs digital. Portrait orientation.'
 )
 
 # ── Generate function ────────────────────────────────────────────────────────
@@ -121,8 +333,7 @@ generate_image() {
   local name="$1"
   local subfolder="$2"
   local aspect="$3"
-  local tier="$4"
-  local prompt="$5"
+  local prompt="$4"
 
   local outdir="$ILLUST_DIR/$subfolder"
   local outfile="$outdir/$name.png"
@@ -133,37 +344,35 @@ generate_image() {
     return 0
   fi
 
-  # Determine model
-  local model="$DEFAULT_MODEL"
-  if [[ "$tier" == "max" ]]; then
-    model="black-forest-labs/flux.2-max"
-  elif [[ "$tier" == "pro" ]]; then
-    model="black-forest-labs/flux.2-pro"
-  fi
-  # --model flag overrides tier assignments
-  if [[ "$DEFAULT_MODEL" != "black-forest-labs/flux.2-max" ]]; then
-    model="$DEFAULT_MODEL"
-  fi
-
   # Use custom prompt if provided (only for --only mode)
   if [[ -n "$CUSTOM_PROMPT" ]]; then
     prompt="$CUSTOM_PROMPT"
   fi
 
+  if [[ "$DRY_RUN" == true ]]; then
+    echo "  DRY   $subfolder/$name.png  (aspect: $aspect)"
+    echo "        Prompt: ${prompt:0:100}..."
+    return 0
+  fi
+
   mkdir -p "$outdir"
 
-  echo "  GEN   $subfolder/$name.png  (model: ${model##*/}, aspect: $aspect)"
+  echo "  GEN   $subfolder/$name.png  (model: ${DEFAULT_MODEL##*/}, aspect: $aspect)"
 
-  # Build JSON payload
+  # Build JSON payload with system prompt
   local payload
   payload=$(jq -n \
-    --arg model "$model" \
+    --arg model "$DEFAULT_MODEL" \
+    --arg system "$SYSTEM_PROMPT" \
     --arg prompt "$prompt" \
     --arg aspect "$aspect" \
     '{
       model: $model,
+      messages: [
+        {role: "system", content: $system},
+        {role: "user", content: $prompt}
+      ],
       modalities: ["image"],
-      messages: [{role: "user", content: $prompt}],
       image_config: {aspect_ratio: $aspect}
     }')
 
@@ -189,14 +398,28 @@ generate_image() {
     return 1
   fi
 
-  # Extract base64 image data
-  local data_url
-  data_url=$(echo "$body" | jq -r '.choices[0].message.content[0].image_url.url // empty' 2>/dev/null)
+  # Extract base64 image data — try multiple response shapes
+  local data_url=""
 
-  # Fallback: try alternate response shapes
+  # Shape 1: images array (Gemini models)
+  data_url=$(echo "$body" | jq -r '.choices[0].message.images[0].image_url.url // empty' 2>/dev/null)
+
+  # Shape 2: content array with image_url
   if [[ -z "$data_url" ]]; then
-    data_url=$(echo "$body" | jq -r '.choices[0].message.images[0].image_url.url // empty' 2>/dev/null)
+    data_url=$(echo "$body" | jq -r '.choices[0].message.content[0].image_url.url // empty' 2>/dev/null)
   fi
+
+  # Shape 3: inline_data in content parts
+  if [[ -z "$data_url" ]]; then
+    local mime_type b64_data
+    mime_type=$(echo "$body" | jq -r '.choices[0].message.content[0].inline_data.mime_type // empty' 2>/dev/null)
+    b64_data=$(echo "$body" | jq -r '.choices[0].message.content[0].inline_data.data // empty' 2>/dev/null)
+    if [[ -n "$b64_data" ]]; then
+      data_url="data:${mime_type:-image/png};base64,$b64_data"
+    fi
+  fi
+
+  # Shape 4: raw content string (data URL)
   if [[ -z "$data_url" ]]; then
     data_url=$(echo "$body" | jq -r '.choices[0].message.content // empty' 2>/dev/null)
   fi
@@ -213,7 +436,7 @@ generate_image() {
 
   echo "$base64_data" | base64 -d > "$outfile" 2>/dev/null
 
-  # Verify file is a valid image (PNG starts with specific bytes)
+  # Verify file is a valid image
   if [[ -f "$outfile" ]] && file "$outfile" | grep -qiE 'image|PNG|JPEG|bitmap'; then
     local size
     size=$(du -h "$outfile" | cut -f1)
@@ -228,7 +451,13 @@ generate_image() {
 # ── Main ─────────────────────────────────────────────────────────────────────
 echo ""
 echo "HSA Days — Illustration Generator"
-echo "Model: ${DEFAULT_MODEL##*/}  |  Force: $FORCE"
+echo "Model: ${DEFAULT_MODEL##*/}  |  Force: $FORCE  |  Dry run: $DRY_RUN"
+if [[ -n "$CATEGORY" ]]; then
+  echo "Category: $CATEGORY"
+fi
+if [[ -n "$ONLY" ]]; then
+  echo "Only: $ONLY"
+fi
 echo "──────────────────────────────────────"
 echo ""
 
@@ -237,22 +466,20 @@ generated=0
 skipped=0
 
 for entry in "${ILLUSTRATIONS[@]}"; do
-  IFS='|' read -r name subfolder aspect tier prompt <<< "$entry"
+  IFS='|' read -r name subfolder aspect prompt <<< "$entry"
 
-  # If --only is set, skip non-matching
+  # Filter by --only
   if [[ -n "$ONLY" && "$name" != "$ONLY" ]]; then
     continue
   fi
 
-  if generate_image "$name" "$subfolder" "$aspect" "$tier" "$prompt"; then
-    if [[ -f "$ILLUST_DIR/$subfolder/$name.png" ]]; then
-      # Check if it was generated this run or skipped
-      if [[ "$FORCE" == true ]] || [[ ! -f "$ILLUST_DIR/$subfolder/$name.png" ]]; then
-        ((generated++))
-      else
-        ((skipped++))
-      fi
-    fi
+  # Filter by --category
+  if [[ -n "$CATEGORY" && "$subfolder" != "$CATEGORY" ]]; then
+    continue
+  fi
+
+  if generate_image "$name" "$subfolder" "$aspect" "$prompt"; then
+    ((generated++))
   else
     ((errors++))
   fi
@@ -260,7 +487,7 @@ done
 
 echo ""
 echo "──────────────────────────────────────"
-echo "Done. Errors: $errors"
+echo "Done. Generated: $generated  |  Errors: $errors"
 echo ""
 
 if [[ $errors -gt 0 ]]; then

@@ -39,6 +39,9 @@ yarn-error.log*
 # claude
 .claude/
 
+# storage (raw/print-only assets moved out of public/)
+/storage/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

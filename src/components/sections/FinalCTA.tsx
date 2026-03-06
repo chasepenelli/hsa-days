@@ -196,7 +196,7 @@ export function FinalCTA() {
             }}
           />
           <Image
-            src="/illustrations/icons/icon-flower-ornament.png"
+            src="/illustrations/icons/icon-flower-ornament.webp"
             alt=""
             width={14}
             height={14}

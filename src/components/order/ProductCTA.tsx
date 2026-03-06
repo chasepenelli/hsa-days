@@ -77,7 +77,7 @@ export function ProductCTA() {
             aria-hidden="true"
           >
             <Image
-              src="/illustrations/icons/icon-journal.png"
+              src="/illustrations/icons/icon-journal.webp"
               alt=""
               width={280}
               height={280}
