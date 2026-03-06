@@ -6,7 +6,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const features = [
   {
-    icon: "/illustrations/icons/icon-journal.webp",
+    icon: "/illustrations/icons/icon-journal.png",
     rgb: "91,123,94",
     accent: "var(--sage)",
     title: "30 Daily Reflections",
@@ -14,7 +14,7 @@ const features = [
       "Honest, grounding writing that meets you where you are \u2014 not clinical, not cold, just real.",
   },
   {
-    icon: "/illustrations/icons/icon-pencil.webp",
+    icon: "/illustrations/icons/icon-pencil.png",
     rgb: "196,162,101",
     accent: "var(--gold)",
     title: "Private Journaling",
@@ -22,7 +22,7 @@ const features = [
       "A writing prompt each day with a journal built right in. Only you can see what you write.",
   },
   {
-    icon: "/illustrations/icons/icon-dog-person.webp",
+    icon: "/illustrations/icons/icon-dog-person.png",
     rgb: "212,133,106",
     accent: "var(--terracotta)",
     title: "Activities Together",
@@ -30,7 +30,7 @@ const features = [
       "Simple, meaningful things to do with your dog. Not bucket-list pressure \u2014 just intentional moments.",
   },
   {
-    icon: "/illustrations/icons/icon-lightbulb.webp",
+    icon: "/illustrations/icons/icon-lightbulb.png",
     rgb: "91,123,94",
     accent: "var(--sage)",
     title: "Practical Guides",
@@ -38,7 +38,7 @@ const features = [
       "Supplements, nutrition, house-proofing \u2014 the stuff you actually need but can\u2019t find in one place.",
   },
   {
-    icon: "/illustrations/icons/icon-calendar.webp",
+    icon: "/illustrations/icons/icon-calendar.png",
     rgb: "196,162,101",
     accent: "var(--gold)",
     title: "Morning Emails",
@@ -46,7 +46,7 @@ const features = [
       "A gentle nudge each morning with the day\u2019s quote and a preview. One tap to open today\u2019s page.",
   },
   {
-    icon: "/illustrations/icons/icon-community.webp",
+    icon: "/illustrations/icons/icon-community.png",
     rgb: "212,133,106",
     accent: "var(--terracotta)",
     title: "Community Stories",

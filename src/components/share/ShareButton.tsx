@@ -27,7 +27,7 @@ export function ShareButton({ onClick, variant = "primary", label }: ShareButton
       }}
     >
       <Image
-        src="/illustrations/icons/icon-share.webp"
+        src="/illustrations/icons/icon-share.png"
         alt=""
         width={isPrimary ? 16 : 14}
         height={isPrimary ? 16 : 14}

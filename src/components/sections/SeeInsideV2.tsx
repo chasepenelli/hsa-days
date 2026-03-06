@@ -23,12 +23,12 @@ const DAY1 = {
 
 /* ── Feature inventory (quiet footer) ──────────────────── */
 const inventory = [
-  { icon: "/illustrations/icons/icon-journal.webp", label: "Daily reflections" },
-  { icon: "/illustrations/icons/icon-pencil.webp", label: "Private journaling" },
-  { icon: "/illustrations/icons/icon-dog-person.webp", label: "Activities together" },
-  { icon: "/illustrations/icons/icon-lightbulb.webp", label: "Practical guides" },
-  { icon: "/illustrations/icons/icon-calendar.webp", label: "Morning emails" },
-  { icon: "/illustrations/icons/icon-community.webp", label: "Community stories" },
+  { icon: "/illustrations/icons/icon-journal.png", label: "Daily reflections" },
+  { icon: "/illustrations/icons/icon-pencil.png", label: "Private journaling" },
+  { icon: "/illustrations/icons/icon-dog-person.png", label: "Activities together" },
+  { icon: "/illustrations/icons/icon-lightbulb.png", label: "Practical guides" },
+  { icon: "/illustrations/icons/icon-calendar.png", label: "Morning emails" },
+  { icon: "/illustrations/icons/icon-community.png", label: "Community stories" },
 ];
 
 /* ── Main Section ──────────────────────────────────────── */

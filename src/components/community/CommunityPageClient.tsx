@@ -80,7 +80,7 @@ function PawDot({
       }}
     >
       <Image
-        src="/illustrations/icons/icon-paw-print.webp"
+        src="/illustrations/icons/icon-paw-print.png"
         alt=""
         width={20}
         height={20}
@@ -181,7 +181,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
         }}
       >
         <Image
-          src="/illustrations/icons/icon-community.webp"
+          src="/illustrations/icons/icon-community.png"
           alt=""
           fill
           sizes="500px"
@@ -227,7 +227,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
             {/* Community icon (smaller, foreground) */}
             <div className="reveal flex justify-center mb-4">
               <Image
-                src="/illustrations/icons/icon-community.webp"
+                src="/illustrations/icons/icon-community.png"
                 alt=""
                 width={80}
                 height={80}
@@ -303,7 +303,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
                 }}
               />
               <Image
-                src="/illustrations/icons/icon-flower-ornament.webp"
+                src="/illustrations/icons/icon-flower-ornament.png"
                 alt=""
                 width={14}
                 height={14}
@@ -469,7 +469,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
             >
               <div className="flex justify-center mb-5">
                 <Image
-                  src="/illustrations/icons/icon-heart.webp"
+                  src="/illustrations/icons/icon-heart.png"
                   alt=""
                   width={80}
                   height={80}

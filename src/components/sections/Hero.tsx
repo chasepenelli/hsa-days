@@ -65,7 +65,7 @@ function PawDot({
       }}
     >
       <Image
-        src="/illustrations/icons/icon-paw-print.webp"
+        src="/illustrations/icons/icon-paw-print.png"
         alt=""
         width={20}
         height={20}
@@ -292,7 +292,7 @@ export function Hero() {
             }}
           />
           <Image
-            src="/illustrations/icons/icon-flower-ornament.webp"
+            src="/illustrations/icons/icon-flower-ornament.png"
             alt=""
             width={14}
             height={14}
@@ -421,7 +421,7 @@ export function Hero() {
             }}
           >
             <Image
-              src="/illustrations/icons/icon-scroll-arrow.webp"
+              src="/illustrations/icons/icon-scroll-arrow.png"
               alt=""
               width={16}
               height={16}

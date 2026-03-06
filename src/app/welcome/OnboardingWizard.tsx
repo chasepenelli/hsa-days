@@ -616,7 +616,7 @@ export default function OnboardingWizard() {
                   style={{ background: "rgba(91,123,94,0.08)" }}
                 >
                   <Image
-                    src="/illustrations/icons/icon-upload-cloud.webp"
+                    src="/illustrations/icons/icon-upload-cloud.png"
                     alt=""
                     width={28}
                     height={28}
@@ -777,7 +777,7 @@ export default function OnboardingWizard() {
               }}
             >
               <Image
-                src="/illustrations/icons/icon-heart.webp"
+                src="/illustrations/icons/icon-heart.png"
                 alt=""
                 width={36}
                 height={36}

@@ -34,7 +34,7 @@ export default function DietHeroPanel() {
           }}
         >
           <Image
-            src="/illustrations/food/fish.webp"
+            src="/illustrations/food/fish.png"
             alt="Fish illustration"
             fill
             style={{ objectFit: "cover", opacity: 0.72 }}
@@ -59,7 +59,7 @@ export default function DietHeroPanel() {
           }}
         >
           <Image
-            src="/illustrations/food/warm-bowl.webp"
+            src="/illustrations/food/warm-bowl.png"
             alt="Warm bowl illustration"
             fill
             style={{ objectFit: "cover", opacity: 0.72 }}
@@ -84,7 +84,7 @@ export default function DietHeroPanel() {
           }}
         >
           <Image
-            src="/illustrations/food/broccoli.webp"
+            src="/illustrations/food/broccoli.png"
             alt="Broccoli illustration"
             fill
             style={{ objectFit: "cover", opacity: 0.72 }}
