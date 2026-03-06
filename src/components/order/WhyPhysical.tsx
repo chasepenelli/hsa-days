@@ -152,7 +152,7 @@ export function WhyPhysical() {
               }}
             >
               <Image
-                src="/illustrations/order/order-why-physical.webp"
+                src="/illustrations/order/order-why-physical.png"
                 alt="Hands holding an open journal"
                 fill
                 sizes="(max-width: 768px) 100vw, 480px"

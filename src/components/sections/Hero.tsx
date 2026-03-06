@@ -150,7 +150,7 @@ export function Hero() {
         {/* Hero background scatter illustration — full-field watermark */}
         <div className="absolute" style={{ inset: "20%" }}>
           <Image
-            src="/illustrations/home/home-hero-bg.webp"
+            src="/illustrations/home/home-hero-bg.png"
             alt=""
             fill
             sizes="100vw"
@@ -173,7 +173,7 @@ export function Hero() {
           }}
         >
           <Image
-            src="/illustrations/home/home-hero.webp"
+            src="/illustrations/home/home-hero.png"
             alt=""
             fill
             sizes="(max-width: 768px) 120vw, 900px"

@@ -80,7 +80,7 @@ export function FinalCTA() {
         style={{ opacity: 0.07 }}
       >
         <Image
-          src="/illustrations/home/home-cta-paws.webp"
+          src="/illustrations/home/home-cta-paws.png"
           alt=""
           fill
           sizes="100vw"
