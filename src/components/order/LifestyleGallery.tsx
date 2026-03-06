@@ -5,25 +5,25 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const gallery = [
   {
-    src: "/illustrations/order/order-lifestyle-morning.webp",
+    src: "/illustrations/order/order-lifestyle-morning.png",
     caption: "Morning coffee. Day 7. Just us.",
     aspect: "16 / 9" as const,
     span: "full" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-writing.webp",
+    src: "/illustrations/order/order-lifestyle-writing.png",
     caption: "Writing what I couldn\u2019t say out loud.",
     aspect: "1 / 1" as const,
     span: "half" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-couch.webp",
+    src: "/illustrations/order/order-lifestyle-couch.png",
     caption: "She slept through the whole entry.",
     aspect: "3 / 4" as const,
     span: "half" as const,
   },
   {
-    src: "/illustrations/order/order-lifestyle-complete.webp",
+    src: "/illustrations/order/order-lifestyle-complete.png",
     caption: "Thirty days later. Still holding on.",
     aspect: "16 / 9" as const,
     span: "full" as const,
