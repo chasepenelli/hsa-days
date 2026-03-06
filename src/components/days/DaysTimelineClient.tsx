@@ -115,7 +115,7 @@ export function DaysTimelineClient({
             aria-hidden="true"
           >
             <Image
-              src="/illustrations/icons/icon-paw-print.png"
+              src="/illustrations/icons/icon-paw-print.webp"
               alt=""
               width={14}
               height={14}

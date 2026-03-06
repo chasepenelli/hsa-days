@@ -46,11 +46,11 @@ const tickerRow2 = [
 ];
 
 const bgIllustrations = [
-  { src: "/illustrations/icons/icon-heart.png", alt: "", top: "8%", right: "4%", size: 140, opacity: 0.05, animation: "driftSlow 12s ease-in-out infinite" },
-  { src: "/illustrations/icons/icon-paw-print.png", alt: "", bottom: "12%", left: "3%", size: 120, opacity: 0.045, animation: "driftSlow 16s ease-in-out infinite 3s" },
-  { src: "/illustrations/icons/icon-community.png", alt: "", top: "45%", right: "-2%", size: 180, opacity: 0.04, animation: "none" },
-  { src: "/illustrations/journal-blank/weekly-bloom.png", alt: "", bottom: "5%", left: "-4%", size: 200, opacity: 0.035, animation: "driftSlow 14s ease-in-out infinite 6s" },
-  { src: "/illustrations/icons/icon-flower-ornament.png", alt: "", top: "2%", left: "8%", size: 100, opacity: 0.05, animation: "none" },
+  { src: "/illustrations/icons/icon-heart.webp", alt: "", top: "8%", right: "4%", size: 140, opacity: 0.05, animation: "driftSlow 12s ease-in-out infinite" },
+  { src: "/illustrations/icons/icon-paw-print.webp", alt: "", bottom: "12%", left: "3%", size: 120, opacity: 0.045, animation: "driftSlow 16s ease-in-out infinite 3s" },
+  { src: "/illustrations/icons/icon-community.webp", alt: "", top: "45%", right: "-2%", size: 180, opacity: 0.04, animation: "none" },
+  { src: "/illustrations/journal-blank/weekly-bloom.webp", alt: "", bottom: "5%", left: "-4%", size: 200, opacity: 0.035, animation: "driftSlow 14s ease-in-out infinite 6s" },
+  { src: "/illustrations/icons/icon-flower-ornament.webp", alt: "", top: "2%", left: "8%", size: 100, opacity: 0.05, animation: "none" },
 ];
 
 function TickerPill({ quote, name, color }: { quote: string; name: string; color: string }) {
