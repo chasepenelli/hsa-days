@@ -74,7 +74,7 @@ export default function ShareStoryPage() {
         >
           <div className="flex justify-center mb-5">
             <Image
-              src="/illustrations/icons/icon-heart.webp"
+              src="/illustrations/icons/icon-heart.png"
               alt=""
               width={80}
               height={80}
@@ -177,7 +177,7 @@ export default function ShareStoryPage() {
               }}
             >
               <Image
-                src="/illustrations/icons/icon-arrow-left.webp"
+                src="/illustrations/icons/icon-arrow-left.png"
                 alt=""
                 width={12}
                 height={12}
@@ -191,7 +191,7 @@ export default function ShareStoryPage() {
           <div className="text-center mb-10">
             <div className="flex justify-center mb-5">
               <Image
-                src="/illustrations/icons/icon-pencil.webp"
+                src="/illustrations/icons/icon-pencil.png"
                 alt=""
                 width={128}
                 height={128}

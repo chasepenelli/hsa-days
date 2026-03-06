@@ -486,7 +486,7 @@ export default function DietPageClient({
                 range="60–70%"
                 color="var(--sage)"
                 rgb="91,123,94"
-                icon="/illustrations/food/protein.webp"
+                icon="/illustrations/food/protein.png"
                 iconAlt="Lean meat representing dietary protein"
                 note="Lean meats, fish, eggs, organ meats"
               />
@@ -495,7 +495,7 @@ export default function DietPageClient({
                 range="20–30%"
                 color="var(--gold)"
                 rgb="196,162,101"
-                icon="/illustrations/food/healthy-fats.webp"
+                icon="/illustrations/food/healthy-fats.png"
                 iconAlt="Fish oil and omega-3 rich foods representing healthy dietary fat"
                 note="Wild fish, fish oil, coconut oil"
               />
@@ -504,7 +504,7 @@ export default function DietPageClient({
                 range="< 15%"
                 color="var(--terracotta)"
                 rgb="212,133,106"
-                icon="/illustrations/food/corn.webp"
+                icon="/illustrations/food/corn.png"
                 iconAlt="Starchy grain representing carbohydrates to limit"
                 note="Non-starchy vegetables only"
                 iconFilter="hue-rotate(30deg) saturate(0.6)"

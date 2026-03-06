@@ -251,7 +251,7 @@ export function DayContent({
           style={{ color: "var(--text-muted)" }}
         >
           <Image
-            src="/illustrations/icons/icon-arrow-left.webp"
+            src="/illustrations/icons/icon-arrow-left.png"
             alt=""
             width={14}
             height={14}
@@ -377,7 +377,7 @@ export function DayContent({
             <SectionLabel
               icon={
                 <Image
-                  src="/illustrations/icons/icon-pencil.webp"
+                  src="/illustrations/icons/icon-pencil.png"
                   alt=""
                   width={14}
                   height={14}
@@ -467,7 +467,7 @@ export function DayContent({
                     color="sage"
                     icon={
                       <Image
-                        src="/illustrations/icons/icon-clock.webp"
+                        src="/illustrations/icons/icon-clock.png"
                         alt=""
                         width={14}
                         height={14}
@@ -503,7 +503,7 @@ export function DayContent({
                 color="gold"
                 icon={
                   <Image
-                    src="/illustrations/icons/icon-lightbulb.webp"
+                    src="/illustrations/icons/icon-lightbulb.png"
                     alt=""
                     width={14}
                     height={14}
@@ -532,7 +532,7 @@ export function DayContent({
               color="muted"
               icon={
                 <Image
-                  src="/illustrations/icons/icon-camera.webp"
+                  src="/illustrations/icons/icon-camera.png"
                   alt=""
                   width={14}
                   height={14}
@@ -596,7 +596,7 @@ export function DayContent({
                       style={{ background: "rgba(91,123,94,0.1)" }}
                     >
                       <Image
-                        src="/illustrations/icons/icon-checkmark.webp"
+                        src="/illustrations/icons/icon-checkmark.png"
                         alt=""
                         width={10}
                         height={10}
@@ -637,7 +637,7 @@ export function DayContent({
                       >
                         Continue to Day {dayNumber + 1}
                         <Image
-                          src="/illustrations/icons/icon-arrow-right.webp"
+                          src="/illustrations/icons/icon-arrow-right.png"
                           alt=""
                           width={14}
                           height={14}
@@ -674,7 +674,7 @@ export function DayContent({
                         </svg>
                       ) : (
                         <Image
-                          src="/illustrations/icons/icon-checkmark.webp"
+                          src="/illustrations/icons/icon-checkmark.png"
                           alt="Complete"
                           width={14}
                           height={14}
@@ -806,7 +806,7 @@ export function DayContent({
                               >
                                 Continue your journey
                                 <Image
-                                  src="/illustrations/icons/icon-arrow-right.webp"
+                                  src="/illustrations/icons/icon-arrow-right.png"
                                   alt=""
                                   width={12}
                                   height={12}
@@ -882,7 +882,7 @@ export function DayContent({
                 ) : (
                   <>
                     <Image
-                      src="/illustrations/icons/icon-checkmark.webp"
+                      src="/illustrations/icons/icon-checkmark.png"
                       alt=""
                       width={16}
                       height={16}

@@ -34,24 +34,24 @@ const guidedJournal: Product = {
   badgeColor: "var(--sage)",
   badgeBorder: "rgba(91,123,94,0.20)",
   accentColor: "var(--sage)",
-  watermark: "/illustrations/icons/icon-journal.webp",
+  watermark: "/illustrations/icons/icon-journal.png",
   title: "The Guided Journal",
   subtitle: "Record your journey as it happens.",
   description:
     "All 30 days in a beautiful printed format with dedicated writing space, thick archival pages, lay-flat binding, and room for photos and keepsakes.",
   features: [
     {
-      icon: "/illustrations/icons/icon-journal.webp",
+      icon: "/illustrations/icons/icon-journal.png",
       title: "30 Days of Guided Space",
       description: "Every reflection, prompt, and activity with room to write.",
     },
     {
-      icon: "/illustrations/icons/icon-supplement.webp",
+      icon: "/illustrations/icons/icon-supplement.png",
       title: "Complete Resource Guides",
       description: "Supplements, nutrition, and practical care references.",
     },
     {
-      icon: "/illustrations/icons/icon-pencil.webp",
+      icon: "/illustrations/icons/icon-pencil.png",
       title: "Built for Writing",
       description: "Thick archival pages with lay-flat binding.",
     },
@@ -71,24 +71,24 @@ const keepsakeBook: Product = {
   badgeColor: "var(--gold)",
   badgeBorder: "rgba(196,162,101,0.22)",
   accentColor: "var(--gold)",
-  watermark: "/illustrations/icons/icon-heart.webp",
+  watermark: "/illustrations/icons/icon-heart.png",
   title: "The Keepsake Book",
   subtitle: "Celebrate your completed journey.",
   description:
     "We compile your journal entries, reflections, and photos from the digital program into a one-of-a-kind printed book. Your words, your memories, bound forever.",
   features: [
     {
-      icon: "/illustrations/icons/icon-camera.webp",
+      icon: "/illustrations/icons/icon-camera.png",
       title: "Your Words & Photos",
       description: "Everything you wrote and captured, beautifully arranged.",
     },
     {
-      icon: "/illustrations/icons/icon-heart.webp",
+      icon: "/illustrations/icons/icon-heart.png",
       title: "One of a Kind",
       description: "Unique to your journey \u2014 no two books are the same.",
     },
     {
-      icon: "/illustrations/icons/icon-star.webp",
+      icon: "/illustrations/icons/icon-star.png",
       title: "Heirloom Quality",
       description: "Printed on premium paper with hardcover binding.",
     },
@@ -108,24 +108,24 @@ const storyEdition: Product = {
   badgeColor: "var(--terracotta)",
   badgeBorder: "rgba(212,133,106,0.22)",
   accentColor: "var(--terracotta)",
-  watermark: "/illustrations/icons/icon-pencil.webp",
+  watermark: "/illustrations/icons/icon-pencil.png",
   title: "The Story Edition",
   subtitle: "Chase & Graffiti\u2019s journey, in full.",
   description:
     "The complete memoir behind HSA Days \u2014 30 chapters of the unfiltered, honest story of one man and his dog navigating what it means to truly show up.",
   features: [
     {
-      icon: "/illustrations/icons/icon-journal.webp",
+      icon: "/illustrations/icons/icon-journal.png",
       title: "30 Chapters",
       description: "The full story behind every day of the program.",
     },
     {
-      icon: "/illustrations/icons/icon-heart.webp",
+      icon: "/illustrations/icons/icon-heart.png",
       title: "The Full Story",
       description: "Raw, honest, and unfiltered \u2014 the real journey.",
     },
     {
-      icon: "/illustrations/icons/icon-star.webp",
+      icon: "/illustrations/icons/icon-star.png",
       title: "Instant Download",
       description: "Digital delivery \u2014 start reading immediately.",
     },
