@@ -57,7 +57,7 @@ export function PWASplash() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/illustrations/order/order-hero-lifestyle.png"
+        src="/illustrations/order/order-hero-lifestyle.webp"
         alt=""
         className="pwa-splash-illustration"
       />

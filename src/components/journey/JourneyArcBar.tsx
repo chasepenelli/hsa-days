@@ -6,7 +6,7 @@ const PHASES = [
     days: "Days 1–4",
     description: "Permission to feel. Guided reflections, your first journal entries, and practical next steps.",
     color: "var(--terracotta)",
-    illustration: "/illustrations/home/home-journey-phase1.png",
+    illustration: "/illustrations/home/home-journey-phase1.webp",
     alt: "Phone face-down with paw print stamp",
   },
   {
@@ -14,7 +14,7 @@ const PHASES = [
     days: "Days 5–10",
     description: "Finding your footing. Daily routines, supplement guides, feeding tips, and making home safer.",
     color: "var(--gold)",
-    illustration: "/illustrations/home/home-journey-phase2.png",
+    illustration: "/illustrations/home/home-journey-phase2.webp",
     alt: "Coffee mug and dog leash",
   },
   {
@@ -22,7 +22,7 @@ const PHASES = [
     days: "Days 11–17",
     description: "Confronting guilt, anger, and unsolicited advice. A video activity, building a care routine, finding your people.",
     color: "var(--sage-light)",
-    illustration: "/illustrations/home/home-journey-phase3.png",
+    illustration: "/illustrations/home/home-journey-phase3.webp",
     alt: "Crumpled tissue beside a journal",
   },
   {
@@ -30,7 +30,7 @@ const PHASES = [
     days: "Days 18–24",
     description: "Hard conversations. A paw print project, a slow walk, writing a letter, documenting what matters.",
     color: "var(--sage)",
-    illustration: "/illustrations/home/home-journey-phase4.png",
+    illustration: "/illustrations/home/home-journey-phase4.webp",
     alt: "Pen resting on an open journal page",
   },
   {
@@ -38,7 +38,7 @@ const PHASES = [
     days: "Days 25–30",
     description: "Gratitude, legacy, and what comes next. Reflecting on what they taught you and stepping forward.",
     color: "var(--sage-dark)",
-    illustration: "/illustrations/home/home-journey-phase5.png",
+    illustration: "/illustrations/home/home-journey-phase5.webp",
     alt: "Paw print and footprint side by side",
   },
 ];
