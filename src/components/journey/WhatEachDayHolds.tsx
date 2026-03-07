@@ -13,7 +13,7 @@ const ITEMS = [
       "Written for where you are. Personal, second-person \u2014 like a letter from someone who\u2019s been here.",
     color: "var(--sage)",
     colorHex: "#5B7B5E",
-    icon: "/illustrations/icons/icon-read-reflect.webp",
+    icon: "/illustrations/icons/icon-read-reflect.png",
   },
   {
     label: "A journal prompt",
@@ -21,7 +21,7 @@ const ITEMS = [
       "A single question to sit with. Write as much or as little as you want. Private and saved.",
     color: "var(--gold)",
     colorHex: "#C4A265",
-    icon: "/illustrations/icons/icon-journal.webp",
+    icon: "/illustrations/icons/icon-journal.png",
   },
   {
     label: "A gentle activity",
@@ -29,7 +29,7 @@ const ITEMS = [
       "Something small to do together. A photo walk. A paw print. Writing a letter. Never homework \u2014 always an invitation.",
     color: "var(--terracotta)",
     colorHex: "#D4856A",
-    icon: "/illustrations/icons/icon-paw-print.webp",
+    icon: "/illustrations/icons/icon-paw-print.png",
   },
   {
     label: "A practical tip",
@@ -37,7 +37,7 @@ const ITEMS = [
       "Real information, delivered gently. What to ask your vet. How to adjust their diet. When to seek a second opinion.",
     color: "var(--sage-light)",
     colorHex: "#7A9A7D",
-    icon: "/illustrations/icons/icon-lightbulb.webp",
+    icon: "/illustrations/icons/icon-lightbulb.png",
   },
   {
     label: "A quote to carry",
@@ -45,7 +45,7 @@ const ITEMS = [
       "Words for the hardest moments. From Rumi to Mary Oliver \u2014 something to hold onto for the rest of the day.",
     color: "var(--gold-light)",
     colorHex: "#D4B87A",
-    icon: "/illustrations/icons/icon-star.webp",
+    icon: "/illustrations/icons/icon-star.png",
   },
 ];
 
@@ -371,7 +371,7 @@ export function WhatEachDayHolds() {
                 }}
               />
               <Image
-                src="/illustrations/icons/icon-flower-ornament.webp"
+                src="/illustrations/icons/icon-flower-ornament.png"
                 alt=""
                 width={14}
                 height={14}
@@ -562,7 +562,7 @@ export function WhatEachDayHolds() {
               }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.webp"
+              src="/illustrations/icons/icon-flower-ornament.png"
               alt=""
               width={14}
               height={14}

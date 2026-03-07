@@ -107,7 +107,7 @@ export function OrderFAQ() {
         }}
       >
         <Image
-          src="/illustrations/icons/icon-paw-print.webp"
+          src="/illustrations/icons/icon-paw-print.png"
           alt=""
           width={200}
           height={200}
@@ -176,7 +176,7 @@ export function OrderFAQ() {
               }}
             />
             <Image
-              src="/illustrations/icons/icon-flower-ornament.webp"
+              src="/illustrations/icons/icon-flower-ornament.png"
               alt=""
               width={14}
               height={14}

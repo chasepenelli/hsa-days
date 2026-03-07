@@ -65,7 +65,7 @@ function PawDot({
       }}
     >
       <Image
-        src="/illustrations/icons/icon-paw-print.webp"
+        src="/illustrations/icons/icon-paw-print.png"
         alt=""
         width={20}
         height={20}
@@ -150,7 +150,7 @@ export function Hero() {
         {/* Hero background scatter illustration — full-field watermark */}
         <div className="absolute" style={{ inset: "20%" }}>
           <Image
-            src="/illustrations/home/home-hero-bg.webp"
+            src="/illustrations/home/home-hero-bg.png"
             alt=""
             fill
             sizes="100vw"
@@ -173,7 +173,7 @@ export function Hero() {
           }}
         >
           <Image
-            src="/illustrations/home/home-hero.webp"
+            src="/illustrations/home/home-hero.png"
             alt=""
             fill
             sizes="(max-width: 768px) 120vw, 900px"
@@ -292,7 +292,7 @@ export function Hero() {
             }}
           />
           <Image
-            src="/illustrations/icons/icon-flower-ornament.webp"
+            src="/illustrations/icons/icon-flower-ornament.png"
             alt=""
             width={14}
             height={14}
@@ -421,7 +421,7 @@ export function Hero() {
             }}
           >
             <Image
-              src="/illustrations/icons/icon-scroll-arrow.webp"
+              src="/illustrations/icons/icon-scroll-arrow.png"
               alt=""
               width={16}
               height={16}

@@ -77,7 +77,7 @@ export function ProductCTA() {
             aria-hidden="true"
           >
             <Image
-              src="/illustrations/icons/icon-journal.webp"
+              src="/illustrations/icons/icon-journal.png"
               alt=""
               width={280}
               height={280}
@@ -119,7 +119,7 @@ export function ProductCTA() {
               }}
             >
               <Image
-                src="/illustrations/order/order-product-mockup.webp"
+                src="/illustrations/order/order-product-mockup.png"
                 alt="HSA Days: The Guided Journal"
                 fill
                 sizes="456px"

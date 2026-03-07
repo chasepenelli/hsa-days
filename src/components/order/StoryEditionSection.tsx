@@ -76,7 +76,7 @@ export function StoryEditionSection() {
             aria-hidden="true"
           >
             <Image
-              src="/illustrations/icons/icon-pencil.webp"
+              src="/illustrations/icons/icon-pencil.png"
               alt=""
               width={280}
               height={280}

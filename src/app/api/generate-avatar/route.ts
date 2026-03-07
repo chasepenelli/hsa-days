@@ -66,7 +66,7 @@ export async function POST() {
     const base64Photo = Buffer.from(photoBuffer).toString("base64");
     const mimeType = subscriber.pet_photo_path.endsWith(".png")
       ? "image/png"
-      : subscriber.pet_photo_path.endsWith(".webp")
+      : subscriber.pet_photo_path.endsWith(".png")
         ? "image/webp"
         : "image/jpeg";
 

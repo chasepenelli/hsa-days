@@ -123,7 +123,7 @@ export default async function DayPage({ params }: PageProps) {
 
     if (mappings?.length) {
       for (const m of mappings) {
-        const filePath = `/illustrations/pills/${m.pill_slug}.webp`;
+        const filePath = `/illustrations/pills/${m.pill_slug}.png`;
         if (m.placement === "doodle" && !pillDoodle) {
           pillDoodle = filePath;
         }

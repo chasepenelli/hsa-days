@@ -25,7 +25,7 @@ const DAY1 = {
 /* ── Feature card data ────────────────────────────────── */
 const features = [
   {
-    icon: "/illustrations/icons/icon-journal.webp",
+    icon: "/illustrations/icons/icon-journal.png",
     color: "var(--sage)",
     bg: "rgba(91,123,94,0.09)",
     borderColor: "rgba(91,123,94,0.20)",
@@ -36,7 +36,7 @@ const features = [
     preview: "reflection" as const,
   },
   {
-    icon: "/illustrations/icons/icon-pencil.webp",
+    icon: "/illustrations/icons/icon-pencil.png",
     color: "var(--gold)",
     bg: "rgba(196,162,101,0.09)",
     borderColor: "rgba(196,162,101,0.22)",
@@ -47,7 +47,7 @@ const features = [
     preview: "journal" as const,
   },
   {
-    icon: "/illustrations/icons/icon-dog-person.webp",
+    icon: "/illustrations/icons/icon-dog-person.png",
     color: "var(--terracotta)",
     bg: "rgba(212,133,106,0.09)",
     borderColor: "rgba(212,133,106,0.22)",
@@ -58,7 +58,7 @@ const features = [
     preview: "activity" as const,
   },
   {
-    icon: "/illustrations/icons/icon-lightbulb.webp",
+    icon: "/illustrations/icons/icon-lightbulb.png",
     color: "var(--sage)",
     bg: "rgba(91,123,94,0.09)",
     borderColor: "rgba(91,123,94,0.20)",
@@ -69,7 +69,7 @@ const features = [
     preview: "practical" as const,
   },
   {
-    icon: "/illustrations/icons/icon-calendar.webp",
+    icon: "/illustrations/icons/icon-calendar.png",
     color: "var(--gold)",
     bg: "rgba(196,162,101,0.09)",
     borderColor: "rgba(196,162,101,0.22)",
@@ -80,7 +80,7 @@ const features = [
     preview: "email" as const,
   },
   {
-    icon: "/illustrations/icons/icon-community.webp",
+    icon: "/illustrations/icons/icon-community.png",
     color: "var(--terracotta)",
     bg: "rgba(212,133,106,0.09)",
     borderColor: "rgba(212,133,106,0.22)",
@@ -202,7 +202,7 @@ function ActivityPreview() {
         style={{ width: "72px" }}
       >
         <Image
-          src="/illustrations/days/day01-activity.webp"
+          src="/illustrations/days/day01-activity.png"
           alt=""
           width={72}
           height={88}
@@ -521,7 +521,7 @@ export function SeeInside() {
             {/* Right-side illustration — luminosity blend keeps it readable */}
             <div className="absolute inset-0 flex items-end justify-end pointer-events-none overflow-hidden">
               <Image
-                src="/illustrations/days/day01-header.webp"
+                src="/illustrations/days/day01-header.png"
                 alt=""
                 width={220}
                 height={160}
