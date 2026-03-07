@@ -80,7 +80,7 @@ export function FinalCTA() {
         style={{ opacity: 0.07 }}
       >
         <Image
-          src="/illustrations/home/home-cta-paws.png"
+          src="/illustrations/home/home-cta-paws.webp"
           alt=""
           fill
           sizes="100vw"
@@ -196,7 +196,7 @@ export function FinalCTA() {
             }}
           />
           <Image
-            src="/illustrations/icons/icon-flower-ornament.png"
+            src="/illustrations/icons/icon-flower-ornament.webp"
             alt=""
             width={14}
             height={14}

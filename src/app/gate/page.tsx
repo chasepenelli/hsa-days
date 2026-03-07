@@ -131,7 +131,7 @@ export default function GatePage() {
             }}
           />
           <Image
-            src="/illustrations/icons/icon-flower-ornament.png"
+            src="/illustrations/icons/icon-flower-ornament.webp"
             alt=""
             width={12}
             height={12}

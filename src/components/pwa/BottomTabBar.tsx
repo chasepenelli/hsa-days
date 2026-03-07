@@ -16,19 +16,19 @@ const TABS: Tab[] = [
   {
     label: "Today",
     href: "/days/today",
-    icon: "/illustrations/icons/icon-paw-print.png",
+    icon: "/illustrations/icons/icon-paw-print.webp",
     isActive: (p) => /^\/days\/\d+/.test(p) || p === "/days/today",
   },
   {
     label: "Journal",
     href: "/days",
-    icon: "/illustrations/icons/icon-journal.png",
+    icon: "/illustrations/icons/icon-journal.webp",
     isActive: (p) => p === "/days",
   },
   {
     label: "Care",
     href: "/resources",
-    icon: "/illustrations/icons/icon-heart.png",
+    icon: "/illustrations/icons/icon-heart.webp",
     isActive: (p) => p.startsWith("/resources"),
   },
 ];

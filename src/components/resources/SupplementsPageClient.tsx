@@ -12,11 +12,11 @@ import SectionDivider from "./SectionDivider";
 
 /* ── Category illustration paths ── */
 const categoryIllustrations: Record<string, string> = {
-  blood_support: "/illustrations/supplements/blood-support.png",
-  anti_cancer: "/illustrations/supplements/anti-cancer.png",
-  immune_support: "/illustrations/supplements/immune-support.png",
-  liver_organ: "/illustrations/supplements/liver-organ.png",
-  quality_of_life: "/illustrations/supplements/quality-of-life.png",
+  blood_support: "/illustrations/supplements/blood-support.webp",
+  anti_cancer: "/illustrations/supplements/anti-cancer.webp",
+  immune_support: "/illustrations/supplements/immune-support.webp",
+  liver_organ: "/illustrations/supplements/liver-organ.webp",
+  quality_of_life: "/illustrations/supplements/quality-of-life.webp",
 };
 
 /* ── Category SVG icons ── */

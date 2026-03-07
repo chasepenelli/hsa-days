@@ -145,7 +145,7 @@ export function JournalEditor({
           style={{ color: "var(--sage)" }}
         >
           <Image
-            src="/illustrations/icons/icon-pencil.png"
+            src="/illustrations/icons/icon-pencil.webp"
             alt=""
             width={14}
             height={14}
@@ -162,7 +162,7 @@ export function JournalEditor({
           {saved && !saving && !offline && (
             <span className="animate-ink-write inline-flex items-center gap-1" style={{ color: "var(--sage)" }}>
               <Image
-                src="/illustrations/icons/icon-checkmark.png"
+                src="/illustrations/icons/icon-checkmark.webp"
                 alt=""
                 width={10}
                 height={10}
@@ -174,7 +174,7 @@ export function JournalEditor({
           {saved && !saving && offline && (
             <span className="inline-flex items-center gap-1" style={{ color: "var(--gold)" }}>
               <Image
-                src="/illustrations/icons/icon-checkmark.png"
+                src="/illustrations/icons/icon-checkmark.webp"
                 alt=""
                 width={10}
                 height={10}

@@ -203,7 +203,7 @@ export function ShareCardModal({
             aria-label="Close"
           >
             <Image
-              src="/illustrations/icons/icon-close.png"
+              src="/illustrations/icons/icon-close.webp"
               alt="Close"
               width={20}
               height={20}
@@ -486,7 +486,7 @@ export function ShareCardModal({
               />
             ) : (
               <Image
-                src="/illustrations/icons/icon-download.png"
+                src="/illustrations/icons/icon-download.webp"
                 alt=""
                 width={16}
                 height={16}
@@ -532,7 +532,7 @@ export function ShareCardModal({
               />
             ) : (
               <Image
-                src="/illustrations/icons/icon-share.png"
+                src="/illustrations/icons/icon-share.webp"
                 alt=""
                 width={16}
                 height={16}

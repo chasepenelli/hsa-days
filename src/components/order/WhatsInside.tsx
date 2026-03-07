@@ -8,42 +8,42 @@ const features = [
     title: "Daily Reflections",
     description:
       "Honest writing that meets you in the hard moments. Not platitudes \u2014 real words from someone who\u2019s been there.",
-    image: "/illustrations/order/order-inside-reflection.png",
+    image: "/illustrations/order/order-inside-reflection.webp",
     color: "var(--sage)",
   },
   {
     title: "Guided Journal Prompts",
     description:
       "A question each day that helps you process what you\u2019re feeling. No right answers. Just space to be honest.",
-    image: "/illustrations/order/order-inside-prompt.png",
+    image: "/illustrations/order/order-inside-prompt.webp",
     color: "var(--gold)",
   },
   {
     title: "Activities With Your Dog",
     description:
       "Simple, intentional things to do together. Not a bucket list. Just quiet moments you\u2019ll be glad you had.",
-    image: "/illustrations/order/order-inside-activity.png",
+    image: "/illustrations/order/order-inside-activity.webp",
     color: "var(--terracotta)",
   },
   {
     title: "Resource Guides",
     description:
       "Supplements, nutrition, house-proofing \u2014 everything you need in one place, so you can stop Googling at 2 AM.",
-    image: "/illustrations/order/order-inside-resources.png",
+    image: "/illustrations/order/order-inside-resources.webp",
     color: "var(--sage)",
   },
   {
     title: "Room for Photos & Keepsakes",
     description:
       "Thick pages and extra space designed for taping in photos, collar tags, or anything you want to keep close.",
-    image: "/illustrations/order/order-inside-keepsakes.png",
+    image: "/illustrations/order/order-inside-keepsakes.webp",
     color: "var(--gold)",
   },
   {
     title: "Lay-Flat Binding",
     description:
       "The journal stays open on any page. Write with both hands free. Set it on the couch arm while your dog sleeps beside you.",
-    image: "/illustrations/order/order-inside-binding.png",
+    image: "/illustrations/order/order-inside-binding.webp",
     color: "var(--terracotta)",
   },
 ];
