@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CommunityTabs, type CommunityTab } from "./CommunityTabs";
-import { ChannelGrid, type Channel } from "./ChannelGrid";
 import { StoriesGrid } from "./StoriesGrid";
 
 interface Story {
@@ -16,19 +15,8 @@ interface Story {
   created_at: string;
 }
 
-interface ChannelRow {
-  id: string;
-  slug: string;
-  name: string;
-  description: string | null;
-  icon_path: string | null;
-  sort_order: number;
-  color: string;
-}
-
 interface CommunityHubProps {
   stories: Story[];
-  channels: ChannelRow[];
 }
 
 /* ── Ambient floating orb ──────────────────── */
@@ -131,26 +119,14 @@ function AnimatedLine({
   );
 }
 
-export function CommunityHub({ stories, channels }: CommunityHubProps) {
+export function CommunityHub({ stories }: CommunityHubProps) {
   const ref = useScrollReveal();
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState<CommunityTab>("chat");
+  const [activeTab, setActiveTab] = useState<CommunityTab>("forum");
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Map DB channel rows to the Channel shape ChannelGrid expects
-  const mappedChannels: Channel[] = channels.map((ch) => ({
-    slug: ch.slug,
-    name: ch.name,
-    description: ch.description ?? "",
-    iconPath: ch.icon_path ?? "/illustrations/icons/icon-community.png",
-    color: (ch.color as Channel["color"]) || "sage",
-  }));
-
-  // Static online counts for now — will wire presence later
-  const onlineCounts: Record<string, number> = {};
 
   return (
     <div
@@ -382,11 +358,6 @@ export function CommunityHub({ stories, channels }: CommunityHubProps) {
         style={{ paddingBottom: "clamp(48px, 6vw, 80px)" }}
       >
         <div className="max-w-[1100px] mx-auto pt-8">
-          {/* Chat tab */}
-          {activeTab === "chat" && (
-            <ChannelGrid channels={mappedChannels} onlineCounts={onlineCounts} />
-          )}
-
           {/* Forum tab — coming soon */}
           {activeTab === "forum" && (
             <div className="max-w-[500px] mx-auto">

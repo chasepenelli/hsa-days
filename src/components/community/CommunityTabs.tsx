@@ -1,6 +1,6 @@
 "use client";
 
-export type CommunityTab = "chat" | "forum" | "stories";
+export type CommunityTab = "forum" | "stories";
 
 interface CommunityTabsProps {
   activeTab: CommunityTab;
@@ -8,7 +8,6 @@ interface CommunityTabsProps {
 }
 
 const TABS: { key: CommunityTab; label: string }[] = [
-  { key: "chat", label: "Chat" },
   { key: "forum", label: "Forum" },
   { key: "stories", label: "Stories" },
 ];
