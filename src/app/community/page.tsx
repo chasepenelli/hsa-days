@@ -17,5 +17,11 @@ export default async function CommunityPage() {
     .eq("is_approved", true)
     .order("created_at", { ascending: false });
 
-  return <CommunityHub stories={stories ?? []} />;
+  const { data: forumPosts } = await supabase
+    .from("forum_posts")
+    .select("*, subscribers:subscriber_id(dog_name, avatar_color)")
+    .order("is_pinned", { ascending: false })
+    .order("last_reply_at", { ascending: false, nullsFirst: false });
+
+  return <CommunityHub stories={stories ?? []} forumPosts={forumPosts ?? []} />;
 }

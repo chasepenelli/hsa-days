@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CommunityTabs, type CommunityTab } from "./CommunityTabs";
 import { StoriesGrid } from "./StoriesGrid";
+import { ForumPostList } from "./ForumPostList";
+import type { ForumPost } from "./ForumPostCard";
 
 interface Story {
   id: string;
@@ -17,6 +19,7 @@ interface Story {
 
 interface CommunityHubProps {
   stories: Story[];
+  forumPosts: ForumPost[];
 }
 
 /* ── Ambient floating orb ──────────────────── */
@@ -119,7 +122,7 @@ function AnimatedLine({
   );
 }
 
-export function CommunityHub({ stories }: CommunityHubProps) {
+export function CommunityHub({ stories, forumPosts }: CommunityHubProps) {
   const ref = useScrollReveal();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<CommunityTab>("forum");
@@ -358,41 +361,19 @@ export function CommunityHub({ stories }: CommunityHubProps) {
         style={{ paddingBottom: "clamp(48px, 6vw, 80px)" }}
       >
         <div className="max-w-[1100px] mx-auto pt-8">
-          {/* Forum tab — coming soon */}
+          {/* Forum tab */}
           {activeTab === "forum" && (
-            <div className="max-w-[500px] mx-auto">
-              <div
-                className="rounded-2xl p-12 text-center"
-                style={{
-                  background: "white",
-                  border: "1px solid var(--border)",
-                  boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
-                }}
-              >
-                <div className="flex justify-center mb-5">
-                  <Image
-                    src="/illustrations/icons/icon-journal.png"
-                    alt=""
-                    width={72}
-                    height={72}
-                    style={{ objectFit: "contain", opacity: 0.7 }}
-                  />
-                </div>
-                <h2
-                  className="font-serif text-xl font-semibold mb-3"
-                  style={{ color: "var(--text)" }}
+            <div>
+              {/* Start a Thread button */}
+              <div className="flex justify-center mb-8">
+                <Link
+                  href="/community/forum/new"
+                  className="inline-block px-7 py-3.5 bg-sage text-white rounded-xl font-semibold text-sm no-underline hover:bg-sage-dark transition-colors"
                 >
-                  Forum coming soon
-                </h2>
-                <p
-                  className="text-[0.95rem] leading-relaxed mx-auto"
-                  style={{ color: "var(--text-muted)", maxWidth: "360px" }}
-                >
-                  We&apos;re building a space for longer conversations &mdash;
-                  questions, advice, and stories that deserve more than a quick
-                  message.
-                </p>
+                  Start a Thread
+                </Link>
               </div>
+              <ForumPostList posts={forumPosts} />
             </div>
           )}
 
