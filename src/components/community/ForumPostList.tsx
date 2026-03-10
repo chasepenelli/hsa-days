@@ -84,8 +84,8 @@ export function ForumPostList({ posts }: ForumPostListProps) {
               title={post.title}
               body={post.body}
               category={post.category}
-              dogName={post.subscribers.dog_name}
-              avatarColor={post.subscribers.avatar_color}
+              dogName={post.subscribers?.dog_name ?? "Anonymous"}
+              avatarColor={post.subscribers?.avatar_color ?? "sage"}
               replyCount={post.reply_count}
               lastReplyAt={post.last_reply_at}
               createdAt={post.created_at}

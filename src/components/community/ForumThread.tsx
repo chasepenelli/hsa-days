@@ -185,12 +185,12 @@ export function ForumThread({ post }: ForumThreadProps) {
         {/* Author info */}
         <div className="flex items-center gap-3 mb-6">
           <AvatarCircle
-            dogName={post.subscribers.dog_name}
-            avatarColor={post.subscribers.avatar_color}
+            dogName={post.subscribers?.dog_name ?? "Anonymous"}
+            avatarColor={post.subscribers?.avatar_color ?? "sage"}
           />
           <div className="text-sm" style={{ color: "var(--text-muted)" }}>
             <span className="font-medium" style={{ color: "var(--text)" }}>
-              {post.subscribers.dog_name}&apos;s family
+              {post.subscribers?.dog_name ?? "Anonymous"}&apos;s family
             </span>
             <span className="mx-1.5" style={{ opacity: 0.4 }}>&middot;</span>
             <span>{formatDate(post.created_at)}</span>
@@ -258,15 +258,15 @@ export function ForumThread({ post }: ForumThreadProps) {
             >
               <div className="flex items-center gap-2.5 mb-3">
                 <AvatarCircle
-                  dogName={reply.subscribers.dog_name}
-                  avatarColor={reply.subscribers.avatar_color}
+                  dogName={reply.subscribers?.dog_name ?? "Anonymous"}
+                  avatarColor={reply.subscribers?.avatar_color ?? "sage"}
                   size={30}
                 />
                 <span
                   className="text-sm font-medium"
                   style={{ color: "var(--text)" }}
                 >
-                  {reply.subscribers.dog_name}&apos;s family
+                  {reply.subscribers?.dog_name ?? "Anonymous"}&apos;s family
                 </span>
                 <span
                   className="text-xs"
