@@ -66,33 +66,45 @@ export async function POST(request: Request) {
 
     if (linkError) throw linkError;
 
-    // Add to Kit (ConvertKit) if configured
+    // Add to Kit (ConvertKit) via v4 API if configured
     if (process.env.KIT_API_KEY && process.env.KIT_API_KEY !== "placeholder") {
       try {
-        // Subscribe to the main form
-        await fetch(
-          `https://api.convertkit.com/v3/forms/${process.env.KIT_FORM_ID}/subscribe`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              api_key: process.env.KIT_API_KEY,
-              email,
-            }),
-          }
-        );
+        const kitHeaders = {
+          "Content-Type": "application/json",
+          "X-Kit-Api-Key": process.env.KIT_API_KEY,
+        };
 
-        // Add to 30-day drip sequence if configured
-        if (process.env.KIT_SEQUENCE_ID && process.env.KIT_SEQUENCE_ID !== "placeholder") {
+        // Create subscriber as active (skips double opt-in)
+        await fetch("https://api.kit.com/v4/subscribers", {
+          method: "POST",
+          headers: kitHeaders,
+          body: JSON.stringify({
+            email_address: email,
+            first_name: name || undefined,
+            state: "active",
+          }),
+        });
+
+        // Add to the main form
+        if (process.env.KIT_FORM_ID && process.env.KIT_FORM_ID !== "placeholder") {
           await fetch(
-            `https://api.convertkit.com/v3/sequences/${process.env.KIT_SEQUENCE_ID}/subscribe`,
+            `https://api.kit.com/v4/forms/${process.env.KIT_FORM_ID}/subscribers`,
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                api_key: process.env.KIT_API_KEY,
-                email,
-              }),
+              headers: kitHeaders,
+              body: JSON.stringify({ email_address: email }),
+            }
+          );
+        }
+
+        // Add to 30-day drip sequence
+        if (process.env.KIT_SEQUENCE_ID && process.env.KIT_SEQUENCE_ID !== "placeholder") {
+          await fetch(
+            `https://api.kit.com/v4/sequences/${process.env.KIT_SEQUENCE_ID}/subscribers`,
+            {
+              method: "POST",
+              headers: kitHeaders,
+              body: JSON.stringify({ email_address: email }),
             }
           );
         }
