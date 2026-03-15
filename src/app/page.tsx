@@ -3,45 +3,23 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { WhyThisExists } from "@/components/sections/WhyThisExists";
 import { JourneyTimeline } from "@/components/sections/JourneyTimeline";
 import { SeeInsideV2 } from "@/components/sections/SeeInsideV2";
-import { WhatsInside } from "@/components/sections/WhatsInside";
-import { EmailPreview } from "@/components/sections/EmailPreview";
 import { About } from "@/components/sections/About";
 import { CommunityStories } from "@/components/sections/CommunityStories";
 import { Resources } from "@/components/sections/Resources";
-import { PreOrder } from "@/components/sections/PreOrder";
-import { SupportSection } from "@/components/sections/SupportSection";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { BackToTop } from "@/components/ui/BackToTop";
-
-function ChapterDivider() {
-  return (
-    <div
-      className="chapter-ornament py-2"
-      style={{ background: "var(--warm-white)" }}
-      aria-hidden="true"
-    >
-      <span style={{ fontSize: "0.75rem", opacity: 0.5 }}>&#10045;</span>
-    </div>
-  );
-}
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <HowItWorks />
+      <Resources />
       <WhyThisExists />
+      <HowItWorks />
       <JourneyTimeline />
       <SeeInsideV2 />
-      <WhatsInside />
-      <ChapterDivider />
-      <EmailPreview />
       <About />
       <CommunityStories />
-      <ChapterDivider />
-      <Resources />
-      <PreOrder />
-      <SupportSection />
       <FinalCTA />
       <BackToTop />
     </>

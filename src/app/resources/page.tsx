@@ -35,9 +35,9 @@ export default async function ResourcesPage() {
     },
     {
       icon: "\uD83E\uDD6A",
-      title: "Food & Nutrition",
+      title: "What to Feed",
       description:
-        "What to feed, what to avoid, and how to adjust their diet. Including homemade options, commercial foods, and appetite-boosting tips.",
+        "What to feed, what to avoid, and appetite-boosting strategies. Practical guidance for daily meals during treatment.",
       href: "/resources/food",
       borderColor: "border-l-gold",
     },
@@ -51,19 +51,11 @@ export default async function ResourcesPage() {
     },
     {
       icon: "\uD83E\uDD66",
-      title: "Diet & Nutrition",
+      title: "Cancer Diet Science",
       description:
-        "The science of feeding against the tumor — the Warburg Effect, anti-cancer foods, meal form comparisons, and a personalized meal plan generator.",
+        "The Warburg Effect, anti-cancer protocols, meal form comparisons, and a build-your-own meal plan generator.",
       href: "/resources/diet",
-      borderColor: "border-l-terracotta",
-    },
-    {
-      icon: "\uD83D\uDCF1",
-      title: "Use as an App",
-      description:
-        "Add HSA Days to your home screen for quick access, offline journaling, and a full-screen experience.",
-      href: "/resources/install",
-      borderColor: "border-l-sage",
+      borderColor: "border-l-sage-light",
     },
   ];
 

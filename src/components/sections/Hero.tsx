@@ -248,7 +248,7 @@ export function Hero() {
             className="w-1.5 h-1.5 rounded-full animate-breathe"
             style={{ background: "var(--sage)" }}
           />
-          Free &middot; Interactive &middot; 30 Days
+          Free Resources + Daily Journal
         </div>
 
         {/* Main headline — staggered line-by-line reveal */}
@@ -323,9 +323,9 @@ export function Hero() {
             animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
-          HSA Days is a free 30-day companion for families navigating a
-          hemangiosarcoma diagnosis. Daily reflections, a private journal,
-          and a community that truly understands.
+          Start with the practical stuff — supplements, what to feed, how
+          to prepare your home. When you&apos;re ready, a free 30-day journal
+          walks beside you through every day that matters.
         </p>
 
         {/* Signup form */}
@@ -347,13 +347,13 @@ export function Hero() {
             className="text-[0.84rem] mb-1.5"
             style={{ color: "var(--text-muted)" }}
           >
-            Free forever &middot; Start immediately
+            Browse guides now &middot; No signup required
           </p>
           <p
             className="text-[0.78rem] italic"
             style={{ color: "var(--text-muted)", opacity: 0.55 }}
           >
-            Built by a dog dad who needed this. Read by hundreds of HSA families.
+            Built by a dog dad who needed this. Trusted by hundreds of HSA families.
           </p>
         </div>
 
@@ -368,9 +368,9 @@ export function Hero() {
           }}
         >
           {[
-            { number: "30", label: "Daily Reflections" },
-            { number: "Free", label: "Always & Forever" },
-            { number: "Private", label: "Just For You" },
+            { number: "4", label: "Care Guides" },
+            { number: "30", label: "Journal Days" },
+            { number: "0", label: "Cost, Ever" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div

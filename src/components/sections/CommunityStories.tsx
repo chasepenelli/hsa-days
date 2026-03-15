@@ -304,32 +304,7 @@ export function CommunityStories() {
           ))}
         </div>
 
-        {/* Community stat strip */}
-        <div
-          className="reveal mt-14 flex flex-wrap justify-center gap-x-12 gap-y-4"
-          style={{ transitionDelay: "0.4s" }}
-        >
-          {[
-            { num: "Hundreds", label: "of families supported" },
-            { num: "30", label: "days of guided content" },
-            { num: "Free", label: "always and forever" },
-          ].map((s) => (
-            <div key={s.label} className="flex items-center gap-3">
-              <div
-                className="text-[1.3rem] font-serif font-semibold"
-                style={{ color: "var(--sage-dark)" }}
-              >
-                {s.num}
-              </div>
-              <div
-                className="text-[0.82rem]"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* stat strip removed — duplicated Hero stats */}
       </div>
 
       {/* Ticker reduced motion override */}

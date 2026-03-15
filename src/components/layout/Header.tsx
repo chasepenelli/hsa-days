@@ -61,12 +61,6 @@ export function Header() {
         {/* Desktop nav */}
         <div className="hidden md:flex gap-8 items-center">
           <Link
-            href="/about"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            Our Story
-          </Link>
-          <Link
             href="/journey"
             className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
           >
@@ -83,18 +77,6 @@ export function Header() {
             className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
           >
             Resources
-          </Link>
-          <Link
-            href="/order"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            Pre-Order
-          </Link>
-          <Link
-            href="/#support"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            Support
           </Link>
           {isLoggedIn ? (
             <>
@@ -199,12 +181,9 @@ export function Header() {
         }}
       >
         {([
-          { href: "/about", label: "Our Story" },
           { href: "/journey", label: "The Journey" },
           { href: "/community", label: "Community" },
           { href: "/resources", label: "Resources" },
-          { href: "/order", label: "Pre-Order" },
-          { href: "/#support", label: "Support" },
         ] as { href: string; label: string }[]).map((item, i) => (
           <Link
             key={item.href}

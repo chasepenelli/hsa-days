@@ -69,6 +69,12 @@ export function Footer() {
             >
               Support
             </Link>
+            <Link
+              href="/resources/install"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Install App
+            </Link>
             <a
               href="https://instagram.com/bradythecorgi"
               target="_blank"
