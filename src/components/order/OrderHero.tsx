@@ -202,7 +202,7 @@ export function OrderHero() {
           className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-10"
           style={{
             background: "rgba(196,162,101,0.09)",
-            color: "var(--gold)",
+            color: "var(--gold-text)",
             border: "1px solid rgba(196,162,101,0.22)",
             animationName: "fadeInUp",
             animationDuration: "0.7s",

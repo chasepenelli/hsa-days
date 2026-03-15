@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
+import Link from "next/link";
 import type { DogProfile, FoodItem, DietPrinciple } from "@/lib/resources/types";
 import { getBreedNote } from "@/lib/resources/personalize";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -71,12 +72,13 @@ export default function FoodPageClient({
 
         <div className="max-w-[800px] mx-auto reveal">
           <div className="inline-flex items-center gap-2 mb-4">
-            <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+            <Link
+              href="/resources"
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
               style={{ color: "var(--sage)" }}
             >
               Resources
-            </span>
+            </Link>
             <span
               className="w-px h-3"
               style={{ background: "var(--border-strong)" }}
@@ -345,6 +347,44 @@ export default function FoodPageClient({
               ))}
             </div>
           </section>
+
+          {/* Cross-link to diet science */}
+          <div className="reveal mt-10">
+            <a
+              href="/resources/diet"
+              className="block rounded-xl px-5 py-4 no-underline transition-colors duration-200"
+              style={{
+                background: "var(--cream)",
+                border: "1px solid var(--border)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--sage-light)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+              }}
+            >
+              <div
+                className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-1"
+                style={{ color: "var(--sage)" }}
+              >
+                Go deeper
+              </div>
+              <div
+                className="font-serif text-[1rem] font-semibold mb-1"
+                style={{ color: "var(--text)" }}
+              >
+                The Science Behind the Cancer Diet
+              </div>
+              <div
+                className="text-[0.85rem]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Warburg Effect, anti-cancer protocols, meal plan builder, and
+                what veterinary oncologists actually recommend.
+              </div>
+            </a>
+          </div>
 
           {/* Print / save hint */}
           <div

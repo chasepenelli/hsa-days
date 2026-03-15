@@ -65,6 +65,7 @@ export function SignupForm({ variant = "default" }: SignupFormProps) {
         <input
           type="email"
           placeholder="your@email.com"
+          aria-label="Email address"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -152,6 +153,7 @@ export function SignupForm({ variant = "default" }: SignupFormProps) {
 
       {error && (
         <div
+          role="alert"
           className="max-w-[480px] mx-auto rounded-xl px-4 py-3 text-sm text-center animate-fade-in"
           style={{
             background: "rgba(212,133,106,0.08)",

@@ -64,6 +64,11 @@ export default async function SharePage({ params }: PageProps) {
 
   if (!day) notFound();
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+
   return (
     <div
       className="min-h-screen flex items-center justify-center px-4 py-20"
@@ -140,14 +145,14 @@ export default async function SharePage({ params }: PageProps) {
         </p>
 
         <Link
-          href="/"
+          href={isLoggedIn ? `/days/${dayNum}` : "/"}
           className="inline-flex items-center gap-2 px-6 py-3.5 text-white no-underline rounded-2xl text-[0.92rem] font-semibold transition-all"
           style={{
             background: "var(--sage)",
             boxShadow: "0 4px 16px rgba(91,123,94,0.25)",
           }}
         >
-          Start Your Journey
+          {isLoggedIn ? `Back to Day ${dayNum}` : "Start Your Journey"}
           <svg
             viewBox="0 0 24 24"
             fill="none"

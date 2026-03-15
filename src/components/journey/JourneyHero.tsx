@@ -176,7 +176,7 @@ export function JourneyHero() {
           {/* Eyebrow */}
           <div
             className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-5"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             <span
               style={{
@@ -353,7 +353,7 @@ export function JourneyHero() {
             {/* Eyebrow */}
             <div
               className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-6"
-              style={{ color: "var(--gold)", opacity: 0.7 }}
+              style={{ color: "var(--gold-text)", opacity: 0.7 }}
             >
               HSA Days &mdash; A Free 30-Day Companion
             </div>

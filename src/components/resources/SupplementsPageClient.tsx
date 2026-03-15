@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import Link from "next/link";
 import type { Supplement, SupplementCategory, DogProfile, WeightBracket } from "@/lib/resources/types";
 import { getWeightBracket, getDosageForWeight } from "@/lib/resources/personalize";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -183,12 +184,13 @@ export default function SupplementsPageClient({
         <div className="max-w-[800px] mx-auto reveal">
           {/* Breadcrumb */}
           <div className="inline-flex items-center gap-2 mb-4">
-            <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+            <Link
+              href="/resources"
+              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
               style={{ color: "var(--sage)" }}
             >
               Resources
-            </span>
+            </Link>
             <span
               className="w-px h-3"
               style={{ background: "var(--border-strong)" }}

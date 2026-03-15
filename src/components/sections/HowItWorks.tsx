@@ -113,7 +113,7 @@ function JournalMockup() {
         {/* Prompt label */}
         <div
           className="text-[0.58rem] font-semibold uppercase tracking-[0.12em] mb-1.5"
-          style={{ color: "var(--gold)" }}
+          style={{ color: "var(--gold-text)" }}
         >
           Today&apos;s prompt
         </div>
@@ -320,7 +320,7 @@ export function HowItWorks() {
         <div className="text-center mb-16">
           <div
             className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             How It Works
           </div>

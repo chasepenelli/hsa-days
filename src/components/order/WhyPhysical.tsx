@@ -69,7 +69,7 @@ export function WhyPhysical() {
           <div>
             <div
               className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-              style={{ color: "var(--gold)" }}
+              style={{ color: "var(--gold-text)" }}
             >
               WHY A PHYSICAL JOURNAL
             </div>

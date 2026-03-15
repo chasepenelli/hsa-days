@@ -121,7 +121,7 @@ export function ForumPostCard({
         {isPinned && (
           <div
             className="flex items-center gap-1.5 mb-2 text-xs font-semibold"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             <svg
               width="12"

@@ -181,6 +181,7 @@ export default function GatePage() {
           <input
             type="password"
             placeholder="Enter password"
+            aria-label="Preview password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -245,6 +246,7 @@ export default function GatePage() {
           </button>
           {error && (
             <p
+              role="alert"
               style={{
                 marginTop: 14,
                 fontSize: "0.85rem",

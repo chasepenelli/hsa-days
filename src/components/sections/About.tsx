@@ -36,7 +36,7 @@ export function About() {
       <div className="max-w-[1100px] mx-auto">
 
         <div className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-          style={{ color: "var(--gold)" }}
+          style={{ color: "var(--gold-text)" }}
         >
           Our Story
         </div>

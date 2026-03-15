@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Use HSA Days as an App",
@@ -207,9 +208,12 @@ export default function InstallGuidePage() {
     <div className="min-h-screen pt-24 pb-16 px-6">
       <div className="max-w-[800px] mx-auto">
         {/* Header */}
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
+        <Link
+          href="/resources"
+          className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold-text mb-3 no-underline hover:opacity-70 transition-opacity block"
+        >
           Resources
-        </div>
+        </Link>
         <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">
           Use HSA Days as an App
         </h1>

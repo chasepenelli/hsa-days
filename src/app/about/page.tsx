@@ -10,7 +10,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen pt-24 pb-16 px-6">
       <div className="max-w-[800px] mx-auto">
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
+        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold-text mb-3">
           Our Story
         </div>
         <h1 className="font-serif text-[clamp(2rem,4vw,3rem)] font-semibold text-text mb-8 leading-tight">

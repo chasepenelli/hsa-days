@@ -162,6 +162,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   placeholder="your@email.com"
+                  aria-label="Email address"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -209,6 +210,7 @@ export default function LoginPage() {
 
               {error && (
                 <div
+                  role="alert"
                   className="rounded-xl px-4 py-3 text-[0.88rem] text-center animate-fade-in"
                   style={{
                     background: "rgba(212,133,106,0.08)",
@@ -259,6 +261,7 @@ export default function LoginPage() {
 
               {error && (
                 <div
+                  role="alert"
                   className="rounded-xl px-4 py-3 text-[0.88rem] text-center animate-fade-in"
                   style={{
                     background: "rgba(212,133,106,0.08)",

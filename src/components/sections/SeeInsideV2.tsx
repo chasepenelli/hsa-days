@@ -78,7 +78,7 @@ export function SeeInsideV2() {
         {/* Eyebrow */}
         <div
           className="reveal text-center mb-5"
-          style={{ color: "var(--gold)" }}
+          style={{ color: "var(--gold-text)" }}
         >
           <span className="text-[0.68rem] font-semibold uppercase tracking-[0.16em]">
             See Inside
@@ -277,7 +277,7 @@ export function SeeInsideV2() {
           >
             <div
               className="text-[0.68rem] uppercase tracking-[0.14em] font-semibold mb-2"
-              style={{ color: "var(--gold)" }}
+              style={{ color: "var(--gold-text)" }}
             >
               {DAY1.practicalTitle}
             </div>

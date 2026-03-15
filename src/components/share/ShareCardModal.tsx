@@ -232,6 +232,7 @@ export function ShareCardModal({
               <button
                 key={t.id}
                 onClick={() => setTemplate(t.id)}
+                aria-pressed={template === t.id}
                 style={{
                   flex: 1,
                   padding: "10px 6px",
@@ -426,6 +427,7 @@ export function ShareCardModal({
               <button
                 key={s}
                 onClick={() => setSize(s)}
+                aria-pressed={size === s}
                 style={{
                   flex: 1,
                   padding: "8px 12px",

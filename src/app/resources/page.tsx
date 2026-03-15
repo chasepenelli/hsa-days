@@ -70,7 +70,7 @@ export default async function ResourcesPage() {
   return (
     <div className="min-h-screen pt-24 pb-16 px-6">
       <div className="max-w-[1100px] mx-auto">
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold mb-3">
+        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold-text mb-3">
           Resources
         </div>
         <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">

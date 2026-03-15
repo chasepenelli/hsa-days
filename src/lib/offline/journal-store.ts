@@ -73,3 +73,14 @@ export async function clearSyncedEntries(): Promise<void> {
     }
   }
 }
+
+export async function clearAllJournalEntries(): Promise<void> {
+  const allKeys = await keys();
+  const journalKeys = allKeys.filter(
+    (k) => typeof k === "string" && k.startsWith("journal:")
+  );
+
+  for (const key of journalKeys) {
+    await del(key);
+  }
+}

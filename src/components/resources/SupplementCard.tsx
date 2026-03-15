@@ -295,7 +295,7 @@ export default function SupplementCard({
               >
                 <p
                   className="text-[0.75rem] font-semibold uppercase tracking-[0.08em]"
-                  style={{ color: "var(--gold)" }}
+                  style={{ color: "var(--gold-text)" }}
                 >
                   Breed note
                 </p>

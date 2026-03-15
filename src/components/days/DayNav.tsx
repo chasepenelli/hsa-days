@@ -12,11 +12,12 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
 
   return (
     <div
-      className={`${isStandalone ? "mb-20" : "sticky bottom-0"} flex justify-between items-center px-5 py-3 z-10`}
+      className={`${isStandalone ? "" : "sticky bottom-0"} flex justify-between items-center px-5 py-3 z-10`}
       style={{
         background: "rgba(250,248,245,0.95)",
         backdropFilter: "blur(12px)",
         borderTop: "1px solid var(--border)",
+        marginBottom: isStandalone ? "calc(52px + env(safe-area-inset-bottom) + 12px)" : undefined,
         paddingBottom: isStandalone ? "12px" : "calc(12px + env(safe-area-inset-bottom))",
       }}
     >
@@ -56,7 +57,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
 
       <Link
         href="/days"
-        className="text-[0.8rem] font-medium no-underline transition-colors hover:text-sage px-3 py-1.5 rounded-lg hidden sm:block"
+        className="text-[0.8rem] font-medium no-underline transition-colors hover:text-sage px-3 py-1.5 rounded-lg"
         style={{
           color: "var(--text-muted)",
           background: "rgba(91,123,94,0.06)",

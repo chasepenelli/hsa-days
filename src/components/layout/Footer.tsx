@@ -26,7 +26,7 @@ export function Footer() {
             </div>
             <p
               className="font-serif italic text-[0.88rem] leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.45)", maxWidth: 280 }}
+              style={{ color: "rgba(255,255,255,0.65)", maxWidth: 280 }}
             >
               A 30-day companion for families navigating
               hemangiosarcoma with love.
@@ -35,31 +35,37 @@ export function Footer() {
           <div className="flex gap-6 flex-wrap justify-center md:justify-end">
             <Link
               href="/about"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Our Story
             </Link>
             <Link
               href="/journey"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               The Journey
             </Link>
             <Link
               href="/community"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Community
             </Link>
             <Link
+              href="/resources"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Resources
+            </Link>
+            <Link
               href="/order"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Pre-Order
             </Link>
             <Link
               href="/#support"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Support
             </Link>
@@ -67,7 +73,7 @@ export function Footer() {
               href="https://instagram.com/bradythecorgi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/50 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               @bradythecorgi
             </a>
@@ -79,7 +85,7 @@ export function Footer() {
           className="pt-6 text-center text-[0.82rem]"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.08)",
-            color: "rgba(255,255,255,0.35)",
+            color: "rgba(255,255,255,0.55)",
           }}
         >
           Made with love for{" "}

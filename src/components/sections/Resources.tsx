@@ -87,7 +87,7 @@ function FoodVignette() {
     <div aria-hidden="true" className="mt-5 px-1 pb-1">
       <div
         className="text-[0.6rem] font-semibold uppercase tracking-[0.12em] mb-2"
-        style={{ color: "var(--gold)" }}
+        style={{ color: "var(--gold-text)" }}
       >
         Key Principles
       </div>
@@ -221,7 +221,7 @@ export function Resources() {
         <div className="mb-14">
           <div
             className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             Resources
           </div>

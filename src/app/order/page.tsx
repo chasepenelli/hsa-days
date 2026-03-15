@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "HSA Days: The Guided Journal",
     description:
-      "A printed companion for your 30-day journey with your dog. $49, ships Spring 2026.",
+      "A printed companion for your 30-day journey with your dog. $29, ships Spring 2026.",
   },
 };
 

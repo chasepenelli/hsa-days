@@ -28,7 +28,7 @@ export function Day1Preview({ day1 }: Day1PreviewProps) {
         {/* Label */}
         <div
           className="text-[0.7rem] font-semibold uppercase tracking-[0.14em] mb-4"
-          style={{ color: "var(--gold)" }}
+          style={{ color: "var(--gold-text)" }}
         >
           Day {day1.day_number} of 30 &middot; {day1.category}
         </div>
@@ -109,7 +109,7 @@ export function Day1Preview({ day1 }: Day1PreviewProps) {
           >
             <div
               className="text-[0.68rem] font-semibold uppercase tracking-[0.12em] mb-2"
-              style={{ color: "var(--gold)", opacity: 0.8 }}
+              style={{ color: "var(--gold-text)", opacity: 0.8 }}
             >
               Journal Prompt
             </div>

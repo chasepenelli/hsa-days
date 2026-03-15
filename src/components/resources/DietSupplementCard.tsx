@@ -51,7 +51,7 @@ const TIER_CONFIG: Record<
   },
   moderate: {
     label: "Moderate Evidence",
-    color: "var(--gold)",
+    color: "var(--gold-text)",
     border: "rgba(196,162,101,0.3)",
     ruleColor: "var(--gold)",
     icon: (
@@ -153,7 +153,7 @@ export default function DietSupplementCard({
               fontSize: "0.67rem",
               letterSpacing: "0.08em",
               background: "white",
-              color: "var(--gold)",
+              color: "var(--gold-text)",
               border: "1.5px solid rgba(196,162,101,0.3)",
             }}
           >

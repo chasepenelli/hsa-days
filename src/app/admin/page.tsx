@@ -197,7 +197,7 @@ export default async function AdminDashboard() {
         <h2 className="font-serif text-lg font-semibold text-text mb-4">
           Community Stories{" "}
           {(pendingStories?.length ?? 0) > 0 && (
-            <span className="text-sm font-normal text-gold">
+            <span className="text-sm font-normal text-gold-text">
               ({pendingStories?.length} pending)
             </span>
           )}
@@ -256,7 +256,7 @@ export default async function AdminDashboard() {
                         sub.current_day >= 30
                           ? "bg-sage/10 text-sage"
                           : sub.current_day > 0
-                            ? "bg-gold/10 text-gold"
+                            ? "bg-gold/10 text-gold-text"
                             : "bg-border text-text-muted"
                       }`}
                     >

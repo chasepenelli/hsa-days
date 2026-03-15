@@ -200,7 +200,7 @@ export default function ShareStoryPage() {
             </div>
             <div
               className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-              style={{ color: "var(--gold)" }}
+              style={{ color: "var(--gold-text)" }}
             >
               Community
             </div>

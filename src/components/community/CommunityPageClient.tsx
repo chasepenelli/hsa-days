@@ -238,7 +238,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
             {/* Eyebrow with flanking gold rules */}
             <div
               className="reveal inline-flex items-center gap-3 mb-6"
-              style={{ color: "var(--gold)", transitionDelay: "0.12s" }}
+              style={{ color: "var(--gold-text)", transitionDelay: "0.12s" }}
             >
               <span
                 style={{

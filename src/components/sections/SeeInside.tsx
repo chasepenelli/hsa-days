@@ -238,7 +238,7 @@ function PracticalPreview() {
         <div>
           <div
             className="text-[0.72rem] font-semibold mb-1"
-            style={{ color: "var(--gold)", lineHeight: 1.3 }}
+            style={{ color: "var(--gold-text)", lineHeight: 1.3 }}
           >
             {DAY1.practicalTipTitle}
           </div>
@@ -448,7 +448,7 @@ export function SeeInside() {
           {/* Eyebrow with flanking ornamental rules */}
           <div
             className="reveal inline-flex items-center gap-3 mb-5"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             <span
               style={{

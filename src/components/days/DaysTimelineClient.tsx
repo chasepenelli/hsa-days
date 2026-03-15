@@ -411,7 +411,7 @@ export function DaysTimelineClient({
                           <div
                             className="mt-3 pt-3 flex items-center gap-2 text-[0.78rem] italic"
                             style={{
-                              color: "var(--gold)",
+                              color: "var(--gold-text)",
                               borderTop:
                                 "1px solid rgba(196,162,101,0.2)",
                             }}

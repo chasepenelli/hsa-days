@@ -172,7 +172,7 @@ export function JournalEditor({
             </span>
           )}
           {saved && !saving && offline && (
-            <span className="inline-flex items-center gap-1" style={{ color: "var(--gold)" }}>
+            <span className="inline-flex items-center gap-1" style={{ color: "var(--gold-text)" }}>
               <Image
                 src="/illustrations/icons/icon-checkmark.png"
                 alt=""
@@ -205,7 +205,7 @@ export function JournalEditor({
           </span>
           <div
             className="text-[0.62rem] font-semibold uppercase tracking-[0.14em] mb-2"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             Today&apos;s prompt
           </div>
@@ -226,6 +226,7 @@ export function JournalEditor({
           onChange={handleChange}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
+          aria-label="Journal entry"
           placeholder={placeholder}
           className="w-full min-h-[160px] outline-none resize-none font-serif text-[0.98rem] leading-[32px] journal-lined"
           style={{

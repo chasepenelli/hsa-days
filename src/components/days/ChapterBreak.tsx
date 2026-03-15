@@ -47,14 +47,14 @@ export function ChapterBreak({
       {/* Roman numeral */}
       <div
         className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] mb-1.5"
-        style={{ color: "var(--gold)" }}
+        style={{ color: "var(--gold-text)" }}
       >
         {ROMAN[chapter - 1]}
       </div>
 
       <div
         className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] mb-1"
-        style={{ color: "var(--gold)" }}
+        style={{ color: "var(--gold-text)" }}
       >
         {title}
       </div>

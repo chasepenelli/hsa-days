@@ -147,7 +147,7 @@ export default function EmailsPage() {
 
             <button
               onClick={copyHtml}
-              className="ml-auto px-5 py-2 rounded-lg text-sm font-medium border border-gold text-gold hover:bg-gold hover:text-white transition-colors cursor-pointer"
+              className="ml-auto px-5 py-2 rounded-lg text-sm font-medium border border-gold text-gold-text hover:bg-gold hover:text-white transition-colors cursor-pointer"
             >
               {copied ? "Copied!" : "Copy HTML"}
             </button>

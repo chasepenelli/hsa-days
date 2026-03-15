@@ -26,6 +26,7 @@ export function PWALayoutShell({ header, footer, children }: PWALayoutShellProps
     <>
       {!showTabBar && header}
       <main
+        id="main-content"
         style={showTabBar ? { paddingBottom: "calc(52px + env(safe-area-inset-bottom))" } : undefined}
       >
         {children}

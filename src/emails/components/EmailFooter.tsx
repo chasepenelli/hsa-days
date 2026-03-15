@@ -76,6 +76,19 @@ export function EmailFooter({
           </div>
         </td>
       </tr>
+
+      {/* Kit (ConvertKit) requires this tag for tracking/compliance */}
+      <tr>
+        <td
+          style={{
+            fontSize: "0px",
+            lineHeight: "0px",
+            color: "#FAF8F5",
+          }}
+        >
+          {"{{ message_content }}"}
+        </td>
+      </tr>
     </>
   );
 }

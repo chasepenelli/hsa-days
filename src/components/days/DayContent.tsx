@@ -820,7 +820,7 @@ export function DayContent({
                           {isChapterEnd(dayNumber) && (
                             <p
                               className="mt-4 text-[0.82rem] italic animate-fade-in"
-                              style={{ color: "var(--gold)", opacity: 0.7 }}
+                              style={{ color: "var(--gold-text)", opacity: 0.7 }}
                             >
                               A new chapter begins
                             </p>

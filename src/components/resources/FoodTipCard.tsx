@@ -68,7 +68,7 @@ export default function FoodTipCard({ item, index }: FoodTipCardProps) {
               background: hovered
                 ? "rgba(196,162,101,0.16)"
                 : "rgba(196,162,101,0.1)",
-              color: "var(--gold)",
+              color: "var(--gold-text)",
               transition: "background 0.22s ease",
             }}
           >

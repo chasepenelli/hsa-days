@@ -86,7 +86,7 @@ export function OfflineIndicator() {
         <span className="text-sage">All synced</span>
       )}
       {!offline && !syncing && !showSynced && pendingCount > 0 && (
-        <span className="text-gold">
+        <span className="text-gold-text">
           {pendingCount} journal {pendingCount === 1 ? "entry" : "entries"}{" "}
           waiting to sync
         </span>

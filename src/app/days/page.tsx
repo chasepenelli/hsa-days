@@ -195,7 +195,7 @@ export default async function DaysDashboard() {
             <>
               <div
                 className="inline-block text-[0.7rem] font-semibold uppercase tracking-[0.12em] px-3 py-1 rounded-full mb-5"
-                style={{ background: "rgba(196,162,101,0.12)", color: "var(--gold)" }}
+                style={{ background: "rgba(196,162,101,0.12)", color: "var(--gold-text)" }}
               >
                 Journey Complete
               </div>

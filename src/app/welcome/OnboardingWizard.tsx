@@ -406,6 +406,7 @@ export default function OnboardingWizard() {
                     onClick={() =>
                       setCancerStage((prev) => (prev === s ? "" : s))
                     }
+                    aria-pressed={cancerStage === s}
                     className="px-4 py-2 rounded-lg text-[0.88rem] font-medium transition-all duration-200 cursor-pointer"
                     style={{
                       background:
@@ -463,7 +464,7 @@ export default function OnboardingWizard() {
           <div key="step-3" className={animClass}>
             <p
               className="text-[0.72rem] uppercase tracking-[0.14em] font-semibold text-center mb-2"
-              style={{ color: "var(--gold)" }}
+              style={{ color: "var(--gold-text)" }}
             >
               Personalize your journal
             </p>
@@ -489,7 +490,7 @@ export default function OnboardingWizard() {
                   <div key={cat.key}>
                     <p
                       className="text-[0.72rem] uppercase tracking-[0.14em] font-semibold mb-2.5"
-                      style={{ color: "var(--gold)" }}
+                      style={{ color: "var(--gold-text)" }}
                     >
                       {cat.label}
                     </p>
@@ -501,6 +502,7 @@ export default function OnboardingWizard() {
                             key={pill.slug}
                             type="button"
                             onClick={() => togglePill(pill.slug)}
+                            aria-pressed={isSelected}
                             className="px-3.5 py-1.5 rounded-full text-[0.85rem] font-medium transition-all duration-200 cursor-pointer"
                             style={{
                               background: isSelected ? "var(--sage)" : "white",

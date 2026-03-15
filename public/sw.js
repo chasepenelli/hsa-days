@@ -1,10 +1,11 @@
 // HSA Days Service Worker — bump version on significant deploys
-const CACHE_VERSION = "2026-02-24";
+const CACHE_VERSION = "2026-03-14";
 const CACHE_NAME = `hsadays-v${CACHE_VERSION}`;
 
 // App shell assets to precache
 const PRECACHE_ASSETS = [
   "/",
+  "/days",
   "/manifest.json",
   "/offline",
   "/icons/icon-192.png",
@@ -36,6 +37,13 @@ self.addEventListener("activate", (event) => {
     )
   );
   self.clients.claim();
+});
+
+// Listen for SKIP_WAITING message from update notification
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 // Fetch: cache-first for static assets, network-first with offline fallback for navigation
@@ -71,7 +79,29 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Navigation requests: network-first with offline fallback
+  // Journal routes (/days, /days/*): network-first, cache on success for offline access
+  if (event.request.mode === "navigate" && url.pathname.match(/^\/days(\/|$)/)) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        })
+        .catch(() =>
+          caches
+            .match(event.request)
+            .then((cached) => cached || caches.match("/offline").then((c) => c || caches.match("/")))
+        )
+    );
+    return;
+  }
+
+  // Other navigation requests: network-first with offline fallback
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(() =>

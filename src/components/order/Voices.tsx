@@ -69,7 +69,7 @@ export function Voices() {
         <div className="text-center mb-14">
           <div
             className="reveal text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-4"
-            style={{ color: "var(--gold)" }}
+            style={{ color: "var(--gold-text)" }}
           >
             FROM HSA FAMILIES
           </div>
@@ -120,7 +120,7 @@ export function Voices() {
                   className="absolute top-4 right-4 text-[0.62rem] font-semibold uppercase tracking-[0.1em] px-2.5 py-1 rounded-full"
                   style={{
                     background: "rgba(196,162,101,0.10)",
-                    color: "var(--gold)",
+                    color: "var(--gold-text)",
                     border: "1px solid rgba(196,162,101,0.22)",
                   }}
                 >

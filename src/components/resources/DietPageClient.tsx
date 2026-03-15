@@ -81,7 +81,7 @@ const DIET_STYLES: { key: DietStyle; label: string; description: string }[] = [
 
 const VERDICT_CONFIG = {
   recommended: { color: "var(--sage)", rgb: "91,123,94", dot: "bg-sage" },
-  good: { color: "var(--gold)", rgb: "196,162,101", dot: "bg-gold" },
+  good: { color: "var(--gold-text)", rgb: "196,162,101", dot: "bg-gold" },
   avoid: { color: "var(--terracotta)", rgb: "212,133,106", dot: "bg-terracotta" },
 };
 
@@ -98,7 +98,7 @@ const SOURCE_TYPE_CONFIG: Record<
   review: {
     label: "Review",
     bg: "rgba(196,162,101,0.08)",
-    color: "var(--gold)",
+    color: "var(--gold-text)",
     border: "rgba(196,162,101,0.2)",
   },
   organization: {
@@ -297,12 +297,13 @@ export default function DietPageClient({
             <div className="flex flex-col order-first md:order-last reveal">
               {/* Breadcrumb */}
               <div className="inline-flex items-center gap-2 mb-4">
-                <span
-                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
+                <Link
+                  href="/resources"
+                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
                   style={{ color: "var(--sage)" }}
                 >
                   Resources
-                </span>
+                </Link>
                 <span
                   className="w-px h-3"
                   style={{ background: "var(--border-strong)" }}
@@ -864,7 +865,7 @@ export default function DietPageClient({
               >
                 <p
                   className="text-[0.6rem] font-black uppercase tracking-[0.14em] mb-2"
-                  style={{ color: "var(--gold)" }}
+                  style={{ color: "var(--gold-text)" }}
                 >
                   {glycineSection.verdict.label}
                 </p>
@@ -875,7 +876,7 @@ export default function DietPageClient({
                     color: "var(--text)",
                   }}
                 >
-                  <strong className="not-italic" style={{ color: "var(--gold)", fontWeight: 700 }}>
+                  <strong className="not-italic" style={{ color: "var(--gold-text)", fontWeight: 700 }}>
                     Bottom line:{" "}
                   </strong>
                   {glycineSection.verdict.text}
@@ -1321,7 +1322,7 @@ export default function DietPageClient({
                         color: "var(--text-muted)",
                       }}
                     >
-                      <span className="font-semibold" style={{ color: "var(--gold)" }}>
+                      <span className="font-semibold" style={{ color: "var(--gold-text)" }}>
                         Calorie note:{" "}
                       </span>
                       {generatedPlan.calorieNote}
@@ -1701,7 +1702,7 @@ export default function DietPageClient({
             >
               <p
                 className="text-[0.65rem] font-black uppercase tracking-[0.14em] mb-5"
-                style={{ color: "var(--gold)" }}
+                style={{ color: "var(--gold-text)" }}
               >
                 Use with Care
               </p>
@@ -1851,6 +1852,44 @@ export default function DietPageClient({
               );
             })}
           </section>
+
+          {/* Cross-link to food guide */}
+          <div className="reveal mb-10">
+            <a
+              href="/resources/food"
+              className="block rounded-xl px-5 py-4 no-underline transition-colors duration-200"
+              style={{
+                background: "var(--cream)",
+                border: "1px solid var(--border)",
+              }}
+              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.currentTarget.style.borderColor = "var(--sage-light)";
+              }}
+              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+              }}
+            >
+              <div
+                className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-1"
+                style={{ color: "var(--sage)" }}
+              >
+                Practical guide
+              </div>
+              <div
+                className="font-serif text-[1rem] font-semibold mb-1"
+                style={{ color: "var(--text)" }}
+              >
+                Food & Nutrition Guide
+              </div>
+              <div
+                className="text-[0.85rem]"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Specific foods to feed and avoid, appetite boosters, and
+                practical tips for daily meals during treatment.
+              </div>
+            </a>
+          </div>
 
           {/* Print hint */}
           <div className="text-center mb-12 reveal">
