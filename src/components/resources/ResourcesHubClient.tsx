@@ -32,8 +32,6 @@ interface HubProps {
   totalChecklist: number;
   totalProducts: number;
   quickWinTip: string;
-  dietSupplementCount: number;
-  researchCount: number;
 }
 
 function StatBadge({ text }: { text: string }) {
@@ -133,8 +131,6 @@ export default function ResourcesHubClient({
   totalChecklist,
   totalProducts,
   quickWinTip,
-  dietSupplementCount,
-  researchCount,
 }: HubProps) {
   const sectionRef = useScrollReveal();
 
@@ -465,94 +461,19 @@ export default function ResourcesHubClient({
                   </span>
                 </div>
               </div>
-              <PanelCTA
-                text="Explore nutrition guide"
-                href="/resources/food"
-                color="var(--gold-text)"
-              />
-            </Link>
-          </section>
-
-          <SectionDivider />
-
-          {/* ═══ Cancer Diet Science Panel ═══ */}
-          <section className="reveal">
-            <Link
-              href="/resources/diet"
-              className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-              style={{
-                background: "white",
-                borderLeft: "3px solid var(--sage-light)",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-3px)";
-                e.currentTarget.style.boxShadow =
-                  "0 12px 32px rgba(122,154,125,0.1)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-              }}
-            >
-              <PanelHeader
-                eyebrow="Deep Dive"
-                eyebrowColor="var(--sage-light)"
-                title="Cancer Diet Science"
-                icon="/illustrations/icons/icon-food-bowl.png"
-                stats={[
-                  "Meal plan generator",
-                  `${dietSupplementCount} evidence-graded supplements`,
-                  `${researchCount} research spotlights`,
-                ]}
-              />
-              <div
-                className="rounded-lg px-4 py-3 mb-3"
-                style={{
-                  background: "var(--cream)",
-                  borderLeft: "3px solid var(--sage-light)",
-                }}
-              >
-                <div
-                  className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-1.5"
-                  style={{ color: "var(--sage)" }}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
+                <PanelCTA
+                  text="Explore nutrition guide"
+                  href="/resources/food"
+                  color="var(--gold-text)"
+                />
+                <span
+                  className="text-[0.78rem]"
+                  style={{ color: "var(--text-muted)", opacity: 0.6 }}
                 >
-                  The Warburg Effect
-                </div>
-                <p
-                  className="text-[0.82rem] leading-relaxed"
-                  style={{ color: "var(--text)" }}
-                >
-                  Cancer cells consume glucose at 200x the rate of normal cells.
-                  This metabolic vulnerability is the foundation of every
-                  dietary recommendation in this guide.
-                </p>
+                  Includes meal plan generator &amp; cancer diet science
+                </span>
               </div>
-              <div
-                className="rounded-lg px-4 py-3"
-                style={{ background: "var(--cream)" }}
-              >
-                <div
-                  className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-1.5"
-                  style={{ color: "var(--gold-text)" }}
-                >
-                  Meal Plan Generator
-                </div>
-                <p
-                  className="text-[0.82rem] leading-relaxed"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Choose your dog&apos;s weight and diet style to get a complete
-                  weekly plan with protein, vegetable, and fat portions.
-                  {profile.weightBracketLabel &&
-                    ` We\u2019ll start with ${profile.dogName}\u2019s bracket: ${profile.weightBracketLabel}.`}
-                </p>
-              </div>
-              <PanelCTA
-                text="Open the diet science guide"
-                href="/resources/diet"
-                color="var(--sage)"
-              />
             </Link>
           </section>
 

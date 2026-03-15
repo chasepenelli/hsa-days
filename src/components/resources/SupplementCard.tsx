@@ -64,7 +64,7 @@ export default function SupplementCard({
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="w-full text-left px-5 py-4 sm:px-6 sm:py-5 flex items-start justify-between gap-4"
+        className="w-full text-left px-5 py-5 sm:px-6 sm:py-6 flex items-start justify-between gap-4"
         style={{ background: "none", border: "none", cursor: "pointer" }}
       >
         <div className="flex-1 min-w-0">
@@ -74,19 +74,20 @@ export default function SupplementCard({
               style={{ background: accentColor }}
             />
             <h3
-              className="font-serif text-[1.0rem] sm:text-[1.05rem] font-semibold"
-              style={{ color: "var(--text)" }}
+              className="font-serif font-semibold"
+              style={{ fontSize: "var(--text-h3)", color: "var(--text)" }}
             >
               {supplement.name}
             </h3>
             {/* Usage badge — shown in collapsed view */}
             {usageCount > 0 && (
               <span
-                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.72rem] font-medium flex-shrink-0"
-                style={{
-                  background: "rgba(91,123,94,0.08)",
-                  color: "var(--sage)",
-                }}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-medium flex-shrink-0"
+              style={{
+                fontSize: "var(--text-fine)",
+                background: "rgba(91,123,94,0.08)",
+                color: "var(--sage)",
+              }}
               >
                 <svg
                   width="11"
@@ -106,15 +107,15 @@ export default function SupplementCard({
             )}
           </div>
           <p
-            className="text-[0.85rem] leading-relaxed"
-            style={{ color: "var(--text-muted)" }}
+            className="leading-relaxed"
+            style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
           >
             {supplement.tagline}
           </p>
           {userDose && (
             <p
-              className="text-[0.82rem] font-medium mt-1.5"
-              style={{ color: "var(--sage)" }}
+              className="font-medium mt-1.5"
+              style={{ fontSize: "var(--text-body)", color: "var(--sage)" }}
             >
               Your dose: {userDose}
             </p>
@@ -160,15 +161,17 @@ export default function SupplementCard({
                     e.stopPropagation();
                     onToggleTrack(supplement.slug);
                   }}
-                  className={`supplement-track-btn inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.82rem] font-medium cursor-pointer ${isTracked ? "is-tracked" : ""}`}
+                  className={`supplement-track-btn inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium cursor-pointer ${isTracked ? "is-tracked" : ""}`}
                   style={
                     isTracked
                       ? {
+                          fontSize: "var(--text-body-sm)",
                           background: "var(--sage)",
                           color: "white",
                           border: "1px solid var(--sage)",
                         }
                       : {
+                          fontSize: "var(--text-body-sm)",
                           background: "transparent",
                           color: "var(--sage)",
                           border: "1px solid rgba(91,123,94,0.3)",
@@ -212,8 +215,9 @@ export default function SupplementCard({
                 </button>
               ) : (
                 <span
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[0.82rem]"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
                   style={{
+                    fontSize: "var(--text-body-sm)",
                     background: "rgba(0,0,0,0.03)",
                     color: "var(--text-muted)",
                     border: "1px solid var(--border)",
@@ -237,8 +241,8 @@ export default function SupplementCard({
               )}
               {usageCount > 0 && (
                 <span
-                  className="inline-flex items-center gap-1.5 text-[0.78rem]"
-                  style={{ color: "var(--text-muted)" }}
+                  className="inline-flex items-center gap-1.5"
+                  style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
                 >
                   <svg
                     width="13"
@@ -263,8 +267,8 @@ export default function SupplementCard({
 
             {/* Description */}
             <p
-              className="text-[0.88rem] leading-relaxed mb-4"
-              style={{ color: "var(--text)" }}
+              className="leading-relaxed mb-4"
+              style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
             >
               {supplement.description}
             </p>
@@ -272,8 +276,8 @@ export default function SupplementCard({
             {/* Dosage table */}
             <div className="mb-5">
               <p
-                className="text-[0.75rem] font-semibold uppercase tracking-[0.10em] mb-2"
-                style={{ color: "var(--text-muted)" }}
+                className="font-semibold uppercase tracking-[0.10em] mb-2"
+                style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
               >
                 Dosage by weight
               </p>
@@ -294,14 +298,14 @@ export default function SupplementCard({
                 }}
               >
                 <p
-                  className="text-[0.75rem] font-semibold uppercase tracking-[0.08em]"
-                  style={{ color: "var(--gold-text)" }}
+                  className="font-semibold uppercase tracking-[0.08em]"
+                  style={{ fontSize: "var(--text-label)", color: "var(--gold-text)" }}
                 >
                   Breed note
                 </p>
                 <p
-                  className="text-[0.85rem] mt-1 leading-relaxed"
-                  style={{ color: "var(--text)" }}
+                  className="mt-1 leading-relaxed"
+                  style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                 >
                   {breedNote}
                 </p>
@@ -318,8 +322,8 @@ export default function SupplementCard({
                 }}
               >
                 <p
-                  className="text-[0.75rem] font-semibold uppercase tracking-[0.08em] mb-2"
-                  style={{ color: "var(--terracotta)" }}
+                  className="font-semibold uppercase tracking-[0.08em] mb-2"
+                  style={{ fontSize: "var(--text-label)", color: "var(--terracotta)" }}
                 >
                   Important
                 </p>
@@ -327,8 +331,8 @@ export default function SupplementCard({
                   {supplement.warnings.map((w, i) => (
                     <li
                       key={i}
-                      className="text-[0.85rem] flex items-start gap-2"
-                      style={{ color: "var(--text)" }}
+                      className="flex items-start gap-2"
+                      style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                     >
                       <span
                         className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -344,8 +348,8 @@ export default function SupplementCard({
             {/* Vet discussion points */}
             <div className="mb-3">
               <p
-                className="text-[0.75rem] font-semibold uppercase tracking-[0.10em] mb-2"
-                style={{ color: "var(--text-muted)" }}
+                className="font-semibold uppercase tracking-[0.10em] mb-2"
+                style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
               >
                 Discuss with your vet
               </p>
@@ -353,8 +357,8 @@ export default function SupplementCard({
                 {supplement.vetDiscussionPoints.map((point, i) => (
                   <li
                     key={i}
-                    className="text-[0.85rem] flex items-start gap-2"
-                    style={{ color: "var(--text)" }}
+                    className="flex items-start gap-2"
+                    style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                   >
                     <span
                       className="mt-[6px] w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -373,16 +377,16 @@ export default function SupplementCard({
                 style={{ borderTop: "1px solid var(--border)" }}
               >
                 <p
-                  className="text-[0.72rem] font-semibold uppercase tracking-[0.10em] mb-1.5"
-                  style={{ color: "var(--text-muted)" }}
+                  className="font-semibold uppercase tracking-[0.10em] mb-1.5"
+                  style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
                 >
                   Sources
                 </p>
                 {supplement.sources.map((source, i) => (
                   <p
                     key={i}
-                    className="text-[0.78rem] italic leading-relaxed"
-                    style={{ color: "var(--text-muted)" }}
+                    className="italic leading-relaxed"
+                    style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)" }}
                   >
                     {source}
                   </p>

@@ -165,7 +165,7 @@ export default function SupplementsPageClient({
     >
       {/* ═══ Hero Section ═══ */}
       <div
-        className="pt-20 pb-10 px-4 sm:px-6 relative overflow-hidden"
+        className="pt-20 pb-14 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(196,162,101,0.04) 40%, rgba(245,240,234,0.5) 70%, var(--warm-white) 100%)",
@@ -186,8 +186,8 @@ export default function SupplementsPageClient({
           <div className="inline-flex items-center gap-2 mb-4">
             <Link
               href="/resources"
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
-              style={{ color: "var(--sage)" }}
+              className="font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
+              style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
             >
               Resources
             </Link>
@@ -196,8 +196,8 @@ export default function SupplementsPageClient({
               style={{ background: "var(--border-strong)" }}
             />
             <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "var(--text-muted)" }}
+              className="font-semibold uppercase tracking-[0.14em]"
+              style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
             >
               Supplements
             </span>
@@ -206,7 +206,7 @@ export default function SupplementsPageClient({
           <h1
             className="font-serif font-semibold mb-3"
             style={{
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+              fontSize: "var(--text-title)",
               color: "var(--text)",
               lineHeight: 1.2,
             }}
@@ -216,7 +216,7 @@ export default function SupplementsPageClient({
           <p
             className="leading-relaxed max-w-[560px]"
             style={{
-              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              fontSize: "var(--text-body)",
               color: "var(--text-muted)",
             }}
           >
@@ -227,7 +227,7 @@ export default function SupplementsPageClient({
       </div>
 
       {/* ═══ Page content ═══ */}
-      <div className="px-4 sm:px-6">
+      <div className="px-6">
         <div className="max-w-[800px] mx-auto">
           {/* Personalized banner */}
           {profile && (
@@ -250,7 +250,7 @@ export default function SupplementsPageClient({
                 border: "1px solid rgba(91,123,94,0.15)",
               }}
             >
-              <p className="text-[0.88rem]" style={{ color: "var(--sage)" }}>
+              <p style={{ fontSize: "var(--text-body)", color: "var(--sage)" }}>
                 Add {profile.dogName}&apos;s weight in your profile settings for
                 personalized dosage highlighting.
               </p>
@@ -282,7 +282,7 @@ export default function SupplementsPageClient({
 
                 <section
                   ref={(el) => { categoryRefs.current[cat.key] = el; }}
-                  className="mb-10 reveal"
+                  className="mb-12 reveal"
                 >
                   {/* Category scene illustration — frameless, fades into page */}
                   {illustration && (
@@ -319,15 +319,16 @@ export default function SupplementsPageClient({
                         </div>
                       )}
                       <h2
-                        className="font-serif text-[1.3rem] font-semibold"
-                        style={{ color: "var(--text)" }}
+                        className="font-serif font-semibold"
+                        style={{ fontSize: "var(--text-h2)", color: "var(--text)" }}
                       >
                         {cat.label}
                       </h2>
                     </div>
                     <p
-                      className="text-[0.85rem] leading-relaxed"
+                      className="leading-relaxed"
                       style={{
+                        fontSize: "var(--text-body-sm)",
                         color: "var(--text-muted)",
                         marginLeft: icon ? "44px" : undefined,
                       }}
@@ -336,8 +337,9 @@ export default function SupplementsPageClient({
                     </p>
                     {categoryTotal > 0 && (
                       <p
-                        className="text-[0.78rem] mt-1.5 flex items-center gap-1.5"
+                        className="mt-1.5 flex items-center gap-1.5"
                         style={{
+                          fontSize: "var(--text-body-sm)",
                           color: "var(--sage)",
                           marginLeft: icon ? "44px" : undefined,
                         }}
@@ -365,7 +367,7 @@ export default function SupplementsPageClient({
                   </div>
 
                   {/* Cards list */}
-                  <div className="space-y-3 reveal-stagger">
+                  <div className="space-y-4 reveal-stagger">
                     {catSupplements.map((supplement) => {
                       const doseInfo = getDosageForWeight(
                         supplement.dosage,
@@ -421,8 +423,7 @@ export default function SupplementsPageClient({
                 />
               </svg>
               <p
-                className="text-[0.82rem]"
-                style={{ color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
               >
                 Use your browser&apos;s print function to save this page as a
                 PDF to share with your vet.

@@ -62,14 +62,14 @@ function DetailCard({
       >
         <div className="flex-1 min-w-0">
           <div
-            className="font-serif text-[0.95rem] font-semibold mb-1"
-            style={{ color: "var(--text)" }}
+            className="font-serif font-semibold mb-1"
+            style={{ fontSize: "var(--text-h3)", color: "var(--text)" }}
           >
             {title}
           </div>
           <div
-            className="text-[0.82rem] leading-relaxed"
-            style={{ color: "var(--text-muted)" }}
+            className="leading-relaxed"
+            style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
           >
             {summary}
           </div>
@@ -87,8 +87,9 @@ function DetailCard({
       >
         <div className="overflow-hidden">
           <div
-            className="px-4 pb-4 pt-0 text-[0.85rem] leading-relaxed"
+            className="px-4 pb-4 pt-0 leading-relaxed"
             style={{
+              fontSize: "var(--text-body)",
               color: "var(--text)",
               borderTop: "1px solid var(--border)",
               marginLeft: "0",
@@ -97,8 +98,8 @@ function DetailCard({
             }}
           >
             <span
-              className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] block mb-1.5"
-              style={{ color: accentColor }}
+              className="font-semibold uppercase tracking-[0.1em] block mb-1.5"
+              style={{ fontSize: "var(--text-label)", color: accentColor }}
             >
               Why it matters
             </span>
@@ -112,7 +113,7 @@ function DetailCard({
 
 function ChecklistItem({ text }: { text: string }) {
   return (
-    <li className="flex items-start gap-2.5 text-[0.88rem] leading-relaxed">
+    <li className="flex items-start gap-2.5 leading-relaxed" style={{ fontSize: "var(--text-body)" }}>
       <svg
         width="16"
         height="16"
@@ -146,7 +147,7 @@ function ChecklistItem({ text }: { text: string }) {
 function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean }) {
   return (
     <>
-      <section id={room.id} className="mb-6">
+      <section id={room.id} className="mb-8">
         <div className="reveal mb-5">
           <div className="flex items-center gap-2.5 mb-1">
             <div
@@ -154,15 +155,15 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
               style={{ background: room.accentColor }}
             />
             <h2
-              className="font-serif text-[1.3rem] font-semibold"
-              style={{ color: "var(--text)" }}
+              className="font-serif font-semibold"
+              style={{ fontSize: "var(--text-h2)", color: "var(--text)" }}
             >
               {room.title}
             </h2>
           </div>
           <p
-            className="text-[0.85rem] ml-[18px]"
-            style={{ color: "var(--text-muted)" }}
+            className="ml-[18px]"
+            style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
           >
             {room.subtitle}
           </p>
@@ -171,8 +172,8 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
         {/* Intro */}
         <div className="reveal mb-6">
           <p
-            className="text-[0.9rem] leading-relaxed"
-            style={{ color: "var(--text)" }}
+            className="leading-relaxed"
+            style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
           >
             {room.intro}
           </p>
@@ -188,12 +189,12 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
             }}
           >
             <div
-              className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-3"
-              style={{ color: "var(--sage)" }}
+              className="font-semibold uppercase tracking-[0.1em] mb-3"
+              style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
             >
               Quick checklist
             </div>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {room.checklist.map((item, i) => (
                 <ChecklistItem key={i} text={item.text} />
               ))}
@@ -202,7 +203,7 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
         </div>
 
         {/* Detail cards */}
-        <div className="space-y-3 reveal-stagger">
+        <div className="space-y-4 reveal-stagger">
           {room.details.map((detail, i) => (
             <DetailCard
               key={i}
@@ -225,8 +226,8 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
               }}
             >
               <div
-                className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-3"
-                style={{ color: "var(--gold-text)" }}
+                className="font-semibold uppercase tracking-[0.1em] mb-3"
+                style={{ fontSize: "var(--text-label)", color: "var(--gold-text)" }}
               >
                 Our recommended picks
               </div>
@@ -254,14 +255,14 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <div
-                          className="text-[0.88rem] font-semibold mb-0.5"
-                          style={{ color: "var(--text)" }}
+                          className="font-semibold mb-0.5"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                         >
                           {product.name}
                         </div>
                         <div
-                          className="text-[0.8rem] leading-relaxed"
-                          style={{ color: "var(--text-muted)" }}
+                          className="leading-relaxed"
+                          style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
                         >
                           {product.description}
                         </div>
@@ -287,8 +288,8 @@ function RoomSectionBlock({ room, isLast }: { room: RoomSection; isLast: boolean
                 ))}
               </div>
               <p
-                className="text-[0.7rem] mt-3"
-                style={{ color: "var(--text-muted)", opacity: 0.7 }}
+                className="mt-3"
+                style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)", opacity: 0.7 }}
               >
                 Links go to Amazon. We are not affiliated and receive no commission.
               </p>
@@ -325,7 +326,7 @@ export default function HouseProofingPageClient({
     >
       {/* Hero */}
       <div
-        className="pt-20 pb-10 px-6 relative overflow-hidden"
+        className="pt-20 pb-14 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(196,162,101,0.04) 40%, rgba(245,240,234,0.5) 70%, var(--warm-white) 100%)",
@@ -344,8 +345,8 @@ export default function HouseProofingPageClient({
           <div className="inline-flex items-center gap-2 mb-4">
             <Link
               href="/resources"
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
-              style={{ color: "var(--sage)" }}
+              className="font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
+              style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
             >
               Resources
             </Link>
@@ -354,8 +355,8 @@ export default function HouseProofingPageClient({
               style={{ background: "var(--border-strong)" }}
             />
             <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "var(--text-muted)" }}
+              className="font-semibold uppercase tracking-[0.14em]"
+              style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
             >
               House-Proofing
             </span>
@@ -364,7 +365,7 @@ export default function HouseProofingPageClient({
           <h1
             className="font-serif font-semibold mb-3"
             style={{
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+              fontSize: "var(--text-title)",
               color: "var(--text)",
               lineHeight: 1.2,
             }}
@@ -374,7 +375,7 @@ export default function HouseProofingPageClient({
           <p
             className="leading-relaxed max-w-[560px]"
             style={{
-              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              fontSize: "var(--text-body)",
               color: "var(--text-muted)",
             }}
           >
@@ -397,8 +398,9 @@ export default function HouseProofingPageClient({
                 <button
                   key={room.id}
                   onClick={() => scrollToRoom(room.id)}
-                  className="px-3 py-1.5 rounded-full text-[0.78rem] font-medium transition-colors duration-200 cursor-pointer"
+                  className="px-4 py-2 rounded-full font-medium transition-colors duration-200 cursor-pointer"
                   style={{
+                    fontSize: "var(--text-label)",
                     background: "var(--cream)",
                     color: "var(--text-muted)",
                     border: "1px solid var(--border)",
@@ -454,8 +456,7 @@ export default function HouseProofingPageClient({
                 />
               </svg>
               <p
-                className="text-[0.82rem]"
-                style={{ color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
               >
                 Use your browser&apos;s print function to save this page as a
                 PDF to share with your vet.

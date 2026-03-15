@@ -63,27 +63,28 @@ export default function FoodTipCard({ item, index }: FoodTipCardProps) {
         <div className="flex items-center gap-2 mb-1">
           {/* Tip number badge */}
           <span
-            className="text-[0.68rem] font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full"
+            className="font-semibold uppercase tracking-[0.1em] px-2 py-0.5 rounded-full"
             style={{
               background: hovered
                 ? "rgba(196,162,101,0.16)"
                 : "rgba(196,162,101,0.1)",
               color: "var(--gold-text)",
               transition: "background 0.22s ease",
+              fontSize: "var(--text-label)",
             }}
           >
             Tip {index + 1}
           </span>
         </div>
         <h3
-          className="font-serif text-[0.95rem] font-semibold mb-1"
-          style={{ color: "var(--text)" }}
+          className="font-serif font-semibold mb-1"
+          style={{ color: "var(--text)", fontSize: "var(--text-h3)" }}
         >
           {item.name}
         </h3>
         <p
-          className="text-[0.85rem] leading-relaxed"
-          style={{ color: "var(--text-muted)" }}
+          className="leading-relaxed"
+          style={{ color: "var(--text-muted)", fontSize: "var(--text-body)" }}
         >
           {item.description}
         </p>

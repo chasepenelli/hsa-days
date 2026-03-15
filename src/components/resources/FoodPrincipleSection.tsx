@@ -22,12 +22,12 @@ function ReferenceCard({ reference }: { reference: ClinicalReference }) {
       }}
     >
       <p
-        className="font-serif text-[0.85rem] font-medium leading-snug mb-1"
-        style={{ color: "var(--text)" }}
+        className="font-serif font-medium leading-snug mb-1"
+        style={{ color: "var(--text)", fontSize: "var(--text-body-sm)" }}
       >
         {reference.title}
       </p>
-      <p className="text-[0.75rem] mb-2" style={{ color: "var(--text-muted)" }}>
+      <p className="mb-2" style={{ color: "var(--text-muted)", fontSize: "var(--text-fine)" }}>
         {reference.authors} &middot; <em>{reference.journal}</em>,{" "}
         {reference.year}
         {pubmedUrl && (
@@ -47,7 +47,7 @@ function ReferenceCard({ reference }: { reference: ClinicalReference }) {
           </>
         )}
       </p>
-      <p className="text-[0.8rem] leading-relaxed" style={{ color: "var(--text)" }}>
+      <p className="leading-relaxed" style={{ color: "var(--text)", fontSize: "var(--text-body-sm)" }}>
         {reference.summary}
       </p>
     </div>
@@ -93,14 +93,14 @@ export default function FoodPrincipleSection({
             </span>
             <div className="flex-1">
               <h3
-                className="font-serif text-[1.15rem] sm:text-[1.25rem] font-semibold mb-1.5"
-                style={{ color: "var(--text)" }}
+                className="font-serif font-semibold mb-1.5"
+                style={{ color: "var(--text)", fontSize: "var(--text-h3)" }}
               >
                 {principle.title}
               </h3>
               <p
-                className="text-[0.9rem] leading-relaxed"
-                style={{ color: "var(--text-muted)" }}
+                className="leading-relaxed"
+                style={{ color: "var(--text-muted)", fontSize: "var(--text-body)" }}
               >
                 {principle.description}
               </p>
@@ -114,8 +114,8 @@ export default function FoodPrincipleSection({
         {principle.deepDive.map((paragraph, i) => (
           <p
             key={i}
-            className="text-[0.88rem] leading-[1.75]"
-            style={{ color: "var(--text)" }}
+            className="leading-[1.75]"
+            style={{ color: "var(--text)", fontSize: "var(--text-body)" }}
           >
             {paragraph}
           </p>
@@ -132,8 +132,8 @@ export default function FoodPrincipleSection({
         }}
       >
         <p
-          className="text-[0.78rem] font-semibold uppercase tracking-[0.08em] mb-3"
-          style={{ color: "var(--sage)" }}
+          className="font-semibold uppercase tracking-[0.08em] mb-3"
+          style={{ color: "var(--sage)", fontSize: "var(--text-label)" }}
         >
           Quick Reference
         </p>
@@ -141,8 +141,8 @@ export default function FoodPrincipleSection({
           {principle.details.map((detail, j) => (
             <li
               key={j}
-              className="text-[0.85rem] flex items-start gap-2"
-              style={{ color: "var(--text)" }}
+              className="flex items-start gap-2"
+              style={{ color: "var(--text)", fontSize: "var(--text-body)" }}
             >
               <span
                 className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -180,8 +180,8 @@ export default function FoodPrincipleSection({
               />
             </svg>
             <p
-              className="text-[0.78rem] font-semibold uppercase tracking-[0.08em]"
-              style={{ color: "var(--text-muted)" }}
+              className="font-semibold uppercase tracking-[0.08em]"
+              style={{ color: "var(--text-muted)", fontSize: "var(--text-label)" }}
             >
               Research &amp; References
             </p>

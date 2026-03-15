@@ -34,7 +34,7 @@ export default function CategoryNav({
               style={{
                 padding: "6px 14px",
                 borderRadius: 999,
-                fontSize: "0.76rem",
+                fontSize: "var(--text-label)",
                 fontWeight: isActive ? 600 : 500,
                 background: isActive ? cat.accentColor : "white",
                 color: isActive ? "white" : "var(--text-muted)",

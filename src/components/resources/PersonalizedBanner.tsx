@@ -24,16 +24,16 @@ export default function PersonalizedBanner({
       }}
     >
       <p
-        className="font-serif text-[1.15rem] font-semibold"
-        style={{ color: "var(--text)" }}
+        className="font-serif font-semibold"
+        style={{ fontSize: "var(--text-h3)", color: "var(--text)" }}
       >
         Personalized for {profile.dogName}
         {detail}
       </p>
       {profile.cancerStage && (
         <p
-          className="text-[0.85rem] mt-1"
-          style={{ color: "var(--text-muted)" }}
+          className="mt-1"
+          style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
         >
           Showing supplements relevant to Stage {profile.cancerStage}
         </p>

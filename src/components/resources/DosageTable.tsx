@@ -16,18 +16,18 @@ export default function DosageTable({
 }: DosageTableProps) {
   return (
     <div className="mt-4">
-      <table className="w-full text-[0.85rem] border-collapse">
+      <table className="w-full border-collapse" style={{ fontSize: "var(--text-body-sm)" }}>
         <thead>
           <tr>
             <th
               className="text-left py-2 px-3 font-semibold"
-              style={{ color: "var(--text-muted)", borderBottom: "1px solid var(--border)" }}
+              style={{ fontSize: "var(--text-label)", color: "var(--text-muted)", borderBottom: "1px solid var(--border)" }}
             >
               Weight
             </th>
             <th
               className="text-left py-2 px-3 font-semibold"
-              style={{ color: "var(--text-muted)", borderBottom: "1px solid var(--border)" }}
+              style={{ fontSize: "var(--text-label)", color: "var(--text-muted)", borderBottom: "1px solid var(--border)" }}
             >
               Dosage
             </th>
@@ -50,7 +50,7 @@ export default function DosageTable({
                 >
                   {bracket.label}
                   {isHighlighted && (
-                    <span className="ml-2 text-[0.75rem] font-semibold">
+                    <span className="ml-2 font-semibold" style={{ fontSize: "var(--text-fine)" }}>
                       (your dog)
                     </span>
                   )}
@@ -74,8 +74,8 @@ export default function DosageTable({
         </tbody>
       </table>
       <p
-        className="text-[0.8rem] mt-3 italic"
-        style={{ color: "var(--text-muted)" }}
+        className="mt-3 italic"
+        style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
       >
         {frequency}
       </p>

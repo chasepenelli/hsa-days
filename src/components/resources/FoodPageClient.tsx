@@ -55,7 +55,7 @@ export default function FoodPageClient({
     >
       {/* ═══ Hero Section ═══ */}
       <div
-        className="pt-20 pb-10 px-6 relative overflow-hidden"
+        className="pt-20 pb-14 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(196,162,101,0.04) 40%, rgba(245,240,234,0.5) 70%, var(--warm-white) 100%)",
@@ -74,8 +74,8 @@ export default function FoodPageClient({
           <div className="inline-flex items-center gap-2 mb-4">
             <Link
               href="/resources"
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
-              style={{ color: "var(--sage)" }}
+              className="font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
+              style={{ color: "var(--sage)", fontSize: "var(--text-label)" }}
             >
               Resources
             </Link>
@@ -84,8 +84,8 @@ export default function FoodPageClient({
               style={{ background: "var(--border-strong)" }}
             />
             <span
-              className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-              style={{ color: "var(--text-muted)" }}
+              className="font-semibold uppercase tracking-[0.14em]"
+              style={{ color: "var(--text-muted)", fontSize: "var(--text-label)" }}
             >
               Food &amp; Nutrition
             </span>
@@ -94,7 +94,7 @@ export default function FoodPageClient({
           <h1
             className="font-serif font-semibold mb-3"
             style={{
-              fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
+              fontSize: "var(--text-title)",
               color: "var(--text)",
               lineHeight: 1.2,
             }}
@@ -104,7 +104,7 @@ export default function FoodPageClient({
           <p
             className="leading-relaxed max-w-[560px]"
             style={{
-              fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+              fontSize: "var(--text-body)",
               color: "var(--text-muted)",
             }}
           >
@@ -140,7 +140,7 @@ export default function FoodPageClient({
             ref={(el) => {
               categoryRefs.current["principles"] = el;
             }}
-            className="mb-6"
+            className="mb-8"
           >
             <div className="reveal mb-6">
               <div className="flex items-center gap-2.5 mb-1">
@@ -149,15 +149,15 @@ export default function FoodPageClient({
                   style={{ background: "var(--sage)" }}
                 />
                 <h2
-                  className="font-serif text-[1.3rem] font-semibold"
-                  style={{ color: "var(--text)" }}
+                  className="font-serif font-semibold"
+                  style={{ color: "var(--text)", fontSize: "var(--text-h2)" }}
                 >
                   Diet Principles
                 </h2>
               </div>
               <p
-                className="text-[0.85rem] ml-[18px]"
-                style={{ color: "var(--text-muted)" }}
+                className="ml-[18px]"
+                style={{ color: "var(--text-muted)", fontSize: "var(--text-body-sm)" }}
               >
                 Evidence-based nutritional guidance for dogs with cancer
               </p>
@@ -188,7 +188,7 @@ export default function FoodPageClient({
             ref={(el) => {
               categoryRefs.current["recommended"] = el;
             }}
-            className="mb-6"
+            className="mb-8"
           >
             <div className="reveal mb-5">
               <div className="flex items-center gap-2.5 mb-1">
@@ -207,21 +207,21 @@ export default function FoodPageClient({
                   </svg>
                 </div>
                 <h2
-                  className="font-serif text-[1.3rem] font-semibold"
-                  style={{ color: "var(--text)" }}
+                  className="font-serif font-semibold"
+                  style={{ color: "var(--text)", fontSize: "var(--text-h2)" }}
                 >
                   Recommended Foods
                 </h2>
               </div>
               <p
-                className="text-[0.85rem] ml-[30px]"
-                style={{ color: "var(--text-muted)" }}
+                className="ml-[30px]"
+                style={{ color: "var(--text-muted)", fontSize: "var(--text-body-sm)" }}
               >
                 Tap any card to learn more
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 reveal-stagger">
               {recommendedItems.map((item, i) => {
                 const breedNote = getBreedNote(
                   item.breedNotes,
@@ -246,7 +246,7 @@ export default function FoodPageClient({
             ref={(el) => {
               categoryRefs.current["avoid"] = el;
             }}
-            className="mb-6"
+            className="mb-8"
           >
             <div
               className="rounded-2xl px-4 sm:px-5 py-6"
@@ -272,21 +272,21 @@ export default function FoodPageClient({
                     </svg>
                   </div>
                   <h2
-                    className="font-serif text-[1.3rem] font-semibold"
-                    style={{ color: "var(--text)" }}
+                    className="font-serif font-semibold"
+                    style={{ color: "var(--text)", fontSize: "var(--text-h2)" }}
                   >
                     Foods to Avoid
                   </h2>
                 </div>
                 <p
-                  className="text-[0.85rem] ml-[30px]"
-                  style={{ color: "var(--text-muted)" }}
+                  className="ml-[30px]"
+                  style={{ color: "var(--text-muted)", fontSize: "var(--text-body-sm)" }}
                 >
                   These can interfere with treatment or feed cancer cells
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 reveal-stagger">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 reveal-stagger">
                 {avoidItems.map((item, i) => (
                   <FoodFlipCard
                     key={i}
@@ -327,21 +327,21 @@ export default function FoodPageClient({
                   </svg>
                 </div>
                 <h2
-                  className="font-serif text-[1.3rem] font-semibold"
-                  style={{ color: "var(--text)" }}
+                  className="font-serif font-semibold"
+                  style={{ color: "var(--text)", fontSize: "var(--text-h2)" }}
                 >
                   Appetite Boosters
                 </h2>
               </div>
               <p
-                className="text-[0.85rem] ml-[30px]"
-                style={{ color: "var(--text-muted)" }}
+                className="ml-[30px]"
+                style={{ color: "var(--text-muted)", fontSize: "var(--text-body-sm)" }}
               >
                 When they won&apos;t eat, try these strategies
               </p>
             </div>
 
-            <div className="space-y-3 reveal-stagger">
+            <div className="space-y-4 reveal-stagger">
               {appetiteItems.map((item, i) => (
                 <FoodTipCard key={i} item={item} index={i} />
               ))}

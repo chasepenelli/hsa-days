@@ -135,10 +135,11 @@ export default function FoodFlipCard({
               }}
             >
               <span
-                className="text-[0.65rem] font-medium px-2 py-0.5 rounded-full"
+                className="font-medium px-2 py-0.5 rounded-full"
                 style={{
                   background: "rgba(0,0,0,0.45)",
                   color: "rgba(255,255,255,0.9)",
+                  fontSize: "var(--text-fine)",
                 }}
               >
                 Tap for details
@@ -147,17 +148,17 @@ export default function FoodFlipCard({
           </div>
 
           {/* Name + tip */}
-          <div className="px-4 py-3">
+          <div className="px-4 py-4">
             <h3
-              className="font-serif text-[0.95rem] font-semibold"
-              style={{ color: "var(--text)" }}
+              className="font-serif font-semibold"
+              style={{ color: "var(--text)", fontSize: "var(--text-h3)" }}
             >
               {item.name}
             </h3>
             {item.tip && (
               <p
-                className="text-[0.78rem] mt-1 leading-snug"
-                style={{ color: cfg.accent }}
+                className="mt-1 leading-snug"
+                style={{ color: cfg.accent, fontSize: "var(--text-body-sm)" }}
               >
                 {item.tip}
               </p>
@@ -209,8 +210,8 @@ export default function FoodFlipCard({
                 )}
               </div>
               <h3
-                className="font-serif text-[0.92rem] font-semibold"
-                style={{ color: "var(--text)" }}
+                className="font-serif font-semibold"
+                style={{ color: "var(--text)", fontSize: "var(--text-h3)" }}
               >
                 {item.name}
               </h3>
@@ -218,8 +219,8 @@ export default function FoodFlipCard({
 
             {/* Description */}
             <p
-              className="text-[0.82rem] leading-relaxed flex-1"
-              style={{ color: "var(--text-muted)" }}
+              className="leading-relaxed flex-1"
+              style={{ color: "var(--text-muted)", fontSize: "var(--text-body)" }}
             >
               {item.description}
             </p>
@@ -231,14 +232,14 @@ export default function FoodFlipCard({
                 style={{ background: `rgba(${cfg.rgb},0.06)` }}
               >
                 <span
-                  className="text-[0.72rem] font-semibold mt-0.5"
-                  style={{ color: cfg.accent }}
+                  className="font-semibold mt-0.5"
+                  style={{ color: cfg.accent, fontSize: "var(--text-label)" }}
                 >
                   Tip:
                 </span>
                 <p
-                  className="text-[0.78rem] leading-relaxed"
-                  style={{ color: "var(--text)" }}
+                  className="leading-relaxed"
+                  style={{ color: "var(--text)", fontSize: "var(--text-body-sm)" }}
                 >
                   {item.tip}
                 </p>
@@ -255,8 +256,8 @@ export default function FoodFlipCard({
                 }}
               >
                 <p
-                  className="text-[0.78rem] leading-relaxed"
-                  style={{ color: "var(--text)" }}
+                  className="leading-relaxed"
+                  style={{ color: "var(--text)", fontSize: "var(--text-body-sm)" }}
                 >
                   {breedNote}
                 </p>
@@ -266,10 +267,11 @@ export default function FoodFlipCard({
             {/* Stage emphasis badge */}
             {item.stageEmphasis === "advanced" && (
               <span
-                className="inline-block mt-2 text-[0.72rem] font-medium px-2 py-0.5 rounded-full self-start"
+                className="inline-block mt-2 font-medium px-2 py-0.5 rounded-full self-start"
                 style={{
                   background: "rgba(212,133,106,0.12)",
                   color: "var(--terracotta)",
+                  fontSize: "var(--text-fine)",
                 }}
               >
                 Especially during chemo
@@ -293,7 +295,7 @@ export default function FoodFlipCard({
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="text-[0.7rem]">Tap to flip back</span>
+              <span style={{ fontSize: "var(--text-fine)" }}>Tap to flip back</span>
             </div>
           </div>
         </div>

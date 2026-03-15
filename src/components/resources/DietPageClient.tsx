@@ -127,8 +127,8 @@ function MacroBar({
   return (
     <div className="flex items-center gap-3">
       <span
-        className="text-[0.78rem] font-medium w-14 flex-shrink-0"
-        style={{ color: "var(--text-muted)" }}
+        className="font-medium w-14 flex-shrink-0"
+        style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
       >
         {label}
       </span>
@@ -142,8 +142,8 @@ function MacroBar({
         />
       </div>
       <span
-        className="text-[0.78rem] font-semibold w-8 text-right flex-shrink-0"
-        style={{ color: "var(--text)" }}
+        className="font-semibold w-8 text-right flex-shrink-0"
+        style={{ fontSize: "var(--text-body-sm)", color: "var(--text)" }}
       >
         {value}%
       </span>
@@ -261,7 +261,7 @@ export default function DietPageClient({
     >
       {/* ═══ Hero ═══ */}
       <div
-        className="pt-20 pb-8 px-6 relative overflow-hidden"
+        className="pt-20 pb-14 px-6 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(160deg, rgba(91,123,94,0.09) 0%, rgba(196,162,101,0.05) 40%, rgba(245,240,234,0.6) 70%, var(--warm-white) 100%)",
@@ -299,8 +299,8 @@ export default function DietPageClient({
               <div className="inline-flex items-center gap-2 mb-4">
                 <Link
                   href="/resources"
-                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
-                  style={{ color: "var(--sage)" }}
+                  className="font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
+                  style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
                 >
                   Resources
                 </Link>
@@ -309,8 +309,8 @@ export default function DietPageClient({
                   style={{ background: "var(--border-strong)" }}
                 />
                 <span
-                  className="text-[0.68rem] font-semibold uppercase tracking-[0.14em]"
-                  style={{ color: "var(--text-muted)" }}
+                  className="font-semibold uppercase tracking-[0.14em]"
+                  style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
                 >
                   Diet &amp; Nutrition
                 </span>
@@ -320,7 +320,7 @@ export default function DietPageClient({
               <p
                 className="mb-2"
                 style={{
-                  fontSize: "0.68rem",
+                  fontSize: "var(--text-label)",
                   fontWeight: 600,
                   letterSpacing: "0.14em",
                   color: "var(--sage)",
@@ -333,7 +333,7 @@ export default function DietPageClient({
               <h1
                 className="font-serif font-semibold mb-3"
                 style={{
-                  fontSize: "clamp(2rem, 4vw, 2.8rem)",
+                  fontSize: "var(--text-title)",
                   color: "var(--text)",
                   lineHeight: 1.12,
                   letterSpacing: "-0.01em",
@@ -356,7 +356,7 @@ export default function DietPageClient({
               <p
                 className="leading-relaxed italic"
                 style={{
-                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  fontSize: "var(--text-body)",
                   color: "var(--text-muted)",
                   maxWidth: 460,
                 }}
@@ -425,7 +425,7 @@ export default function DietPageClient({
                 </h2>
                 <p
                   className="leading-[1.8]"
-                  style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                  style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                 >
                   The <strong style={{ color: "var(--text)", fontWeight: 600 }}>Warburg Effect</strong> — described
                   in the 1920s and present in over 80% of cancer types — is the observation that
@@ -437,7 +437,7 @@ export default function DietPageClient({
 
             <p
               className="leading-[1.8] mb-10"
-              style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+              style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
             >
               The practical implications are significant: elevated blood glucose and insulin
               activate IGF-1, a growth signaling protein that accelerates tumor proliferation.
@@ -538,7 +538,7 @@ export default function DietPageClient({
               </h2>
               <p
                 className="mb-8 leading-[1.75]"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)", maxWidth: 560 }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", maxWidth: 560 }}
               >
                 Anti-angiogenic, anti-tumor whole foods supported by research. Tap any card to see preparation notes and why it matters.
               </p>
@@ -581,7 +581,7 @@ export default function DietPageClient({
               </h2>
               <p
                 className="mb-8 leading-[1.75]"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)", maxWidth: 560 }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", maxWidth: 560 }}
               >
                 These foods fuel cancer metabolism, promote inflammation, or carry safety risks for dogs on an oncology protocol.
               </p>
@@ -646,7 +646,7 @@ export default function DietPageClient({
               </div>
               <p
                 className="mb-10 leading-[1.75]"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)", maxWidth: 560 }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", maxWidth: 560 }}
               >
                 What to take, what the evidence actually says, and what most protocols are missing.
               </p>
@@ -686,8 +686,8 @@ export default function DietPageClient({
                 </div>
                 <div>
                   <p
-                    className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-1"
-                    style={{ color: "var(--sage)" }}
+                    className="font-bold uppercase tracking-[0.14em] mb-1"
+                    style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
                   >
                     Protocol Gap
                   </p>
@@ -698,8 +698,8 @@ export default function DietPageClient({
                     {protocolGap.headline}
                   </h3>
                   <p
-                    className="text-[0.88rem] leading-relaxed mt-1.5"
-                    style={{ color: "var(--text-muted)" }}
+                    className="leading-relaxed mt-1.5"
+                    style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                   >
                     {protocolGap.subhead}
                   </p>
@@ -734,15 +734,16 @@ export default function DietPageClient({
                       </h4>
                     </div>
                     <p
-                      className="text-[0.85rem] leading-[1.7] mb-3"
-                      style={{ color: "var(--text-muted)" }}
+                      className="leading-[1.7] mb-3"
+                      style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                     >
                       {item.why}
                     </p>
                     {/* Action — left border treatment, no extra box */}
                     <div
-                      className="text-[0.83rem] leading-relaxed"
+                      className="leading-relaxed"
                       style={{
+                        fontSize: "var(--text-body-sm)",
                         borderLeft: "2.5px solid var(--sage)",
                         paddingLeft: "0.875rem",
                         color: "var(--sage)",
@@ -750,8 +751,8 @@ export default function DietPageClient({
                       }}
                     >
                       <span
-                        className="block text-[0.6rem] font-black uppercase tracking-[0.12em] mb-0.5 opacity-70"
-                        style={{ color: "var(--sage)" }}
+                        className="block font-black uppercase tracking-[0.12em] mb-0.5 opacity-70"
+                        style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
                       >
                         Action
                       </span>
@@ -796,7 +797,7 @@ export default function DietPageClient({
 
               <p
                 className="leading-[1.8] mb-10"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 Some protocols flag glycine and collagen (bone broth) as potentially tumor-feeding. The argument is less settled for HSA than it first appears — here is the concern and the HSA-specific counterargument side by side.
               </p>
@@ -811,14 +812,14 @@ export default function DietPageClient({
                   }}
                 >
                   <p
-                    className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-3"
-                    style={{ color: "var(--terracotta)" }}
+                    className="font-bold uppercase tracking-[0.14em] mb-3"
+                    style={{ fontSize: "var(--text-label)", color: "var(--terracotta)" }}
                   >
                     {glycineSection.concern.label}
                   </p>
                   <p
-                    className="text-[0.93rem] leading-[1.8]"
-                    style={{ color: "var(--text)" }}
+                    className="leading-[1.8]"
+                    style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                   >
                     {glycineSection.concern.text}
                   </p>
@@ -832,14 +833,14 @@ export default function DietPageClient({
                   }}
                 >
                   <p
-                    className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-3"
-                    style={{ color: "var(--sage)" }}
+                    className="font-bold uppercase tracking-[0.14em] mb-3"
+                    style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
                   >
                     {glycineSection.counterargument.label}
                   </p>
                   <p
-                    className="text-[0.93rem] leading-[1.8]"
-                    style={{ color: "var(--text)" }}
+                    className="leading-[1.8]"
+                    style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                   >
                     {glycineSection.counterargument.text}
                   </p>
@@ -849,7 +850,7 @@ export default function DietPageClient({
               {/* Added complexity */}
               <p
                 className="font-serif italic leading-[1.8] mb-8"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 {glycineSection.addedComplexity}
               </p>
@@ -864,8 +865,8 @@ export default function DietPageClient({
                 }}
               >
                 <p
-                  className="text-[0.6rem] font-black uppercase tracking-[0.14em] mb-2"
-                  style={{ color: "var(--gold-text)" }}
+                  className="font-black uppercase tracking-[0.14em] mb-2"
+                  style={{ fontSize: "var(--text-label)", color: "var(--gold-text)" }}
                 >
                   {glycineSection.verdict.label}
                 </p>
@@ -910,7 +911,7 @@ export default function DietPageClient({
               </h2>
               <p
                 className="mb-10 leading-[1.75]"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)", maxWidth: 520 }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", maxWidth: 520 }}
               >
                 The same ingredients prepared differently can have very different glycemic and nutritional profiles. Here&apos;s how to evaluate what you&apos;re feeding.
               </p>
@@ -950,14 +951,14 @@ export default function DietPageClient({
                 </h2>
                 <p
                   className="leading-[1.75] mb-3"
-                  style={{ fontSize: "0.95rem", color: "var(--text-muted)", maxWidth: 480 }}
+                  style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", maxWidth: 480 }}
                 >
                   Answer two questions and get a weekly feeding framework
                   tailored to your dog&apos;s weight.
                 </p>
                 <p
                   className="font-serif italic leading-relaxed"
-                  style={{ fontSize: "0.92rem", color: "var(--text-muted)", opacity: 0.85 }}
+                  style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", opacity: 0.85 }}
                 >
                   Every bowl you prepare is an act of care. This plan gives
                   you a starting framework — adjust it with your vet as you
@@ -968,12 +969,12 @@ export default function DietPageClient({
               {/* Step 1: Weight */}
               <div className="mb-6">
                 <p
-                  className="text-[0.82rem] font-semibold mb-3 flex items-center gap-2"
-                  style={{ color: "var(--text)" }}
+                  className="font-semibold mb-3 flex items-center gap-2"
+                  style={{ fontSize: "var(--text-body-sm)", color: "var(--text)" }}
                 >
                   <span
-                    className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[0.65rem] font-bold flex-shrink-0"
-                    style={{ background: "var(--sage)", color: "white" }}
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full font-bold flex-shrink-0"
+                    style={{ fontSize: "var(--text-label)", background: "var(--sage)", color: "white" }}
                   >
                     1
                   </span>
@@ -986,8 +987,9 @@ export default function DietPageClient({
                       type="button"
                       onClick={() => setSelectedWeight(wb.key)}
                       aria-pressed={selectedWeight === wb.key}
-                      className="min-h-[40px] rounded-full text-[0.83rem] font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
+                      className="min-h-[40px] rounded-full font-medium transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
                       style={{
+                        fontSize: "var(--text-body-sm)",
                         padding: "8px 18px",
                         background: selectedWeight === wb.key ? "var(--sage)" : "white",
                         color: selectedWeight === wb.key ? "white" : "var(--text-muted)",
@@ -1022,12 +1024,12 @@ export default function DietPageClient({
               {/* Step 2: Diet Style */}
               <div className="mb-7">
                 <p
-                  className="text-[0.82rem] font-semibold mb-3 flex items-center gap-2"
-                  style={{ color: "var(--text)" }}
+                  className="font-semibold mb-3 flex items-center gap-2"
+                  style={{ fontSize: "var(--text-body-sm)", color: "var(--text)" }}
                 >
                   <span
-                    className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[0.65rem] font-bold flex-shrink-0"
-                    style={{ background: "var(--gold)", color: "white" }}
+                    className="inline-flex items-center justify-center w-5 h-5 rounded-full font-bold flex-shrink-0"
+                    style={{ fontSize: "var(--text-label)", background: "var(--gold)", color: "white" }}
                   >
                     2
                   </span>
@@ -1068,13 +1070,14 @@ export default function DietPageClient({
                         }
                       }}
                     >
-                      <span className="text-[0.84rem] font-semibold block leading-snug"
-                        style={{ color: selectedStyle === ds.key ? "white" : "var(--text)" }}>
+                      <span className="font-semibold block leading-snug"
+                        style={{ fontSize: "var(--text-body-sm)", color: selectedStyle === ds.key ? "white" : "var(--text)" }}>
                         {ds.label}
                       </span>
                       <span
-                        className="text-[0.72rem] block leading-snug mt-0.5"
+                        className="block leading-snug mt-0.5"
                         style={{
+                          fontSize: "var(--text-fine)",
                           color: selectedStyle === ds.key
                             ? "rgba(255,255,255,0.78)"
                             : "var(--text-muted)",
@@ -1105,7 +1108,7 @@ export default function DietPageClient({
                 style={{
                   padding: "12px 28px",
                   borderRadius: 999,
-                  fontSize: "0.92rem",
+                  fontSize: "var(--text-body)",
                   background: selectedWeight && selectedStyle ? "var(--sage)" : "var(--border)",
                   color: selectedWeight && selectedStyle ? "white" : "var(--text-muted)",
                   boxShadow: selectedWeight && selectedStyle
@@ -1155,8 +1158,8 @@ export default function DietPageClient({
                   <div className="flex items-start justify-between gap-3 flex-wrap">
                     <div>
                       <div
-                        className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] mb-1"
-                        style={{ color: "rgba(255,255,255,0.65)" }}
+                        className="font-semibold uppercase tracking-[0.14em] mb-1"
+                        style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.65)" }}
                       >
                         Your Personalised Plan
                       </div>
@@ -1171,8 +1174,9 @@ export default function DietPageClient({
                       type="button"
                       onClick={handlePrint}
                       aria-label="Print this meal plan"
-                      className="flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-full text-[0.78rem] font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
+                      className="flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] rounded-full font-medium cursor-pointer transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage"
                       style={{
+                        fontSize: "var(--text-body-sm)",
                         background: "rgba(255,255,255,0.15)",
                         border: "1px solid rgba(255,255,255,0.25)",
                         color: "rgba(255,255,255,0.9)",
@@ -1212,8 +1216,8 @@ export default function DietPageClient({
                     style={{ borderBottom: "1px solid var(--border)" }}
                   >
                     <h4
-                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
-                      style={{ color: "var(--text-muted)" }}
+                      className="font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)" }}
                     >
                       Daily Portions
                     </h4>
@@ -1230,14 +1234,13 @@ export default function DietPageClient({
                           />
                           <div>
                             <span
-                              className="text-[0.82rem] font-semibold"
-                              style={{ color: "var(--text)" }}
+                              className="font-semibold"
+                              style={{ fontSize: "var(--text-body-sm)", color: "var(--text)" }}
                             >
                               {row.label}:{" "}
                             </span>
                             <span
-                              className="text-[0.83rem]"
-                              style={{ color: "var(--text-muted)" }}
+                              style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
                             >
                               {row.value}
                             </span>
@@ -1253,8 +1256,8 @@ export default function DietPageClient({
                     style={{ borderBottom: "1px solid var(--border)" }}
                   >
                     <h4
-                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
-                      style={{ color: "var(--text-muted)" }}
+                      className="font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)" }}
                     >
                       Week at a Glance
                     </h4>
@@ -1262,14 +1265,15 @@ export default function DietPageClient({
                       {generatedPlan.weeklyRotation.map((day, i) => (
                         <div
                           key={i}
-                          className="flex items-baseline gap-0 text-[0.83rem] py-2 px-3 rounded-xl"
+                          className="flex items-baseline gap-0 py-2 px-3 rounded-xl"
                           style={{
+                            fontSize: "var(--text-body-sm)",
                             background: i % 2 === 0 ? "rgba(91,123,94,0.04)" : "transparent",
                           }}
                         >
                           <span
-                            className="font-semibold flex-shrink-0 text-[0.72rem] uppercase tracking-[0.09em]"
-                            style={{ color: "var(--sage)", minWidth: "3rem" }}
+                            className="font-semibold flex-shrink-0 uppercase tracking-[0.09em]"
+                            style={{ fontSize: "var(--text-fine)", color: "var(--sage)", minWidth: "3rem" }}
                           >
                             {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][i]}
                           </span>
@@ -1297,8 +1301,8 @@ export default function DietPageClient({
                     style={{ borderBottom: "1px solid var(--border)" }}
                   >
                     <h4
-                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
-                      style={{ color: "var(--text-muted)" }}
+                      className="font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)" }}
                     >
                       Estimated Macros
                     </h4>
@@ -1315,8 +1319,9 @@ export default function DietPageClient({
                     style={{ borderBottom: "1px solid var(--border)" }}
                   >
                     <div
-                      className="rounded-xl px-4 py-3 text-[0.82rem] leading-relaxed"
+                      className="rounded-xl px-4 py-3 leading-relaxed"
                       style={{
+                        fontSize: "var(--text-body-sm)",
                         background: "rgba(196,162,101,0.07)",
                         border: "1px solid rgba(196,162,101,0.15)",
                         color: "var(--text-muted)",
@@ -1332,8 +1337,8 @@ export default function DietPageClient({
                   {/* Supplement pairings */}
                   <div className="px-5 sm:px-7 py-5">
                     <h4
-                      className="text-[0.72rem] font-semibold uppercase tracking-[0.12em] mb-3"
-                      style={{ color: "var(--text-muted)" }}
+                      className="font-semibold uppercase tracking-[0.12em] mb-3"
+                      style={{ fontSize: "var(--text-fine)", color: "var(--text-muted)" }}
                     >
                       Pair With These Supplements
                     </h4>
@@ -1341,8 +1346,9 @@ export default function DietPageClient({
                       {generatedPlan.supplementPairings.map((supp, i) => (
                         <span
                           key={i}
-                          className="px-3 py-1 rounded-full text-[0.78rem] font-medium"
+                          className="px-3 py-1 rounded-full font-medium"
                           style={{
+                            fontSize: "var(--text-body-sm)",
                             background: "rgba(91,123,94,0.08)",
                             color: "var(--sage)",
                             border: "1px solid rgba(91,123,94,0.15)",
@@ -1355,8 +1361,8 @@ export default function DietPageClient({
                     <button
                       type="button"
                       onClick={() => scrollToSection("supplements")}
-                      className="inline-flex items-center gap-1.5 text-[0.82rem] font-medium no-underline transition-opacity hover:opacity-70 cursor-pointer"
-                      style={{ color: "var(--sage)", background: "none", border: "none", padding: 0 }}
+                      className="inline-flex items-center gap-1.5 font-medium no-underline transition-opacity hover:opacity-70 cursor-pointer"
+                      style={{ fontSize: "var(--text-body-sm)", color: "var(--sage)", background: "none", border: "none", padding: 0 }}
                     >
                       See supplement guide above
                       <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -1402,7 +1408,7 @@ export default function DietPageClient({
 
               <p
                 className="leading-[1.8] mb-10"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 {oncologistConsensus.intro}
               </p>
@@ -1412,8 +1418,8 @@ export default function DietPageClient({
                 {/* Agreements */}
                 <div>
                   <p
-                    className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-4"
-                    style={{ color: "var(--sage)", borderBottom: "1px solid rgba(91,123,94,0.2)", paddingBottom: "0.6rem" }}
+                    className="font-bold uppercase tracking-[0.14em] mb-4"
+                    style={{ fontSize: "var(--text-label)", color: "var(--sage)", borderBottom: "1px solid rgba(91,123,94,0.2)", paddingBottom: "0.6rem" }}
                   >
                     Areas of Agreement
                   </p>
@@ -1425,8 +1431,8 @@ export default function DietPageClient({
                           style={{ background: "var(--sage)", marginTop: "0.55rem" }}
                         />
                         <span
-                          className="text-[0.9rem] leading-[1.7]"
-                          style={{ color: "var(--text)" }}
+                          className="leading-[1.7]"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                         >
                           {item}
                         </span>
@@ -1438,8 +1444,8 @@ export default function DietPageClient({
                 {/* Skepticisms */}
                 <div>
                   <p
-                    className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-4"
-                    style={{ color: "var(--terracotta)", borderBottom: "1px solid rgba(212,133,106,0.2)", paddingBottom: "0.6rem" }}
+                    className="font-bold uppercase tracking-[0.14em] mb-4"
+                    style={{ fontSize: "var(--text-label)", color: "var(--terracotta)", borderBottom: "1px solid rgba(212,133,106,0.2)", paddingBottom: "0.6rem" }}
                   >
                     Areas of Skepticism
                   </p>
@@ -1451,8 +1457,8 @@ export default function DietPageClient({
                           style={{ background: "var(--terracotta)", marginTop: "0.55rem" }}
                         />
                         <span
-                          className="text-[0.9rem] leading-[1.7]"
-                          style={{ color: "var(--text)" }}
+                          className="leading-[1.7]"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                         >
                           {item}
                         </span>
@@ -1487,7 +1493,7 @@ export default function DietPageClient({
               <p
                 className="font-serif italic leading-[1.8]"
                 style={{
-                  fontSize: "0.95rem",
+                  fontSize: "var(--text-body)",
                   color: "var(--text-muted)",
                 }}
               >
@@ -1522,13 +1528,13 @@ export default function DietPageClient({
               </h2>
               <p
                 className="leading-[1.8] mb-2"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 This field is moving faster than most people realize. Multiple major institutions have active trials and funded initiatives underway right now — and the results will directly reshape dietary guidance for HSA dogs.
               </p>
               <p
                 className="font-serif italic mb-10"
-                style={{ fontSize: "0.88rem", color: "var(--text-muted)", opacity: 0.8 }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)", opacity: 0.8 }}
               >
                 The studies below were active or recently published as of early 2026.
               </p>
@@ -1549,14 +1555,15 @@ export default function DietPageClient({
                       {/* Institution + status row */}
                       <div className="flex items-center justify-between gap-3 mb-2 flex-wrap">
                         <p
-                          className="text-[0.62rem] font-black uppercase tracking-[0.14em]"
-                          style={{ color: "var(--sage)" }}
+                          className="font-black uppercase tracking-[0.14em]"
+                          style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
                         >
                           {study.institution}
                         </p>
                         <span
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-semibold flex-shrink-0"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold flex-shrink-0"
                           style={{
+                            fontSize: "var(--text-label)",
                             background: isActive ? "rgba(91,123,94,0.08)" : "rgba(196,162,101,0.1)",
                             color: isActive ? "var(--sage)" : "var(--gold)",
                             border: `1px solid ${isActive ? "rgba(91,123,94,0.2)" : "rgba(196,162,101,0.25)"}`,
@@ -1592,16 +1599,17 @@ export default function DietPageClient({
                       </h3>
 
                       <p
-                        className="text-[0.88rem] leading-[1.7] mb-3"
-                        style={{ color: "var(--text-muted)" }}
+                        className="leading-[1.7] mb-3"
+                        style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                       >
                         {study.summary}
                       </p>
 
                       {/* Relevance — left-border inline note */}
                       <p
-                        className="text-[0.82rem] italic leading-relaxed"
+                        className="italic leading-relaxed"
                         style={{
+                          fontSize: "var(--text-body-sm)",
                           color: "var(--sage)",
                           borderLeft: "2px solid rgba(91,123,94,0.3)",
                           paddingLeft: "0.75rem",
@@ -1642,7 +1650,7 @@ export default function DietPageClient({
               </h2>
               <p
                 className="font-serif italic mb-4 leading-relaxed"
-                style={{ fontSize: "0.95rem", color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 You are almost certainly not doing any of these — most are
                 obvious dangers. We include them here because a well-meaning
@@ -1652,15 +1660,15 @@ export default function DietPageClient({
 
             {/* Never Give — open list with terracotta top border, no box */}
             <div
-              className="mb-8 reveal"
+              className="mb-12 reveal"
               style={{
                 borderTop: "2px solid var(--terracotta)",
                 paddingTop: "1.5rem",
               }}
             >
               <p
-                className="text-[0.65rem] font-black uppercase tracking-[0.14em] mb-5"
-                style={{ color: "var(--terracotta)" }}
+                className="font-black uppercase tracking-[0.14em] mb-5"
+                style={{ fontSize: "var(--text-label)", color: "var(--terracotta)" }}
               >
                 Never Give
               </p>
@@ -1675,14 +1683,14 @@ export default function DietPageClient({
                       />
                       <div>
                         <span
-                          className="font-semibold text-[0.92rem]"
-                          style={{ color: "var(--text)" }}
+                          className="font-semibold"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                         >
                           {caution.title}
                         </span>
                         <p
-                          className="text-[0.85rem] leading-[1.7] mt-0.5"
-                          style={{ color: "var(--text-muted)" }}
+                          className="leading-[1.7] mt-0.5"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                         >
                           {caution.note}
                         </p>
@@ -1694,15 +1702,15 @@ export default function DietPageClient({
 
             {/* Use with Care — open list with gold top border */}
             <div
-              className="mb-8 reveal"
+              className="mb-12 reveal"
               style={{
                 borderTop: "2px solid var(--gold)",
                 paddingTop: "1.5rem",
               }}
             >
               <p
-                className="text-[0.65rem] font-black uppercase tracking-[0.14em] mb-5"
-                style={{ color: "var(--gold-text)" }}
+                className="font-black uppercase tracking-[0.14em] mb-5"
+                style={{ fontSize: "var(--text-label)", color: "var(--gold-text)" }}
               >
                 Use with Care
               </p>
@@ -1717,14 +1725,14 @@ export default function DietPageClient({
                       />
                       <div>
                         <span
-                          className="font-semibold text-[0.92rem]"
-                          style={{ color: "var(--text)" }}
+                          className="font-semibold"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text)" }}
                         >
                           {caution.title}
                         </span>
                         <p
-                          className="text-[0.85rem] leading-[1.7] mt-0.5"
-                          style={{ color: "var(--text-muted)" }}
+                          className="leading-[1.7] mt-0.5"
+                          style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
                         >
                           {caution.note}
                         </p>
@@ -1743,14 +1751,14 @@ export default function DietPageClient({
               }}
             >
               <p
-                className="text-[0.65rem] font-bold uppercase tracking-[0.14em] mb-1.5"
-                style={{ color: "var(--sage)" }}
+                className="font-bold uppercase tracking-[0.14em] mb-1.5"
+                style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
               >
                 {monitoringCallout.headline}
               </p>
               <p
-                className="text-[0.88rem] leading-[1.75]"
-                style={{ color: "var(--text-muted)" }}
+                className="leading-[1.75]"
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 {monitoringCallout.body}
               </p>
@@ -1758,22 +1766,22 @@ export default function DietPageClient({
           </section>
 
           {/* ═══ Key Sources strip — grouped by type ═══ */}
-          <section className="mb-10 reveal">
+          <section className="mb-12 reveal">
             <div
               className="flex items-center gap-3 mb-5"
               style={{ borderTop: "1px solid var(--border)", paddingTop: "2rem" }}
             >
               <span
-                className="text-[0.65rem] font-bold uppercase tracking-[0.14em]"
-                style={{ color: "var(--text-muted)" }}
+                className="font-bold uppercase tracking-[0.14em]"
+                style={{ fontSize: "var(--text-label)", color: "var(--text-muted)" }}
               >
                 Key Sources
               </span>
               <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
             </div>
             <p
-              className="text-[0.85rem] mb-6 leading-relaxed"
-              style={{ color: "var(--text-muted)" }}
+              className="mb-6 leading-relaxed"
+              style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
             >
               Everything on this page is grounded in peer-reviewed research and guidance from board-certified veterinary oncologists.
             </p>
@@ -1787,8 +1795,8 @@ export default function DietPageClient({
                 <div key={type} className="mb-3 last:mb-0">
                   {/* Type group label */}
                   <p
-                    className="text-[0.62rem] font-bold uppercase tracking-[0.12em] mb-1.5 flex items-center gap-1.5"
-                    style={{ color: cfg.color }}
+                    className="font-bold uppercase tracking-[0.12em] mb-1.5 flex items-center gap-1.5"
+                    style={{ fontSize: "var(--text-label)", color: cfg.color }}
                   >
                     <span
                       className="w-1.5 h-1.5 rounded-full flex-shrink-0"
@@ -1803,8 +1811,9 @@ export default function DietPageClient({
                         href={source.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[0.74rem] font-medium no-underline transition-all duration-150"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium no-underline transition-all duration-150"
                         style={{
+                          fontSize: "var(--text-fine)",
                           background: cfg.bg,
                           color: cfg.color,
                           border: `1px solid ${cfg.border}`,
@@ -1819,8 +1828,9 @@ export default function DietPageClient({
                       >
                         {/* Year badge */}
                         <span
-                          className="text-[0.62rem] font-black rounded px-1 py-px"
+                          className="font-black rounded px-1 py-px"
                           style={{
+                            fontSize: "var(--text-label)",
                             background: cfg.border,
                             color: cfg.color,
                             lineHeight: 1.3,
@@ -1854,7 +1864,7 @@ export default function DietPageClient({
           </section>
 
           {/* Cross-link to food guide */}
-          <div className="reveal mb-10">
+          <div className="reveal mb-12">
             <a
               href="/resources/food"
               className="block rounded-xl px-5 py-4 no-underline transition-colors duration-200"
@@ -1870,8 +1880,8 @@ export default function DietPageClient({
               }}
             >
               <div
-                className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-1"
-                style={{ color: "var(--sage)" }}
+                className="font-semibold uppercase tracking-[0.1em] mb-1"
+                style={{ fontSize: "var(--text-fine)", color: "var(--sage)" }}
               >
                 Practical guide
               </div>
@@ -1882,8 +1892,7 @@ export default function DietPageClient({
                 Food & Nutrition Guide
               </div>
               <div
-                className="text-[0.85rem]"
-                style={{ color: "var(--text-muted)" }}
+                style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
               >
                 Specific foods to feed and avoid, appetite boosters, and
                 practical tips for daily meals during treatment.
@@ -1914,7 +1923,7 @@ export default function DietPageClient({
                   strokeLinecap="round"
                 />
               </svg>
-              <p className="text-[0.82rem]" style={{ color: "var(--text-muted)" }}>
+              <p style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}>
                 Use your browser&apos;s print function to save this page as a PDF to share with your vet.
               </p>
             </div>
@@ -2102,14 +2111,14 @@ function MacroCard({
           />
         </div>
         <span
-          className="text-[0.72rem] font-bold uppercase tracking-[0.1em]"
-          style={{ color }}
+          className="font-bold uppercase tracking-[0.1em]"
+          style={{ fontSize: "var(--text-fine)", color }}
         >
           {label}
         </span>
       </div>
 
-      <p className="text-[0.8rem] leading-snug" style={{ color: "var(--text-muted)" }}>
+      <p className="leading-snug" style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}>
         {note}
       </p>
     </div>
@@ -2172,8 +2181,9 @@ function MealFormCard({ option }: { option: MealFormOption }) {
             {option.label}
           </h3>
           <span
-            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.72rem] font-bold"
+            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-bold"
             style={{
+              fontSize: "var(--text-fine)",
               background: `rgba(${cfg.rgb},0.08)`,
               color: cfg.color,
               border: `1.5px solid rgba(${cfg.rgb},0.2)`,
@@ -2188,8 +2198,8 @@ function MealFormCard({ option }: { option: MealFormOption }) {
           </span>
         </div>
         <p
-          className="text-[0.83rem] leading-relaxed"
-          style={{ color: "var(--text-muted)" }}
+          className="leading-relaxed"
+          style={{ fontSize: "var(--text-body-sm)", color: "var(--text-muted)" }}
         >
           {option.note}
         </p>
@@ -2222,15 +2232,16 @@ function EditorialSectionBreak({
       />
       <div className="flex items-center gap-2 flex-shrink-0">
         <span
-          className="text-[0.62rem] font-black uppercase tracking-[0.16em]"
-          style={{ color }}
+          className="font-black uppercase tracking-[0.16em]"
+          style={{ fontSize: "var(--text-label)", color }}
         >
           {eyebrow}
         </span>
         {eyebrowSuffix && (
           <span
-            className="text-[0.58rem] font-semibold uppercase tracking-[0.1em] px-1.5 py-0.5 rounded-full"
+            className="font-semibold uppercase tracking-[0.1em] px-1.5 py-0.5 rounded-full"
             style={{
+              fontSize: "var(--text-fine)",
               color: "var(--text-muted)",
               background: "var(--border)",
             }}

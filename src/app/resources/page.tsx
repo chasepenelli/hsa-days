@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { SUPPLEMENTS, SUPPLEMENT_CATEGORIES } from "@/lib/resources/supplements";
 import { FOOD_ITEMS, DIET_PRINCIPLES } from "@/lib/resources/food";
 import { ROOM_SECTIONS } from "@/lib/resources/home";
-import { DIET_SUPPLEMENTS, ACTIVE_RESEARCH } from "@/lib/resources/diet";
 import { getWeightBracket, getWeightBracketLabel, getDosageForWeight } from "@/lib/resources/personalize";
 import ResourcesHubClient from "@/components/resources/ResourcesHubClient";
 
@@ -117,8 +116,6 @@ export default async function ResourcesPage() {
       totalChecklist={totalChecklist}
       totalProducts={totalProducts}
       quickWinTip={quickWinTip}
-      dietSupplementCount={DIET_SUPPLEMENTS.length}
-      researchCount={ACTIVE_RESEARCH.length}
     />
   );
 }
