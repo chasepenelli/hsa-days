@@ -1,11 +1,25 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { SUPPLEMENTS, SUPPLEMENT_CATEGORIES } from "@/lib/resources/supplements";
+import { FOOD_ITEMS, DIET_PRINCIPLES } from "@/lib/resources/food";
+import { ROOM_SECTIONS } from "@/lib/resources/home";
+import { DIET_SUPPLEMENTS, ACTIVE_RESEARCH } from "@/lib/resources/diet";
+import { getWeightBracket, getWeightBracketLabel, getDosageForWeight } from "@/lib/resources/personalize";
+import ResourcesHubClient from "@/components/resources/ResourcesHubClient";
 
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Practical guides for HSA dog owners — supplements, food & nutrition, house-proofing, and more.",
+    "Practical guides for HSA dog owners — supplements, food & nutrition, house-proofing, and cancer diet science.",
+};
+
+// Map supplement category keys to display labels and colors
+const CATEGORY_DISPLAY: Record<string, { label: string; color: string }> = {
+  blood_support: { label: "Blood Support", color: "#D4856A" },
+  anti_cancer: { label: "Anti-Cancer", color: "#5B7B5E" },
+  immune_support: { label: "Immune", color: "#C4A265" },
+  liver_organ: { label: "Liver", color: "#5B7B5E" },
+  quality_of_life: { label: "Quality of Life", color: "#C4A265" },
 };
 
 export default async function ResourcesPage() {
@@ -14,87 +28,97 @@ export default async function ResourcesPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  let dogName: string | null = null;
+  let profile = {
+    dogName: null as string | null,
+    breed: null as string | null,
+    weightLbs: null as number | null,
+    cancerStage: null as string | null,
+    weightBracketLabel: null as string | null,
+  };
+
   if (user) {
     const { data } = await supabase
       .from("subscribers")
-      .select("dog_name")
+      .select("dog_name, breed, weight_lbs, cancer_stage")
       .eq("id", user.id)
       .single();
-    dogName = data?.dog_name ?? null;
+    if (data) {
+      profile.dogName = data.dog_name ?? null;
+      profile.breed = data.breed ?? null;
+      profile.weightLbs = data.weight_lbs ?? null;
+      profile.cancerStage = data.cancer_stage ?? null;
+      if (profile.weightLbs) {
+        profile.weightBracketLabel = getWeightBracketLabel(
+          getWeightBracket(profile.weightLbs)
+        );
+      }
+    }
   }
 
-  const resources = [
-    {
-      icon: "\uD83D\uDC8A",
-      title: "Supplement Guide",
-      description:
-        "Research-backed supplements organized by category — what they do, suggested dosages by weight, and what to discuss with your vet.",
-      href: "/resources/supplements",
-      borderColor: "border-l-sage",
-    },
-    {
-      icon: "\uD83E\uDD6A",
-      title: "What to Feed",
-      description:
-        "What to feed, what to avoid, and appetite-boosting strategies. Practical guidance for daily meals during treatment.",
-      href: "/resources/food",
-      borderColor: "border-l-gold",
-    },
-    {
-      icon: "\uD83C\uDFE0",
-      title: "House-Proofing",
-      description:
-        "Small changes that make a big difference. Non-slip surfaces, ramp guides, temperature management, and comfort setups for recovery.",
-      href: "/resources/home",
-      borderColor: "border-l-terracotta",
-    },
-    {
-      icon: "\uD83E\uDD66",
-      title: "Cancer Diet Science",
-      description:
-        "The Warburg Effect, anti-cancer protocols, meal form comparisons, and a build-your-own meal plan generator.",
-      href: "/resources/diet",
-      borderColor: "border-l-sage-light",
-    },
-  ];
+  // Top 4 supplements by priority
+  const topSupplements = [...SUPPLEMENTS]
+    .sort((a, b) => a.priority - b.priority)
+    .slice(0, 4)
+    .map((s) => {
+      const catDisplay = CATEGORY_DISPLAY[s.category] ?? {
+        label: s.category,
+        color: "#6B6B6B",
+      };
+      const doseInfo = profile.weightLbs
+        ? getDosageForWeight(s.dosage, profile.weightLbs)
+        : null;
+      return {
+        name: s.name,
+        category: catDisplay.label,
+        categoryColor: catDisplay.color,
+        dose: doseInfo?.dose ?? null,
+      };
+    });
+
+  // Food counts
+  const foodCounts = {
+    recommended: FOOD_ITEMS.filter((f) => f.category === "recommended").length,
+    avoid: FOOD_ITEMS.filter((f) => f.category === "avoid").length,
+    appetite: FOOD_ITEMS.filter((f) => f.category === "appetite").length,
+  };
+
+  // Count total references across all diet principles
+  const referenceCount = DIET_PRINCIPLES.reduce(
+    (acc, p) => acc + p.references.length,
+    0
+  );
+
+  // Room sections for house-proofing
+  const roomSections = ROOM_SECTIONS.map((r) => ({
+    title: r.title,
+    checklistCount: r.checklist.length,
+  }));
+
+  const totalChecklist = ROOM_SECTIONS.reduce(
+    (acc, r) => acc + r.checklist.length,
+    0
+  );
+  const totalProducts = ROOM_SECTIONS.reduce(
+    (acc, r) => acc + r.products.length,
+    0
+  );
+  const quickWinTip = ROOM_SECTIONS[0].checklist[0].text;
 
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6">
-      <div className="max-w-[1100px] mx-auto">
-        <div className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-gold-text mb-3">
-          Resources
-        </div>
-        <h1 className="font-serif text-[clamp(2rem,4vw,2.8rem)] font-semibold text-text mb-4">
-          {dogName
-            ? `Everything for ${dogName}, in one place.`
-            : "Everything in one place."}
-        </h1>
-        <p className="text-[1.05rem] text-text-muted max-w-[600px] leading-relaxed mb-10">
-          Practical guides researched and organized so you don&apos;t have to
-          dig through the internet at your worst moment.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {resources.map((resource, i) => (
-            <Link
-              key={i}
-              href={resource.href}
-              className={`block bg-white border border-border border-l-[3px] ${resource.borderColor} rounded-2xl px-7 py-9 no-underline transition-all hover:-translate-y-[3px] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]`}
-            >
-              <h3 className="font-serif text-[1.2rem] font-semibold mb-3 text-text">
-                {resource.icon} {resource.title}
-              </h3>
-              <p className="text-[0.95rem] text-text-muted leading-relaxed">
-                {resource.description}
-              </p>
-              <div className="mt-4 text-sage font-medium text-sm">
-                Read guide &rarr;
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+    <ResourcesHubClient
+      profile={profile}
+      supplementCount={SUPPLEMENTS.length}
+      categoryCount={SUPPLEMENT_CATEGORIES.length}
+      topSupplements={topSupplements}
+      foodCounts={foodCounts}
+      principleCount={DIET_PRINCIPLES.length}
+      referenceCount={referenceCount}
+      roomSections={roomSections}
+      totalChecklist={totalChecklist}
+      totalProducts={totalProducts}
+      quickWinTip={quickWinTip}
+      dietSupplementCount={DIET_SUPPLEMENTS.length}
+      researchCount={ACTIVE_RESEARCH.length}
+    />
   );
 }

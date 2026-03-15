@@ -423,6 +423,23 @@ export function Resources() {
           >
             We did the digging. You focus on your dog.
           </p>
+
+          <Link
+            href="/resources/install"
+            className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full no-underline transition-all duration-200 hover:opacity-80"
+            style={{
+              background: "rgba(91,123,94,0.06)",
+              border: "1px solid var(--border)",
+              color: "var(--text-muted)",
+              fontSize: "0.82rem",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <rect x="3" y="1" width="10" height="14" rx="2" stroke="currentColor" strokeWidth="1.2" />
+              <line x1="6" y1="12" x2="10" y2="12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+            </svg>
+            Add to your home screen for instant access, even offline
+          </Link>
         </div>
       </div>
     </section>
