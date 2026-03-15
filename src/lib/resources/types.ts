@@ -9,6 +9,8 @@ export interface DosageByWeight {
 
 export type StageEmphasis = "all" | "early" | "advanced" | "palliative";
 
+export type EvidenceLevel = "studied-in-hsa" | "veterinary-use" | "emerging";
+
 export interface Supplement {
   slug: string;
   name: string;
@@ -23,6 +25,7 @@ export interface Supplement {
   breedNotes?: Record<string, string>;
   sources?: string[];
   priority: number;
+  evidenceLevel: EvidenceLevel;
 }
 
 export interface SupplementCategory {

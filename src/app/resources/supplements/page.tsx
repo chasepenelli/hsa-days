@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { SUPPLEMENTS, SUPPLEMENT_CATEGORIES } from "@/lib/resources/supplements";
+import { SUPPLEMENTS, SUPPLEMENT_CATEGORIES, STARTER_SUPPLEMENTS } from "@/lib/resources/supplements";
 import { personalizeSupplements } from "@/lib/resources/personalize";
 import type { DogProfile } from "@/lib/resources/types";
 import SupplementsPageClient from "@/components/resources/SupplementsPageClient";
@@ -62,7 +62,8 @@ export default async function SupplementsPage() {
     <SupplementsPageClient
       profile={profile}
       supplements={supplements}
-      categories={SUPPLEMENT_CATEGORIES}
+      starterSupplements={STARTER_SUPPLEMENTS}
+      supplementCategories={SUPPLEMENT_CATEGORIES}
       usageCounts={usageCountMap}
       userActiveSlugs={userActiveSlugs}
       isAuthenticated={!!user}

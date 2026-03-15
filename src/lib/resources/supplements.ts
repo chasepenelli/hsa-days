@@ -74,6 +74,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "University of Pennsylvania School of Veterinary Medicine",
     ],
     priority: 1,
+    evidenceLevel: "studied-in-hsa",
   },
   {
     slug: "iron-supplement",
@@ -100,6 +101,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Too much iron can damage the liver",
     ],
     priority: 3,
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "vitamin-k",
@@ -122,6 +124,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "May interact with blood-thinning medications",
     ],
     priority: 4,
+    evidenceLevel: "veterinary-use",
   },
 
   // ── Anti-Cancer / Anti-Tumor ──
@@ -153,6 +156,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Brown DC, Reetz J. Single agent polysaccharopeptide delays metastases and improves survival in naturally occurring hemangiosarcoma. Evid Based Complement Alternat Med. 2012.",
     ],
     priority: 1,
+    evidenceLevel: "studied-in-hsa",
   },
   {
     slug: "artemisinin",
@@ -180,6 +184,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Monitor liver enzymes during use",
     ],
     priority: 2,
+    evidenceLevel: "studied-in-hsa",
   },
   {
     slug: "cbd-oil",
@@ -206,6 +211,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Quality varies widely — choose third-party tested products",
     ],
     priority: 4,
+    evidenceLevel: "emerging",
   },
   {
     slug: "ip6",
@@ -228,6 +234,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Discuss potential mineral absorption effects",
     ],
     priority: 5,
+    evidenceLevel: "emerging",
   },
 
   // ── Immune Support ──
@@ -252,6 +259,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Monitor for any digestive changes when starting",
     ],
     priority: 2,
+    evidenceLevel: "emerging",
   },
   {
     slug: "astragalus",
@@ -274,6 +282,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Can be used alongside mushroom supplements",
     ],
     priority: 4,
+    evidenceLevel: "emerging",
   },
   {
     slug: "vitamin-c",
@@ -299,6 +308,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Some oncologists advise avoiding antioxidants during chemo days — discuss timing",
     ],
     priority: 5,
+    evidenceLevel: "emerging",
   },
 
   // ── Liver & Organ Support ──
@@ -330,6 +340,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Denamarin clinical studies — Nutramax Laboratories",
     ],
     priority: 1,
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "same",
@@ -352,6 +363,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Enteric-coated tablets should not be crushed or split",
     ],
     priority: 2,
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "dandelion-root",
@@ -374,6 +386,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Generally well-tolerated with minimal side effects",
     ],
     priority: 5,
+    evidenceLevel: "emerging",
   },
 
   // ── Quality of Life ──
@@ -402,6 +415,7 @@ export const SUPPLEMENTS: Supplement[] = [
         "Goldens especially benefit from high-quality fish oil for both cancer support and their skin/coat health.",
     },
     priority: 1,
+    evidenceLevel: "studied-in-hsa",
   },
   {
     slug: "turmeric-curcumin",
@@ -428,6 +442,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Some oncologists advise caution combining with chemo — discuss timing",
     ],
     priority: 2,
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "probiotics",
@@ -450,6 +465,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "Refrigerated probiotics generally have better viability",
     ],
     priority: 3,
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "coq10",
@@ -478,5 +494,14 @@ export const SUPPLEMENTS: Supplement[] = [
         "German Shepherds are also prone to cardiac HSA — CoQ10 may provide additional heart protection.",
     },
     priority: 3,
+    evidenceLevel: "veterinary-use",
   },
 ];
+
+// Priority-1 supplement from each category for the "Start Here" section
+export const STARTER_SUPPLEMENTS = SUPPLEMENT_CATEGORIES.map((cat) => {
+  const match = SUPPLEMENTS.filter((s) => s.category === cat.key).sort(
+    (a, b) => a.priority - b.priority
+  )[0];
+  return match;
+}).filter(Boolean);
