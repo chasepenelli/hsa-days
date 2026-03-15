@@ -12,7 +12,6 @@ import { getWeightBracket, getDosageForWeight } from "@/lib/resources/personaliz
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import SupplementStarterCard from "./SupplementStarterCard";
 import SupplementCard from "./SupplementCard";
-import SectionDivider from "./SectionDivider";
 
 interface SupplementsPageClientProps {
   profile: DogProfile | null;
@@ -42,6 +41,10 @@ export default function SupplementsPageClient({
   const [usageCounts, setUsageCounts] =
     useState<Record<string, number>>(initialUsageCounts);
 
+  // Active segment
+  const [activeSegment, setActiveSegment] = useState<string>("start-here");
+  const segmentScrollRef = useRef<HTMLDivElement>(null);
+
   const userBracket: WeightBracket | null = profile?.weightLbs
     ? getWeightBracket(profile.weightLbs)
     : null;
@@ -51,6 +54,7 @@ export default function SupplementsPageClient({
   // Build a lookup from category key -> category object
   const categoryMap = new Map(supplementCategories.map((c) => [c.key, c]));
 
+  // ---------- Tracking logic (preserved exactly) ----------
   const handleToggle = useCallback(
     async (slug: string) => {
       if (!isAuthenticated) return;
@@ -109,200 +113,313 @@ export default function SupplementsPageClient({
     [isAuthenticated, activeSlugs]
   );
 
-  // Group supplements by category for the full library
-  const supplementsByCategory = supplementCategories
-    .map((cat) => ({
-      category: cat,
-      items: supplements.filter((s) => s.category === cat.key),
-    }))
-    .filter((group) => group.items.length > 0);
+  // ---------- Derived data ----------
+  const trackedCount = activeSlugs.size;
+  const totalSupplements = supplements.length;
+  const categoryCount = supplementCategories.length;
+
+  // Supplements filtered by active category
+  const activeCategoryObj =
+    activeSegment !== "start-here"
+      ? categoryMap.get(activeSegment) ?? null
+      : null;
+  const filteredSupplements =
+    activeSegment !== "start-here"
+      ? supplements.filter((s) => s.category === activeSegment)
+      : [];
+
+  // Segments definition
+  const segments: { key: string; label: string; color: string }[] = [
+    { key: "start-here", label: "Start Here", color: "var(--sage)" },
+    ...supplementCategories.map((cat) => ({
+      key: cat.key,
+      label: cat.label,
+      color: cat.accentColor,
+    })),
+  ];
+
+  // Profile pills
+  const profilePills: { label: string; color: string }[] = [];
+  if (profile?.weightLbs) {
+    profilePills.push({
+      label: `${profile.weightLbs} lbs`,
+      color: "var(--sage)",
+    });
+  }
+  if (profile?.breed) {
+    profilePills.push({ label: profile.breed, color: "var(--gold)" });
+  }
+  if (profile?.cancerStage) {
+    profilePills.push({
+      label: `Stage ${profile.cancerStage}`,
+      color: "var(--terracotta)",
+    });
+  }
 
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-16"
+      className="min-h-screen pb-24"
       style={{ background: "var(--warm-white)" }}
     >
-      {/* ═══ Section 1: Hero ═══ */}
+      {/* ═══ Compact Header (~130px) ═══ */}
       <div
-        className="pt-24 pb-14 px-6 relative overflow-hidden reveal"
+        className="pt-20 pb-4 px-6"
         style={{
-          background:
-            "linear-gradient(160deg, rgba(91,123,94,0.08) 0%, rgba(196,162,101,0.04) 40%, rgba(245,240,234,0.5) 70%, var(--warm-white) 100%)",
+          background: "var(--warm-white)",
           borderBottom: "1px solid var(--border)",
         }}
       >
-        {/* Ambient glow */}
-        <div
-          className="absolute top-0 right-0 w-64 h-64 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(circle at 70% 30%, rgba(91,123,94,0.07) 0%, transparent 70%)",
-          }}
-        />
-
         <div className="max-w-[800px] mx-auto">
-          {/* Breadcrumb */}
-          <div className="inline-flex items-center gap-2 mb-4">
+          {/* Top row: back arrow + title */}
+          <div className="flex items-center gap-3 mb-1">
             <Link
               href="/resources"
-              className="font-semibold uppercase tracking-[0.14em] no-underline hover:opacity-70 transition-opacity"
-              style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
+              className="flex items-center justify-center flex-shrink-0 no-underline"
+              style={{ width: 44, height: 44 }}
+              aria-label="Back to Resources"
             >
-              Resources
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--sage)"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
             </Link>
-            <span
-              className="w-px h-3"
-              style={{ background: "var(--border-strong)" }}
-            />
-            <span
-              className="font-semibold uppercase tracking-[0.14em]"
+            <h1
+              className="font-serif font-semibold"
               style={{
-                fontSize: "var(--text-label)",
-                color: "var(--text-muted)",
+                fontSize: "var(--text-h2)",
+                color: "var(--text)",
+                lineHeight: 1.2,
               }}
             >
-              Supplements
-            </span>
+              {dogName ? `${dogName}\u2019s Supplements` : "Supplement Plan"}
+            </h1>
           </div>
-
-          {/* Title */}
-          <h1
-            className="font-serif font-semibold mb-3"
-            style={{
-              fontSize: "var(--text-title)",
-              color: "var(--text)",
-              lineHeight: 1.2,
-            }}
-          >
-            {dogName ? `${dogName}\u2019s Supplement Plan` : "Your Supplement Plan"}
-          </h1>
 
           {/* Subtitle */}
           <p
-            className="leading-relaxed max-w-[560px] mb-3"
+            className="ml-[56px]"
             style={{
-              fontSize: "var(--text-body)",
+              fontSize: "var(--text-body-sm)",
               color: "var(--text-muted)",
             }}
           >
-            The supplements that HSA families and integrative vets reach for most
-            often.
+            {totalSupplements} supplements across {categoryCount} categories
           </p>
 
-          {/* Inline vet note */}
+          {/* Profile pills */}
+          {profilePills.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2.5 ml-[56px]">
+              {profilePills.map((pill) => (
+                <span
+                  key={pill.label}
+                  className="inline-flex items-center rounded-full px-2.5 py-0.5 font-medium"
+                  style={{
+                    fontSize: "var(--text-fine)",
+                    background: `color-mix(in srgb, ${pill.color} 12%, transparent)`,
+                    color: pill.color,
+                  }}
+                >
+                  {pill.label}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Vet note */}
           <p
+            className="mt-2 ml-[56px]"
             style={{
               fontSize: "var(--text-body-sm)",
               color: "var(--terracotta)",
             }}
           >
-            Always discuss new supplements with your vet.
+            Always discuss with your vet.
           </p>
         </div>
       </div>
 
-      {/* ═══ Page body ═══ */}
+      {/* ═══ Sticky Segmented Control ═══ */}
+      <div
+        className="sticky z-20"
+        style={{
+          top: 56,
+          background: "rgba(250,248,245,0.96)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        <div
+          ref={segmentScrollRef}
+          className="segment-scroll px-4 py-3 flex gap-2"
+          style={{
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {segments.map((seg) => {
+            const isActive = activeSegment === seg.key;
+            return (
+              <button
+                key={seg.key}
+                type="button"
+                onClick={() => setActiveSegment(seg.key)}
+                className="flex-shrink-0 cursor-pointer"
+                style={{
+                  minHeight: 44,
+                  padding: "8px 16px",
+                  borderRadius: 9999,
+                  fontSize: "var(--text-body-sm)",
+                  fontWeight: isActive ? 600 : 400,
+                  background: isActive ? seg.color : "white",
+                  color: isActive ? "white" : "var(--text-muted)",
+                  border: isActive ? "none" : "1.5px solid var(--border)",
+                  boxShadow: isActive
+                    ? "0 2px 8px rgba(0,0,0,0.08)"
+                    : "none",
+                  transition: "all 200ms ease",
+                  whiteSpace: "nowrap",
+                }}
+                onMouseDown={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(0.95)";
+                }}
+                onMouseUp={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(1)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(1)";
+                }}
+                onTouchStart={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(0.95)";
+                }}
+                onTouchEnd={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.transform =
+                    "scale(1)";
+                }}
+              >
+                {seg.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ═══ Content Area ═══ */}
       <div className="px-6">
         <div className="max-w-[800px] mx-auto">
+          <div
+            key={activeSegment}
+            style={{ animation: "scaleIn 0.3s ease-out" }}
+          >
+            {/* ═══ "Start Here" View ═══ */}
+            {activeSegment === "start-here" && (
+              <section className="mt-6 reveal">
+                <div className="space-y-4">
+                  {starterSupplements.map((supp) => {
+                    const cat = categoryMap.get(supp.category);
+                    const doseInfo = getDosageForWeight(
+                      supp.dosage,
+                      profile?.weightLbs ?? null
+                    );
 
-          {/* ═══ Section 2: Start Here ═══ */}
-          <section className="mt-10 mb-12 reveal">
-            <p
-              className="font-semibold uppercase tracking-[0.14em] mb-1"
-              style={{ fontSize: "var(--text-label)", color: "var(--sage)" }}
-            >
-              Start Here
-            </p>
-            <h2
-              className="font-serif font-semibold mb-6"
-              style={{ fontSize: "var(--text-h2)", color: "var(--text)" }}
-            >
-              The essentials most families begin with
-            </h2>
+                    return (
+                      <SupplementStarterCard
+                        key={supp.slug}
+                        supplement={supp}
+                        categoryLabel={cat?.label ?? supp.category}
+                        categoryColor={cat?.accentColor ?? "var(--sage)"}
+                        personalDose={doseInfo?.dose ?? null}
+                        dogName={dogName}
+                        userBracket={userBracket}
+                        breed={profile?.breed ?? null}
+                        isTracked={activeSlugs.has(supp.slug)}
+                        usageCount={usageCounts[supp.slug] ?? 0}
+                        isAuthenticated={isAuthenticated}
+                        onToggleTrack={handleToggle}
+                      />
+                    );
+                  })}
+                </div>
 
-            <div className="space-y-4">
-              {starterSupplements.map((supp) => {
-                const cat = categoryMap.get(supp.category);
-                const doseInfo = getDosageForWeight(
-                  supp.dosage,
-                  profile?.weightLbs ?? null
-                );
+                <p
+                  className="mt-6 text-center leading-relaxed"
+                  style={{
+                    fontSize: "var(--text-body-sm)",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  Tap a category above to explore all {totalSupplements}{" "}
+                  supplements.
+                </p>
+              </section>
+            )}
 
-                return (
-                  <SupplementStarterCard
-                    key={supp.slug}
-                    supplement={supp}
-                    categoryLabel={cat?.label ?? supp.category}
-                    categoryColor={cat?.accentColor ?? "var(--sage)"}
-                    personalDose={doseInfo?.dose ?? null}
-                  />
-                );
-              })}
-            </div>
-
-            <p
-              className="mt-5 leading-relaxed"
-              style={{
-                fontSize: "var(--text-body-sm)",
-                color: "var(--text-muted)",
-              }}
-            >
-              These are the most commonly used and most studied.{" "}
-              {dogName
-                ? `Your vet may recommend others based on ${dogName}\u2019s specific situation.`
-                : "Your vet may recommend others based on your dog\u2019s specific situation."}
-            </p>
-          </section>
-
-          {/* ═══ Section 3: Full Library ═══ */}
-          <SectionDivider />
-
-          <section className="reveal">
-            <p
-              className="font-semibold uppercase tracking-[0.14em] mb-1"
-              style={{
-                fontSize: "var(--text-label)",
-                color: "var(--text-muted)",
-              }}
-            >
-              All Supplements
-            </p>
-            <h2
-              className="font-serif font-semibold mb-8"
-              style={{ fontSize: "var(--text-h2)", color: "var(--text)" }}
-            >
-              Full supplement library
-            </h2>
-
-            {supplementsByCategory.map((group) => (
-              <div key={group.category.key} className="mb-12 reveal">
-                {/* Category header */}
-                <div className="mb-4">
-                  <span
-                    className="font-serif font-semibold"
+            {/* ═══ Category View ═══ */}
+            {activeSegment !== "start-here" && activeCategoryObj && (
+              <section className="mt-6 reveal">
+                {/* Category banner card */}
+                <div
+                  className="rounded-2xl px-5 py-5 mb-6"
+                  style={{
+                    background: `color-mix(in srgb, ${activeCategoryObj.accentColor} 8%, white)`,
+                    border: `1px solid color-mix(in srgb, ${activeCategoryObj.accentColor} 15%, transparent)`,
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <div
+                      className="w-2.5 h-2.5 rounded-full"
+                      style={{
+                        background: activeCategoryObj.accentColor,
+                      }}
+                    />
+                    <h2
+                      className="font-serif font-semibold"
+                      style={{
+                        fontSize: "var(--text-h3)",
+                        color: "var(--text)",
+                      }}
+                    >
+                      {activeCategoryObj.label}
+                    </h2>
+                    <span
+                      style={{
+                        fontSize: "var(--text-body-sm)",
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      &middot; {filteredSupplements.length}{" "}
+                      {filteredSupplements.length === 1
+                        ? "supplement"
+                        : "supplements"}
+                    </span>
+                  </div>
+                  <p
+                    className="leading-relaxed"
                     style={{
-                      fontSize: "var(--text-h3)",
-                      color: "var(--text)",
-                    }}
-                  >
-                    {group.category.label}
-                  </span>
-                  <span
-                    className="ml-2"
-                    style={{
-                      fontSize: "var(--text-body-sm)",
+                      fontSize: "var(--text-body)",
                       color: "var(--text-muted)",
                     }}
                   >
-                    &middot; {group.items.length}{" "}
-                    {group.items.length === 1 ? "supplement" : "supplements"}
-                  </span>
+                    {activeCategoryObj.description}
+                  </p>
                 </div>
 
-                {/* Cards */}
+                {/* Supplement cards */}
                 <div className="space-y-4">
-                  {group.items.map((supplement) => {
+                  {filteredSupplements.map((supplement) => {
                     const doseInfo = getDosageForWeight(
                       supplement.dosage,
                       profile?.weightLbs ?? null
@@ -315,7 +432,7 @@ export default function SupplementsPageClient({
                         userBracket={userBracket}
                         userDose={doseInfo?.dose ?? null}
                         breed={profile?.breed ?? null}
-                        accentColor={group.category.accentColor}
+                        accentColor={activeCategoryObj.accentColor}
                         isTracked={activeSlugs.has(supplement.slug)}
                         usageCount={usageCounts[supplement.slug] ?? 0}
                         isAuthenticated={isAuthenticated}
@@ -325,42 +442,62 @@ export default function SupplementsPageClient({
                     );
                   })}
                 </div>
-              </div>
-            ))}
-          </section>
-
-          {/* ═══ Section 4: Print / Share ═══ */}
-          <div className="text-center mt-10 pt-8 reveal">
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl font-medium cursor-pointer"
-              style={{
-                fontSize: "var(--text-body)",
-                background: "var(--sage)",
-                color: "#fff",
-                border: "none",
-              }}
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="6 9 6 2 18 2 18 9" />
-                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                <rect x="6" y="14" width="12" height="8" />
-              </svg>
-              Bring this list to your vet
-            </button>
+              </section>
+            )}
           </div>
         </div>
       </div>
+
+      {/* ═══ Floating "Vet List" Button ═══ */}
+      <button
+        type="button"
+        onClick={() => window.print()}
+        className="fixed z-30 rounded-full flex items-center gap-2 cursor-pointer"
+        style={{
+          bottom: "calc(24px + env(safe-area-inset-bottom))",
+          right: 24,
+          padding: "14px 20px",
+          background: "var(--sage)",
+          color: "#fff",
+          border: "none",
+          boxShadow: "0 4px 16px rgba(91,123,94,0.35)",
+          fontSize: "var(--text-body-sm)",
+          fontWeight: 600,
+        }}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="6 9 6 2 18 2 18 9" />
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+          <rect x="6" y="14" width="12" height="8" />
+        </svg>
+        Vet List
+        {/* Tracked count badge */}
+        {trackedCount > 0 && (
+          <span
+            className="absolute flex items-center justify-center rounded-full font-semibold"
+            style={{
+              top: -6,
+              right: -6,
+              width: 22,
+              height: 22,
+              fontSize: 11,
+              background: "var(--terracotta)",
+              color: "white",
+            }}
+          >
+            {trackedCount}
+          </span>
+        )}
+      </button>
     </div>
   );
 }
