@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import type { FoodItem } from "@/lib/resources/types";
 
@@ -15,6 +15,9 @@ export default function FoodDetailSheet({
   breedNote,
   onClose,
 }: FoodDetailSheetProps) {
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -23,13 +26,24 @@ export default function FoodDetailSheet({
   );
 
   useEffect(() => {
-    if (item) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    }
+    if (!item) return;
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    // Focus the close button when sheet opens
+    requestAnimationFrame(() => {
+      closeRef.current?.focus();
+    });
+
+    // Make background content inert
+    const main = document.getElementById("main-content");
+    if (main) main.setAttribute("inert", "");
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      if (main) main.removeAttribute("inert");
     };
   }, [item, handleKeyDown]);
 
@@ -44,6 +58,10 @@ export default function FoodDetailSheet({
           ? "Palliative"
           : null;
 
+  const prefersReducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   return (
     <>
       {/* Backdrop */}
@@ -54,7 +72,9 @@ export default function FoodDetailSheet({
           background: "rgba(0,0,0,0.3)",
           backdropFilter: "blur(4px)",
           WebkitBackdropFilter: "blur(4px)",
-          animation: "backdropFadeIn 0.2s ease-out",
+          animation: prefersReducedMotion
+            ? "none"
+            : "backdropFadeIn 0.2s ease-out",
         }}
         onClick={onClose}
         aria-hidden="true"
@@ -62,6 +82,7 @@ export default function FoodDetailSheet({
 
       {/* Sheet */}
       <div
+        ref={sheetRef}
         role="dialog"
         aria-modal="true"
         aria-label={`${item.name} details`}
@@ -73,10 +94,12 @@ export default function FoodDetailSheet({
           maxHeight: "70vh",
           overflowY: "auto",
           paddingBottom: "calc(24px + env(safe-area-inset-bottom))",
-          animation: "sheetSlideUp 0.3s var(--ease-out-expo)",
+          animation: prefersReducedMotion
+            ? "none"
+            : "sheetSlideUp 0.3s var(--ease-out-expo)",
         }}
       >
-        {/* Drag handle */}
+        {/* Drag handle (decorative) */}
         <div className="flex justify-center">
           <div
             className="rounded-full my-3"
@@ -90,6 +113,7 @@ export default function FoodDetailSheet({
 
         {/* Close button */}
         <button
+          ref={closeRef}
           type="button"
           onClick={onClose}
           className="absolute flex items-center justify-center"
@@ -117,22 +141,23 @@ export default function FoodDetailSheet({
 
         {/* Content */}
         <div className="px-6 pb-6">
-          {/* Illustration */}
+          {/* Illustration — rounded square, not circle */}
           <div className="flex justify-center mt-2 mb-4">
             <div
               className="relative overflow-hidden"
               style={{
                 width: 160,
                 height: 160,
-                borderRadius: "50%",
-                background: "var(--cream)",
+                borderRadius: 20,
+                background:
+                  "linear-gradient(135deg, rgba(91,123,94,0.04) 0%, rgba(245,240,234,0.4) 100%)",
               }}
             >
               <Image
                 src={`/illustrations/food/${item.icon}`}
                 alt={item.name}
                 fill
-                className="object-contain p-4"
+                className="object-contain p-3"
                 sizes="160px"
               />
             </div>

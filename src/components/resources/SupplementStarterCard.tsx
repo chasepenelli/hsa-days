@@ -96,6 +96,9 @@ export default function SupplementStarterCard({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-expanded={expanded}
       className="rounded-2xl cursor-pointer"
       style={{
         background: "#fff",
@@ -103,6 +106,12 @@ export default function SupplementStarterCard({
         boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
       }}
       onClick={() => setExpanded(!expanded)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setExpanded(!expanded);
+        }
+      }}
     >
       <div className="px-5 py-5">
         {/* Top row: category pill + evidence badge */}
@@ -232,8 +241,10 @@ export default function SupplementStarterCard({
             )}
           </button>
         ) : (
-          <div
-            className="w-full flex items-center justify-center gap-2 rounded-xl mt-3"
+          <a
+            href="/login"
+            onClick={(e) => e.stopPropagation()}
+            className="w-full flex items-center justify-center gap-2 rounded-xl mt-3 no-underline transition-colors hover:border-sage-light"
             style={{
               minHeight: 48,
               padding: "12px 20px",
@@ -257,7 +268,7 @@ export default function SupplementStarterCard({
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
             Sign in to track
-          </div>
+          </a>
         )}
       </div>
 

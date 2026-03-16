@@ -184,17 +184,6 @@ input, textarea, select {
   }
 }
 
-@keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes gentlePulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.03); }
@@ -277,6 +266,15 @@ input, textarea, select {
   .animate-check-in,
   .animate-ink-write {
     animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Bottom sheet and segment transition animations */
+  [style*="sheetSlideUp"],
+  [style*="backdropFadeIn"],
+  [style*="scaleIn"] {
+    animation: none !important;
     opacity: 1;
     transform: none;
   }

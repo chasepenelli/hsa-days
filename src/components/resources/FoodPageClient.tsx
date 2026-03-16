@@ -152,7 +152,7 @@ export default function FoodPageClient({
             onClick={() => setActiveMode("recommended")}
             className="flex flex-col items-center justify-center rounded-xl cursor-pointer"
             style={{
-              minHeight: 72,
+              minHeight: 56,
               background:
                 activeMode === "recommended"
                   ? "rgba(91,123,94,0.08)"
@@ -211,7 +211,7 @@ export default function FoodPageClient({
             onClick={() => setActiveMode("avoid")}
             className="flex flex-col items-center justify-center rounded-xl cursor-pointer"
             style={{
-              minHeight: 72,
+              minHeight: 56,
               background:
                 activeMode === "avoid"
                   ? "rgba(212,133,106,0.08)"
@@ -269,7 +269,7 @@ export default function FoodPageClient({
             onClick={() => setActiveMode("appetite")}
             className="flex flex-col items-center justify-center rounded-xl cursor-pointer"
             style={{
-              minHeight: 72,
+              minHeight: 56,
               background:
                 activeMode === "appetite"
                   ? "rgba(196,162,101,0.08)"
@@ -363,7 +363,7 @@ export default function FoodPageClient({
                       }
                       className="w-full text-left flex items-center gap-3"
                       style={{
-                        minHeight: 72,
+                        minHeight: 56,
                         padding: "12px 0",
                         background: "none",
                         border: "none",

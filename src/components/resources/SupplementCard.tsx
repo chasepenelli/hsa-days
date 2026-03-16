@@ -214,8 +214,9 @@ export default function SupplementCard({
                   )}
                 </button>
               ) : (
-                <span
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                <a
+                  href="/login"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full no-underline transition-colors hover:border-sage-light"
                   style={{
                     fontSize: "var(--text-body-sm)",
                     background: "rgba(0,0,0,0.03)",
@@ -237,7 +238,7 @@ export default function SupplementCard({
                     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                   </svg>
                   Sign in to track
-                </span>
+                </a>
               )}
               {usageCount > 0 && (
                 <span
