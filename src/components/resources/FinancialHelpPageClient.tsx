@@ -389,7 +389,7 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
               width={280}
               height={160}
               className="mx-auto"
-              style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+              style={{ objectFit: "contain" }}
             />
           </div>
 

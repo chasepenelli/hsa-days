@@ -186,7 +186,6 @@ export default function EmergencyPageClient({
                 height={120}
                 style={{
                   objectFit: "contain",
-                  mixBlendMode: "multiply",
                 }}
               />
             </div>

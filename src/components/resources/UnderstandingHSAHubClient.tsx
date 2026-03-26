@@ -105,7 +105,7 @@ export default function UnderstandingHSAHubClient() {
               width={1100}
               height={200}
               className="w-full object-cover"
-              style={{ maxHeight: 200, mixBlendMode: "multiply" }}
+              style={{ maxHeight: 200 }}
               priority
             />
           </div>
