@@ -9,7 +9,7 @@ import ResourcesHubClient from "@/components/resources/ResourcesHubClient";
 export const metadata: Metadata = {
   title: "Resources",
   description:
-    "Practical guides for HSA dog owners — supplements, food & nutrition, house-proofing, and cancer diet science.",
+    "Practical guides for HSA dog owners — supplements, nutrition, house-proofing, disease education, emergency preparedness, and financial help.",
 };
 
 // Map supplement category keys to display labels and colors

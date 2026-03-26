@@ -168,8 +168,9 @@ export default function ResourcesHubClient({
             className="text-[1.02rem] leading-relaxed max-w-[560px] mb-4"
             style={{ color: "var(--text-muted)" }}
           >
-            Supplements, nutrition, house-proofing, and diet science —
-            researched and organized so you can focus on your dog.
+            Supplements, nutrition, house-proofing, disease education,
+            emergency preparedness, and financial help — researched and
+            organized so you can focus on your dog.
           </p>
           <Link
             href="/resources/install"
@@ -556,6 +557,178 @@ export default function ResourcesHubClient({
                 text="See full room-by-room checklist"
                 href="/resources/home"
                 color="var(--terracotta)"
+              />
+            </Link>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Understanding HSA Panel ═══ */}
+          <section className="reveal">
+            <Link
+              href="/resources/understanding-hsa"
+              className="group block rounded-2xl p-6 no-underline transition-all duration-300"
+              style={{
+                background: "white",
+                borderLeft: "3px solid var(--sage-dark, #4A6B4D)",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 12px 32px rgba(91,123,94,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+              }}
+            >
+              <div className="flex-1 min-w-0">
+                <div
+                  className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                  style={{ color: "var(--sage)" }}
+                >
+                  Learn
+                </div>
+                <h2
+                  className="font-serif text-[1.25rem] font-semibold mb-3"
+                  style={{ color: "var(--text)", lineHeight: 1.3 }}
+                >
+                  Understanding HSA
+                </h2>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  <StatBadge text="Disease overview" />
+                  <StatBadge text="Treatment options" />
+                  <StatBadge text="Breed risks" />
+                  <StatBadge text="Clinical trials" />
+                </div>
+              </div>
+              <p
+                className="text-[0.88rem] leading-relaxed mb-1"
+                style={{ color: "var(--text-muted)" }}
+              >
+                What hemangiosarcoma is, how it&apos;s diagnosed, treatment paths with
+                costs, breed-specific risks, current research breakthroughs, and
+                the questions to ask your oncologist.
+              </p>
+              <PanelCTA
+                text="Read the full guide"
+                href="/resources/understanding-hsa"
+                color="var(--sage)"
+              />
+            </Link>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Emergency Preparedness Panel ═══ */}
+          <section className="reveal">
+            <Link
+              href="/resources/emergency"
+              className="group block rounded-2xl p-6 no-underline transition-all duration-300"
+              style={{
+                background: "white",
+                borderLeft: "3px solid var(--terracotta)",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 12px 32px rgba(212,133,106,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+              }}
+            >
+              <div className="flex-1 min-w-0">
+                <div
+                  className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                  style={{ color: "var(--terracotta)" }}
+                >
+                  Safety
+                </div>
+                <h2
+                  className="font-serif text-[1.25rem] font-semibold mb-3"
+                  style={{ color: "var(--text)", lineHeight: 1.3 }}
+                >
+                  Emergency Preparedness
+                </h2>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  <StatBadge text="Gum color guide" />
+                  <StatBadge text="Emergency scenarios" />
+                  <StatBadge text="Emergency kit" />
+                </div>
+              </div>
+              <p
+                className="text-[0.88rem] leading-relaxed mb-1"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Know the signs of an HSA emergency, build your emergency kit,
+                and have the critical conversations with your vet before you need
+                the answers.
+              </p>
+              <PanelCTA
+                text="Be prepared"
+                href="/resources/emergency"
+                color="var(--terracotta)"
+              />
+            </Link>
+          </section>
+
+          <SectionDivider />
+
+          {/* ═══ Financial Help Panel ═══ */}
+          <section className="reveal">
+            <Link
+              href="/resources/financial-help"
+              className="group block rounded-2xl p-6 no-underline transition-all duration-300"
+              style={{
+                background: "white",
+                borderLeft: "3px solid var(--gold)",
+                boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-3px)";
+                e.currentTarget.style.boxShadow =
+                  "0 12px 32px rgba(196,162,101,0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+              }}
+            >
+              <div className="flex-1 min-w-0">
+                <div
+                  className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                  style={{ color: "var(--gold-text)" }}
+                >
+                  Support
+                </div>
+                <h2
+                  className="font-serif text-[1.25rem] font-semibold mb-3"
+                  style={{ color: "var(--text)", lineHeight: 1.3 }}
+                >
+                  Financial Help
+                </h2>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  <StatBadge text="7 grant programs" />
+                  <StatBadge text="2 financing options" />
+                  <StatBadge text="Application tips" />
+                </div>
+              </div>
+              <p
+                className="text-[0.88rem] leading-relaxed mb-1"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Grants, financing, and assistance programs to help cover HSA
+                treatment costs. Nobody should have to give up on their dog
+                because they can&apos;t afford care.
+              </p>
+              <PanelCTA
+                text="Find help"
+                href="/resources/financial-help"
+                color="var(--gold-text)"
               />
             </Link>
           </section>

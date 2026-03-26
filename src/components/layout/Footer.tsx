@@ -58,6 +58,24 @@ export function Footer() {
               Resources
             </Link>
             <Link
+              href="/resources/understanding-hsa"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Understanding HSA
+            </Link>
+            <Link
+              href="/resources/emergency"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Emergency Guide
+            </Link>
+            <Link
+              href="/resources/financial-help"
+              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Financial Help
+            </Link>
+            <Link
               href="/order"
               className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
