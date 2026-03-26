@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import SectionDivider from "./SectionDivider";
 
@@ -50,11 +51,19 @@ function OrgCard({ org }: { org: Props["orgs"][0] }) {
       style={{
         background: "white",
         border: "1px solid var(--border)",
-        borderLeft: `4px solid ${org.accentColor}`,
         boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
       }}
     >
-      <div className="px-6 py-5">
+      {/* Top color strip */}
+      <div
+        style={{
+          height: 4,
+          background: org.accentColor,
+          borderRadius: "16px 16px 0 0",
+        }}
+      />
+
+      <div className="p-6">
         {/* Name + focus badge */}
         <div className="flex flex-wrap items-start gap-3 mb-3">
           <h3
@@ -372,6 +381,18 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
             {intro.description}
           </p>
 
+          {/* Hero illustration */}
+          <div className="reveal flex justify-center mb-8">
+            <Image
+              src="/illustrations/resources/financial-hero.png"
+              alt=""
+              width={280}
+              height={160}
+              className="mx-auto"
+              style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+            />
+          </div>
+
           {/* Important note callout */}
           <div
             className="reveal rounded-2xl px-5 py-4"
@@ -452,19 +473,37 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
             })}
           </div>
 
-          {/* ═══ Grants Section ═══ */}
-          {showGrantSection && (
-            <section className="mb-10">
+        </div>
+      </div>
+
+      {/* ═══ Grants Section (full-bleed sage tint) ═══ */}
+      {showGrantSection && (
+        <div
+          style={{ background: "rgba(91, 123, 94, 0.04)" }}
+          className="px-6 py-10"
+        >
+          <div className="max-w-[800px] mx-auto">
+            <section>
               {showBothSections && (
-                <h2
-                  className="reveal font-serif font-semibold mb-5"
-                  style={{
-                    fontSize: "var(--text-h3)",
-                    color: "var(--text)",
-                  }}
-                >
-                  Grants &amp; Direct Assistance
-                </h2>
+                <div className="reveal flex items-center justify-between gap-4 mb-5">
+                  <h2
+                    className="font-serif font-semibold"
+                    style={{
+                      fontSize: "var(--text-h3)",
+                      color: "var(--text)",
+                    }}
+                  >
+                    Grants &amp; Direct Assistance
+                  </h2>
+                  <Image
+                    src="/illustrations/resources/financial-grants.png"
+                    alt=""
+                    width={80}
+                    height={80}
+                    className="hidden sm:block flex-shrink-0"
+                    style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+                  />
+                </div>
               )}
               <div className="space-y-5">
                 {grantOrgs.map((org) => (
@@ -472,21 +511,32 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                 ))}
               </div>
             </section>
-          )}
+          </div>
+        </div>
+      )}
 
-          {/* Separator between grant and financing sections */}
-          {showBothSections && (
+      {/* Separator between grant and financing sections */}
+      {showBothSections && (
+        <div className="px-6">
+          <div className="max-w-[800px] mx-auto">
             <div
               className="reveal my-10 h-px"
               style={{
                 background: "linear-gradient(to right, transparent, var(--border), transparent)",
               }}
             />
-          )}
+          </div>
+        </div>
+      )}
 
-          {/* ═══ Financing Section ═══ */}
-          {showFinancingSection && (
-            <section className="mb-10">
+      {/* ═══ Financing Section (full-bleed gold tint) ═══ */}
+      {showFinancingSection && (
+        <div
+          style={{ background: "rgba(196, 162, 101, 0.04)" }}
+          className="px-6 py-10"
+        >
+          <div className="max-w-[800px] mx-auto">
+            <section>
               {showBothSections && (
                 <h2
                   className="reveal font-serif font-semibold mb-5"
@@ -504,10 +554,14 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                 ))}
               </div>
             </section>
-          )}
+          </div>
+        </div>
+      )}
 
-          {/* Empty state */}
-          {filteredOrgs.length === 0 && (
+      {/* Empty state */}
+      {filteredOrgs.length === 0 && (
+        <div className="px-6">
+          <div className="max-w-[800px] mx-auto">
             <div
               className="reveal text-center py-16 rounded-2xl"
               style={{
@@ -524,22 +578,46 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                 No organizations match this filter.
               </p>
             </div>
-          )}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ Content resumed ═══ */}
+      <div className="px-6">
+        <div className="max-w-[800px] mx-auto">
 
           {/* ═══ Section Divider ═══ */}
           <SectionDivider />
 
-          {/* ═══ Application Tips ═══ */}
+          {/* ═══ Application Tips (cream tint full-bleed) ═══ */}
+        </div>
+      </div>
+
+      <div
+        style={{ background: "rgba(245, 240, 234, 0.5)" }}
+        className="px-6 py-10"
+      >
+        <div className="max-w-[800px] mx-auto">
           <section className="mb-12">
-            <h2
-              className="reveal font-serif font-semibold mb-2"
-              style={{
-                fontSize: "clamp(1.3rem, 3vw, 1.75rem)",
-                color: "var(--text)",
-              }}
-            >
-              How to Navigate the Process
-            </h2>
+            <div className="reveal flex items-center justify-between gap-4 mb-2">
+              <h2
+                className="font-serif font-semibold"
+                style={{
+                  fontSize: "clamp(1.3rem, 3vw, 1.75rem)",
+                  color: "var(--text)",
+                }}
+              >
+                How to Navigate the Process
+              </h2>
+              <Image
+                src="/illustrations/resources/financial-tips.png"
+                alt=""
+                width={80}
+                height={80}
+                className="hidden sm:block flex-shrink-0"
+                style={{ objectFit: "contain", mixBlendMode: "multiply" }}
+              />
+            </div>
             <p
               className="reveal mb-8 leading-relaxed"
               style={{
@@ -599,10 +677,16 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
               ))}
             </div>
           </section>
+        </div>
+      </div>
+
+      {/* ═══ Bottom content ═══ */}
+      <div className="px-6">
+        <div className="max-w-[800px] mx-auto">
 
           {/* ═══ Bottom Callout ═══ */}
           <div
-            className="reveal rounded-2xl px-6 py-7 mb-12 text-center"
+            className="reveal rounded-2xl px-6 py-7 mb-12 text-center mt-10"
             style={{
               background: "color-mix(in srgb, var(--terracotta) 7%, white)",
               border: "1px solid color-mix(in srgb, var(--terracotta) 16%, transparent)",

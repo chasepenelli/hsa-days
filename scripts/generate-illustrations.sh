@@ -326,6 +326,37 @@ ILLUSTRATIONS=(
   'order-lifestyle-complete|order|16:9|Banner: A completed journal displayed on a shelf or mantle like a treasured keepsake, alongside a framed photo and a small plant. Warm, nostalgic feeling. The journal is the completed HSA Days book. Panoramic.'
 
   'order-why-physical|order|3:4|A pair of hands holding a closed journal against their chest, hugging it close. Emotional, intimate. Pen-and-ink with warm sage and peach watercolor. Represents the tactile, emotional value of a physical journal vs digital. Portrait orientation.'
+
+  # ── Resources ──────────────────────────────────────────────────────────────
+  'hsa-hub-hero|resources|16:9|Banner/header: A warm veterinary scene — a golden-tan Pembroke Welsh Corgi lying on an exam table, a veterinarian gloved hands resting gently on the dog side. Medical equipment softly visible in the background (stethoscope, clipboard). Warm sage and cream tones. The mood is attentive and caring, not alarming. Panoramic format, space on the left for text overlay.'
+
+  'hsa-hub-the-disease|resources|1:1|Icon-scene: An abstract representation of blood vessels — thin, branching ink lines in a loose organic network pattern, with a single dark spot at one branching point suggesting a mass. Translucent watercolor fills in sage green and warm terracotta. No text. Should read as blood vessel biology at a glance. Centered, generous negative space.'
+
+  'hsa-hub-diagnosis|resources|1:1|Icon-scene: A small ultrasound probe or handheld scanner sitting on a soft cloth, with a loose suggestion of a scan image floating nearby — abstract rounded shapes. Pen-and-ink with sage-gray watercolor. Should read as medical imaging or diagnosis. Centered, generous negative space.'
+
+  'hsa-hub-treatment|resources|1:1|Icon-scene: A small medicine bottle with a label (no text) next to a single syringe and a few capsule pills arranged on a cloth. Warm sage and cream watercolor. Represents the idea of treatment options. Centered, generous negative space.'
+
+  'hsa-hub-breed-risks|resources|1:1|Icon-scene: Three dog silhouettes side by side — a Golden Retriever, a German Shepherd, and a Labrador Retriever — rendered as loose ink sketches with very light sage watercolor wash fills. All three dogs facing forward, gently grouped together. Centered, square format.'
+
+  'hsa-hub-research|resources|1:1|Icon-scene: A small microscope viewed from a slight three-quarter angle, with a few loose circular shapes around it suggesting cells or petri dishes. Pen-and-ink with sage and gold watercolor. Represents scientific research and hope. Centered.'
+
+  'hsa-hub-vet-questions|resources|1:1|Icon-scene: Two figures — one seated (the owner) and one standing (the vet in a white coat) — in a loose conversation scene. Both figures are minimal, dot eyes and simple ink lines. A dog sits near the owner feet. Warm sage and tan watercolor. Represents talking to your oncologist. Square format, centered.'
+
+  'emergency-hero|resources|16:9|Banner/header: An urgent but calm composition — a dog first aid bag (soft fabric bag with a cross symbol on it) sitting on a surface, with a dog leash, a small flashlight, and a folded piece of paper nearby. Terracotta and warm cream watercolor. Panoramic. Conveys readiness and preparation without alarm.'
+
+  'emergency-gum-check|resources|1:1|Icon-scene: A gentle close-up of a dog mouth from the side — a human hand with one finger gently lifting the dog lip to reveal the gum area. The ink lines are delicate and the gums are shown in a soft pink wash. Represents the gum color check technique. Warm terracotta and cream tones. Centered, square.'
+
+  'emergency-crisis-scene|resources|1:1|Icon-scene: A corgi lying on its side on a blanket, a human hand resting gently on the dog side in a reassuring gesture. The mood is serious but tender — this represents monitoring a dog in distress. Ink lines delicate, watercolor in muted sage and warm-gray tones. Centered, square.'
+
+  'emergency-kit|resources|1:1|Icon-scene: A small open bag with emergency supplies spilling out neatly — a thermometer, a roll of bandage, a small bottle, and some cotton pads. Pen-and-ink with sage and terracotta watercolor accents. Represents the emergency kit. Centered, square.'
+
+  'emergency-monitoring|resources|1:1|Icon-scene: An owner sitting beside a resting corgi, both looking calm. The owner has a small notebook or phone in hand, suggesting they are logging observations. Warm sage and tan watercolor. Represents daily monitoring practice. Centered, square.'
+
+  'financial-hero|resources|16:9|Banner/header: A warm, community-feeling scene — two pairs of hands joined together (one reaching to help another), with a small dog paw resting on top. Warm sage and gold watercolor. The mood is supportive and hopeful, not desperate. Panoramic format, space for text.'
+
+  'financial-grants|resources|1:1|Icon-scene: A clipboard with a form on it (represented as horizontal squiggle lines, not real text), next to a small envelope and a pen. Pen-and-ink with gold and sage watercolor. Represents the application process. Centered, square.'
+
+  'financial-tips|resources|1:1|Icon-scene: A single lightbulb with a warm golden glow, rendered in pen-and-ink with translucent gold watercolor wash inside the bulb. Small radiating lines around it. Represents practical tips and insights. Centered, square.'
 )
 
 # ── Generate function ────────────────────────────────────────────────────────
