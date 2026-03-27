@@ -1,7 +1,6 @@
 "use client";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { AmbientOrb } from "./AmbientOrb";
 import type {
   Supplement,
@@ -11,7 +10,6 @@ import type {
 } from "@/lib/resources/types";
 import { getWeightBracket, getDosageForWeight } from "@/lib/resources/personalize";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import SupplementStarterCard from "./SupplementStarterCard";
 import SupplementCard from "./SupplementCard";
 
 interface SupplementsPageClientProps {
@@ -41,10 +39,6 @@ export default function SupplementsPageClient({
   );
   const [usageCounts, setUsageCounts] =
     useState<Record<string, number>>(initialUsageCounts);
-
-  // Active segment
-  const [activeSegment, setActiveSegment] = useState<string>("start-here");
-  const segmentScrollRef = useRef<HTMLDivElement>(null);
 
   // Client-side weight calculator for non-authenticated users
   const [localWeight, setLocalWeight] = useState<number | null>(null);
@@ -125,26 +119,6 @@ export default function SupplementsPageClient({
   const totalSupplements = supplements.length;
   const categoryCount = supplementCategories.length;
 
-  // Supplements filtered by active category
-  const activeCategoryObj =
-    activeSegment !== "start-here"
-      ? categoryMap.get(activeSegment) ?? null
-      : null;
-  const filteredSupplements =
-    activeSegment !== "start-here"
-      ? supplements.filter((s) => s.category === activeSegment)
-      : [];
-
-  // Segments definition
-  const segments: { key: string; label: string; color: string }[] = [
-    { key: "start-here", label: "Start Here", color: "var(--sage)" },
-    ...supplementCategories.map((cat) => ({
-      key: cat.key,
-      label: cat.label,
-      color: cat.accentColor,
-    })),
-  ];
-
   // Profile pills
   const profilePills: { label: string; color: string }[] = [];
   if (profile?.weightLbs) {
@@ -211,28 +185,20 @@ export default function SupplementsPageClient({
                 lineHeight: 1.2,
               }}
             >
-              {dogName ? `${dogName}\u2019s Supplements` : "Supplement Plan"}
+              {dogName ? `${dogName}\u2019s Supplements` : "Supplement Guide"}
             </h1>
-            <div className="hidden sm:block flex-shrink-0 ml-4">
-              <Image
-                src="/illustrations/icons/icon-supplement.png"
-                alt=""
-                width={90}
-                height={90}
-                style={{ opacity: 0.85, mixBlendMode: "multiply" }}
-              />
-            </div>
           </div>
 
           {/* Subtitle */}
           <p
-            className="ml-[56px]"
+            className="ml-[56px] leading-relaxed"
             style={{
               fontSize: "var(--text-body)",
               color: "var(--text-muted)",
             }}
           >
-            {totalSupplements} supplements across {categoryCount} categories
+            Research-backed information on {totalSupplements} supplements commonly used
+            for dogs with hemangiosarcoma, organized by category.
           </p>
 
           {/* Profile pills OR weight calculator */}
@@ -372,8 +338,8 @@ export default function SupplementsPageClient({
         </div>
       </div>
 
-      {/* ═══ Sticky Segmented Control ═══ */}
-      <div
+      {/* ═══ Quick-jump category nav ═══ */}
+      <nav
         className="sticky z-20"
         style={{
           top: 56,
@@ -384,132 +350,71 @@ export default function SupplementsPageClient({
         }}
       >
         <div
-          ref={segmentScrollRef}
           className="segment-scroll px-4 py-3 flex gap-2"
           style={{
             overflowX: "auto",
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {segments.map((seg) => {
-            const isActive = activeSegment === seg.key;
-            return (
-              <button
-                key={seg.key}
-                type="button"
-                onClick={() => setActiveSegment(seg.key)}
-                className="flex-shrink-0 cursor-pointer"
-                style={{
-                  minHeight: 44,
-                  padding: "8px 16px",
-                  borderRadius: 9999,
-                  fontSize: "var(--text-body-sm)",
-                  fontWeight: isActive ? 600 : 400,
-                  background: isActive ? seg.color : "white",
-                  color: isActive ? "white" : "var(--text-muted)",
-                  border: isActive ? "none" : "1.5px solid var(--border)",
-                  boxShadow: isActive
-                    ? "0 2px 8px rgba(0,0,0,0.08)"
-                    : "none",
-                  transition: "all 200ms ease",
-                  whiteSpace: "nowrap",
-                }}
-                onMouseDown={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.transform =
-                    "scale(0.95)";
-                }}
-                onMouseUp={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.transform =
-                    "scale(1)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.transform =
-                    "scale(1)";
-                }}
-                onTouchStart={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.transform =
-                    "scale(0.95)";
-                }}
-                onTouchEnd={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.transform =
-                    "scale(1)";
-                }}
-              >
-                {seg.label}
-              </button>
-            );
-          })}
+          {supplementCategories.map((cat) => (
+            <a
+              key={cat.key}
+              href={`#${cat.key}`}
+              className="flex-shrink-0 no-underline"
+              style={{
+                minHeight: 44,
+                padding: "8px 16px",
+                borderRadius: 9999,
+                fontSize: "var(--text-body-sm)",
+                fontWeight: 400,
+                background: "white",
+                color: "var(--text-muted)",
+                border: "1.5px solid var(--border)",
+                transition: "all 200ms ease",
+                whiteSpace: "nowrap",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full inline-block"
+                style={{ background: cat.accentColor }}
+              />
+              {cat.label}
+            </a>
+          ))}
         </div>
-      </div>
+      </nav>
 
-      {/* ═══ Content Area ═══ */}
+      {/* ═══ All Categories as Sections ═══ */}
       <div className="px-6">
         <div className="max-w-[800px] mx-auto">
-          <div
-            key={activeSegment}
-            style={{ animation: "scaleIn 0.3s ease-out" }}
-          >
-            {/* ═══ "Start Here" View ═══ */}
-            {activeSegment === "start-here" && (
-              <section className="mt-6 reveal">
-                <div className="space-y-4">
-                  {starterSupplements.map((supp) => {
-                    const cat = categoryMap.get(supp.category);
-                    const doseInfo = getDosageForWeight(
-                      supp.dosage,
-                      effectiveWeight ?? null
-                    );
+          {supplementCategories.map((cat, catIdx) => {
+            const catSupplements = supplements.filter(
+              (s) => s.category === cat.key
+            );
 
-                    return (
-                      <SupplementStarterCard
-                        key={supp.slug}
-                        supplement={supp}
-                        categoryLabel={cat?.label ?? supp.category}
-                        categoryColor={cat?.accentColor ?? "var(--sage)"}
-                        personalDose={doseInfo?.dose ?? null}
-                        dogName={dogName}
-                        userBracket={userBracket}
-                        breed={profile?.breed ?? null}
-                        isTracked={activeSlugs.has(supp.slug)}
-                        usageCount={usageCounts[supp.slug] ?? 0}
-                        isAuthenticated={isAuthenticated}
-                        onToggleTrack={handleToggle}
-                      />
-                    );
-                  })}
-                </div>
-
-                <p
-                  className="mt-6 text-center leading-relaxed"
-                  style={{
-                    fontSize: "var(--text-body-sm)",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  Tap a category above to explore all {totalSupplements}{" "}
-                  supplements.
-                </p>
-              </section>
-            )}
-
-            {/* ═══ Category View ═══ */}
-            {activeSegment !== "start-here" && activeCategoryObj && (
-              <section className="mt-6 reveal">
-                {/* Category banner card */}
+            return (
+              <section
+                key={cat.key}
+                id={cat.key}
+                className="reveal"
+                style={{
+                  paddingTop: catIdx === 0 ? 24 : 40,
+                  paddingBottom: 16,
+                  scrollMarginTop: 120,
+                }}
+              >
+                {/* Category header */}
                 <div
-                  className="rounded-2xl px-5 py-5 mb-6"
+                  className="rounded-2xl px-5 py-5 mb-5"
                   style={{
-                    background: `color-mix(in srgb, ${activeCategoryObj.accentColor} 8%, white)`,
-                    border: `1px solid color-mix(in srgb, ${activeCategoryObj.accentColor} 15%, transparent)`,
+                    background: `color-mix(in srgb, ${cat.accentColor} 6%, white)`,
+                    borderLeft: `4px solid ${cat.accentColor}`,
                   }}
                 >
                   <div className="flex items-center gap-2 mb-1.5">
-                    <div
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{
-                        background: activeCategoryObj.accentColor,
-                      }}
-                    />
                     <h2
                       className="font-serif font-semibold"
                       style={{
@@ -517,7 +422,7 @@ export default function SupplementsPageClient({
                         color: "var(--text)",
                       }}
                     >
-                      {activeCategoryObj.label}
+                      {cat.label}
                     </h2>
                     <span
                       style={{
@@ -525,8 +430,8 @@ export default function SupplementsPageClient({
                         color: "var(--text-muted)",
                       }}
                     >
-                      &middot; {filteredSupplements.length}{" "}
-                      {filteredSupplements.length === 1
+                      &middot; {catSupplements.length}{" "}
+                      {catSupplements.length === 1
                         ? "supplement"
                         : "supplements"}
                     </span>
@@ -538,13 +443,13 @@ export default function SupplementsPageClient({
                       color: "var(--text-muted)",
                     }}
                   >
-                    {activeCategoryObj.description}
+                    {cat.description}
                   </p>
                 </div>
 
                 {/* Supplement cards */}
                 <div className="space-y-4">
-                  {filteredSupplements.map((supplement) => {
+                  {catSupplements.map((supplement) => {
                     const doseInfo = getDosageForWeight(
                       supplement.dosage,
                       effectiveWeight ?? null
@@ -557,7 +462,7 @@ export default function SupplementsPageClient({
                         userBracket={userBracket}
                         userDose={doseInfo?.dose ?? null}
                         breed={profile?.breed ?? null}
-                        accentColor={activeCategoryObj.accentColor}
+                        accentColor={cat.accentColor}
                         isTracked={activeSlugs.has(supplement.slug)}
                         usageCount={usageCounts[supplement.slug] ?? 0}
                         isAuthenticated={isAuthenticated}
@@ -567,9 +472,19 @@ export default function SupplementsPageClient({
                     );
                   })}
                 </div>
+
+                {/* Section divider */}
+                {catIdx < supplementCategories.length - 1 && (
+                  <div
+                    className="mt-8"
+                    style={{
+                      borderBottom: "1px solid var(--border)",
+                    }}
+                  />
+                )}
               </section>
-            )}
-          </div>
+            );
+          })}
         </div>
       </div>
 
