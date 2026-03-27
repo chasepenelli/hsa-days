@@ -27,6 +27,8 @@ ONLY=""
 CATEGORY=""
 CUSTOM_PROMPT=""
 DRY_RUN=false
+REMBG="/Users/home/Library/Python/3.13/bin/rembg"
+USE_REMBG=false
 
 # ── Parse flags ──────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
@@ -55,6 +57,10 @@ while [[ $# -gt 0 ]]; do
       DRY_RUN=true
       shift
       ;;
+    --rembg)
+      USE_REMBG=true
+      shift
+      ;;
     --help|-h)
       echo "Usage: $0 [OPTIONS]"
       echo ""
@@ -65,6 +71,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --category CAT     Generate all in a category (home, icons, days, food, supplements, order)"
       echo "  --prompt TEXT      Custom prompt (only with --only)"
       echo "  --dry-run          Show what would be generated without calling the API"
+      echo "  --rembg            Remove background from generated images (requires rembg)"
       echo ""
       echo "Environment:"
       echo "  OPENROUTER_API_KEY   Required. Your OpenRouter API key."
@@ -95,6 +102,10 @@ if [[ -z "${OPENROUTER_API_KEY:-}" ]]; then
 fi
 
 command -v jq >/dev/null 2>&1 || { echo "ERROR: jq is required. Install with: brew install jq"; exit 1; }
+
+if [[ "$USE_REMBG" == true ]]; then
+  [[ -x "$REMBG" ]] || { echo "ERROR: rembg not found at $REMBG"; exit 1; }
+fi
 
 # ── Universal System Prompt ──────────────────────────────────────────────────
 # This is sent as the system message for every generation to ensure style consistency.
@@ -477,12 +488,25 @@ generate_image() {
     rm -f "$outfile"
     return 1
   fi
+
+  # Optionally remove background
+  if [[ "$USE_REMBG" == true && -f "$outfile" ]]; then
+    local rembg_tmp="${outfile%.png}-nobg.png"
+    echo "  REMBG $subfolder/$name.png (removing background...)"
+    "$REMBG" i "$outfile" "$rembg_tmp" 2>/dev/null
+    if [[ -f "$rembg_tmp" ]]; then
+      mv "$rembg_tmp" "$outfile"
+      echo "  OK    $subfolder/$name.png (transparent)"
+    else
+      echo "  WARN  $name — rembg failed, keeping opaque version"
+    fi
+  fi
 }
 
 # ── Main ─────────────────────────────────────────────────────────────────────
 echo ""
 echo "HSA Days — Illustration Generator"
-echo "Model: ${DEFAULT_MODEL##*/}  |  Force: $FORCE  |  Dry run: $DRY_RUN"
+echo "Model: ${DEFAULT_MODEL##*/}  |  Force: $FORCE  |  Dry run: $DRY_RUN  |  Rembg: $USE_REMBG"
 if [[ -n "$CATEGORY" ]]; then
   echo "Category: $CATEGORY"
 fi
