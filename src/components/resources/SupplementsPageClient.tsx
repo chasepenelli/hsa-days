@@ -1,5 +1,4 @@
 "use client";
-
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -47,8 +46,14 @@ export default function SupplementsPageClient({
   const [activeSegment, setActiveSegment] = useState<string>("start-here");
   const segmentScrollRef = useRef<HTMLDivElement>(null);
 
-  const userBracket: WeightBracket | null = profile?.weightLbs
-    ? getWeightBracket(profile.weightLbs)
+  // Client-side weight calculator for non-authenticated users
+  const [localWeight, setLocalWeight] = useState<number | null>(null);
+
+  // Use profile weight if available, otherwise fall back to local calculator
+  const effectiveWeight = profile?.weightLbs ?? localWeight;
+
+  const userBracket: WeightBracket | null = effectiveWeight
+    ? getWeightBracket(effectiveWeight)
     : null;
 
   const dogName = profile?.dogName ?? null;
@@ -230,8 +235,8 @@ export default function SupplementsPageClient({
             {totalSupplements} supplements across {categoryCount} categories
           </p>
 
-          {/* Profile pills */}
-          {profilePills.length > 0 && (
+          {/* Profile pills OR weight calculator */}
+          {profilePills.length > 0 ? (
             <div className="flex flex-wrap gap-2 mt-2.5 ml-[56px]">
               {profilePills.map((pill) => (
                 <span
@@ -246,6 +251,111 @@ export default function SupplementsPageClient({
                   {pill.label}
                 </span>
               ))}
+            </div>
+          ) : (
+            <div
+              className="mt-3 ml-[56px] rounded-xl px-4 py-3.5"
+              style={{
+                background: "color-mix(in srgb, var(--sage) 5%, white)",
+                border: "1px solid color-mix(in srgb, var(--sage) 12%, transparent)",
+              }}
+            >
+              <div className="flex items-center gap-3">
+                {/* Dog on scale icon */}
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  className="flex-shrink-0"
+                  style={{ opacity: 0.7 }}
+                >
+                  {/* Scale base */}
+                  <rect x="4" y="30" width="32" height="3" rx="1.5" fill="var(--sage)" opacity="0.3" />
+                  <rect x="8" y="27" width="24" height="4" rx="2" fill="var(--sage)" opacity="0.2" />
+                  {/* Dog body */}
+                  <ellipse cx="20" cy="22" rx="8" ry="5" fill="var(--gold)" opacity="0.5" />
+                  {/* Dog head */}
+                  <circle cx="27" cy="17" r="4" fill="var(--gold)" opacity="0.5" />
+                  {/* Ear */}
+                  <ellipse cx="29.5" cy="14.5" rx="2" ry="2.5" fill="var(--gold)" opacity="0.4" />
+                  {/* Tail */}
+                  <path d="M12 20 Q8 14 10 10" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5" />
+                  {/* Eye */}
+                  <circle cx="28.5" cy="16.5" r="1" fill="var(--text)" opacity="0.5" />
+                  {/* Legs */}
+                  <line x1="15" y1="26" x2="15" y2="28" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+                  <line x1="25" y1="26" x2="25" y2="28" stroke="var(--gold)" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+                </svg>
+                <div className="flex-1">
+                  <p
+                    className="font-medium mb-1.5"
+                    style={{
+                      fontSize: "var(--text-body-sm)",
+                      color: "var(--text)",
+                    }}
+                  >
+                    Personalize dosing for your pup
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="weight-calc"
+                      type="number"
+                      inputMode="numeric"
+                      min={1}
+                      max={300}
+                      placeholder="Weight"
+                      value={localWeight ?? ""}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setLocalWeight(val ? Math.max(1, Math.min(300, Number(val))) : null);
+                      }}
+                      className="rounded-lg"
+                      style={{
+                        width: 80,
+                        padding: "8px 12px",
+                        fontSize: "var(--text-body)",
+                        fontWeight: 500,
+                        color: "var(--text)",
+                        background: "white",
+                        border: "1.5px solid var(--border)",
+                        outline: "none",
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = "var(--sage)";
+                        e.currentTarget.style.boxShadow = "0 0 0 3px color-mix(in srgb, var(--sage) 10%, transparent)";
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = "var(--border)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: "var(--text-body-sm)",
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      lbs
+                    </span>
+                    {localWeight && (
+                      <span
+                        className="inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 font-medium"
+                        style={{
+                          fontSize: "var(--text-fine)",
+                          background: "color-mix(in srgb, var(--sage) 12%, transparent)",
+                          color: "var(--sage)",
+                        }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        Dosing updated
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
@@ -347,7 +457,7 @@ export default function SupplementsPageClient({
                     const cat = categoryMap.get(supp.category);
                     const doseInfo = getDosageForWeight(
                       supp.dosage,
-                      profile?.weightLbs ?? null
+                      effectiveWeight ?? null
                     );
 
                     return (
@@ -437,7 +547,7 @@ export default function SupplementsPageClient({
                   {filteredSupplements.map((supplement) => {
                     const doseInfo = getDosageForWeight(
                       supplement.dosage,
-                      profile?.weightLbs ?? null
+                      effectiveWeight ?? null
                     );
 
                     return (

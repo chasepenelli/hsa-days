@@ -164,15 +164,15 @@ export default function SupplementStarterCard({
           ) : (
             <p
               className="font-medium"
-              style={{ fontSize: "var(--text-body)", color: "var(--gold-text)" }}
+              style={{ fontSize: "var(--text-body)", color: "var(--text-muted)" }}
             >
-              Add {dogName ? `${dogName}\u2019s` : "your dog\u2019s"} weight for personalized dosing
+              Enter your dog&apos;s weight above to see personalized dosing
             </p>
           )}
         </div>
 
-        {/* Tracking toggle */}
-        {isAuthenticated ? (
+        {/* Tracking toggle — only shown for signed-in users */}
+        {isAuthenticated && (
           <button
             type="button"
             onClick={(e) => {
@@ -233,35 +233,6 @@ export default function SupplementStarterCard({
               </>
             )}
           </button>
-        ) : (
-          <a
-            href="/login"
-            onClick={(e) => e.stopPropagation()}
-            className="w-full flex items-center justify-center gap-2 rounded-xl mt-3 no-underline transition-colors hover:border-sage-light"
-            style={{
-              minHeight: 48,
-              padding: "12px 20px",
-              fontSize: "var(--text-body-sm)",
-              color: "var(--text-muted)",
-              background: "rgba(0,0,0,0.02)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            Sign in to track
-          </a>
         )}
       </div>
 

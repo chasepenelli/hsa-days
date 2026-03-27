@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import type { Supplement, WeightBracket } from "@/lib/resources/types";
 import { getBreedNote } from "@/lib/resources/personalize";
@@ -152,9 +151,9 @@ export default function SupplementCard({
             className="px-5 pb-5 sm:px-6 sm:pb-6"
             style={{ borderTop: "1px solid var(--border)" }}
           >
-            {/* "I'm Using This" toggle row */}
+            {/* Tracking toggle + usage count */}
             <div className="mt-4 mb-5 flex flex-wrap items-center gap-3">
-              {isAuthenticated ? (
+              {isAuthenticated && (
                 <button
                   type="button"
                   onClick={(e) => {
@@ -213,32 +212,6 @@ export default function SupplementCard({
                     </>
                   )}
                 </button>
-              ) : (
-                <a
-                  href="/login"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full no-underline transition-colors hover:border-sage-light"
-                  style={{
-                    fontSize: "var(--text-body-sm)",
-                    background: "rgba(0,0,0,0.03)",
-                    color: "var(--text-muted)",
-                    border: "1px solid var(--border)",
-                  }}
-                >
-                  <svg
-                    width="13"
-                    height="13"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                  Sign in to track
-                </a>
               )}
               {usageCount > 0 && (
                 <span
