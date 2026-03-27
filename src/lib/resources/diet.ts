@@ -23,7 +23,7 @@ export const DIET_FOOD_ITEMS: FoodItem[] = [
   {
     name: "Cruciferous Vegetables",
     description:
-      "Broccoli, broccoli sprouts, kale, cabbage, and Brussels sprouts contain sulforaphane — a compound shown to inhibit tumor growth, promote cancer cell death, and block the formation of new blood vessels that feed tumors. Broccoli sprouts have up to 100× more sulforaphane precursors than mature broccoli. Light steaming is key: enough heat to break down the cell walls, not so much that you destroy the active compounds.",
+      "Broccoli, broccoli sprouts, kale, cabbage, and Brussels sprouts contain sulforaphane — a compound shown to inhibit tumor growth, promote cancer cell death, and block the formation of new blood vessels that feed tumors. Broccoli sprouts contain significantly more glucoraphanin (the sulforaphane precursor) than mature broccoli — typically 10\u201350\u00d7 more, with actual sulforaphane yield around 2\u201310\u00d7 higher. Light steaming is key: enough heat to break down the cell walls, not so much that you destroy the active compounds.",
     category: "recommended",
     icon: "broccoli.png",
     tip: "Lightly steam, then chop finely — don't overcook",
@@ -237,7 +237,7 @@ export const MEAL_PLAN_MAP: MealPlanMap = {
   },
   keto: {
     under25: {
-      title: "Ketogenic Plan for a Small Dog (Under 25 lbs)",
+      title: "High-Fat / Keto-Style Plan for a Small Dog (Under 25 lbs)",
       dailyProtein:
         "2 oz fatty meat or fish (sardines, salmon, dark meat chicken), split across 2 meals",
       dailyVeg: "1 tbsp steamed non-starchy vegetables",
@@ -259,10 +259,10 @@ export const MEAL_PLAN_MAP: MealPlanMap = {
         "Electrolytes (consult vet — keto shifts fluid balance)",
       ],
       calorieNote:
-        "Strict keto requires DACVN formulation to prevent deficiencies. Start with a veterinary nutritionist consultation before implementing.",
+        "Note: a true veterinary ketogenic diet requires ~80-90% fat calories — these ratios are a practical high-fat approach. Strict keto requires DACVN formulation to prevent deficiencies. Start with a veterinary nutritionist consultation before implementing.",
     },
     "25to50": {
-      title: "Ketogenic Plan for a Medium Dog (25–50 lbs)",
+      title: "High-Fat / Keto-Style Plan for a Medium Dog (25–50 lbs)",
       dailyProtein:
         "3 oz fatty meat or fish, split across 2 meals",
       dailyVeg: "2 tbsp steamed non-starchy vegetables",
@@ -285,10 +285,10 @@ export const MEAL_PLAN_MAP: MealPlanMap = {
         "B-vitamin complex (keto depletes B vitamins)",
       ],
       calorieNote:
-        "Ketogenic diets require careful DACVN formulation. Do not implement as sole diet without professional nutritional analysis.",
+        "Note: a true veterinary ketogenic diet requires ~80-90% fat calories — these ratios are a practical high-fat approach. Do not implement as sole diet without DACVN nutritional analysis. No canine clinical trial has yet demonstrated survival benefit for ketogenic diets in cancer.",
     },
     "50to75": {
-      title: "Ketogenic Plan for a Large Dog (50–75 lbs)",
+      title: "High-Fat / Keto-Style Plan for a Large Dog (50–75 lbs)",
       dailyProtein:
         "4–5 oz fatty meat or fish, split across 2–3 meals",
       dailyVeg: "3 tbsp steamed non-starchy vegetables",
@@ -311,10 +311,10 @@ export const MEAL_PLAN_MAP: MealPlanMap = {
         "Calcium/phosphorus supplement (required with keto)",
       ],
       calorieNote:
-        "Work with a DACVN for strict keto formulation. Monitor weight weekly — keto dogs can lose weight rapidly if calories are insufficient.",
+        "Note: a true veterinary ketogenic diet requires ~80-90% fat calories — these ratios are a practical high-fat approach. Work with a DACVN for formulation. Monitor weight weekly — high-fat dogs can lose weight rapidly if calories are insufficient.",
     },
     over75: {
-      title: "Ketogenic Plan for an Extra-Large Dog (75+ lbs)",
+      title: "High-Fat / Keto-Style Plan for an Extra-Large Dog (75+ lbs)",
       dailyProtein:
         "5–7 oz fatty meat or fish, split across 2–3 meals",
       dailyVeg: "1/4 cup steamed non-starchy vegetables",
@@ -337,7 +337,7 @@ export const MEAL_PLAN_MAP: MealPlanMap = {
         "DACVN-formulated mineral supplement",
       ],
       calorieNote:
-        "Extra-large dogs on keto need precise calorie tracking. DACVN formulation is non-negotiable at this size — deficiencies are more impactful.",
+        "Note: a true veterinary ketogenic diet requires ~80-90% fat calories — these ratios are a practical high-fat approach. Extra-large dogs need precise calorie tracking. DACVN formulation is non-negotiable at this size — deficiencies are more impactful.",
     },
   },
   "balanced-fresh": {
@@ -449,7 +449,7 @@ export const CAUTIONS: DietCaution[] = [
   {
     severity: "never",
     title: "Grapes & Raisins",
-    note: "Cause acute kidney failure in dogs — the toxic compound is not yet identified, and even small amounts can be fatal. Never appropriate, regardless of cancer status.",
+    note: "Cause acute kidney failure in dogs — research published in 2022\u20132023 identified tartaric acid as the most likely toxic compound. Even small amounts can be fatal. Never appropriate, regardless of cancer status.",
   },
   {
     severity: "never",
@@ -464,12 +464,12 @@ export const CAUTIONS: DietCaution[] = [
   {
     severity: "never",
     title: "Avocado",
-    note: "Contains persin, which causes cardiac and gastrointestinal toxicity in dogs. The pit is also a choking and intestinal obstruction hazard.",
+    note: "Contains persin, which causes GI upset (vomiting, diarrhea) in dogs. The high fat content can trigger pancreatitis, and the pit is a choking and intestinal obstruction hazard. (Cardiac toxicity from persin is documented in birds and horses but has not been reliably reported in dogs.)",
   },
   {
     severity: "never",
     title: "Macadamia Nuts",
-    note: "Neurotoxic to dogs — cause weakness, hyperthermia, vomiting, and tremors within 12 hours of ingestion.",
+    note: "Toxic to dogs through an unknown mechanism — cause weakness, hyperthermia, vomiting, and tremors within 12 hours of ingestion.",
   },
   {
     severity: "care",
@@ -518,7 +518,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
     priority: "first",
     evidenceTier: "strong",
     evidenceNote: "The only supplement with a published randomized clinical trial specifically in dogs with splenic HSA.",
-    whatItDoes: "Contains PSP (polysaccharopeptide) and PSK, two immunomodulatory compounds that bind to immune cell receptors, restoring immune surveillance and activating macrophages against tumor cells. In a 2012 University of Pennsylvania randomized pilot trial, dogs receiving 100 mg/kg/day showed a median survival of 199 days — more than double the 86-day median for dogs receiving no further treatment post-splenectomy.",
+    whatItDoes: "Contains PSP (polysaccharopeptide), an immunomodulatory compound that binds to immune cell receptors, restoring immune surveillance and activating macrophages against tumor cells. (Note: PSK is a different compound from a different strain — I'm-Yunity contains PSP specifically.) In a 2012 University of Pennsylvania randomized pilot trial (n=15, 3 groups of 5), dogs receiving 100 mg/kg/day showed a median survival of 199 days — more than double the 86-day median for dogs receiving no further treatment post-splenectomy.",
     whyHSA: "Directly studied in dogs with splenic hemangiosarcoma. The immune surveillance mechanisms are especially relevant for a cancer that spreads hematogenously (through the bloodstream).",
     dosing: {
       under25: "25 mg/kg daily (e.g. ~500mg for a 20 lb dog)",
@@ -528,7 +528,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
     },
     keyStudy: "Brown DC, Reetz J. Single agent polysaccharopeptide delays metastases and improves survival in naturally occurring hemangiosarcoma. Evidence-Based Complementary and Alternative Medicine, 2012.",
     sourcingNote: "Use I'm-Yunity brand specifically if possible — it was the product studied. If using another brand, look for fruiting body extract (not mycelium on grain) with a Certificate of Analysis for PSP content.",
-    cautions: "A 2022 follow-up study found PSP did not significantly improve outcomes when added to doxorubicin. It may be most useful for dogs not on chemotherapy or between chemo cycles — discuss timing with your oncologist.",
+    cautions: "A larger 2022 follow-up study (Gedney et al.) found PSP did not improve survival when added to doxorubicin, and female dogs on PSP alone had significantly worse survival than those receiving doxorubicin (HR 0.21, p=0.004). PSP may be most useful for dogs not on chemotherapy — but the gender-specific finding warrants discussion with your oncologist.",
   },
   {
     slug: "fish-oil",
@@ -556,7 +556,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
     priority: "second",
     evidenceTier: "moderate",
     evidenceNote: "Strong clinical track record for hemostasis in HSA dogs; in vitro evidence of direct HSA cell-killing activity.",
-    whatItDoes: "A traditional Chinese herbal blend used for over 114 years, primarily for hemostasis — it activates platelets and enhances clot formation. A 2014 NC State study found Yunnan Baiyao causes dose- and time-dependent apoptosis in canine hemangiosarcoma cell lines through caspase-mediated pathways, suggesting it may directly kill HSA cells in addition to managing bleeding.",
+    whatItDoes: "A traditional Chinese herbal blend created in 1902 (over 120 years of use), primarily for hemostasis — it activates platelets and enhances clot formation. A 2014 University of Florida study (Wirth et al.) found Yunnan Baiyao causes dose- and time-dependent apoptosis in canine hemangiosarcoma cell lines through caspase-mediated pathways, suggesting it may directly kill HSA cells in addition to managing bleeding.",
     whyHSA: "HSA tumors are prone to internal rupture and hemorrhage — Yunnan Baiyao is uniquely relevant to this specific life-threatening complication. No other commonly used supplement directly addresses the bleeding risk of HSA.",
     dosing: {
       under25: "1 capsule (0.25g) once daily",
@@ -594,7 +594,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
     priority: "context",
     evidenceTier: "moderate",
     evidenceNote: "Extensive pre-clinical evidence for anti-angiogenic and anti-tumor activity, but clinically limited by severe bioavailability challenges.",
-    whatItDoes: "Curcumin inhibits NF-κB (a master regulator of inflammation and tumor survival), directly inhibits VEGF/VEGFR2 signaling (the primary driver of tumor blood vessel formation), and induces apoptosis in multiple cancer cell lines. A pilot trial of liposomal IV curcumin in 10 cancer-bearing dogs found 4 of 6 completing treatment had stable disease.",
+    whatItDoes: "Curcumin inhibits NF-κB (a master regulator of inflammation and tumor survival), directly inhibits VEGF/VEGFR2 signaling (the primary driver of tumor blood vessel formation), and induces apoptosis in multiple cancer cell lines. A pilot trial of liposomal IV curcumin in 11 cancer-bearing dogs (Withers et al., 2018) found 4 of 6 completing treatment had stable disease.",
     whyHSA: "Curcumin directly inhibits endothelial cell viability, migration, and tube formation — all processes central to HSA survival. Its anti-VEGF mechanism attacks the same angiogenic pathway that defines this cancer's behavior.",
     dosing: {
       under25: "200–300mg standardized extract daily",
@@ -602,7 +602,7 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
       "50to75": "500–750mg daily",
       over75: "750–1,000mg daily",
     },
-    keyStudy: "Cekanova M et al. In vitro activity of liposome-encapsulated curcumin for naturally occurring canine cancers. Journal of Veterinary Internal Medicine, 2014.",
+    keyStudy: "Withers SS et al. Assessment of clinical outcome following IV liposomal curcumin in cancer-bearing dogs. Veterinary and Comparative Oncology, 2018. PMC6234083.",
     sourcingNote: "Plain turmeric powder is NOT adequate — systemic absorption is negligible. Use a standardized, bioenhanced form: liposomal curcumin, BCM-95/Biocurcumax, or nano-curcumin. Avoid curcumin + piperine formulations during active chemotherapy.",
     cautions: "Piperine (black pepper extract) dramatically increases curcumin absorption but also inhibits drug metabolism enzymes — this can raise chemotherapy drug levels to potentially toxic concentrations. If your dog is on doxorubicin, use piperine-free formulations and discuss with your oncologist.",
   },
@@ -621,8 +621,8 @@ export const DIET_SUPPLEMENTS: DietSupplement[] = [
       "50to75": "Food sources first; supplemental quercetin 50–100mg daily if desired",
       over75: "Food sources first; supplemental quercetin 100mg daily if desired",
     },
-    keyStudy: "Lamy S et al. Natural health products that inhibit angiogenesis: a potential source for investigational new agents. Evidence-Based Complementary and Alternative Medicine, 2007.",
-    sourcingNote: "Obtain resveratrol from blueberries (not grapes — toxic to dogs). Quercetin is richest in parsley and blueberries. For EGCG, use decaffeinated green tea extract rather than brewed tea — caffeine sensitivity is a concern in dogs.",
+    keyStudy: "Lamy S et al. Natural health products that inhibit angiogenesis: a potential source for investigational new agents. Current Oncology, 2006. PMC1891166.",
+    sourcingNote: "Blueberries provide anthocyanins and pterostilbene (a resveratrol analog) but contain only trace actual resveratrol — for meaningful resveratrol doses, use supplemental trans-resveratrol (never grapes, which are toxic to dogs). Quercetin is richest in parsley and blueberries. For EGCG, use decaffeinated green tea extract rather than brewed tea — caffeine sensitivity is a concern in dogs.",
     cautions: "Grapes are toxic to dogs — never feed grapes for resveratrol. Use supplemental trans-resveratrol if supplementing beyond food sources.",
   },
 ];
@@ -659,7 +659,7 @@ export const GLYCINE_SECTION = {
   },
   counterargument: {
     label: "The HSA-Specific Counterargument",
-    text: "Glycine has also been documented as an anti-angiogenic compound. A FASEB Journal study found glycine supplementation inhibited tumor angiogenesis in mice by 55% — and VEGF-driven tube formation was completely neutralized — acting directly on endothelial cell proliferation. For HSA — a tumor that is endothelial cells, dependent on continuous new vessel formation to survive and spread — this anti-angiogenic mechanism is mechanistically compelling. The same amino acid that might theoretically fuel SSP-dependent biosynthesis could simultaneously be starving the vascular network HSA requires.",
+    text: "Glycine has also been documented as an anti-angiogenic compound. A FASEB Journal study found glycine supplementation inhibited tumor angiogenesis in mice by 55%, and VEGF-driven tube formation was reduced by more than half — acting directly on endothelial cell proliferation through glycine-gated chloride channels. For HSA — a tumor that is endothelial cells, dependent on continuous new vessel formation to survive and spread — this anti-angiogenic mechanism is mechanistically compelling. The same amino acid that might theoretically fuel SSP-dependent biosynthesis could simultaneously be starving the vascular network HSA requires.",
   },
   addedComplexity: "A third layer: many SSP-dependent cancers can synthesize serine from glucose de novo. If glucose is already being restricted through a low-carbohydrate diet, you're attacking serine synthesis upstream. In that context, additional dietary glycine restriction may add little, since the tumor is already losing access to the glucose substrate SSP ultimately requires.",
   verdict: {
@@ -697,7 +697,7 @@ export const ACTIVE_RESEARCH: ResearchSpotlight[] = [
   {
     institution: "University of Pennsylvania / Morris Animal Foundation",
     title: "Hemangiosarcoma Initiative",
-    summary: "A multimillion-dollar, multiyear initiative with five new research proposals selected in 2025 focused specifically on HSA diagnosis and treatment. Basic science into HSA biology — including metabolic pathway mapping — will have direct dietary implications as it matures.",
+    summary: "A multimillion-dollar, multiyear initiative with four new research proposals recommended for funding in 2025 (Phase 2, following eight proposals funded in Phase 1, 2023), focused specifically on HSA diagnosis and treatment. Basic science into HSA biology — including metabolic pathway mapping — will have direct dietary implications as it matures.",
     relevance: "Any future dietary intervention trials for HSA will build on this biological foundation.",
     status: "Active 2024–2026",
   },
@@ -723,11 +723,11 @@ export const DIET_SOURCES: DietSource[] = [
   { title: "Single Agent PSP Delays Metastases in HSA (Penn, 2012)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3440946/", type: "clinical", year: 2012 },
   { title: "I'm-Yunity ± Doxorubicin for Splenic HSA (2022)", url: "https://pubmed.ncbi.nlm.nih.gov/35442554/", type: "clinical", year: 2022 },
   { title: "EPA/DHA Supplementation in Companion Animal Cancer: Systematic Review", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8193331/", type: "review", year: 2021 },
-  { title: "Yunnan Baiyao on Canine HSA Cell Lines (NC State, 2014)", url: "https://pubmed.ncbi.nlm.nih.gov/24976212/", type: "clinical", year: 2014 },
-  { title: "Liposomal Curcumin for Canine Cancers", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6234083/", type: "clinical", year: 2014 },
+  { title: "Yunnan Baiyao on Canine HSA Cell Lines (University of Florida, 2014)", url: "https://pubmed.ncbi.nlm.nih.gov/24976212/", type: "clinical", year: 2014 },
+  { title: "Liposomal Curcumin for Canine Cancers (Withers et al.)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6234083/", type: "clinical", year: 2018 },
   { title: "Nutrition & Oncology in Dogs and Cats: Comprehensive Review (2024)", url: "https://www.frontiersin.org/journals/veterinary-science/articles/10.3389/fvets.2024.1490290/full", type: "review", year: 2024 },
   { title: "CSU Flint Animal Cancer Center — Dietary Considerations", url: "https://www.csuanimalcancercenter.org/2020/11/18/dietary-considerations-for-pets-with-cancer/", type: "organization", year: 2020 },
-  { title: "Natural Health Products Inhibiting Angiogenesis (Parts 1 & 2)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC1891166/", type: "review", year: 2007 },
+  { title: "Natural Health Products Inhibiting Angiogenesis (Parts 1 & 2)", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC1891166/", type: "review", year: 2006 },
 ];
 
 // ── Monitoring Callout ────────────────────────────────────────────────────────

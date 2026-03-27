@@ -53,16 +53,18 @@ export const SUPPLEMENTS: Supplement[] = [
       "50to75": "2 capsules, twice daily",
       over75: "2 capsules, twice daily",
     },
-    frequency: "Cycle: 4 days on, 1 day off (skip the red emergency pill unless active bleed)",
+    frequency: "Cycle: 5 days on, 5 days off (skip the red emergency pill unless active bleed)",
     stageEmphasis: "all",
     vetDiscussionPoints: [
-      "Discuss the 4-on/1-off cycling protocol",
+      "Discuss the 5-on/5-off cycling protocol — this protects the liver during long-term use",
       "Ask about the red emergency pill — when and how to use it",
       "May interact with other blood-thinning medications",
     ],
     warnings: [
       "Do NOT give the red emergency pill unless there is an active bleeding episode",
-      "Discontinue 5 days before any planned surgery",
+      "Discontinue 5–7 days before any planned surgery",
+      "Can elevate liver enzymes with continuous use — do not use in dogs with known liver disease",
+      "Periodic liver panel (ALT/AST) recommended during extended use",
     ],
     breedNotes: {
       "golden retriever":
@@ -74,7 +76,7 @@ export const SUPPLEMENTS: Supplement[] = [
       "University of Pennsylvania School of Veterinary Medicine",
     ],
     priority: 1,
-    evidenceLevel: "studied-in-hsa",
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "iron-supplement",
@@ -82,23 +84,25 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "blood_support",
     tagline: "Supports red blood cell production for anemia",
     description:
-      "HSA dogs frequently develop anemia from chronic blood loss. Iron supplementation can help support red blood cell production. Always confirm with bloodwork — excess iron can be harmful.",
+      "HSA dogs frequently develop anemia from chronic blood loss. Iron supplementation can help support red blood cell production. Always confirm with bloodwork — excess iron can be harmful, and many HSA dogs actually have elevated iron at the tumor level.",
     dosage: {
-      under25: "5-10 mg daily",
-      "25to50": "10-20 mg daily",
-      "50to75": "20-30 mg daily",
-      over75: "30-40 mg daily",
+      under25: "5–10 mg/kg daily (e.g., ~50–100 mg for a 20 lb dog)",
+      "25to50": "5–10 mg/kg daily (e.g., ~115–230 mg for a 50 lb dog)",
+      "50to75": "5–10 mg/kg daily (e.g., ~170–340 mg for a 75 lb dog)",
+      over75: "5–10 mg/kg daily (e.g., ~230–450 mg for a 100 lb dog)",
     },
-    frequency: "Daily with food for better absorption",
+    frequency: "Daily with food for better absorption. Separate from artemisinin by 2+ hours",
     stageEmphasis: "all",
     vetDiscussionPoints: [
-      "Get baseline bloodwork (CBC) to confirm anemia before starting",
-      "Monitor iron levels — over-supplementation can cause toxicity",
+      "Get baseline bloodwork (CBC and serum ferritin) to confirm true iron-deficiency anemia before starting",
+      "Monitor iron levels — over-supplementation can cause toxicity (toxic above ~20 mg/kg elemental iron)",
       "Vitamin C can improve iron absorption",
+      "Separate from IP-6 by 2+ hours — IP-6 chelates iron and blocks absorption",
     ],
     warnings: [
-      "Only supplement if bloodwork confirms iron-deficiency anemia",
-      "Too much iron can damage the liver",
+      "Only supplement if bloodwork confirms true iron-deficiency anemia — not anemia of chronic disease",
+      "Splenic HSA dogs often have elevated serum ferritin (hyperferritinemia) — iron supplementation in already iron-overloaded dogs could worsen outcomes",
+      "Too much iron can damage the liver — toxic doses begin at ~20 mg/kg elemental iron",
     ],
     priority: 3,
     evidenceLevel: "veterinary-use",
@@ -109,19 +113,23 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "blood_support",
     tagline: "Supports blood clotting pathways",
     description:
-      "Vitamin K is essential for the production of clotting factors. In HSA dogs experiencing clotting issues, supplementation may help support the body's coagulation pathways.",
+      "Vitamin K is essential for the production of clotting factors. In HSA dogs experiencing clotting issues, supplementation may help support the body's coagulation pathways. Note: these are nutritional-support doses — therapeutic doses for acute clotting disorders are much higher and require veterinary supervision.",
     dosage: {
-      under25: "25-50 mcg daily",
-      "25to50": "50-75 mcg daily",
-      "50to75": "75-100 mcg daily",
-      over75: "100-150 mcg daily",
+      under25: "1–2.5 mg daily (nutritional support)",
+      "25to50": "2.5–5 mg daily (nutritional support)",
+      "50to75": "5–10 mg daily (nutritional support)",
+      over75: "10–15 mg daily (nutritional support)",
     },
     frequency: "Daily with a fatty meal for absorption",
     stageEmphasis: "all",
     vetDiscussionPoints: [
-      "Ask about Vitamin K1 vs K2 forms",
+      "Vitamin K1 (phytonadione) is the therapeutic form for clotting support — K2 (menaquinone) has minimal effect on acute clotting disorders",
+      "For acute coagulation crises, therapeutic K1 dosing (1–2.5 mg/kg orally or subcutaneously) requires vet supervision",
       "Check coagulation panel before starting",
       "May interact with blood-thinning medications",
+    ],
+    warnings: [
+      "IV administration of Vitamin K1 can cause anaphylaxis — only oral or subcutaneous routes should be used",
     ],
     priority: 4,
     evidenceLevel: "veterinary-use",
@@ -134,7 +142,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "anti_cancer",
     tagline: "Penn Vet study showed 199-day median survival",
     description:
-      "Trametes versicolor (Turkey Tail) mushroom contains polysaccharopeptide (PSP), which has shown remarkable results in canine HSA research. The landmark Penn Vet study found that dogs with HSA taking PSP at 100mg/kg/day had a median survival time of 199 days — the longest reported for any HSA supplement.",
+      "Trametes versicolor (Turkey Tail) mushroom contains polysaccharopeptide (PSP), which showed promising results in a 2012 Penn Vet pilot study. Dogs with HSA taking PSP at 100mg/kg/day had a median survival time of 199 days (n=5 per group). Important context: a larger 2022 follow-up study (Gedney et al.) found that PSP did not improve survival when added to doxorubicin, and female dogs on PSP alone had significantly worse outcomes. PSP may be most useful for dogs not receiving chemotherapy.",
     dosage: {
       under25: "1-2 g daily (100mg/kg)",
       "25to50": "2-4 g daily (100mg/kg)",
@@ -144,16 +152,15 @@ export const SUPPLEMENTS: Supplement[] = [
     frequency: "Daily, can be split between meals",
     stageEmphasis: "all",
     vetDiscussionPoints: [
-      "Reference the Penn Vet study (Dorothy Cimino Brown, 2012)",
+      "Reference both the 2012 pilot study (promising) and the 2022 follow-up (more nuanced results)",
+      "The 2022 study found PSP alone was significantly worse for female dogs — discuss implications",
       "Dose at 100mg/kg/day for the studied benefit",
       "Ensure you use a high-quality extract standardized for PSP content",
+      "May be most beneficial for dogs not on chemotherapy — discuss timing with oncologist",
     ],
-    breedNotes: {
-      "golden retriever":
-        "The Penn Vet study included Golden Retrievers and showed particular benefit in this breed.",
-    },
     sources: [
       "Brown DC, Reetz J. Single agent polysaccharopeptide delays metastases and improves survival in naturally occurring hemangiosarcoma. Evid Based Complement Alternat Med. 2012.",
+      "Gedney A et al. Randomized clinical trial of I'm-Yunity (PSP) with/without doxorubicin for splenic HSA. Vet Comp Oncol. 2022. PMID: 35442554.",
     ],
     priority: 1,
     evidenceLevel: "studied-in-hsa",
@@ -182,9 +189,10 @@ export const SUPPLEMENTS: Supplement[] = [
       "Do NOT give with iron supplements — separate by at least 2 hours",
       "Give on empty stomach for effectiveness",
       "Monitor liver enzymes during use",
+      "Oral bioavailability is poor — a 2014 study found plasma levels remained below therapeutic threshold regardless of dose. Parenteral forms may be more effective",
     ],
     priority: 2,
-    evidenceLevel: "studied-in-hsa",
+    evidenceLevel: "emerging",
   },
   {
     slug: "cbd-oil",
@@ -204,11 +212,12 @@ export const SUPPLEMENTS: Supplement[] = [
     vetDiscussionPoints: [
       "Use only THC-free, veterinary-formulated CBD products",
       "Start at lowest dose and increase gradually over 1-2 weeks",
-      "May interact with certain medications metabolized by the liver",
+      "CBD inhibits CYP2C and CYP3A enzymes — can increase blood levels of chemo drugs including doxorubicin, vincristine, and cyclophosphamide",
     ],
     warnings: [
       "Avoid products with THC — it is toxic to dogs",
       "Quality varies widely — choose third-party tested products",
+      "Discuss timing with oncologist if your dog is on chemotherapy — CBD can alter how chemo drugs are metabolized",
     ],
     priority: 4,
     evidenceLevel: "emerging",
@@ -231,7 +240,11 @@ export const SUPPLEMENTS: Supplement[] = [
     vetDiscussionPoints: [
       "Best given on empty stomach for absorption",
       "Often combined with inositol for synergistic effect",
-      "Discuss potential mineral absorption effects",
+      "IP-6 is a potent mineral chelator — it binds zinc, calcium, magnesium, and iron, reducing absorption from food",
+    ],
+    warnings: [
+      "Separate from iron supplements by 2+ hours — IP-6 chelates iron",
+      "In nutritionally compromised cancer patients, mineral depletion is a real concern — monitor with bloodwork",
     ],
     priority: 5,
     evidenceLevel: "emerging",
@@ -258,6 +271,9 @@ export const SUPPLEMENTS: Supplement[] = [
       "Choose hot-water extracted products for bioavailability",
       "Monitor for any digestive changes when starting",
     ],
+    warnings: [
+      "Reishi can mildly inhibit platelet aggregation — discuss with oncologist for HSA dogs at active bleeding risk",
+    ],
     priority: 2,
     evidenceLevel: "emerging",
   },
@@ -277,9 +293,11 @@ export const SUPPLEMENTS: Supplement[] = [
     frequency: "Daily with food",
     stageEmphasis: "all",
     vetDiscussionPoints: [
-      "Discuss potential interactions with immunosuppressive drugs",
       "May need to discontinue before surgery",
       "Can be used alongside mushroom supplements",
+    ],
+    warnings: [
+      "Contraindicated with immunosuppressive drugs (cyclosporine, azathioprine) — astragalus directly counteracts their effect through immune stimulation",
     ],
     priority: 4,
     evidenceLevel: "emerging",
@@ -305,7 +323,8 @@ export const SUPPLEMENTS: Supplement[] = [
       "Discuss timing relative to chemotherapy sessions",
     ],
     warnings: [
-      "Some oncologists advise avoiding antioxidants during chemo days — discuss timing",
+      "Oral Vitamin C acts as an antioxidant and may reduce the effectiveness of chemo drugs that work via oxidative damage (e.g., doxorubicin) — pause on chemo days",
+      "Vitamin C increases iron absorption — relevant if your dog is on iron supplements or has elevated ferritin",
     ],
     priority: 5,
     evidenceLevel: "emerging",
@@ -318,12 +337,12 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "liver_organ",
     tagline: "Clinically proven liver protection during chemo",
     description:
-      "Silymarin, the active compound in milk thistle, is one of the most well-researched liver protectants. The Denamarin studies confirmed its ability to support liver cell regeneration and protect against drug-induced liver damage. Essential if your dog is on chemotherapy or other liver-metabolized medications.",
+      "Silymarin, the active compound in milk thistle, is one of the most well-researched liver protectants. The Denamarin studies confirmed its ability to support liver cell regeneration and protect against drug-induced liver damage. Essential if your dog is on chemotherapy or other liver-metabolized medications. Note: enhanced bioavailability formulations (like Denamarin) are effective at lower doses than standard silymarin extract.",
     dosage: {
-      under25: "50-100 mg daily",
-      "25to50": "100-200 mg daily",
-      "50to75": "200-300 mg daily",
-      over75: "300-400 mg daily",
+      under25: "50-150 mg daily (standard extract) or per Denamarin label",
+      "25to50": "150-300 mg daily (standard extract) or per Denamarin label",
+      "50to75": "300-500 mg daily (standard extract) or per Denamarin label",
+      over75: "500-800 mg daily (standard extract) or per Denamarin label",
     },
     frequency: "Daily, ideally on an empty stomach for best absorption",
     stageEmphasis: "all",
@@ -331,6 +350,10 @@ export const SUPPLEMENTS: Supplement[] = [
       "Particularly important during chemotherapy protocols",
       "Can be given as Denamarin (combined with SAMe) or standalone",
       "Monitor liver enzymes quarterly during treatment",
+      "Standard silymarin extract requires higher doses than bioenhanced formulations (Denamarin/Marin) for equivalent effect",
+    ],
+    warnings: [
+      "Silymarin inhibits CYP2C9 and CYP3A4 enzymes — may alter metabolism of chemotherapy drugs including doxorubicin. Discuss timing with your oncologist",
     ],
     breedNotes: {
       "labrador":
@@ -385,6 +408,10 @@ export const SUPPLEMENTS: Supplement[] = [
       "Can complement milk thistle for broader liver support",
       "Generally well-tolerated with minimal side effects",
     ],
+    warnings: [
+      "Contraindicated in dogs with bile duct obstruction or acute gallbladder disease",
+      "Use cautiously alongside diuretic medications (e.g., furosemide) — additive diuresis risk",
+    ],
     priority: 5,
     evidenceLevel: "emerging",
   },
@@ -396,7 +423,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "quality_of_life",
     tagline: "Anti-inflammatory essential fatty acids",
     description:
-      "Omega-3 fatty acids (EPA and DHA) from fish oil have strong anti-inflammatory properties and are one of the most recommended supplements for cancer dogs. Research suggests they may help slow tumor growth, reduce cancer-related cachexia (wasting), and improve overall quality of life.",
+      "Omega-3 fatty acids (EPA and DHA) from fish oil have strong anti-inflammatory properties and are one of the most recommended supplements for cancer dogs. A study in dogs with lymphoma showed improved survival with fish oil supplementation. They may help reduce cancer-related cachexia (wasting) and improve overall quality of life.",
     dosage: {
       under25: "1000 mg EPA+DHA daily",
       "25to50": "2000 mg EPA+DHA daily",
@@ -415,7 +442,7 @@ export const SUPPLEMENTS: Supplement[] = [
         "Goldens especially benefit from high-quality fish oil for both cancer support and their skin/coat health.",
     },
     priority: 1,
-    evidenceLevel: "studied-in-hsa",
+    evidenceLevel: "veterinary-use",
   },
   {
     slug: "turmeric-curcumin",
@@ -439,10 +466,11 @@ export const SUPPLEMENTS: Supplement[] = [
     ],
     warnings: [
       "Poor absorption without piperine/fat — always pair for effectiveness",
-      "Some oncologists advise caution combining with chemo — discuss timing",
+      "Curcumin and piperine both inhibit CYP450 enzymes (CYP1A2, CYP2C9, CYP3A4) — this can increase doxorubicin exposure to potentially toxic levels",
+      "Use piperine-free formulations (liposomal, BCM-95) during active chemotherapy",
     ],
     priority: 2,
-    evidenceLevel: "veterinary-use",
+    evidenceLevel: "emerging",
   },
   {
     slug: "probiotics",
@@ -450,7 +478,7 @@ export const SUPPLEMENTS: Supplement[] = [
     category: "quality_of_life",
     tagline: "Gut health during treatment and beyond",
     description:
-      "Cancer treatment can disrupt the gut microbiome. Probiotics help maintain healthy digestion, support immune function (70% of the immune system is in the gut), and may help reduce GI side effects from chemotherapy.",
+      "Cancer treatment can disrupt the gut microbiome. Probiotics help maintain healthy digestion and support immune function — approximately 70–80% of the body's immune cells are located in the gut-associated lymphoid tissue (GALT). They may help reduce GI side effects from chemotherapy.",
     dosage: {
       under25: "1-5 billion CFU daily",
       "25to50": "5-10 billion CFU daily",
@@ -463,6 +491,9 @@ export const SUPPLEMENTS: Supplement[] = [
       "Use dog-specific probiotic strains when possible",
       "Especially important during and after antibiotic courses",
       "Refrigerated probiotics generally have better viability",
+    ],
+    warnings: [
+      "Some oncologists caution against live-culture probiotics during severe neutropenia (very low white blood cell count from intensive chemo) due to theoretical bacterial translocation risk",
     ],
     priority: 3,
     evidenceLevel: "veterinary-use",
@@ -494,6 +525,33 @@ export const SUPPLEMENTS: Supplement[] = [
         "German Shepherds are also prone to cardiac HSA — CoQ10 may provide additional heart protection.",
     },
     priority: 3,
+    evidenceLevel: "veterinary-use",
+  },
+  {
+    slug: "melatonin",
+    name: "Melatonin",
+    category: "quality_of_life",
+    tagline: "Anti-tumor hormone with sleep and anxiety support",
+    description:
+      "Melatonin is a naturally occurring hormone with documented anti-tumor properties including anti-angiogenic effects, free radical scavenging, and immune modulation. It may help improve sleep quality, reduce anxiety, and support dogs through the stress of cancer treatment. Multiple integrative oncology protocols include it specifically for HSA.",
+    dosage: {
+      under25: "1–3 mg at bedtime",
+      "25to50": "3–6 mg at bedtime",
+      "50to75": "6–9 mg at bedtime",
+      over75: "9–12 mg at bedtime",
+    },
+    frequency: "Once daily at bedtime (follows natural circadian rhythm)",
+    stageEmphasis: "all",
+    vetDiscussionPoints: [
+      "Well-tolerated with very few side effects — mild drowsiness is expected and beneficial",
+      "May have synergistic effects with some chemotherapy protocols",
+      "Use plain melatonin — avoid products with xylitol (toxic to dogs) or added herbs",
+    ],
+    warnings: [
+      "Always check the label — some human melatonin products contain xylitol, which is toxic to dogs",
+      "May cause mild drowsiness, which is typically a benefit for anxious cancer patients",
+    ],
+    priority: 4,
     evidenceLevel: "veterinary-use",
   },
 ];

@@ -4,16 +4,17 @@ export const DIET_PRINCIPLES: DietPrinciple[] = [
   {
     title: "High Protein, Low Carb",
     description:
-      "Cancer cells primarily feed on glucose. A diet high in quality protein and healthy fats, with minimal carbohydrates, can help starve cancer cells while nourishing your dog.",
+      "Cancer cells rely heavily on glucose for energy (the Warburg effect). A diet high in quality protein and healthy fats, with reduced carbohydrates, may help limit the fuel available to tumors while nourishing your dog. This approach is theoretically promising but has not yet been proven to improve survival in controlled canine trials.",
     details: [
       "Aim for 40-50% high-quality animal protein",
-      "Keep carbohydrates to 10-20% of the diet",
-      "Most commercial kibble is 40-50% carbs — far too high",
+      "Reduce carbohydrates where practical — most kibble is 40-50% carbs",
+      "A 2024 Frontiers in Veterinary Science review recommends ~25% complex carbohydrates based on glycemic index",
       "Protein sources: lean meats, organ meats, fish, eggs",
+      "Important: high-protein, high-fat diets are not appropriate for dogs with kidney disease, liver disease, pancreatitis, or GI conditions — discuss with your vet",
     ],
     icon: "protein.png",
     deepDive: [
-      "The science behind this principle dates back to Nobel Prize-winning research by Otto Warburg, who discovered that cancer cells metabolize glucose at a dramatically higher rate than normal cells — a phenomenon now called the Warburg effect. While normal cells can efficiently use fats and proteins for energy, cancer cells are largely dependent on glucose. By reducing the carbohydrate content of your dog's diet, you reduce the available glucose that tumors can use to fuel their growth.",
+      "The science behind this principle dates back to research by Otto Warburg, who observed in the 1920s that cancer cells metabolize glucose at a dramatically higher rate than normal cells — a phenomenon now called the Warburg effect (his 1931 Nobel Prize was awarded for related work on respiratory enzymes). While normal cells can efficiently use fats and proteins for energy, many cancer cells are heavily dependent on glucose. The theory is that reducing dietary carbohydrates limits available glucose for tumors. Important caveat: the Warburg effect has not been confirmed in all canine tumor types, and no controlled clinical trial has yet demonstrated that a low-carbohydrate diet improves survival in dogs with cancer. The approach is mechanistically plausible and widely used in integrative oncology, but should be understood as promising rather than proven.",
       "Veterinary oncologist Dr. Gregory Ogilvie at Colorado State University demonstrated this directly in dogs with lymphoma. His research showed that dogs with cancer have measurably altered carbohydrate metabolism — their bodies process glucose differently, and elevated blood lactate levels (a byproduct of cancer's glucose consumption) are common. These metabolic changes persisted even after chemotherapy-induced remission, suggesting the dietary approach should be maintained throughout treatment and beyond.",
       "High-quality animal protein is critical because dogs with cancer often lose muscle mass (cancer cachexia). Protein provides the amino acids needed to maintain muscle, support immune function, and help the body repair tissues damaged by treatment. Unlike carbohydrates, protein does not preferentially fuel cancer growth. Focus on easily digestible animal proteins like chicken, turkey, fish, and eggs rather than plant-based proteins, which are less bioavailable for dogs.",
     ],
@@ -46,14 +47,14 @@ export const DIET_PRINCIPLES: DietPrinciple[] = [
     details: [
       "Omega-3 fatty acids (fish oil) are especially beneficial",
       "Include sources like salmon, sardines, and fish oil",
-      "Coconut oil provides MCTs that may have anti-cancer properties",
+      "Coconut oil provides MCTs as a quick energy source (no anti-cancer evidence, but useful for calories)",
       "Aim for 25-35% of calories from quality fats",
     ],
     icon: "healthy-fats.png",
     deepDive: [
       "Fats are the unsung hero of a cancer-fighting diet. While cancer cells thrive on glucose, they are remarkably inefficient at using fat for energy. Your dog's healthy cells, however, can use fat just fine — making dietary fat a way to provide calories that nourish your dog while offering less fuel to the tumor. This is why a cancer diet shifts calories away from carbohydrates and toward healthy fats.",
       "The most important fats are omega-3 fatty acids, specifically EPA and DHA found in fish oil. A landmark study by Dr. Ogilvie showed that dogs with lymphoma who received fish oil supplementation alongside chemotherapy had significantly longer disease-free intervals and overall survival times compared to dogs receiving the same chemotherapy without fish oil. The omega-3s appear to work by reducing inflammation, modulating immune function, and potentially inhibiting tumor growth and metastasis.",
-      "Beyond fish oil, a mix of healthy fats provides the best results. Coconut oil offers medium-chain triglycerides (MCTs) that are quickly absorbed and used for energy. Olive oil provides monounsaturated fats with anti-inflammatory properties. The goal is 25-35% of total calories from fat — significantly higher than most commercial dog foods provide. If your dog is underweight from cancer cachexia, increasing fat content is one of the fastest ways to boost caloric density without adding carbohydrates.",
+      "Beyond fish oil, a mix of healthy fats provides the best results. Coconut oil offers medium-chain triglycerides (MCTs) that are quickly absorbed and used for energy — useful for caloric density, though there is no evidence of anti-cancer properties in dogs. Use in moderation, as high saturated fat intake can contribute to pancreatitis. Olive oil provides monounsaturated fats with anti-inflammatory properties. The goal is 25-35% of total calories from fat — significantly higher than most commercial dog foods provide. If your dog is underweight from cancer cachexia, increasing fat content is one of the fastest ways to boost caloric density without adding carbohydrates. Note: an optimal dose of fish oil has not been established — CSU states this directly — so introduce gradually and watch for GI effects.",
     ],
     references: [
       {
@@ -129,7 +130,7 @@ export const DIET_PRINCIPLES: DietPrinciple[] = [
     ],
     icon: "small-meals.png",
     deepDive: [
-      "Cancer cachexia — the wasting syndrome of progressive weight loss and muscle deterioration — affects up to 50% of dogs with cancer. It's driven by a complex interplay of tumor-produced factors, chronic inflammation, and metabolic changes that alter how the body processes nutrients. Cachexia is not simply \"not eating enough\" — it's a metabolic reprogramming that makes the body break down its own muscle and fat stores even when food is available.",
+      "Cancer cachexia — the wasting syndrome of progressive weight loss and muscle deterioration — affects roughly 35% of dogs with cancer, with moderate to severe wasting in about 15%. It's driven by a complex interplay of tumor-produced factors, chronic inflammation, and metabolic changes that alter how the body processes nutrients. Cachexia is not simply \"not eating enough\" — it's a metabolic reprogramming that makes the body break down its own muscle and fat stores even when food is available.",
       "Meal frequency and presentation play a larger role in managing cachexia than most owners realize. Smaller, more frequent meals (3-4 per day instead of 2) reduce the metabolic burden on the digestive system and help maintain more stable blood sugar levels throughout the day. Studies on cancer cachexia management emphasize that early nutritional intervention — before significant weight loss occurs — is far more effective than trying to reverse cachexia once it's established. Start adjusting meal patterns at diagnosis, not when problems appear.",
       "Practical strategies matter as much as the science. Warming food to body temperature (about 100\u00b0F) releases volatile aromas that stimulate appetite. Bone broth is an excellent bridge — it provides hydration, glycine, collagen, and minerals in a form that even nauseous dogs will often accept. If your dog skips a meal, don't panic — offer something different an hour later. Track daily intake rather than individual meals, and report consistent appetite loss (more than 24-48 hours) to your vet, as it may indicate treatment side effects that can be managed.",
     ],
@@ -151,7 +152,7 @@ export const DIET_PRINCIPLES: DietPrinciple[] = [
         year: 2004,
         pmid: "15515586",
         summary:
-          "Found that weight loss was common in dogs at oncology presentation and was associated with reduced survival, supporting early nutritional intervention in canine cancer patients.",
+          "Found that weight loss was common in dogs at oncology presentation, with 4% classified as emaciated. The study did not assess survival outcomes but highlighted the need for early nutritional assessment in canine cancer patients.",
       },
     ],
   },
@@ -253,14 +254,14 @@ export const FOOD_ITEMS: FoodItem[] = [
   {
     name: "Grains & Wheat",
     description:
-      "Wheat, corn, and rice are high in carbohydrates that convert to glucose. Most commercial kibble is grain-heavy. If you must use kibble, choose grain-free, low-carb options.",
+      "Wheat, corn, and rice are high in carbohydrates that convert to glucose. Most commercial kibble is grain-heavy. If you must use kibble, look for lower-carb options. Important: the FDA has been investigating a link between grain-free, legume-heavy diets and dilated cardiomyopathy (DCM) since 2018 — if going grain-free, choose formulas that don't rely heavily on peas, lentils, or potatoes as primary ingredients.",
     category: "avoid",
     icon: "grains.png",
   },
   {
     name: "Corn & Soy",
     description:
-      "Common cheap fillers in commercial dog food. They provide little nutritional value, are high in carbohydrates, and soy contains phytoestrogens that may affect hormonal cancers.",
+      "Common fillers in commercial dog food that are high in carbohydrates. Corn does provide some linoleic acid but is primarily a starch source in kibble. Soy contains phytoestrogens that can influence estrogen levels, though the link to tumor outcomes in dogs is unproven. Minimizing both helps reduce overall carbohydrate load.",
     category: "avoid",
     icon: "corn.png",
   },
