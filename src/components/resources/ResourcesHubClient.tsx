@@ -49,72 +49,6 @@ function StatBadge({ text }: { text: string }) {
   );
 }
 
-function PanelHeader({
-  eyebrow,
-  eyebrowColor,
-  title,
-  icon,
-  stats,
-}: {
-  eyebrow: string;
-  eyebrowColor: string;
-  title: string;
-  icon: string;
-  stats: string[];
-}) {
-  return (
-    <div className="flex items-start gap-5 mb-5">
-      <div className="relative flex-shrink-0">
-        <Image
-          src={icon}
-          alt=""
-          width={96}
-          height={96}
-          style={{ objectFit: "contain", mixBlendMode: "multiply" }}
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        <div
-          className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
-          style={{ color: eyebrowColor }}
-        >
-          {eyebrow}
-        </div>
-        <h2
-          className="font-serif font-semibold mb-3"
-          style={{ fontSize: "clamp(1.375rem, 3vw, 1.625rem)", color: "var(--text)", lineHeight: 1.3 }}
-        >
-          {title}
-        </h2>
-        <div className="flex flex-wrap gap-1.5">
-          {stats.map((s) => (
-            <StatBadge key={s} text={s} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PanelCTA({
-  text,
-  color,
-}: {
-  text: string;
-  color: string;
-}) {
-  return (
-    <span
-      className="inline-flex items-center gap-1.5 mt-5 text-[1rem] font-semibold transition-opacity group-hover:opacity-75"
-      style={{ color }}
-    >
-      {text}
-      <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-        &rarr;
-      </span>
-    </span>
-  );
-}
 
 export default function ResourcesHubClient({
   profile,
@@ -284,471 +218,541 @@ export default function ResourcesHubClient({
         </div>
       </div>
 
-      {/* ═══ Supplement Guide Panel ═══ */}
+      {/* ═══ Supplement Guide ═══ */}
       <div style={{ background: "rgba(91,123,94,0.04)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
             <section className="reveal">
-              <Link
-                href="/resources/supplements"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-                style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--sage)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(91,123,94,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                }}
-              >
-                <PanelHeader
-                  eyebrow="Guide"
-                  eyebrowColor="var(--sage)"
-                  title="Supplement Guide"
-                  icon="/illustrations/icons/icon-supplement.png"
-                  stats={[
-                    `${supplementCount} supplements`,
-                    `${categoryCount} categories`,
-                    "Weight-based dosing",
-                  ]}
-                />
-                <div className="reveal-stagger space-y-2 mb-1">
-                  {topSupplements.map((s) => (
-                    <div
-                      key={s.name}
-                      className="flex items-center justify-between rounded-lg px-3 py-2"
-                      style={{ background: "var(--cream)" }}
-                    >
-                      <div>
-                        <span
-                          className="text-[0.82rem] font-medium"
-                          style={{ color: "var(--text)" }}
-                        >
-                          {s.name}
-                        </span>
-                        {s.dose && (
-                          <span
-                            className="text-[0.72rem] ml-2"
-                            style={{ color: "var(--text-muted)" }}
-                          >
-                            {s.dose}
-                          </span>
-                        )}
-                      </div>
-                      <span
-                        className="text-[0.62rem] font-semibold uppercase tracking-wide rounded-full px-2 py-0.5"
-                        style={{
-                          color: s.categoryColor,
-                          background: `${s.categoryColor}12`,
-                        }}
-                      >
-                        {s.category}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <PanelCTA
-                  text={`Browse all ${supplementCount} supplements`}
-                  color="var(--sage)"
-                />
-              </Link>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ What to Feed Panel ═══ */}
-      <div style={{ background: "var(--warm-white)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
-            <section className="reveal">
-              <Link
-                href="/resources/food"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-                style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--gold)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(196,162,101,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                }}
-              >
-                <PanelHeader
-                  eyebrow="Guide"
-                  eyebrowColor="var(--gold-text)"
-                  title="What to Feed"
-                  icon="/illustrations/icons/icon-food-bowl.png"
-                  stats={[
-                    `${foodCounts.recommended} recommended`,
-                    `${foodCounts.avoid} to avoid`,
-                    `${foodCounts.appetite} appetite tips`,
-                  ]}
-                />
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-1">
-                  <div>
-                    <div
-                      className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-2"
-                      style={{ color: "var(--sage)" }}
-                    >
-                      Top Recommended
-                    </div>
-                    {["Fatty Fish", "Eggs", "Bone Broth"].map((f) => (
-                      <div
-                        key={f}
-                        className="flex items-center gap-2 text-[0.8rem] mb-1.5"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                        >
-                          <path
-                            d="M2.5 6L5 8.5L9.5 3.5"
-                            stroke="var(--sage)"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                        {f}
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    <div
-                      className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-2"
-                      style={{ color: "var(--gold-text)" }}
-                    >
-                      Appetite Boosters
-                    </div>
-                    {["Warm the food", "Bone broth toppers", "Hand-feeding"].map(
-                      (f) => (
-                        <div
-                          key={f}
-                          className="text-[0.8rem] mb-1.5"
-                          style={{ color: "var(--text-muted)" }}
-                        >
-                          {f}
-                        </div>
-                      )
-                    )}
-                  </div>
-                  <div>
-                    <div
-                      className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-2"
-                      style={{ color: "var(--gold-text)" }}
-                    >
-                      Key Principle
-                    </div>
-                    <p
-                      className="text-[0.8rem] leading-relaxed mb-1"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      Cancer cells feed on glucose. A high-protein, low-carb diet
-                      can help starve them while nourishing your dog.
-                    </p>
-                    <span
-                      className="text-[0.7rem] font-medium"
-                      style={{ color: "var(--sage)" }}
-                    >
-                      Backed by {referenceCount} published studies
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-4">
-                  <PanelCTA
-                    text="Explore nutrition guide"
-                    color="var(--gold-text)"
-                  />
-                  <span
-                    className="text-[0.78rem]"
-                    style={{ color: "var(--text-muted)", opacity: 0.6 }}
-                  >
-                    Includes meal plan generator &amp; cancer diet science
-                  </span>
-                </div>
-              </Link>
-            </section>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ House-Proofing Panel ═══ */}
-      <div style={{ background: "rgba(196,162,101,0.04)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
-            <section className="reveal">
-              <Link
-                href="/resources/home"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-                style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--terracotta)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(212,133,106,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                }}
-              >
-                <PanelHeader
-                  eyebrow="Checklist"
-                  eyebrowColor="var(--terracotta)"
-                  title="House-Proofing"
-                  icon="/illustrations/icons/icon-shield.png"
-                  stats={[
-                    `${roomSections.length} rooms`,
-                    `${totalChecklist} checklist items`,
-                    `${totalProducts} product picks`,
-                  ]}
-                />
-                <div className="reveal-stagger space-y-2 mb-3">
-                  {roomSections.slice(0, 3).map((room) => (
-                    <div
-                      key={room.title}
-                      className="flex items-center justify-between rounded-lg px-3 py-2"
-                      style={{ background: "var(--cream)" }}
-                    >
-                      <span
-                        className="text-[0.82rem] font-medium"
-                        style={{ color: "var(--text)" }}
-                      >
-                        {room.title}
-                      </span>
-                      <span
-                        className="text-[0.7rem]"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {room.checklistCount} items
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  className="rounded-lg px-4 py-3"
-                  style={{
-                    background: "rgba(212,133,106,0.04)",
-                    border: "1px solid rgba(212,133,106,0.12)",
-                  }}
-                >
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-8">
+                <div className="flex-1">
                   <div
-                    className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] mb-1"
-                    style={{ color: "var(--terracotta)" }}
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
+                    style={{ color: "var(--sage)" }}
                   >
-                    Quick win
+                    Guide
                   </div>
-                  <p
-                    className="text-[0.82rem] leading-relaxed"
-                    style={{ color: "var(--text)" }}
+                  <h2
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
                   >
-                    {quickWinTip}
+                    Supplement Guide
+                  </h2>
+                  <p
+                    className="text-[1rem] leading-relaxed"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    The right supplements can support your dog through treatment.
+                    We&apos;ve researched {supplementCount} options across{" "}
+                    {categoryCount} categories — with weight-based dosing,
+                    sourcing notes, and the studies behind each one.
                   </p>
                 </div>
-                <PanelCTA
-                  text="See full room-by-room checklist"
-                  color="var(--terracotta)"
+                <Image
+                  src="/illustrations/icons/icon-supplement.png"
+                  alt=""
+                  width={140}
+                  height={140}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
                 />
+              </div>
+
+              <div className="reveal-stagger space-y-2.5">
+                {topSupplements.map((s) => (
+                  <div
+                    key={s.name}
+                    className="flex items-center justify-between rounded-lg px-4 py-2.5"
+                    style={{
+                      background: "rgba(91,123,94,0.04)",
+                      border: "1px solid rgba(91,123,94,0.08)",
+                    }}
+                  >
+                    <div>
+                      <span
+                        className="text-[0.9rem] font-medium"
+                        style={{ color: "var(--text)" }}
+                      >
+                        {s.name}
+                      </span>
+                      {s.dose && (
+                        <span
+                          className="text-[0.8rem] ml-2"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          {s.dose}
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className="text-[0.7rem] font-semibold uppercase tracking-wide rounded-full px-2.5 py-0.5"
+                      style={{
+                        color: s.categoryColor,
+                        background: `${s.categoryColor}12`,
+                      }}
+                    >
+                      {s.category}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <Link
+                href="/resources/supplements"
+                className="group inline-flex items-center gap-2 mt-8 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--sage)" }}
+              >
+                Explore the full guide
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </section>
           </div>
         </div>
       </div>
 
-      {/* ═══ Understanding HSA Panel ═══ */}
+      {/* ═══ What to Feed ═══ */}
       <div style={{ background: "var(--warm-white)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
             <section className="reveal">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-8">
+                <div className="flex-1">
+                  <div
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
+                    style={{ color: "var(--gold-text)" }}
+                  >
+                    Nutrition
+                  </div>
+                  <h2
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    What to Feed
+                  </h2>
+                  <p
+                    className="text-[1rem] leading-relaxed"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    What your dog eats during treatment matters more than you
+                    might think. A cancer-fighting diet can help starve tumors
+                    while keeping your dog strong — backed by{" "}
+                    {referenceCount} published studies.
+                  </p>
+                </div>
+                <Image
+                  src="/illustrations/icons/icon-food-bowl.png"
+                  alt=""
+                  width={140}
+                  height={140}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div>
+                  <div
+                    className="text-[0.75rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                    style={{ color: "var(--sage)" }}
+                  >
+                    Top Recommended
+                  </div>
+                  {["Fatty Fish", "Eggs", "Bone Broth"].map((f) => (
+                    <div
+                      key={f}
+                      className="flex items-center gap-2 text-[0.9rem] mb-2"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                      >
+                        <path
+                          d="M2.5 6L5 8.5L9.5 3.5"
+                          stroke="var(--sage)"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      {f}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div
+                    className="text-[0.75rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                    style={{ color: "var(--gold-text)" }}
+                  >
+                    Appetite Boosters
+                  </div>
+                  {["Warm the food", "Bone broth toppers", "Hand-feeding"].map(
+                    (f) => (
+                      <div
+                        key={f}
+                        className="text-[0.9rem] mb-2"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        {f}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div>
+                  <div
+                    className="text-[0.75rem] font-semibold uppercase tracking-[0.12em] mb-3"
+                    style={{ color: "var(--gold-text)" }}
+                  >
+                    Key Principle
+                  </div>
+                  <p
+                    className="text-[0.9rem] leading-relaxed"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Cancer cells feed on glucose. A high-protein, low-carb diet
+                    can help starve them while nourishing your dog.
+                  </p>
+                </div>
+              </div>
+
               <Link
-                href="/resources/understanding-hsa"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
+                href="/resources/food"
+                className="group inline-flex items-center gap-2 mt-8 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--gold-text)" }}
+              >
+                See the full nutrition guide
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ House-Proofing ═══ */}
+      <div style={{ background: "rgba(196,162,101,0.04)" }}>
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
+            <section className="reveal">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-8">
+                <div className="flex-1">
+                  <div
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
+                    style={{ color: "var(--terracotta)" }}
+                  >
+                    Safety
+                  </div>
+                  <h2
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    House-Proofing
+                  </h2>
+                  <p
+                    className="text-[1rem] leading-relaxed"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Small changes at home can prevent big problems. Room by room,
+                    here&apos;s how to make your space safer and more comfortable
+                    — {totalChecklist} items across {roomSections.length} rooms,
+                    with {totalProducts} product picks.
+                  </p>
+                </div>
+                <Image
+                  src="/illustrations/icons/icon-house.png"
+                  alt=""
+                  width={140}
+                  height={140}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
+                />
+              </div>
+
+              <div className="reveal-stagger space-y-2.5 mb-6">
+                {roomSections.slice(0, 3).map((room) => (
+                  <div
+                    key={room.title}
+                    className="flex items-center justify-between rounded-lg px-4 py-2.5"
+                    style={{
+                      background: "rgba(196,162,101,0.04)",
+                      border: "1px solid rgba(196,162,101,0.1)",
+                    }}
+                  >
+                    <span
+                      className="text-[0.9rem] font-medium"
+                      style={{ color: "var(--text)" }}
+                    >
+                      {room.title}
+                    </span>
+                    <span
+                      className="text-[0.8rem]"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {room.checklistCount} items
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div
+                className="rounded-lg px-5 py-4"
                 style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--sage-dark, #4A6B4D)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(91,123,94,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+                  background: "rgba(212,133,106,0.04)",
+                  border: "1px solid rgba(212,133,106,0.12)",
                 }}
               >
-                <div className="flex-1 min-w-0">
+                <div
+                  className="text-[0.75rem] font-semibold uppercase tracking-[0.12em] mb-1.5"
+                  style={{ color: "var(--terracotta)" }}
+                >
+                  Quick win
+                </div>
+                <p
+                  className="text-[0.9rem] leading-relaxed"
+                  style={{ color: "var(--text)" }}
+                >
+                  {quickWinTip}
+                </p>
+              </div>
+
+              <Link
+                href="/resources/home"
+                className="group inline-flex items-center gap-2 mt-8 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--terracotta)" }}
+              >
+                See the full checklist
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══ Understanding HSA ═══ */}
+      <div style={{ background: "var(--warm-white)" }}>
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
+            <section className="reveal">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-6">
+                <div className="flex-1">
                   <div
-                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
                     style={{ color: "var(--sage)" }}
                   >
                     Learn
                   </div>
                   <h2
-                    className="font-serif font-semibold mb-3"
-                    style={{ fontSize: "clamp(1.375rem, 3vw, 1.625rem)", color: "var(--text)", lineHeight: 1.3 }}
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
                   >
                     Understanding HSA
                   </h2>
-                  <div className="reveal-stagger flex flex-wrap gap-1.5 mb-4">
+                  <p
+                    className="text-[1rem] leading-relaxed mb-5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    The hardest part is not knowing. This guide covers what
+                    hemangiosarcoma is, how it&apos;s diagnosed, every treatment
+                    path with realistic costs, breed-specific risks, current
+                    research, and the questions to ask your oncologist.
+                  </p>
+                  <div className="reveal-stagger flex flex-wrap gap-2">
                     <StatBadge text="Disease overview" />
                     <StatBadge text="Treatment options" />
                     <StatBadge text="Breed risks" />
                     <StatBadge text="Clinical trials" />
                   </div>
                 </div>
-                <p
-                  className="text-[0.88rem] leading-relaxed mb-1"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  What hemangiosarcoma is, how it&apos;s diagnosed, treatment paths with
-                  costs, breed-specific risks, current research breakthroughs, and
-                  the questions to ask your oncologist.
-                </p>
-                <PanelCTA
-                  text="Read the full guide"
-                  color="var(--sage)"
+                <Image
+                  src="/illustrations/icons/icon-lightbulb.png"
+                  alt=""
+                  width={130}
+                  height={130}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
                 />
+              </div>
+
+              <Link
+                href="/resources/understanding-hsa"
+                className="group inline-flex items-center gap-2 mt-4 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--sage)" }}
+              >
+                Read the full guide
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </section>
           </div>
         </div>
       </div>
 
-      {/* ═══ Emergency Preparedness Panel ═══ */}
+      {/* ═══ Emergency Preparedness ═══ */}
       <div style={{ background: "rgba(212,133,106,0.04)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
             <section className="reveal">
-              <Link
-                href="/resources/emergency"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-                style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--terracotta)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(212,133,106,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                }}
-              >
-                <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-6">
+                <div className="flex-1">
                   <div
-                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
                     style={{ color: "var(--terracotta)" }}
                   >
-                    Safety
+                    Be Ready
                   </div>
                   <h2
-                    className="font-serif font-semibold mb-3"
-                    style={{ fontSize: "clamp(1.375rem, 3vw, 1.625rem)", color: "var(--text)", lineHeight: 1.3 }}
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
                   >
                     Emergency Preparedness
                   </h2>
-                  <div className="reveal-stagger flex flex-wrap gap-1.5 mb-4">
+                  <p
+                    className="text-[1rem] leading-relaxed mb-5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Knowing what to look for — and having a plan before you need
+                    one — gives you the power to act fast when your dog needs you
+                    most. This covers gum colors, emergency scenarios, kit
+                    essentials, and the conversations to have with your vet now.
+                  </p>
+                  <div className="reveal-stagger flex flex-wrap gap-2">
                     <StatBadge text="Gum color guide" />
                     <StatBadge text="Emergency scenarios" />
                     <StatBadge text="Emergency kit" />
                   </div>
                 </div>
-                <p
-                  className="text-[0.88rem] leading-relaxed mb-1"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Know the signs of an HSA emergency, build your emergency kit,
-                  and have the critical conversations with your vet before you need
-                  the answers.
-                </p>
-                <PanelCTA
-                  text="Be prepared"
-                  color="var(--terracotta)"
+                <Image
+                  src="/illustrations/icons/icon-heart.png"
+                  alt=""
+                  width={130}
+                  height={130}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
                 />
+              </div>
+
+              <Link
+                href="/resources/emergency"
+                className="group inline-flex items-center gap-2 mt-4 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--terracotta)" }}
+              >
+                Learn what to watch for
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </section>
           </div>
         </div>
       </div>
 
-      {/* ═══ Financial Help Panel ═══ */}
+      {/* ═══ Financial Help ═══ */}
       <div style={{ background: "rgba(245,240,234,0.6)" }}>
-        <div className="px-6 py-12">
-          <div style={{ maxWidth: 1100 }} className="mx-auto">
+        <div className="px-6 py-16 sm:py-20">
+          <div style={{ maxWidth: 960 }} className="mx-auto">
             <section className="reveal">
-              <Link
-                href="/resources/financial-help"
-                className="group block rounded-2xl p-6 no-underline transition-all duration-300"
-                style={{
-                  background: "white",
-                  borderLeft: "3px solid var(--gold)",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 12px 32px rgba(196,162,101,0.1)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-                }}
-              >
-                <div className="flex-1 min-w-0">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-4 sm:gap-10 mb-6">
+                <div className="flex-1">
                   <div
-                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-1.5"
+                    className="text-[0.8125rem] font-semibold uppercase tracking-[0.14em] mb-2"
                     style={{ color: "var(--gold-text)" }}
                   >
                     Support
                   </div>
                   <h2
-                    className="font-serif font-semibold mb-3"
-                    style={{ fontSize: "clamp(1.375rem, 3vw, 1.625rem)", color: "var(--text)", lineHeight: 1.3 }}
+                    className="font-serif font-semibold mb-4"
+                    style={{
+                      fontSize: "clamp(1.5rem, 3.5vw, 2rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.25,
+                    }}
                   >
                     Financial Help
                   </h2>
-                  <div className="reveal-stagger flex flex-wrap gap-1.5 mb-4">
+                  <p
+                    className="text-[1rem] leading-relaxed mb-5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    Treatment shouldn&apos;t depend on your bank account. We&apos;ve
+                    compiled every grant, financing option, and assistance
+                    program we could find — with application tips to improve your
+                    chances.
+                  </p>
+                  <div className="reveal-stagger flex flex-wrap gap-2">
                     <StatBadge text="7 grant programs" />
                     <StatBadge text="2 financing options" />
                     <StatBadge text="Application tips" />
                   </div>
                 </div>
-                <p
-                  className="text-[0.88rem] leading-relaxed mb-1"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  Grants, financing, and assistance programs to help cover HSA
-                  treatment costs. Nobody should have to give up on their dog
-                  because they can&apos;t afford care.
-                </p>
-                <PanelCTA
-                  text="Find help"
-                  color="var(--gold-text)"
+                <Image
+                  src="/illustrations/icons/icon-star.png"
+                  alt=""
+                  width={130}
+                  height={130}
+                  className="flex-shrink-0 self-center sm:self-start hidden sm:block"
+                  style={{
+                    objectFit: "contain",
+                    mixBlendMode: "multiply",
+                    opacity: 0.85,
+                  }}
                 />
+              </div>
+
+              <Link
+                href="/resources/financial-help"
+                className="group inline-flex items-center gap-2 mt-4 text-[1.0625rem] font-semibold no-underline transition-opacity hover:opacity-75"
+                style={{ color: "var(--gold-text)" }}
+              >
+                Find help
+                <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                  &rarr;
+                </span>
               </Link>
             </section>
           </div>
