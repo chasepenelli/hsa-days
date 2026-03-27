@@ -10,7 +10,6 @@ import type {
 } from "@/lib/resources/types";
 import { getWeightBracket, getDosageForWeight } from "@/lib/resources/personalize";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import SupplementCard from "./SupplementCard";
 
 interface SupplementsPageClientProps {
   profile: DogProfile | null;
@@ -52,10 +51,7 @@ export default function SupplementsPageClient({
 
   const dogName = profile?.dogName ?? null;
 
-  // Build a lookup from category key -> category object
-  const categoryMap = new Map(supplementCategories.map((c) => [c.key, c]));
-
-  // ---------- Tracking logic (preserved exactly) ----------
+  // ---------- Tracking logic ----------
   const handleToggle = useCallback(
     async (slug: string) => {
       if (!isAuthenticated) return;
@@ -387,106 +383,448 @@ export default function SupplementsPageClient({
         </div>
       </nav>
 
-      {/* ═══ All Categories as Sections ═══ */}
-      <div className="px-6">
-        <div className="max-w-[800px] mx-auto">
-          {supplementCategories.map((cat, catIdx) => {
-            const catSupplements = supplements.filter(
-              (s) => s.category === cat.key
-            );
+      {/* ═══ All Categories as Editorial Sections ═══ */}
+      {supplementCategories.map((cat, catIdx) => {
+        const catSupplements = supplements.filter(
+          (s) => s.category === cat.key
+        );
+        const isEven = catIdx % 2 === 0;
 
-            return (
-              <section
-                key={cat.key}
-                id={cat.key}
-                className="reveal"
-                style={{
-                  paddingTop: catIdx === 0 ? 24 : 40,
-                  paddingBottom: 16,
-                  scrollMarginTop: 120,
-                }}
-              >
-                {/* Category header */}
-                <div
-                  className="rounded-2xl px-5 py-5 mb-5"
-                  style={{
-                    background: `color-mix(in srgb, ${cat.accentColor} 6%, white)`,
-                    borderLeft: `4px solid ${cat.accentColor}`,
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <h2
-                      className="font-serif font-semibold"
+        return (
+          <section
+            key={cat.key}
+            id={cat.key}
+            style={{
+              scrollMarginTop: 120,
+              background: isEven
+                ? `color-mix(in srgb, ${cat.accentColor} 4%, var(--warm-white))`
+                : "var(--warm-white)",
+            }}
+          >
+            <div className="px-6">
+              <div className="max-w-[900px] mx-auto" style={{ paddingTop: 56, paddingBottom: 56 }}>
+                {/* ── Category header ── */}
+                <div className="mb-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
                       style={{
-                        fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)",
-                        color: "var(--text)",
+                        width: 32,
+                        height: 3,
+                        borderRadius: 2,
+                        background: cat.accentColor,
                       }}
-                    >
-                      {cat.label}
-                    </h2>
+                    />
                     <span
+                      className="inline-flex items-center rounded-full px-3 py-1 font-semibold uppercase tracking-widest"
                       style={{
-                        fontSize: "var(--text-body-sm)",
-                        color: "var(--text-muted)",
+                        fontSize: "var(--text-fine)",
+                        background: `color-mix(in srgb, ${cat.accentColor} 10%, transparent)`,
+                        color: cat.accentColor,
+                        letterSpacing: "0.12em",
                       }}
                     >
-                      &middot; {catSupplements.length}{" "}
-                      {catSupplements.length === 1
-                        ? "supplement"
-                        : "supplements"}
+                      {catSupplements.length} supplement{catSupplements.length !== 1 ? "s" : ""}
                     </span>
                   </div>
+                  <h2
+                    className="font-serif font-semibold mb-3"
+                    style={{
+                      fontSize: "clamp(1.625rem, 3.5vw, 2.25rem)",
+                      color: "var(--text)",
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {cat.label}
+                  </h2>
                   <p
                     className="leading-relaxed"
                     style={{
-                      fontSize: "var(--text-body)",
+                      fontSize: "clamp(1rem, 2vw, 1.125rem)",
                       color: "var(--text-muted)",
+                      maxWidth: 640,
+                      lineHeight: 1.7,
                     }}
                   >
                     {cat.description}
                   </p>
                 </div>
 
-                {/* Supplement cards */}
-                <div className="space-y-4">
+                {/* ── Supplement cards ── */}
+                <div className="space-y-8">
                   {catSupplements.map((supplement) => {
                     const doseInfo = getDosageForWeight(
                       supplement.dosage,
                       effectiveWeight ?? null
                     );
 
+                    const evidenceLabel =
+                      supplement.evidenceLevel === "studied-in-hsa"
+                        ? "Studied in HSA"
+                        : supplement.evidenceLevel === "veterinary-use"
+                          ? "Veterinary use"
+                          : "Emerging research";
+
+                    const evidenceStyle =
+                      supplement.evidenceLevel === "studied-in-hsa"
+                        ? { bg: "var(--sage)", color: "white", border: "none" }
+                        : supplement.evidenceLevel === "veterinary-use"
+                          ? { bg: "transparent", color: "var(--gold-text)", border: "1.5px solid var(--gold)" }
+                          : { bg: "transparent", color: "var(--text-muted)", border: "1.5px solid var(--border)" };
+
                     return (
-                      <SupplementCard
+                      <div
                         key={supplement.slug}
-                        supplement={supplement}
-                        userBracket={userBracket}
-                        userDose={doseInfo?.dose ?? null}
-                        breed={profile?.breed ?? null}
-                        accentColor={cat.accentColor}
-                        isTracked={activeSlugs.has(supplement.slug)}
-                        usageCount={usageCounts[supplement.slug] ?? 0}
-                        isAuthenticated={isAuthenticated}
-                        dogName={dogName}
-                        onToggleTrack={handleToggle}
-                      />
+                        className="rounded-2xl"
+                        style={{
+                          background: "white",
+                          border: "1.5px solid var(--border)",
+                          overflow: "hidden",
+                          transition: "box-shadow 0.3s ease",
+                          boxShadow: "0 1px 4px rgba(0,0,0,0.03)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = `0 8px 32px ${cat.accentColor}12, 0 2px 8px rgba(0,0,0,0.06)`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,0.03)";
+                        }}
+                      >
+                        {/* ─ Card header zone ─ */}
+                        <div
+                          className="px-6 pt-7 pb-5 sm:px-8"
+                          style={{ borderBottom: "1px solid var(--border)" }}
+                        >
+                          {/* Evidence badge */}
+                          <div className="mb-3">
+                            <span
+                              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-medium"
+                              style={{
+                                fontSize: "var(--text-fine)",
+                                background: evidenceStyle.bg,
+                                color: evidenceStyle.color,
+                                border: evidenceStyle.border,
+                              }}
+                            >
+                              {supplement.evidenceLevel === "studied-in-hsa" && (
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              )}
+                              {supplement.evidenceLevel === "veterinary-use" && (
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                </svg>
+                              )}
+                              {evidenceLabel}
+                            </span>
+                          </div>
+
+                          {/* Supplement name */}
+                          <h3
+                            className="font-serif font-semibold mb-2"
+                            style={{
+                              fontSize: "clamp(1.375rem, 3vw, 1.75rem)",
+                              color: "var(--text)",
+                              lineHeight: 1.25,
+                            }}
+                          >
+                            {supplement.name}
+                          </h3>
+
+                          {/* Tagline — accent colored */}
+                          <p
+                            className="leading-relaxed"
+                            style={{
+                              fontSize: "clamp(0.95rem, 2vw, 1.0625rem)",
+                              color: cat.accentColor,
+                              fontWeight: 500,
+                            }}
+                          >
+                            {supplement.tagline}
+                          </p>
+                        </div>
+
+                        {/* ─ Card body ─ */}
+                        <div className="px-6 py-6 sm:px-8 sm:py-7">
+                          {/* Description */}
+                          <p
+                            className="leading-relaxed mb-6"
+                            style={{
+                              fontSize: "var(--text-body)",
+                              color: "var(--text)",
+                              lineHeight: 1.75,
+                            }}
+                          >
+                            {supplement.description}
+                          </p>
+
+                          {/* ─ Info grid: Dosage + Frequency ─ */}
+                          <div className="grid gap-4 sm:grid-cols-2 mb-6">
+                            {/* Dosage block */}
+                            <div
+                              className="rounded-xl p-5"
+                              style={{
+                                background: `color-mix(in srgb, ${cat.accentColor} 5%, var(--cream))`,
+                              }}
+                            >
+                              <div className="flex items-center gap-2 mb-2.5">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke={cat.accentColor} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+                                  <path d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-6 18.75h9" />
+                                </svg>
+                                <p
+                                  className="font-semibold uppercase tracking-widest"
+                                  style={{
+                                    fontSize: "var(--text-fine)",
+                                    color: "var(--text-muted)",
+                                    letterSpacing: "0.1em",
+                                  }}
+                                >
+                                  Dosage
+                                </p>
+                              </div>
+                              {doseInfo ? (
+                                <p
+                                  className="font-semibold"
+                                  style={{
+                                    fontSize: "clamp(1.05rem, 2vw, 1.25rem)",
+                                    color: "var(--text)",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {doseInfo.dose}
+                                </p>
+                              ) : (
+                                <p
+                                  style={{
+                                    fontSize: "var(--text-body-sm)",
+                                    color: "var(--text-muted)",
+                                    lineHeight: 1.5,
+                                  }}
+                                >
+                                  Enter weight above for personalized dosing
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Frequency block */}
+                            <div
+                              className="rounded-xl p-5"
+                              style={{ background: "rgba(245,240,234,0.6)" }}
+                            >
+                              <div className="flex items-center gap-2 mb-2.5">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+                                  <circle cx="12" cy="12" r="10" />
+                                  <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                <p
+                                  className="font-semibold uppercase tracking-widest"
+                                  style={{
+                                    fontSize: "var(--text-fine)",
+                                    color: "var(--text-muted)",
+                                    letterSpacing: "0.1em",
+                                  }}
+                                >
+                                  How often
+                                </p>
+                              </div>
+                              <p
+                                className="font-medium"
+                                style={{
+                                  fontSize: "var(--text-body)",
+                                  color: "var(--text)",
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {supplement.frequency}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Warnings */}
+                          {supplement.warnings && supplement.warnings.length > 0 && (
+                            <div
+                              className="rounded-xl px-5 py-4 mb-6"
+                              style={{
+                                background: "rgba(212,133,106,0.05)",
+                                borderLeft: "3px solid var(--terracotta)",
+                              }}
+                            >
+                              <div className="flex items-center gap-2 mb-2.5">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                  <line x1="12" y1="9" x2="12" y2="13" />
+                                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg>
+                                <p
+                                  className="font-semibold uppercase tracking-widest"
+                                  style={{
+                                    fontSize: "var(--text-fine)",
+                                    color: "var(--terracotta)",
+                                    letterSpacing: "0.1em",
+                                  }}
+                                >
+                                  Important
+                                </p>
+                              </div>
+                              <ul className="space-y-2">
+                                {supplement.warnings.map((w, i) => (
+                                  <li
+                                    key={i}
+                                    className="flex items-start gap-2.5"
+                                    style={{
+                                      fontSize: "var(--text-body)",
+                                      color: "var(--text)",
+                                      lineHeight: 1.6,
+                                    }}
+                                  >
+                                    <span
+                                      className="mt-[8px] w-1.5 h-1.5 rounded-full flex-shrink-0"
+                                      style={{ background: "var(--terracotta)" }}
+                                    />
+                                    {w}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Vet discussion points */}
+                          <div
+                            className="rounded-xl px-5 py-4 mb-5"
+                            style={{
+                              background: `color-mix(in srgb, var(--sage) 4%, white)`,
+                            }}
+                          >
+                            <div className="flex items-center gap-2 mb-2.5">
+                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.8 }}>
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                              </svg>
+                              <p
+                                className="font-semibold uppercase tracking-widest"
+                                style={{
+                                  fontSize: "var(--text-fine)",
+                                  color: "var(--sage)",
+                                  letterSpacing: "0.1em",
+                                }}
+                              >
+                                Discuss with your vet
+                              </p>
+                            </div>
+                            <ul className="space-y-2">
+                              {supplement.vetDiscussionPoints.map((point, i) => (
+                                <li
+                                  key={i}
+                                  className="flex items-start gap-2.5"
+                                  style={{
+                                    fontSize: "var(--text-body)",
+                                    color: "var(--text)",
+                                    lineHeight: 1.6,
+                                  }}
+                                >
+                                  <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="var(--sage)"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className="flex-shrink-0 mt-[5px]"
+                                    style={{ opacity: 0.6 }}
+                                  >
+                                    <polyline points="9 18 15 12 9 6" />
+                                  </svg>
+                                  {point}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Card footer: sources + tracking */}
+                          <div
+                            className="pt-5 mt-5 flex flex-wrap items-start justify-between gap-4"
+                            style={{ borderTop: "1px solid var(--border)" }}
+                          >
+                            {/* Sources */}
+                            {supplement.sources && supplement.sources.length > 0 && (
+                              <div className="flex-1 min-w-0">
+                                <p
+                                  className="font-semibold uppercase tracking-widest mb-1.5"
+                                  style={{
+                                    fontSize: "var(--text-fine)",
+                                    color: "var(--text-muted)",
+                                    letterSpacing: "0.1em",
+                                  }}
+                                >
+                                  Sources
+                                </p>
+                                {supplement.sources.map((source, i) => (
+                                  <p
+                                    key={i}
+                                    className="italic leading-relaxed"
+                                    style={{
+                                      fontSize: "var(--text-fine)",
+                                      color: "var(--text-muted)",
+                                    }}
+                                  >
+                                    {source}
+                                  </p>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Tracking button */}
+                            {isAuthenticated && (
+                              <button
+                                type="button"
+                                onClick={() => handleToggle(supplement.slug)}
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-medium cursor-pointer flex-shrink-0"
+                                style={
+                                  activeSlugs.has(supplement.slug)
+                                    ? {
+                                        fontSize: "var(--text-body-sm)",
+                                        background: "var(--sage)",
+                                        color: "white",
+                                        border: "1.5px solid var(--sage)",
+                                      }
+                                    : {
+                                        fontSize: "var(--text-body-sm)",
+                                        background: "transparent",
+                                        color: "var(--sage)",
+                                        border: "1.5px solid rgba(91,123,94,0.3)",
+                                      }
+                                }
+                              >
+                                {activeSlugs.has(supplement.slug) ? (
+                                  <>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                      <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    Tracking this
+                                  </>
+                                ) : (
+                                  <>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                      <line x1="12" y1="5" x2="12" y2="19" />
+                                      <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                    We&apos;re giving this to {dogName || "our dog"}
+                                  </>
+                                )}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
-
-                {/* Section divider */}
-                {catIdx < supplementCategories.length - 1 && (
-                  <div
-                    className="mt-8"
-                    style={{
-                      borderBottom: "1px solid var(--border)",
-                    }}
-                  />
-                )}
-              </section>
-            );
-          })}
-        </div>
-      </div>
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       {/* ═══ Floating "Vet List" Button ═══ */}
       <button

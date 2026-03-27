@@ -1,5 +1,5 @@
 // HSA Days Service Worker — bump version on significant deploys
-const CACHE_VERSION = "2026-03-14";
+const CACHE_VERSION = "2026-03-27";
 const CACHE_NAME = `hsadays-v${CACHE_VERSION}`;
 
 // App shell assets to precache
