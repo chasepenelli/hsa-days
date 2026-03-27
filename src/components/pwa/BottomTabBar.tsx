@@ -58,6 +58,7 @@ export function BottomTabBar() {
 
   return (
     <nav
+      aria-label="App navigation"
       className="fixed bottom-0 left-0 right-0 z-50 flex items-stretch justify-around"
       style={{
         background: "rgba(250,248,245,0.92)",

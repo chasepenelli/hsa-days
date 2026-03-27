@@ -95,23 +95,16 @@ export default function SupplementStarterCard({
   const breedNote = getBreedNote(supplement.breedNotes, breed);
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       aria-expanded={expanded}
-      className="rounded-2xl cursor-pointer"
+      className="w-full text-left rounded-2xl"
       style={{
         background: "#fff",
         borderLeft: `4px solid ${categoryColor}`,
         boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
       }}
       onClick={() => setExpanded(!expanded)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setExpanded(!expanded);
-        }
-      }}
     >
       <div className="px-5 py-5">
         {/* Top row: category pill + evidence badge */}
@@ -463,6 +456,6 @@ export default function SupplementStarterCard({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

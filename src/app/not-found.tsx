@@ -8,7 +8,7 @@ export default function NotFound() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6"
+      className="min-h-[100dvh] flex items-center justify-center px-6"
       style={{ background: "var(--warm-white)" }}
     >
       <div className="text-center max-w-[440px]">

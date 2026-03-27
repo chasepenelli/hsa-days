@@ -256,7 +256,7 @@ export default function DietPageClient({
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-16"
+      className="min-h-[100dvh] pb-16"
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══ Hero ═══ */}

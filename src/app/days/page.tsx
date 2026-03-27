@@ -129,7 +129,7 @@ export default async function DaysDashboard() {
   const progressPct = Math.round((completedCount / 30) * 100);
 
   return (
-    <div className="min-h-screen pb-20" style={{ background: "var(--warm-white)" }}>
+    <div className="min-h-[100dvh] pb-20" style={{ background: "var(--warm-white)" }}>
 
       {/* ─── Journey Header ─── */}
       <div className="px-6 pt-24 pb-12 text-center" style={{ background: "linear-gradient(to bottom, var(--cream) 0%, var(--warm-white) 100%)" }}>

@@ -1262,7 +1262,7 @@ export default function UnderstandingHSASubPageClient({ slug, title, data }: Pro
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-24"
+      className="min-h-[100dvh] pb-24"
       style={{ background: "var(--warm-white)" }}
     >
       {/* Header */}

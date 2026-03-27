@@ -19,6 +19,7 @@ export function ShareButton({ onClick, variant = "primary", label }: ShareButton
         background: isPrimary ? "rgba(196,162,101,0.1)" : "transparent",
         color: isPrimary ? "var(--gold)" : "var(--text-muted)",
         padding: isPrimary ? "10px 20px" : "6px 12px",
+        minHeight: isPrimary ? undefined : "44px",
         borderRadius: isPrimary ? 16 : 8,
         fontSize: isPrimary ? "0.88rem" : "0.8rem",
         fontWeight: 600,

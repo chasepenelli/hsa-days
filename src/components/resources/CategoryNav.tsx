@@ -32,7 +32,7 @@ export default function CategoryNav({
               onClick={() => onCategoryClick(cat.key)}
               className="whitespace-nowrap transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1"
               style={{
-                padding: "6px 14px",
+                padding: "10px 14px",
                 borderRadius: 999,
                 fontSize: "var(--text-label)",
                 fontWeight: isActive ? 600 : 500,

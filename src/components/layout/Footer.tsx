@@ -35,61 +35,61 @@ export function Footer() {
           <div className="flex gap-6 flex-wrap justify-center md:justify-end">
             <Link
               href="/about"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Our Story
             </Link>
             <Link
               href="/journey"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               The Journey
             </Link>
             <Link
               href="/community"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Community
             </Link>
             <Link
               href="/resources"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Resources
             </Link>
             <Link
               href="/resources/understanding-hsa"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Understanding HSA
             </Link>
             <Link
               href="/resources/emergency"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Emergency Guide
             </Link>
             <Link
               href="/resources/financial-help"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Financial Help
             </Link>
             <Link
               href="/order"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Pre-Order
             </Link>
             <Link
               href="/#support"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Support
             </Link>
             <Link
               href="/resources/install"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Install App
             </Link>
@@ -97,7 +97,7 @@ export function Footer() {
               href="https://instagram.com/bradythecorgi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/65 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               @bradythecorgi
             </a>
@@ -109,7 +109,7 @@ export function Footer() {
           className="pt-6 text-center text-[0.82rem]"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.08)",
-            color: "rgba(255,255,255,0.55)",
+            color: "rgba(255,255,255,0.8)",
           }}
         >
           Made with love for{" "}

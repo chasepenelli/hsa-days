@@ -52,7 +52,7 @@ export function JourneyPageClient({ day1 }: JourneyPageClientProps) {
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="min-h-screen"
+      className="min-h-[100dvh]"
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══════════════════════════════════════════

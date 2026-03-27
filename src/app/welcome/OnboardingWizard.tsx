@@ -167,7 +167,7 @@ export default function OnboardingWizard() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-12"
+      className="min-h-[100dvh] flex flex-col items-center justify-center px-6 py-12"
       style={{
         background: "linear-gradient(to bottom, #F5F0EA 0%, #FAF8F5 100%)",
       }}

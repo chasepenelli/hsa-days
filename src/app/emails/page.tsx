@@ -50,7 +50,7 @@ export default function EmailsPage() {
   const showLastDay = template === "nudge" && nudgeVariant === "dropped-off";
 
   return (
-    <div className="min-h-screen bg-cream pt-20 pb-12 px-4">
+    <div className="min-h-[100dvh] bg-cream pt-20 pb-12 px-4">
       <div className="max-w-[1100px] mx-auto">
         <h1 className="font-serif text-2xl text-sage-dark mb-1">
           Email Templates

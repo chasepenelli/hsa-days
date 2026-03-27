@@ -57,7 +57,7 @@ export function DayNav({ currentDay, isStandalone }: DayNavProps) {
 
       <Link
         href="/days"
-        className="text-[0.8rem] font-medium no-underline transition-colors hover:text-sage px-3 py-1.5 rounded-lg"
+        className="text-[0.8rem] font-medium no-underline transition-colors hover:text-sage px-3 py-1.5 rounded-lg min-h-[44px] flex items-center justify-center"
         style={{
           color: "var(--text-muted)",
           background: "rgba(91,123,94,0.06)",

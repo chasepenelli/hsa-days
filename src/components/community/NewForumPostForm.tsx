@@ -189,7 +189,7 @@ export function NewForumPostForm() {
                     key={c.key}
                     type="button"
                     onClick={() => setCategory(c.key)}
-                    className="px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-150 cursor-pointer"
+                    className="px-3.5 py-2.5 rounded-full text-sm font-medium transition-colors duration-150 cursor-pointer"
                     style={{
                       background: isActive ? CATEGORY_COLORS[c.key] : "transparent",
                       color: isActive ? "white" : "var(--text-muted)",
@@ -247,7 +247,7 @@ export function NewForumPostForm() {
           <div className="flex items-center justify-end gap-3">
             <Link
               href="/community"
-              className="px-5 py-2.5 rounded-lg text-sm font-medium no-underline transition-opacity hover:opacity-80"
+              className="px-5 py-3 rounded-lg text-sm font-medium no-underline transition-opacity hover:opacity-80"
               style={{ color: "var(--text-muted)" }}
             >
               Cancel
@@ -255,7 +255,7 @@ export function NewForumPostForm() {
             <button
               type="submit"
               disabled={!title.trim() || !body.trim() || submitting}
-              className="px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+              className="px-6 py-3 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
               style={{ background: "var(--sage)" }}
             >
               {submitting ? "Posting..." : "Post Thread"}

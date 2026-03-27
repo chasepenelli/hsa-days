@@ -7,7 +7,7 @@ export default function DayLoading() {
 
   return (
     <div
-      className="min-h-screen px-6"
+      className="min-h-[100dvh] px-6"
       style={{
         background: "var(--warm-white)",
         paddingTop: isStandalone

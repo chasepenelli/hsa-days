@@ -10,8 +10,9 @@ import { DayNav } from "./DayNav";
 import { MediaGallery } from "./MediaGallery";
 import { MediaUpload } from "./MediaUpload";
 import type { MediaItem } from "./MediaUpload";
+import dynamic from "next/dynamic";
 import { ShareButton } from "@/components/share/ShareButton";
-import { ShareCardModal } from "@/components/share/ShareCardModal";
+const ShareCardModal = dynamic(() => import("@/components/share/ShareCardModal").then(m => ({ default: m.ShareCardModal })), { ssr: false });
 import { useIsStandalone } from "@/hooks/useIsStandalone";
 import { isChapterEnd } from "@/lib/day-utils";
 
@@ -232,7 +233,7 @@ export function DayContent({
 
   return (
     <div
-      className={`min-h-screen ${exiting ? "animate-page-exit" : ""}`}
+      className={`min-h-[100dvh] ${exiting ? "animate-page-exit" : ""}`}
       style={{ background: "var(--warm-white)" }}
     >
 

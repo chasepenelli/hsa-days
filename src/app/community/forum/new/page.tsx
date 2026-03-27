@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function NewForumPostPage() {
   return (
     <div
-      className="min-h-screen"
+      className="min-h-[100dvh]"
       style={{ background: "var(--cream)" }}
     >
       <div

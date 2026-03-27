@@ -102,7 +102,7 @@ export default function LoginPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-6"
+      className="min-h-[100dvh] flex items-center justify-center px-6"
       style={{
         background: "linear-gradient(160deg, var(--cream) 0%, var(--warm-white) 50%, var(--warm-white) 100%)",
         paddingTop: "calc(80px + env(safe-area-inset-top))",

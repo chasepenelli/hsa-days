@@ -130,7 +130,7 @@ export function CommunityPageClient({ stories }: { stories: Story[] }) {
   return (
     <div
       ref={ref as React.RefObject<HTMLDivElement>}
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-[100dvh] relative overflow-hidden"
       style={{ background: "var(--cream)" }}
     >
       {/* Ambient radial glow - centered breathing */}

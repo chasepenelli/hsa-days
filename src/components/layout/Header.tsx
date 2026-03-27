@@ -38,6 +38,7 @@ export function Header() {
 
   return (
     <nav
+      aria-label="Main navigation"
       className="fixed top-0 w-full z-50 bg-warm-white/92 backdrop-blur-[12px] border-b border-border"
       style={{
         boxShadow: scrolled ? "0 2px 20px rgba(0,0,0,0.06)" : "0 0 0 rgba(0,0,0,0)",
@@ -50,7 +51,7 @@ export function Header() {
       >
         Skip to content
       </a>
-      <div className="max-w-[1100px] mx-auto px-6 h-16 flex items-center justify-between md:px-6 px-4 md:h-16 h-14">
+      <div className="max-w-[1100px] mx-auto px-6 h-14 md:h-16 flex items-center justify-between">
         <Link
           href="/"
           className="font-serif text-[1.3rem] font-semibold text-sage-dark no-underline tracking-tight"
@@ -60,24 +61,23 @@ export function Header() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex gap-8 items-center">
-          <Link
-            href="/journey"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            The Journey
-          </Link>
-          <Link
-            href="/community"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            Community
-          </Link>
-          <Link
-            href="/resources"
-            className="text-[0.9rem] text-text-muted no-underline font-medium hover:text-sage transition-colors"
-          >
-            Resources
-          </Link>
+          {([
+            { href: "/journey", label: "The Journey" },
+            { href: "/community", label: "Community" },
+            { href: "/resources", label: "Resources" },
+          ] as { href: string; label: string }[]).map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`text-[0.9rem] no-underline font-medium transition-colors hover:text-sage ${isActive ? "text-sage font-medium" : "text-text-muted"}`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           {isLoggedIn ? (
             <>
               <Link
@@ -133,6 +133,7 @@ export function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
           <span
             className={`block w-[22px] h-[2px] bg-text rounded-sm transition-transform ${
@@ -167,6 +168,7 @@ export function Header() {
 
       {/* Mobile menu — always mounted, animated via CSS */}
       <div
+        id="mobile-menu"
         className="md:hidden flex flex-col bg-warm-white overflow-hidden"
         aria-hidden={!menuOpen}
         {...(!menuOpen ? { inert: true as unknown as boolean } : {})}

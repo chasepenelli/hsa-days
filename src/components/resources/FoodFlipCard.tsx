@@ -28,6 +28,7 @@ export default function FoodFlipCard({
 }: FoodFlipCardProps) {
   const [flipped, setFlipped] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [hasFlipped, setHasFlipped] = useState(false);
   const cfg = VARIANT_CONFIG[variant];
 
   const isLifted = hovered && !flipped;
@@ -35,7 +36,7 @@ export default function FoodFlipCard({
   return (
     <button
       type="button"
-      onClick={() => setFlipped((prev) => !prev)}
+      onClick={() => { setFlipped((prev) => !prev); setHasFlipped(true); }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       aria-expanded={flipped}
@@ -130,7 +131,7 @@ export default function FoodFlipCard({
             <div
               className="absolute inset-0 flex items-end justify-center pb-2"
               style={{
-                opacity: hovered && !flipped ? 1 : 0,
+                opacity: !flipped && (!hasFlipped || hovered) ? 1 : 0,
                 transition: "opacity 0.2s ease",
               }}
             >

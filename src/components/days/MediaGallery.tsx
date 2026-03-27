@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MediaLightbox } from "./MediaLightbox";
+import dynamic from "next/dynamic";
+const MediaLightbox = dynamic(() => import("./MediaLightbox").then(m => ({ default: m.MediaLightbox })), { ssr: false });
 import type { MediaItem } from "./MediaUpload";
 
 interface MediaGalleryProps {
@@ -47,18 +48,11 @@ export function MediaGallery({ media, onDelete }: MediaGalleryProps) {
         }}
       >
         {media.map((item, index) => (
-          <div
+          <button
+            type="button"
             key={item.id}
-            role="button"
-            tabIndex={0}
             onClick={() => setLightboxIndex(index)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setLightboxIndex(index);
-              }
-            }}
-            className="relative overflow-hidden cursor-pointer group"
+            className="relative overflow-hidden w-full group"
             style={{
               aspectRatio: media.length === 1 ? "16/9" : "1/1",
               borderRadius: "10px",
@@ -109,8 +103,8 @@ export function MediaGallery({ media, onDelete }: MediaGalleryProps) {
                 disabled={deleting === item.id}
                 className="flex items-center justify-center cursor-pointer border-none transition-colors"
                 style={{
-                  width: "28px",
-                  height: "28px",
+                  width: "44px",
+                  height: "44px",
                   borderRadius: "50%",
                   background: "rgba(255,255,255,0.92)",
                   boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
@@ -129,7 +123,7 @@ export function MediaGallery({ media, onDelete }: MediaGalleryProps) {
                 )}
               </button>
             </div>
-          </div>
+          </button>
         ))}
       </div>
 

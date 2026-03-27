@@ -46,7 +46,7 @@ export default function ShareStoryPage() {
   if (submitted) {
     return (
       <div
-        className="min-h-screen relative overflow-hidden flex items-center justify-center px-6"
+        className="min-h-[100dvh] relative overflow-hidden flex items-center justify-center px-6"
         style={{ background: "var(--cream)" }}
       >
         {/* Ambient glow */}
@@ -121,7 +121,7 @@ export default function ShareStoryPage() {
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-[100dvh] relative overflow-hidden"
       style={{ background: "var(--cream)" }}
     >
       {/* Ambient radial glow - centered breathing */}

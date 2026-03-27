@@ -205,7 +205,7 @@ function PlatformSection({
 
 export default function InstallGuidePage() {
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6">
+    <div className="min-h-[100dvh] pt-24 pb-16 px-6">
       <div className="max-w-[800px] mx-auto">
         {/* Header */}
         <Link

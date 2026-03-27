@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import SectionDivider from "./SectionDivider";
+import { AmbientOrb } from "./AmbientOrb";
 
 interface Props {
   intro: {
@@ -326,20 +327,22 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-24"
+      className="min-h-[100dvh] pb-24"
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══ Hero ═══ */}
       <div
         className="pt-24 pb-10 px-6"
-        style={{ background: "var(--warm-white)" }}
+        style={{ background: "var(--warm-white)", position: "relative", overflow: "hidden" }}
       >
+        <AmbientOrb top="5%" right="0%" size={280} color="rgba(196,162,101,0.14)" duration={13} />
+        <AmbientOrb bottom="10%" left="0%" size={200} color="rgba(91,123,94,0.09)" duration={17} delay={6} />
         <div className="max-w-[800px] mx-auto">
           {/* Eyebrow */}
           <p
             className="reveal tracking-widest font-medium mb-3"
             style={{
-              fontSize: "var(--text-fine)",
+              fontSize: "var(--text-label)",
               color: "var(--gold)",
               letterSpacing: "0.12em",
             }}
@@ -351,7 +354,7 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
           <h1
             className="reveal font-serif font-semibold mb-3 leading-tight"
             style={{
-              fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+              fontSize: "clamp(2rem, 4.5vw, 2.75rem)",
               color: "var(--text)",
             }}
           >
@@ -362,7 +365,7 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
           <p
             className="reveal font-serif mb-4 leading-snug"
             style={{
-              fontSize: "var(--text-h3)",
+              fontSize: "clamp(1.1rem, 2.5vw, 1.375rem)",
               color: "var(--text-muted)",
             }}
           >
@@ -386,8 +389,8 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
             <Image
               src="/illustrations/resources/financial-hero.png"
               alt=""
-              width={280}
-              height={160}
+              width={400}
+              height={230}
               className="mx-auto"
               style={{ objectFit: "contain" }}
             />
@@ -489,7 +492,7 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                   <h2
                     className="font-serif font-semibold"
                     style={{
-                      fontSize: "var(--text-h3)",
+                      fontSize: "clamp(1.375rem, 3vw, 1.75rem)",
                       color: "var(--text)",
                     }}
                   >
@@ -498,9 +501,9 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                   <Image
                     src="/illustrations/resources/financial-grants.png"
                     alt=""
-                    width={80}
-                    height={80}
-                    className="hidden sm:block flex-shrink-0"
+                    width={100}
+                    height={100}
+                    className="flex-shrink-0"
                     style={{ objectFit: "contain", mixBlendMode: "multiply" }}
                   />
                 </div>
@@ -541,7 +544,7 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
                 <h2
                   className="reveal font-serif font-semibold mb-5"
                   style={{
-                    fontSize: "var(--text-h3)",
+                    fontSize: "clamp(1.375rem, 3vw, 1.75rem)",
                     color: "var(--text)",
                   }}
                 >
@@ -612,9 +615,9 @@ export default function FinancialHelpPageClient({ intro, orgs, tips }: Props) {
               <Image
                 src="/illustrations/resources/financial-tips.png"
                 alt=""
-                width={80}
-                height={80}
-                className="hidden sm:block flex-shrink-0"
+                width={100}
+                height={100}
+                className="flex-shrink-0"
                 style={{ objectFit: "contain", mixBlendMode: "multiply" }}
               />
             </div>

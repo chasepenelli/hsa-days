@@ -353,7 +353,7 @@ export function ForumThread({ post }: ForumThreadProps) {
                   <button
                     type="submit"
                     disabled={!replyBody.trim() || submitting || post.is_locked}
-                    className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                    className="px-5 py-3 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
                     style={{ background: "var(--sage)" }}
                   >
                     {submitting ? "Posting..." : "Post Reply"}

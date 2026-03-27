@@ -31,7 +31,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="min-h-[100dvh] bg-warm-white">
       <nav className="bg-sage-dark text-white px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-6">
           <Link

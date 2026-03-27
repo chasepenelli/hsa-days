@@ -2,6 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { AmbientOrb } from "./AmbientOrb";
 import type {
   Supplement,
   SupplementCategory,
@@ -159,17 +161,21 @@ export default function SupplementsPageClient({
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-24"
+      className="min-h-[100dvh] pb-24"
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══ Compact Header (~130px) ═══ */}
       <div
-        className="pt-20 pb-4 px-6"
+        className="pt-24 pb-8 px-6"
         style={{
           background: "var(--warm-white)",
           borderBottom: "1px solid var(--border)",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        <AmbientOrb top="10%" right="5%" size={200} color="rgba(196,162,101,0.12)" duration={12} />
+        <AmbientOrb top="20%" left="0%" size={160} color="rgba(91,123,94,0.08)" duration={16} delay={4} />
         <div className="max-w-[800px] mx-auto">
           {/* Top row: back arrow + title */}
           <div className="flex items-center gap-3 mb-1">
@@ -195,20 +201,29 @@ export default function SupplementsPageClient({
             <h1
               className="font-serif font-semibold"
               style={{
-                fontSize: "var(--text-h2)",
+                fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
                 color: "var(--text)",
                 lineHeight: 1.2,
               }}
             >
               {dogName ? `${dogName}\u2019s Supplements` : "Supplement Plan"}
             </h1>
+            <div className="hidden sm:block flex-shrink-0 ml-4">
+              <Image
+                src="/illustrations/icons/icon-supplement.png"
+                alt=""
+                width={90}
+                height={90}
+                style={{ opacity: 0.85, mixBlendMode: "multiply" }}
+              />
+            </div>
           </div>
 
           {/* Subtitle */}
           <p
             className="ml-[56px]"
             style={{
-              fontSize: "var(--text-body-sm)",
+              fontSize: "var(--text-body)",
               color: "var(--text-muted)",
             }}
           >
@@ -388,7 +403,7 @@ export default function SupplementsPageClient({
                     <h2
                       className="font-serif font-semibold"
                       style={{
-                        fontSize: "var(--text-h3)",
+                        fontSize: "clamp(1.25rem, 2.5vw, 1.5rem)",
                         color: "var(--text)",
                       }}
                     >

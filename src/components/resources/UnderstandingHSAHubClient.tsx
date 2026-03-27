@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { AmbientOrb } from "./AmbientOrb";
 
 const CARDS = [
   {
@@ -67,14 +68,16 @@ export default function UnderstandingHSAHubClient() {
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-20"
+      className="min-h-[100dvh] pb-20"
       style={{ background: "var(--warm-white)" }}
     >
       {/* Hero */}
       <section
         className="pt-24 pb-10 px-6"
-        style={{ borderBottom: "1px solid var(--border)" }}
+        style={{ borderBottom: "1px solid var(--border)", position: "relative", overflow: "hidden" }}
       >
+        <AmbientOrb top="5%" right="5%" size={260} color="rgba(91,123,94,0.10)" duration={15} />
+        <AmbientOrb bottom="10%" left="5%" size={200} color="rgba(196,162,101,0.12)" duration={11} delay={7} />
         <div className="max-w-[1100px] mx-auto">
           {/* Back link */}
           <Link
@@ -103,9 +106,9 @@ export default function UnderstandingHSAHubClient() {
               src="/illustrations/resources/hsa-hub-hero.png"
               alt=""
               width={1100}
-              height={200}
+              height={400}
               className="w-full object-cover"
-              style={{ maxHeight: 200 }}
+              style={{ maxHeight: 320 }}
               priority
             />
           </div>
@@ -113,7 +116,7 @@ export default function UnderstandingHSAHubClient() {
           {/* Gold eyebrow */}
           <p
             className="font-medium tracking-widest uppercase mb-3 reveal"
-            style={{ fontSize: "0.68rem", color: "var(--gold)" }}
+            style={{ fontSize: "0.8125rem", color: "var(--gold)" }}
           >
             RESOURCE
           </p>
@@ -122,7 +125,7 @@ export default function UnderstandingHSAHubClient() {
           <h1
             className="font-serif font-semibold mb-3 reveal"
             style={{
-              fontSize: "clamp(1.75rem, 4vw, 2.5rem)",
+              fontSize: "clamp(2rem, 4.5vw, 2.75rem)",
               color: "var(--text)",
               lineHeight: 1.2,
             }}
@@ -154,9 +157,10 @@ export default function UnderstandingHSAHubClient() {
       </section>
 
       {/* Card grid */}
-      <div className="px-6">
-        <div className="max-w-[1100px] mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      <div style={{ background: "rgba(245, 240, 234, 0.4)" }} className="py-12">
+        <div className="px-6">
+          <div style={{ maxWidth: 1100 }} className="mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
             {CARDS.map((card) => (
               <Link
                 key={card.slug}
@@ -195,8 +199,8 @@ export default function UnderstandingHSAHubClient() {
                       <Image
                         src={card.illustration}
                         alt=""
-                        width={120}
-                        height={120}
+                        width={160}
+                        height={160}
                         style={{ objectFit: "contain", mixBlendMode: "multiply" }}
                       />
                     </div>
@@ -204,7 +208,7 @@ export default function UnderstandingHSAHubClient() {
                     {/* Eyebrow */}
                     <p
                       className="font-semibold uppercase tracking-widest mb-2"
-                      style={{ fontSize: "0.65rem", color: card.color }}
+                      style={{ fontSize: "0.8125rem", color: card.color }}
                     >
                       {card.eyebrow}
                     </p>
@@ -212,7 +216,7 @@ export default function UnderstandingHSAHubClient() {
                     {/* Title */}
                     <h2
                       className="font-serif font-semibold mb-2"
-                      style={{ fontSize: "1.1rem", color: "var(--text)", lineHeight: 1.3 }}
+                      style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.375rem)", color: "var(--text)", lineHeight: 1.3 }}
                     >
                       {card.title}
                     </h2>
@@ -220,14 +224,14 @@ export default function UnderstandingHSAHubClient() {
                     {/* Description */}
                     <p
                       className="leading-relaxed mb-4 flex-1"
-                      style={{ fontSize: "0.88rem", color: "var(--text-muted)" }}
+                      style={{ fontSize: "0.9375rem", color: "var(--text-muted)" }}
                     >
                       {card.description}
                     </p>
 
                     {/* CTA */}
                     <span
-                      className="text-[0.88rem] font-semibold"
+                      className="text-[0.9375rem] font-semibold"
                       style={{ color: card.color }}
                     >
                       Explore &rarr;
@@ -262,6 +266,7 @@ export default function UnderstandingHSAHubClient() {
               </svg>
               Back to all resources
             </Link>
+          </div>
           </div>
         </div>
       </div>

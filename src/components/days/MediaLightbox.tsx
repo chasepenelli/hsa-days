@@ -91,12 +91,12 @@ export function MediaLightbox({
           {/* Counter */}
           <div className="flex items-center gap-2">
             {media.length > 1 && (
-              <div className="flex gap-1">
+              <div className="flex gap-2">
                 {media.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setIndex(i)}
-                    className="border-none cursor-pointer transition-all rounded-full p-0"
+                    className="border-none cursor-pointer transition-all rounded-full p-2"
                     style={{
                       width: i === index ? "18px" : "6px",
                       height: "6px",
@@ -123,7 +123,7 @@ export function MediaLightbox({
               onClick={(e) => onDelete(item.id, e)}
               className="flex items-center justify-center border-none cursor-pointer transition-colors rounded-lg"
               style={{
-                padding: "8px",
+                padding: "12px",
                 background: "transparent",
                 color: "rgba(255,255,255,0.35)",
               }}
@@ -143,7 +143,7 @@ export function MediaLightbox({
               onClick={onClose}
               className="flex items-center justify-center border-none cursor-pointer transition-colors rounded-lg"
               style={{
-                padding: "8px",
+                padding: "12px",
                 background: "transparent",
                 color: "rgba(255,255,255,0.5)",
               }}

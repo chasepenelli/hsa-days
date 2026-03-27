@@ -23,7 +23,7 @@ export default function OfflinePage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-16">
+    <div className="min-h-[100dvh] flex items-center justify-center px-6 py-16">
       <div className="max-w-md text-center">
         {/* Cloud icon */}
         <div

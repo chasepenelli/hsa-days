@@ -55,7 +55,7 @@ export default async function ForumThreadPage({ params }: PageProps) {
 
   return (
     <div
-      className="min-h-screen"
+      className="min-h-[100dvh]"
       style={{ background: "var(--cream)" }}
     >
       <div

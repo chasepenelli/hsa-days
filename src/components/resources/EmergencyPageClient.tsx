@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { AmbientOrb } from "./AmbientOrb";
 
 interface Props {
   intro: {
@@ -139,7 +140,7 @@ export default function EmergencyPageClient({
   return (
     <div
       ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className="min-h-screen pb-24"
+      className="min-h-[100dvh] pb-24"
       style={{ background: "var(--warm-white)" }}
     >
       {/* ═══ Hero ═══ */}
@@ -148,8 +149,11 @@ export default function EmergencyPageClient({
         style={{
           background: "var(--warm-white)",
           borderBottom: "1px solid var(--border)",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
+        <AmbientOrb top="0%" right="0%" size={220} color="rgba(212,133,106,0.10)" duration={10} />
         <div className="max-w-[800px] mx-auto">
           {/* Eyebrow */}
           <p
@@ -182,8 +186,8 @@ export default function EmergencyPageClient({
               <Image
                 src="/illustrations/resources/emergency-hero.png"
                 alt="Emergency preparedness illustration"
-                width={200}
-                height={120}
+                width={240}
+                height={140}
                 style={{
                   objectFit: "contain",
                 }}
@@ -336,12 +340,12 @@ export default function EmergencyPageClient({
                 knowing.
               </p>
             </div>
-            <div className="hidden sm:block flex-shrink-0">
+            <div className="flex-shrink-0">
               <Image
                 src="/illustrations/resources/emergency-gum-check.png"
                 alt="Gum color check illustration"
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 style={{
                   objectFit: "contain",
                   mixBlendMode: "multiply",
@@ -477,12 +481,12 @@ export default function EmergencyPageClient({
                 Learn the signs now so you can act quickly when it matters.
               </p>
             </div>
-            <div className="hidden sm:block flex-shrink-0">
+            <div className="flex-shrink-0">
               <Image
                 src="/illustrations/resources/emergency-crisis-scene.png"
                 alt="Emergency crisis scene illustration"
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 style={{
                   objectFit: "contain",
                   mixBlendMode: "multiply",
@@ -725,7 +729,7 @@ export default function EmergencyPageClient({
                             <p
                               className="leading-relaxed"
                               style={{
-                                fontSize: "var(--text-body-sm)",
+                                fontSize: "var(--text-body)",
                                 color: "var(--text)",
                               }}
                             >
@@ -841,12 +845,12 @@ export default function EmergencyPageClient({
                 a real difference.
               </p>
             </div>
-            <div className="hidden sm:block flex-shrink-0">
+            <div className="flex-shrink-0">
               <Image
                 src="/illustrations/resources/emergency-kit.png"
                 alt="Emergency kit illustration"
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 style={{
                   objectFit: "contain",
                   mixBlendMode: "multiply",
@@ -915,7 +919,7 @@ export default function EmergencyPageClient({
                       <p
                         className="leading-relaxed"
                         style={{
-                          fontSize: "var(--text-body-sm)",
+                          fontSize: "var(--text-body)",
                           color: "var(--text-muted)",
                         }}
                       >
@@ -988,7 +992,7 @@ export default function EmergencyPageClient({
                       <p
                         className="leading-relaxed"
                         style={{
-                          fontSize: "var(--text-body-sm)",
+                          fontSize: "var(--text-body)",
                           color: "var(--text-muted)",
                         }}
                       >
@@ -1031,12 +1035,12 @@ export default function EmergencyPageClient({
                 Have these conversations before you need the answers.
               </p>
             </div>
-            <div className="hidden sm:block flex-shrink-0">
+            <div className="flex-shrink-0">
               <Image
                 src="/illustrations/icons/icon-dog-person.png"
                 alt="Dog and person illustration"
-                width={80}
-                height={80}
+                width={100}
+                height={100}
                 style={{
                   objectFit: "contain",
                   mixBlendMode: "multiply",
@@ -1083,7 +1087,7 @@ export default function EmergencyPageClient({
                   <p
                     className="leading-relaxed"
                     style={{
-                      fontSize: "var(--text-body-sm)",
+                      fontSize: "var(--text-body)",
                       color: "var(--text-muted)",
                     }}
                   >
@@ -1124,12 +1128,12 @@ export default function EmergencyPageClient({
                 Many families check these twice daily — morning and evening.
               </p>
             </div>
-            <div className="hidden sm:block flex-shrink-0">
+            <div className="flex-shrink-0">
               <Image
                 src="/illustrations/resources/emergency-monitoring.png"
                 alt="Daily monitoring illustration"
-                width={100}
-                height={100}
+                width={120}
+                height={120}
                 style={{
                   objectFit: "contain",
                   mixBlendMode: "multiply",
@@ -1188,7 +1192,7 @@ export default function EmergencyPageClient({
                     <p
                       className="mt-0.5 leading-relaxed"
                       style={{
-                        fontSize: "var(--text-body-sm)",
+                        fontSize: "var(--text-body)",
                         color: "var(--text-muted)",
                       }}
                     >

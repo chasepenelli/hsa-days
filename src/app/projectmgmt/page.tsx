@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ProjectMgmtPage() {
   return (
-    <div className="min-h-screen bg-warm-white">
+    <div className="min-h-[100dvh] bg-warm-white">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="mb-6">
           <h1 className="font-serif text-2xl font-semibold text-text">

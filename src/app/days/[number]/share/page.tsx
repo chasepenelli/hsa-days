@@ -71,7 +71,7 @@ export default async function SharePage({ params }: PageProps) {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 py-20"
+      className="min-h-[100dvh] flex items-center justify-center px-4 py-20"
       style={{ background: "var(--warm-white)" }}
     >
       <div className="max-w-md w-full text-center">

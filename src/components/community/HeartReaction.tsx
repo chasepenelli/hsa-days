@@ -20,7 +20,7 @@ export function HeartReaction({ count, isActive, onToggle }: HeartReactionProps)
   return (
     <button
       onClick={handleClick}
-      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full transition-all duration-150 cursor-pointer hover:bg-black/[0.03] active:scale-95"
+      className="inline-flex items-center justify-center gap-1 px-1.5 py-0.5 rounded-full transition-all duration-150 cursor-pointer hover:bg-black/[0.03] active:scale-95 min-h-[44px] min-w-[44px]"
       style={{
         background: "transparent",
         border: "none",

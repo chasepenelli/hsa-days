@@ -25,8 +25,8 @@ export function BackToTop() {
       style={{
         bottom: 24,
         right: 24,
-        width: 40,
-        height: 40,
+        width: 44,
+        height: 44,
         background: "var(--warm-white)",
         border: "1px solid var(--border)",
         boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
