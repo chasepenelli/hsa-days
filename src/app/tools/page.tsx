@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useIsStandalone } from "@/hooks/useIsStandalone";
 
 const tools = [
   {
@@ -42,11 +43,13 @@ const tools = [
 ];
 
 export default function ToolsPage() {
+  const isStandalone = useIsStandalone();
+
   return (
     <div
       className="px-6"
       style={{
-        paddingTop: "clamp(100px, 14vw, 140px)",
+        paddingTop: isStandalone ? "24px" : "clamp(100px, 14vw, 140px)",
         paddingBottom: "clamp(60px, 8vw, 100px)",
       }}
     >

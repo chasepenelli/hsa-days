@@ -1,17 +1,21 @@
 // HSA Days Service Worker — bump version on significant deploys
-const CACHE_VERSION = "2026-04-13";
+const CACHE_VERSION = "2026-04-13b";
 const CACHE_NAME = `hsadays-v${CACHE_VERSION}`;
 
 // App shell assets to precache
 const PRECACHE_ASSETS = [
   "/",
   "/resources",
+  "/track",
+  "/community",
+  "/tools",
   "/manifest.json",
   "/offline",
   "/icons/icon-192.png",
   "/icons/apple-touch-icon.png",
   "/illustrations/icons/icon-paw-print.png",
   "/illustrations/icons/icon-heart.png",
+  "/illustrations/icons/icon-community.png",
 ];
 
 // Install: precache app shell, then activate
@@ -79,7 +83,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Resource and tracking routes: network-first, cache on success for offline access
-  if (event.request.mode === "navigate" && url.pathname.match(/^\/(resources|track)(\/|$)/)) {
+  if (event.request.mode === "navigate" && url.pathname.match(/^\/(resources|track|tools|community)(\/|$)/)) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {

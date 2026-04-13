@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import { useIsStandalone } from "@/hooks/useIsStandalone";
 import { DailyCheckIn } from "./DailyCheckIn";
 import { SparklineTrends } from "./SparklineTrends";
 import { TimelineLog } from "./TimelineLog";
@@ -20,6 +21,7 @@ export function TrackPageClient({
   initialLogs,
   initialEntries,
 }: TrackPageClientProps) {
+  const isStandalone = useIsStandalone();
   const [recentLogs, setRecentLogs] = useState<SymptomLog[]>(initialLogs);
   const [entries, setEntries] = useState<HealthLogEntry[]>(initialEntries);
 
@@ -47,7 +49,7 @@ export function TrackPageClient({
     return (
       <div
         className="min-h-[60vh] flex flex-col items-center justify-center px-6 text-center"
-        style={{ paddingTop: "clamp(100px, 14vw, 140px)" }}
+        style={{ paddingTop: isStandalone ? "24px" : "clamp(100px, 14vw, 140px)" }}
       >
         <h1
           className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold mb-4"
@@ -77,7 +79,7 @@ export function TrackPageClient({
     <div
       className="px-6"
       style={{
-        paddingTop: "clamp(100px, 14vw, 140px)",
+        paddingTop: isStandalone ? "24px" : "clamp(100px, 14vw, 140px)",
         paddingBottom: "clamp(60px, 8vw, 100px)",
       }}
     >

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { VetDocAnalyzer } from "@/components/tools/VetDocAnalyzer";
+import { AppPageShell } from "@/components/ui/AppPageShell";
 
 export const metadata: Metadata = {
   title: "Vet Report Analysis",
@@ -30,16 +31,8 @@ export default async function AnalyzePage() {
   }
 
   return (
-    <div
-      className="px-6"
-      style={{
-        paddingTop: "clamp(100px, 14vw, 140px)",
-        paddingBottom: "clamp(60px, 8vw, 100px)",
-      }}
-    >
-      <div className="max-w-[600px] mx-auto">
-        <VetDocAnalyzer dogName={dogName} isAuthenticated={!!user} />
-      </div>
-    </div>
+    <AppPageShell>
+      <VetDocAnalyzer dogName={dogName} isAuthenticated={!!user} />
+    </AppPageShell>
   );
 }
