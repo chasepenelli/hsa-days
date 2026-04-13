@@ -52,6 +52,24 @@ export function Footer() {
               Resources
             </Link>
             <Link
+              href="/tools"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Tools
+            </Link>
+            <Link
+              href="/track"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Health Tracker
+            </Link>
+            <Link
+              href="/tools/analyze"
+              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
+            >
+              Vet Report Analysis
+            </Link>
+            <Link
               href="/resources/understanding-hsa"
               className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
