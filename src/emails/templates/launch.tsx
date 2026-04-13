@@ -244,8 +244,8 @@ export function LaunchEmail({
         </tr>
 
         {/* CTA */}
-        <EmailCTA href="https://hsadays.com/days/1?utm_source=kit&utm_medium=email&utm_campaign=launch">
-          Begin Day 1
+        <EmailCTA href="https://hsadays.com/resources?utm_source=kit&utm_medium=email&utm_campaign=launch">
+          Explore Resources
         </EmailCTA>
 
         {/* Signature */}

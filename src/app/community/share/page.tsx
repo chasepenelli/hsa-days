@@ -218,7 +218,7 @@ export default function ShareStoryPage() {
               className="text-[1.05rem] leading-relaxed mx-auto"
               style={{ color: "var(--text-muted)", maxWidth: "480px" }}
             >
-              Your journey matters. Sharing your experience can help another
+              Your story matters. Sharing your experience can help another
               family feel less alone. There are no right or wrong words.
             </p>
           </div>
@@ -323,9 +323,9 @@ export default function ShareStoryPage() {
                   required
                   value={storyText}
                   onChange={(e) => setStoryText(e.target.value)}
-                  placeholder="Tell us about your dog and your journey together..."
+                  placeholder="Tell us about your dog and your experience together..."
                   rows={7}
-                  className="w-full outline-none resize-none journal-lined transition-all"
+                  className="w-full outline-none resize-none transition-all"
                   style={{
                     padding: "13px 16px",
                     border: "1.5px solid var(--border)",

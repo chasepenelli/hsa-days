@@ -410,7 +410,7 @@ export function PreOrder() {
               transitionDelay: "0.16s",
             }}
           >
-            You&apos;re building something deeply personal through these 30 days
+            You&apos;re building something deeply personal through this time
             &mdash; reflections, memories, quiet moments with your dog that
             you&apos;ll never get back. We believe those deserve a permanent
             home.

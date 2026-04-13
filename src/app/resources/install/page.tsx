@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Use HSA Days as an App",
   description:
-    "Add HSA Days to your home screen for quick access, offline journaling, and a full-screen experience.",
+    "Add HSA Days to your home screen for quick access, offline browsing, and a full-screen experience.",
 };
 
 function IPhoneIcon() {

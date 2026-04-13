@@ -55,11 +55,11 @@ export default function AboutPage() {
 
           <p>
             HSA Days is designed to meet you where you are &mdash; wherever
-            that is. Day 1 is about giving yourself permission to feel. Day 30
-            is about finding meaning in what you&apos;ve been through. The days
-            in between? They&apos;re about making the most of the time you
-            have, not in some bucket-list Instagram way, but in the quiet, real
-            ways that actually matter.
+            that is. Whether you need supplement dosing info right now, or an
+            emergency guide for tomorrow, or just a place that understands
+            what you&apos;re going through &mdash; it&apos;s all here. Not in
+            some clinical, overwhelming way, but in the quiet, practical ways
+            that actually matter.
           </p>
 
           <p>

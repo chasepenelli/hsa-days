@@ -28,7 +28,7 @@ const TABS: Tab[] = [
   {
     label: "Community",
     href: "/community",
-    icon: "/illustrations/icons/icon-journal.png",
+    icon: "/illustrations/icons/icon-community.png",
     isActive: (p) => p.startsWith("/community"),
   },
 ];

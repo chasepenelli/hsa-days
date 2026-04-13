@@ -8,11 +8,11 @@ import { ShopifyButton } from "@/components/ui/ShopifyButton";
 const faqs = [
   {
     q: "Is the digital program really free?",
-    a: "Yes, always. The digital HSA Days program is free forever. The printed journal is a separate product for people who want a physical companion for their journey.",
+    a: "Yes, always. The HSA Days website and all its resources are free forever. The printed journal is a separate product for people who want a physical writing companion.",
   },
   {
     q: "What\u2019s the difference between the journal and the website?",
-    a: "The website gives you all 30 days digitally \u2014 daily reflections, journaling, activities, and guides. The printed journal includes all of the same content, plus dedicated writing space, thicker pages, and lay-flat binding designed for actually writing in.",
+    a: "The website gives you free access to all HSA resources \u2014 supplements, nutrition, emergency guides, health tracking, and more. The printed journal is a standalone guided writing companion with prompts, dedicated writing space, and lay-flat binding.",
   },
   {
     q: "When does it ship?",
@@ -23,8 +23,8 @@ const faqs = [
     a: "Absolutely. We think it\u2019s one of the most meaningful gifts you can give someone going through this. Gift messaging will be available at checkout.",
   },
   {
-    q: "What if I already started the digital program?",
-    a: "The journal is designed to work alongside the digital program or on its own. Many families use both \u2014 the website for daily emails and journaling, the physical book for deeper writing and keepsakes.",
+    q: "Can I use it with the website?",
+    a: "The journal works alongside the website or entirely on its own. Many families use both \u2014 the website for resources and health tracking, the physical book for deeper writing and keepsakes.",
   },
   {
     q: "What is your refund policy?",
