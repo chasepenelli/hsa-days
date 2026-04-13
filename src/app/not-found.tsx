@@ -50,11 +50,11 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           {isStandalone ? (
             <Link
-              href="/days"
+              href="/resources"
               className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-[0.9rem] font-semibold no-underline transition-opacity hover:opacity-90"
               style={{ background: "var(--sage)", color: "white" }}
             >
-              Back to Journal
+              Back to Resources
             </Link>
           ) : (
             <Link

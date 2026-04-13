@@ -14,22 +14,22 @@ interface Tab {
 
 const TABS: Tab[] = [
   {
-    label: "Today",
-    href: "/days/today",
-    icon: "/illustrations/icons/icon-paw-print.png",
-    isActive: (p) => /^\/days\/\d+/.test(p) || p === "/days/today",
-  },
-  {
-    label: "Journal",
-    href: "/days",
-    icon: "/illustrations/icons/icon-journal.png",
-    isActive: (p) => p === "/days",
-  },
-  {
-    label: "Care",
+    label: "Resources",
     href: "/resources",
     icon: "/illustrations/icons/icon-heart.png",
     isActive: (p) => p.startsWith("/resources"),
+  },
+  {
+    label: "Track",
+    href: "/track",
+    icon: "/illustrations/icons/icon-paw-print.png",
+    isActive: (p) => p.startsWith("/track"),
+  },
+  {
+    label: "Community",
+    href: "/community",
+    icon: "/illustrations/icons/icon-journal.png",
+    isActive: (p) => p.startsWith("/community"),
   },
 ];
 

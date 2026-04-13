@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { clearAllJournalEntries } from "@/lib/offline/journal-store";
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -62,9 +61,8 @@ export function Header() {
         {/* Desktop nav */}
         <div className="hidden md:flex gap-8 items-center">
           {([
-            { href: "/journey", label: "The Journey" },
-            { href: "/community", label: "Community" },
             { href: "/resources", label: "Resources" },
+            { href: "/community", label: "Community" },
           ] as { href: string; label: string }[]).map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
@@ -80,13 +78,7 @@ export function Header() {
           })}
           {isLoggedIn ? (
             <>
-              <Link
-                href="/days"
-                className="text-[0.9rem] text-sage no-underline font-medium hover:text-sage-dark transition-colors"
-              >
-                My Journey
-              </Link>
-              <form action="/api/auth/logout" method="POST" onSubmit={() => { clearAllJournalEntries().catch(() => {}); }}>
+              <form action="/api/auth/logout" method="POST">
                 <button
                   type="submit"
                   className="text-[0.85rem] text-text-muted font-medium bg-transparent border border-border px-4 py-1.5 rounded-lg cursor-pointer hover:border-sage hover:text-sage transition-colors"
@@ -104,7 +96,7 @@ export function Header() {
                 Sign In
               </Link>
               <Link
-                href="/days"
+                href="/resources"
                 className="bg-sage text-white px-5 py-2 rounded-[10px] font-medium text-[0.9rem]"
                 style={{
                   boxShadow: "0 2px 10px rgba(91,123,94,0.28)",
@@ -121,7 +113,7 @@ export function Header() {
                   e.currentTarget.style.background = "var(--sage)";
                 }}
               >
-                Start Free
+                Explore
               </Link>
             </>
           )}
@@ -183,9 +175,8 @@ export function Header() {
         }}
       >
         {([
-          { href: "/journey", label: "The Journey" },
-          { href: "/community", label: "Community" },
           { href: "/resources", label: "Resources" },
+          { href: "/community", label: "Community" },
         ] as { href: string; label: string }[]).map((item, i) => (
           <Link
             key={item.href}
@@ -204,19 +195,6 @@ export function Header() {
         ))}
         {isLoggedIn ? (
           <>
-            <Link
-              href="/days"
-              onClick={closeMenu}
-              className="px-6 py-3.5 text-[0.95rem] text-sage no-underline font-medium border-b border-border hover:text-sage-dark hover:bg-cream/50"
-              style={{
-                transition: "color var(--duration-fast) ease, background var(--duration-fast) ease, opacity 0.3s ease, transform 0.3s var(--ease-out-expo)",
-                opacity: menuOpen ? 1 : 0,
-                transform: menuOpen ? "translateY(0)" : "translateY(-8px)",
-                transitionDelay: menuOpen ? "240ms" : "0ms",
-              }}
-            >
-              My Journey
-            </Link>
             <form action="/api/auth/logout" method="POST" className="px-6 py-3">
               <button
                 type="submit"
@@ -243,7 +221,7 @@ export function Header() {
               Sign In
             </Link>
             <Link
-              href="/days"
+              href="/resources"
               onClick={closeMenu}
               className="mx-6 my-3 bg-sage text-white text-center py-3.5 rounded-[10px] font-medium text-[0.95rem] hover:bg-sage-dark"
               style={{
@@ -253,7 +231,7 @@ export function Header() {
                 transitionDelay: menuOpen ? "280ms" : "0ms",
               }}
             >
-              Start Free
+              Explore
             </Link>
           </>
         )}

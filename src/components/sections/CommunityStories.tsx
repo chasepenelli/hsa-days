@@ -8,31 +8,31 @@ const stories = [
     initials: "SM",
     gradient: "linear-gradient(135deg, var(--sage-light), var(--sage))",
     quote:
-      "Having a place to write about what I was feeling each day — and knowing it was just for me — gave me something to hold onto when everything felt out of control.",
+      "The supplement guide alone saved me hours of panicked research. Having everything in one place — doses adjusted for Beau's weight — meant I could actually focus on him instead of my phone.",
     name: "Sarah M.",
-    detail: "Beau, Golden Retriever · Day 14",
+    detail: "Beau, Golden Retriever",
   },
   {
     initials: "MT",
     gradient: "linear-gradient(135deg, var(--gold-light), var(--gold))",
     quote:
-      "The supplement guide alone saved me hours of research. But it was the daily reflections that really helped. Feeling like someone understood what I was going through made all the difference.",
+      "I was drowning in conflicting information from forums and Facebook groups. HSA Days had actual cited sources and real dosing info. It felt like someone had already done the work I was desperately trying to do.",
     name: "Mike T.",
-    detail: "Luna, German Shepherd · Day 22",
+    detail: "Luna, German Shepherd",
     featured: true,
   },
   {
     initials: "JK",
     gradient: "linear-gradient(135deg, var(--terracotta-light), var(--terracotta))",
     quote:
-      "I didn't want to 'make the most' of every day. I just wanted to stop crying long enough to enjoy the small stuff. HSA Days helped me get there, one day at a time.",
+      "The emergency guide probably saved Rosie's life. I recognized the gum color change because of what I'd read here, and we got to the vet in time. I tell every HSA family about this site.",
     name: "Jen K.",
-    detail: "Rosie, Lab Mix · Day 30",
+    detail: "Rosie, Lab Mix",
   },
 ];
 
 const tickerRow1 = [
-  { quote: "Day 7 changed everything for us.", name: "Anna & Cooper", color: "var(--sage)" },
+  { quote: "The supplement guide changed everything for us.", name: "Anna & Cooper", color: "var(--sage)" },
   { quote: "I finally stopped Googling at 2 AM.", name: "David & Maple", color: "var(--gold)" },
   { quote: "Thank you for understanding.", name: "Lisa & Bear", color: "var(--terracotta)" },
   { quote: "This gave us permission to just... be together.", name: "Sarah & Bowie", color: "var(--sage)" },
@@ -40,9 +40,9 @@ const tickerRow1 = [
 
 const tickerRow2 = [
   { quote: "I didn't know I needed this.", name: "Mike & Luna", color: "var(--gold)" },
-  { quote: "One day at a time. That's all we needed.", name: "Rachel & Duke", color: "var(--terracotta)" },
-  { quote: "The journal prompts broke me open — in the best way.", name: "Tom & Sadie", color: "var(--sage)" },
-  { quote: "I read Day 1 and cried. Then I kept going.", name: "Emily & Max", color: "var(--gold)" },
+  { quote: "The emergency guide saved us time we didn't have.", name: "Rachel & Duke", color: "var(--terracotta)" },
+  { quote: "Everything we needed in one place.", name: "Tom & Sadie", color: "var(--sage)" },
+  { quote: "The meal plan builder was a game changer.", name: "Emily & Max", color: "var(--gold)" },
 ];
 
 const bgIllustrations = [

@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { PILLS, PILL_CATEGORIES } from "@/lib/pills";
 
 const STAGES = ["I", "II", "III", "IV", "I'm not sure"] as const;
 
@@ -11,9 +10,6 @@ const MONTHS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-
-const MIN_PILLS = 3;
-const MAX_PILLS = 8;
 
 function currentYear() {
   return new Date().getFullYear();
@@ -41,11 +37,7 @@ export default function OnboardingWizard() {
   const [diagYear, setDiagYear] = useState("");
   const [cancerStage, setCancerStage] = useState("");
 
-  // Step 3 — Word pills
-  const [selectedPills, setSelectedPills] = useState<string[]>([]);
-  const [pillShake, setPillShake] = useState(false);
-
-  // Step 4 — Photo + color
+  // Step 3 — Photo + color
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -62,20 +54,6 @@ export default function OnboardingWizard() {
   const goBack = useCallback(() => {
     setDirection("back");
     setStep((s) => s - 1);
-  }, []);
-
-  const togglePill = useCallback((slug: string) => {
-    setSelectedPills((prev) => {
-      if (prev.includes(slug)) {
-        return prev.filter((s) => s !== slug);
-      }
-      if (prev.length >= MAX_PILLS) {
-        setPillShake(true);
-        setTimeout(() => setPillShake(false), 500);
-        return prev;
-      }
-      return [...prev, slug];
-    });
   }, []);
 
   const handlePhotoSelect = useCallback((file: File) => {
@@ -125,10 +103,6 @@ export default function OnboardingWizard() {
       formData.append("cancer_stage", cancerStage);
     }
 
-    if (selectedPills.length > 0) {
-      formData.append("selected_pills", JSON.stringify(selectedPills));
-    }
-
     formData.append("avatar_color", avatarColor);
 
     if (photo) {
@@ -154,8 +128,8 @@ export default function OnboardingWizard() {
       }
 
       // Brief welcome moment, then redirect
-      setStep(5);
-      setTimeout(() => router.push("/days"), 2000);
+      setStep(4);
+      setTimeout(() => router.push("/resources"), 2000);
     } catch {
       setError("Something went wrong. Please try again.");
       setIsSubmitting(false);
@@ -172,10 +146,10 @@ export default function OnboardingWizard() {
         background: "linear-gradient(to bottom, #F5F0EA 0%, #FAF8F5 100%)",
       }}
     >
-      {/* Progress dots — 4 steps (excluding welcome) */}
-      {step <= 4 && (
+      {/* Progress dots — 3 steps (excluding welcome) */}
+      {step <= 3 && (
         <div className="flex items-center gap-3 mb-12">
-          {[1, 2, 3, 4].map((s) => (
+          {[1, 2, 3].map((s) => (
             <div
               key={s}
               className="w-2.5 h-2.5 rounded-full transition-all duration-300"
@@ -193,7 +167,7 @@ export default function OnboardingWizard() {
         </div>
       )}
 
-      <div className={`w-full ${step === 3 ? "max-w-[560px]" : "max-w-[420px]"}`}>
+      <div className="w-full max-w-[420px]">
         {/* ── Step 1: Pet Name ── */}
         {step === 1 && (
           <div key="step-1" className={animClass}>
@@ -201,15 +175,13 @@ export default function OnboardingWizard() {
               className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold text-center mb-3 leading-tight"
               style={{ color: "var(--text)" }}
             >
-              Who&rsquo;s this journey for?
+              Who&rsquo;s this for?
             </h1>
             <p
               className="text-center text-[0.95rem] mb-10 leading-relaxed"
               style={{ color: "var(--text-muted)" }}
             >
-              Every day of this program was made with love.
-              <br />
-              Let&rsquo;s make it personal.
+              We&rsquo;ll personalize your resources and dosing info.
             </p>
 
             <div className="mb-8">
@@ -269,7 +241,7 @@ export default function OnboardingWizard() {
               className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold text-center mb-3 leading-tight"
               style={{ color: "var(--text)" }}
             >
-              Tell us about {petName}&rsquo;s journey
+              Tell us about {petName}
             </h1>
             <p
               className="text-center text-[0.95rem] mb-10 leading-relaxed"
@@ -459,133 +431,9 @@ export default function OnboardingWizard() {
           </div>
         )}
 
-        {/* ── Step 3: Word Pills ── */}
+        {/* ── Step 3: Photo Upload + Color Preference ── */}
         {step === 3 && (
           <div key="step-3" className={animClass}>
-            <p
-              className="text-[0.72rem] uppercase tracking-[0.14em] font-semibold text-center mb-2"
-              style={{ color: "var(--gold-text)" }}
-            >
-              Personalize your journal
-            </p>
-            <h1
-              className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold text-center mb-3 leading-tight"
-              style={{ color: "var(--text)" }}
-            >
-              What makes {petName} special?
-            </h1>
-            <p
-              className="text-center text-[0.95rem] mb-8 leading-relaxed"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Pick {MIN_PILLS}&ndash;{MAX_PILLS} things you love about them.
-              These sprinkle personalized illustrations throughout your journal.
-            </p>
-
-            {/* Pill grid */}
-            <div className="space-y-6 mb-6 max-h-[50vh] overflow-y-auto px-1 -mx-1">
-              {PILL_CATEGORIES.map((cat) => {
-                const catPills = PILLS.filter((p) => p.category === cat.key);
-                return (
-                  <div key={cat.key}>
-                    <p
-                      className="text-[0.72rem] uppercase tracking-[0.14em] font-semibold mb-2.5"
-                      style={{ color: "var(--gold-text)" }}
-                    >
-                      {cat.label}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {catPills.map((pill) => {
-                        const isSelected = selectedPills.includes(pill.slug);
-                        return (
-                          <button
-                            key={pill.slug}
-                            type="button"
-                            onClick={() => togglePill(pill.slug)}
-                            aria-pressed={isSelected}
-                            className="px-3.5 py-1.5 rounded-full text-[0.85rem] font-medium transition-all duration-200 cursor-pointer"
-                            style={{
-                              background: isSelected ? "var(--sage)" : "white",
-                              color: isSelected ? "white" : "var(--text-muted)",
-                              border: isSelected
-                                ? "1.5px solid transparent"
-                                : "1.5px solid var(--border-strong)",
-                              boxShadow: isSelected
-                                ? "0 2px 8px rgba(91,123,94,0.2)"
-                                : "none",
-                            }}
-                          >
-                            {pill.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Selection counter */}
-            <div className="flex items-center justify-between mb-6">
-              <p
-                className="text-[0.82rem] font-medium"
-                style={{
-                  color:
-                    selectedPills.length >= MIN_PILLS
-                      ? "var(--sage)"
-                      : "var(--text-muted)",
-                }}
-              >
-                Selected: {selectedPills.length}/{MAX_PILLS}
-                {selectedPills.length < MIN_PILLS && (
-                  <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>
-                    {" "}(minimum {MIN_PILLS})
-                  </span>
-                )}
-              </p>
-              {pillShake && (
-                <p
-                  className="text-[0.8rem] animate-fade-in"
-                  style={{ color: "var(--terracotta)" }}
-                >
-                  Maximum {MAX_PILLS} selected
-                </p>
-              )}
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={goBack}
-                className="px-6 py-3.5 rounded-xl font-medium text-[0.95rem] transition-all duration-200 cursor-pointer"
-                style={{
-                  background: "transparent",
-                  border: "1.5px solid var(--border-strong)",
-                  color: "var(--text-muted)",
-                }}
-              >
-                Back
-              </button>
-              <button
-                onClick={goForward}
-                disabled={selectedPills.length < MIN_PILLS}
-                className="flex-1 py-3.5 rounded-xl text-white font-semibold text-[0.95rem] transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{
-                  background: "var(--sage)",
-                  boxShadow:
-                    selectedPills.length >= MIN_PILLS
-                      ? "0 4px 14px rgba(91,123,94,0.3)"
-                      : "none",
-                }}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ── Step 4: Photo Upload + Color Preference ── */}
-        {step === 4 && (
-          <div key="step-4" className={animClass}>
             <h1
               className="font-serif text-[clamp(1.6rem,3.5vw,2.2rem)] font-semibold text-center mb-3 leading-tight"
               style={{ color: "var(--text)" }}
@@ -598,7 +446,7 @@ export default function OnboardingWizard() {
             >
               We&rsquo;ll turn it into a hand-drawn illustration
               <br />
-              that follows you through your journal.
+              for your profile.
             </p>
 
             {/* Upload area */}
@@ -768,9 +616,9 @@ export default function OnboardingWizard() {
           </div>
         )}
 
-        {/* ── Step 5: Welcome ── */}
-        {step === 5 && (
-          <div key="step-5" className="animate-fade-in-up text-center">
+        {/* ── Step 4: Welcome ── */}
+        {step === 4 && (
+          <div key="step-4" className="animate-fade-in-up text-center">
             <div
               className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center"
               style={{
@@ -796,9 +644,7 @@ export default function OnboardingWizard() {
               className="text-[0.95rem] leading-relaxed"
               style={{ color: "var(--text-muted)" }}
             >
-              Thirty days of love, understanding, and support
-              <br />
-              are waiting for you.
+              Your personalized resources are ready.
             </p>
           </div>
         )}

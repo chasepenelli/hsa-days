@@ -54,7 +54,7 @@ export default function Error({
             Try again
           </button>
           <a
-            href={isStandalone ? "/days" : "/"}
+            href={isStandalone ? "/resources" : "/"}
             className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-[0.9rem] font-semibold no-underline transition-opacity hover:opacity-90"
             style={{
               background: "var(--cream)",
@@ -62,7 +62,7 @@ export default function Error({
               border: "1px solid var(--border)",
             }}
           >
-            {isStandalone ? "Back to Journal" : "Go home"}
+            {isStandalone ? "Back to Resources" : "Go home"}
           </a>
         </div>
       </div>

@@ -28,8 +28,8 @@ export function Footer() {
               className="font-serif italic text-[0.88rem] leading-relaxed"
               style={{ color: "rgba(255,255,255,0.65)", maxWidth: 280 }}
             >
-              A 30-day companion for families navigating
-              hemangiosarcoma with love.
+              The most complete resource for families
+              navigating hemangiosarcoma with love.
             </p>
           </div>
           <div className="flex gap-6 flex-wrap justify-center md:justify-end">
@@ -38,12 +38,6 @@ export function Footer() {
               className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >
               Our Story
-            </Link>
-            <Link
-              href="/journey"
-              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
-            >
-              The Journey
             </Link>
             <Link
               href="/community"

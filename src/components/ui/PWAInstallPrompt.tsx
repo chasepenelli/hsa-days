@@ -10,6 +10,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const DISMISS_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const RESOURCE_VISIT_KEY = "pwa-resource-visits";
+const VISIT_THRESHOLD = 2;
 
 function isDismissed(): boolean {
   const raw = localStorage.getItem("pwa-install-dismissed");
@@ -17,6 +19,16 @@ function isDismissed(): boolean {
   const ts = parseInt(raw, 10);
   if (isNaN(ts)) return false;
   return Date.now() - ts < DISMISS_EXPIRY_MS;
+}
+
+function hasEnoughVisits(): boolean {
+  const count = parseInt(localStorage.getItem(RESOURCE_VISIT_KEY) || "0", 10);
+  return count >= VISIT_THRESHOLD;
+}
+
+function trackResourceVisit(): void {
+  const count = parseInt(localStorage.getItem(RESOURCE_VISIT_KEY) || "0", 10);
+  localStorage.setItem(RESOURCE_VISIT_KEY, String(count + 1));
 }
 
 function isIOSSafari(): boolean {
@@ -45,12 +57,17 @@ export function PWAInstallPrompt() {
     if (isDismissed()) return;
     if (isStandalone()) return;
 
+    // Track resource page visits
+    if (window.location.pathname.startsWith("/resources/")) {
+      trackResourceVisit();
+    }
+
+    const eligible = hasEnoughVisits();
+
     // iOS path: no beforeinstallprompt, show manual instructions
     if (isIOSSafari()) {
       setIsIOS(true);
-      checkDay2Completion().then((completed) => {
-        if (completed) setShowBanner(true);
-      });
+      if (eligible) setShowBanner(true);
       return;
     }
 
@@ -58,10 +75,7 @@ export function PWAInstallPrompt() {
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-
-      checkDay2Completion().then((completed) => {
-        if (completed) setShowBanner(true);
-      });
+      if (eligible) setShowBanner(true);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
@@ -127,8 +141,8 @@ export function PWAInstallPrompt() {
           </p>
           <p className="text-[0.75rem] text-text-muted mt-0.5">
             {isIOS
-              ? "Add to your home screen for the full experience."
-              : "Open your journal with one tap, every morning."}
+              ? "Add to your home screen for instant access, even offline."
+              : "Access HSA resources instantly, even offline."}
           </p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -160,18 +174,4 @@ export function PWAInstallPrompt() {
       </div>
     </div>
   );
-}
-
-async function checkDay2Completion(): Promise<boolean> {
-  try {
-    const res = await fetch("/api/progress");
-    if (!res.ok) return false;
-    const { progress } = await res.json();
-    return progress?.some(
-      (p: { day_number: number; completed_at: string | null }) =>
-        p.day_number === 2 && p.completed_at
-    );
-  } catch {
-    return false;
-  }
 }

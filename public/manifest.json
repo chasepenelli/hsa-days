@@ -1,9 +1,9 @@
 {
-  "name": "HSA Days — 30-Day Companion",
+  "name": "HSA Days — Resources & Tools",
   "short_name": "HSA Days",
-  "description": "A 30-day interactive companion for dog owners navigating HSA.",
-  "id": "/days",
-  "start_url": "/days",
+  "description": "The most complete resource for dog owners navigating hemangiosarcoma.",
+  "id": "/resources",
+  "start_url": "/resources",
   "scope": "/",
   "display": "standalone",
   "background_color": "#FAF8F5",
@@ -18,9 +18,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Today's Journal",
-      "short_name": "Today",
-      "url": "/days/today",
+      "name": "Resource Hub",
+      "short_name": "Resources",
+      "url": "/resources",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]

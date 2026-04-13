@@ -10,7 +10,7 @@ interface PWALayoutShellProps {
   children: React.ReactNode;
 }
 
-const APP_ROUTE_PREFIXES = ["/days", "/resources"];
+const APP_ROUTE_PREFIXES = ["/resources", "/track", "/community"];
 
 function isAppRoute(pathname: string): boolean {
   return APP_ROUTE_PREFIXES.some((prefix) => pathname.startsWith(prefix));

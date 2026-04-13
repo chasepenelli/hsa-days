@@ -226,18 +226,18 @@ export function WhyThisExists() {
             className="font-serif italic text-[1.1rem] leading-relaxed mb-3"
             style={{ color: "var(--text)", opacity: 0.85 }}
           >
-            HSA Days doesn&apos;t fix any of this. But it gives you something to hold onto
-            &mdash; one day at a time.
+            HSA Days doesn&apos;t fix any of this. But it puts everything you need
+            in one place &mdash; so you can focus on your dog.
           </p>
           <a
-            href="#journey"
+            href="/resources"
             className="inline-flex items-center gap-1.5 text-[0.84rem] font-medium"
             style={{ color: "var(--sage)", transition: "opacity var(--duration-fast) ease" }}
             onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.7"; }}
             onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
           >
-            See the journey
-            <span aria-hidden="true" style={{ fontSize: "0.9em" }}>&darr;</span>
+            Explore the resources
+            <span aria-hidden="true" style={{ fontSize: "0.9em" }}>&rarr;</span>
           </a>
         </div>
       </div>

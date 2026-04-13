@@ -24,11 +24,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "HSA Days — A 30-Day Companion for You and Your Dog",
+    default: "HSA Days — The Complete HSA Resource for Dog Owners",
     template: "%s | HSA Days",
   },
   description:
-    "A free interactive 30-day companion for dog owners navigating a hemangiosarcoma diagnosis. Reflections, journaling, practical guides, and a community that understands.",
+    "The most complete resource for dog owners navigating a hemangiosarcoma diagnosis. Supplements, nutrition, emergency guides, treatment options, and tools — all free.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "HSA Days — A 30-Day Companion for You and Your Dog",
+    title: "HSA Days — The Complete HSA Resource for Dog Owners",
     description:
-      "A free interactive 30-day companion for dog owners navigating a hemangiosarcoma diagnosis.",
+      "The most complete resource for dog owners navigating a hemangiosarcoma diagnosis. Supplements, nutrition, emergency guides, and more.",
     url: "https://hsadays.com",
     siteName: "HSA Days",
   },

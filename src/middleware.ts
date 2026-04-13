@@ -28,6 +28,20 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // ── Legacy redirect: /days → /resources ─────────────
+  if (request.nextUrl.pathname.startsWith("/days")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/resources";
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
+  // ── Legacy redirect: /journey → / ─────────────────
+  if (request.nextUrl.pathname === "/journey") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
   return await updateSession(request);
 }
 

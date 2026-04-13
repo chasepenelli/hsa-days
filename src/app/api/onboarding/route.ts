@@ -78,13 +78,6 @@ export async function POST(request: Request) {
     updateData.pet_photo_path = petPhotoPath;
   }
 
-  const selectedPillsRaw = formData.get("selected_pills") as string | null;
-  if (selectedPillsRaw) {
-    try {
-      updateData.selected_pills = JSON.parse(selectedPillsRaw);
-    } catch { /* ignore malformed */ }
-  }
-
   const avatarColor = formData.get("avatar_color") as string | null;
   if (avatarColor && ["sage", "gold", "terracotta"].includes(avatarColor)) {
     updateData.avatar_color = avatarColor;

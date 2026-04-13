@@ -111,7 +111,7 @@ export function FinalCTA() {
               animationTimingFunction: "ease-in-out",
             }}
           />
-          Begin Your Journey
+          Get Started
         </div>
 
         {/* Main headline */}
@@ -123,7 +123,7 @@ export function FinalCTA() {
             transitionDelay: "0.1s",
           }}
         >
-          Day 1 is ready
+          Everything you need
           <br />
           <em
             className="italic"
@@ -131,7 +131,7 @@ export function FinalCTA() {
               color: "var(--gold-light)",
             }}
           >
-            when you are.
+            is right here.
           </em>
         </h2>
 
@@ -175,7 +175,7 @@ export function FinalCTA() {
             transitionDelay: "0.44s",
           }}
         >
-          No spam. No passwords. Just 30 days of real support.
+          No spam. No paywalls. Just a resource you can lean on.
         </p>
 
         {/* Ornament */}

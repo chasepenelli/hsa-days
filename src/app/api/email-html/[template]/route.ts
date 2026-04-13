@@ -2,29 +2,11 @@ import { render } from "@react-email/render";
 import { NextRequest, NextResponse } from "next/server";
 import React from "react";
 import { WelcomeEmail } from "@/emails/templates/welcome";
-import { DailyDripEmail } from "@/emails/templates/daily-drip";
-import { MilestoneEmail } from "@/emails/templates/milestone";
 import { LaunchEmail } from "@/emails/templates/launch";
-import { NudgeEmail } from "@/emails/templates/nudge";
-import { CompletionEmail } from "@/emails/templates/completion";
 
 const TEMPLATES: Record<string, (params: Record<string, string>) => React.ReactElement> = {
   welcome: () => React.createElement(WelcomeEmail),
-  "daily-drip": (p) =>
-    React.createElement(DailyDripEmail, {
-      day: Number(p.day) || 1,
-    }),
-  milestone: (p) =>
-    React.createElement(MilestoneEmail, {
-      day: Number(p.day) || 7,
-    }),
   launch: () => React.createElement(LaunchEmail),
-  nudge: (p) =>
-    React.createElement(NudgeEmail, {
-      variant: (p.variant as "not-started" | "dropped-off") || "not-started",
-      lastDay: Number(p.lastDay) || 5,
-    }),
-  completion: () => React.createElement(CompletionEmail),
 };
 
 export async function GET(

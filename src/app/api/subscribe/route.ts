@@ -97,17 +97,7 @@ export async function POST(request: Request) {
           );
         }
 
-        // Add to 30-day drip sequence
-        if (process.env.KIT_SEQUENCE_ID && process.env.KIT_SEQUENCE_ID !== "placeholder") {
-          await fetch(
-            `https://api.kit.com/v4/sequences/${process.env.KIT_SEQUENCE_ID}/subscribers`,
-            {
-              method: "POST",
-              headers: kitHeaders,
-              body: JSON.stringify({ email_address: email }),
-            }
-          );
-        }
+
       } catch {
         // Kit subscription failure shouldn't block signup
       }

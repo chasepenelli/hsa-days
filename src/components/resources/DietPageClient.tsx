@@ -1999,10 +1999,10 @@ export default function DietPageClient({
               color: "rgba(255,255,255,0.72)",
             }}
           >
-            Your daily journal is here whenever you need it — one day at a time.
+            Explore more resources to support your dog&apos;s care.
           </p>
           <Link
-            href="/days/today"
+            href="/resources"
             className="inline-flex items-center gap-2 no-underline font-semibold transition-all duration-200"
             style={{
               padding: "14px 32px",
@@ -2021,7 +2021,7 @@ export default function DietPageClient({
               (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(0,0,0,0.15)";
             }}
           >
-            Continue Your Journey
+            View All Resources
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M2 7h10M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>

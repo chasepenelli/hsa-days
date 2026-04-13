@@ -248,7 +248,7 @@ export function Hero() {
             className="w-1.5 h-1.5 rounded-full animate-breathe"
             style={{ background: "var(--sage)" }}
           />
-          Free Resources + Daily Journal
+          Free &middot; No Signup Required
         </div>
 
         {/* Main headline — staggered line-by-line reveal */}
@@ -323,9 +323,9 @@ export function Hero() {
             animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
-          Start with the practical stuff — supplements, what to feed, how
-          to prepare your home. When you&apos;re ready, a free 30-day journal
-          walks beside you through every day that matters.
+          Supplements, nutrition, emergency guides, treatment options,
+          financial help — everything you need, researched and organized
+          so you can focus on what matters most.
         </p>
 
         {/* Signup form */}
@@ -368,8 +368,8 @@ export function Hero() {
           }}
         >
           {[
-            { number: "4", label: "Care Guides" },
-            { number: "30", label: "Journal Days" },
+            { number: "8", label: "In-Depth Guides" },
+            { number: "17", label: "Supplements Covered" },
             { number: "0", label: "Cost, Ever" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">

@@ -25,7 +25,7 @@ export default async function WelcomePage() {
     .single();
 
   if (subscriber?.onboarding_completed) {
-    redirect("/days");
+    redirect("/resources");
   }
 
   return <OnboardingWizard />;

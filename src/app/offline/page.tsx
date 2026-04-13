@@ -117,7 +117,7 @@ export default function OfflinePage() {
                 Try again
               </button>
               <Link
-                href="/days"
+                href="/resources"
                 className="inline-flex items-center justify-center px-6 py-3 rounded-xl text-[0.9rem] font-semibold no-underline transition-opacity hover:opacity-90"
                 style={{
                   background: "var(--cream)",
