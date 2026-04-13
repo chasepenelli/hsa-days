@@ -39,9 +39,42 @@ const resources = [
     href: "/resources/home",
     cta: "See checklist",
   },
+  {
+    label: "Guide",
+    icon: "/illustrations/icons/icon-heart.png",
+    color: "var(--terracotta)",
+    colorHex: "#D4856A",
+    title: "Emergency Guide",
+    description:
+      "Know the signs of a crisis before one happens. Gum color guide, bleeding episodes, emergency kit, and what to say to your vet.",
+    href: "/resources/emergency",
+    cta: "Read the guide",
+  },
+  {
+    label: "Guide",
+    icon: "/illustrations/icons/icon-paw-print.png",
+    color: "var(--sage)",
+    colorHex: "#5B7B5E",
+    title: "Understanding HSA",
+    description:
+      "What hemangiosarcoma actually is, what stages mean, treatment options without jargon, and realistic timelines you can plan around.",
+    href: "/resources/understanding-hsa",
+    cta: "Learn about HSA",
+  },
+  {
+    label: "Guide",
+    icon: "/illustrations/icons/icon-flower-ornament.png",
+    color: "var(--gold)",
+    colorHex: "#C4A265",
+    title: "Financial Help",
+    description:
+      "Treatment is expensive. Grants, payment plans, charitable funds, and how to ask your vet about cost-of-care options.",
+    href: "/resources/financial-help",
+    cta: "Explore options",
+  },
 ];
 
-const staggerOffsets = [0, 36, 72];
+const staggerOffsets = [0, 36, 72, 0, 36, 72];
 
 /* ── Mini vignette: Supplement preview ── */
 function SupplementVignette() {
@@ -152,7 +185,107 @@ function HouseVignette() {
   );
 }
 
-const vignettes = [SupplementVignette, FoodVignette, HouseVignette];
+/* ── Mini vignette: Emergency gum colors ── */
+function EmergencyVignette() {
+  const colors = [
+    { label: "Pink", bg: "#E8A0B4", status: "Healthy" },
+    { label: "Pale", bg: "#F0D0B0", status: "Watch" },
+    { label: "White/Blue", bg: "#D0D0D0", status: "Emergency" },
+  ];
+  return (
+    <div aria-hidden="true" className="mt-5 px-1 pb-1">
+      <div
+        className="text-[0.6rem] font-semibold uppercase tracking-[0.12em] mb-2"
+        style={{ color: "var(--terracotta)" }}
+      >
+        Gum Color Guide
+      </div>
+      <div className="space-y-1.5">
+        {colors.map((c) => (
+          <div key={c.label} className="flex items-center gap-2">
+            <span
+              className="w-4 h-4 rounded-full shrink-0"
+              style={{ background: c.bg, border: "1px solid rgba(0,0,0,0.08)" }}
+            />
+            <span className="text-[0.76rem] font-medium" style={{ color: "var(--text)" }}>
+              {c.label}
+            </span>
+            <span className="text-[0.68rem] ml-auto" style={{ color: "var(--text-muted)" }}>
+              {c.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Mini vignette: HSA key facts ── */
+function HSAVignette() {
+  const facts = [
+    "Splenic origin most common",
+    "Staging guides treatment decisions",
+    "Surgery + chemo extends time",
+  ];
+  return (
+    <div aria-hidden="true" className="mt-5 px-1 pb-1">
+      <div
+        className="text-[0.6rem] font-semibold uppercase tracking-[0.12em] mb-2"
+        style={{ color: "var(--sage)" }}
+      >
+        Key Facts
+      </div>
+      <ul className="space-y-1.5">
+        {facts.map((f) => (
+          <li key={f} className="flex items-start gap-2">
+            <span
+              className="mt-[5px] w-[5px] h-[5px] rounded-full shrink-0"
+              style={{ background: "var(--sage)", opacity: 0.5 }}
+            />
+            <span className="text-[0.76rem] leading-snug" style={{ color: "var(--text-muted)" }}>
+              {f}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ── Mini vignette: Financial resources ── */
+function FinancialVignette() {
+  const items = [
+    { name: "Brown Dog Foundation", tag: "Grant" },
+    { name: "RedRover Relief", tag: "Fund" },
+    { name: "CareCredit", tag: "Plan" },
+  ];
+  return (
+    <div aria-hidden="true" className="mt-5 space-y-2 px-1 pb-1">
+      {items.map((item) => (
+        <div
+          key={item.name}
+          className="flex items-center justify-between rounded-lg px-3 py-1.5"
+          style={{ background: "var(--cream)" }}
+        >
+          <span className="text-[0.74rem] font-medium" style={{ color: "var(--text)" }}>
+            {item.name}
+          </span>
+          <span
+            className="text-[0.6rem] font-semibold uppercase tracking-wide rounded-full px-2 py-0.5"
+            style={{
+              color: "#C4A265",
+              background: "rgba(196,162,101,0.12)",
+            }}
+          >
+            {item.tag}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const vignettes = [SupplementVignette, FoodVignette, HouseVignette, EmergencyVignette, HSAVignette, FinancialVignette];
 
 /* ── Main component ── */
 export function Resources() {
