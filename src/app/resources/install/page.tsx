@@ -220,7 +220,7 @@ export default function InstallGuidePage() {
         <p className="text-[1.05rem] text-text-muted leading-relaxed mb-6">
           HSA Days works like a native app right from your browser — no app
           store needed. Add it to your home screen for quick access, offline
-          journaling, and a full-screen experience.
+          browsing, and a full-screen experience.
         </p>
 
         {/* What you get */}
@@ -303,7 +303,7 @@ export default function InstallGuidePage() {
                   Offline access
                 </p>
                 <p className="text-[0.8rem] text-text-muted">
-                  Journal entries sync when you&apos;re back online
+                  Health data syncs when you&apos;re back online
                 </p>
               </div>
             </div>
@@ -448,8 +448,8 @@ export default function InstallGuidePage() {
                 Do I need to create an account?
               </h3>
               <p className="text-[0.9rem] text-text-muted leading-relaxed">
-                You can browse content without an account. To save journal
-                entries and track your progress across devices, sign up with your
+                You can browse all resources without an account. To use the
+                health tracker and personalized features, sign up with your
                 email — it takes about 10 seconds.
               </p>
             </div>

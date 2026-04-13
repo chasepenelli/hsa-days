@@ -67,7 +67,7 @@ export function PWASplash() {
         <span className="pwa-splash-wordmark">
           HSA <span className="pwa-splash-accent">Days</span>
         </span>
-        <span className="pwa-splash-tagline">Your 30-day companion</span>
+        <span className="pwa-splash-tagline">Resources & Tools for HSA</span>
       </div>
 
       <style jsx>{`

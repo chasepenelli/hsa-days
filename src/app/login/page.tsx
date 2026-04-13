@@ -38,7 +38,7 @@ export default function LoginPage() {
           .single()
           .then(({ data }) => {
             if (data?.onboarding_completed) {
-              router.push("/days");
+              router.push("/resources");
             } else {
               router.push("/welcome");
             }

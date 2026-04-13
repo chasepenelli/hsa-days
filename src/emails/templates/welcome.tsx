@@ -18,7 +18,7 @@ export function WelcomeEmail({
   quoteAuthor = "Queen Elizabeth II",
 }: WelcomeEmailProps) {
   return (
-    <EmailLayout preview="One email a day. One day at a time. Here's what to expect.">
+    <EmailLayout preview="Everything you need for your dog's HSA journey — all in one place.">
       <table
         role="presentation"
         cellPadding="0"
@@ -28,8 +28,8 @@ export function WelcomeEmail({
       >
         {/* Header */}
         <EmailHeader
-          illustrationUrl="https://hsadays.com/illustrations/journal/day01-illust.png"
-          tagline="A 30-day companion for what you're going through"
+          illustrationUrl="https://hsadays.com/illustrations/resources/resource-hub-hero.png"
+          tagline="The most complete HSA resource for dog owners"
         />
 
         {/* Ornament divider */}
@@ -65,9 +65,10 @@ export function WelcomeEmail({
                 wish you didn&rsquo;t have to be.
               </p>
               <p style={{ margin: "0 0 14px 0" }}>
-                Starting tomorrow, you&rsquo;ll get one short email each morning.
-                A quote, a few words, and a link to that day&rsquo;s reflection on
-                the site. That&rsquo;s it. No overwhelm. No homework.
+                HSA Days has everything we&rsquo;ve gathered to help you navigate
+                this &mdash; supplements, nutrition guides, emergency
+                resources, treatment info, and tools to track your dog&rsquo;s
+                health. All free, all in one place.
               </p>
             </div>
           </td>
@@ -76,7 +77,7 @@ export function WelcomeEmail({
         {/* Quote block */}
         <EmailQuoteBlock quote={quote} author={quoteAuthor} />
 
-        {/* How it works */}
+        {/* What's inside */}
         <tr>
           <td style={{ padding: "24px 32px 0 32px" }}>
             <div
@@ -90,11 +91,11 @@ export function WelcomeEmail({
               className="body-text"
             >
               <p style={{ margin: "0 0 14px 0" }}>
-                A few things to know:
+                Here&rsquo;s what&rsquo;s waiting for you:
               </p>
             </div>
 
-            {/* Expectation 1 */}
+            {/* Resource 1 */}
             <table
               role="presentation"
               cellPadding="0"
@@ -128,13 +129,13 @@ export function WelcomeEmail({
                   }}
                   className="body-text"
                 >
-                  <strong>Go at your own pace.</strong> If you miss a day, it&rsquo;ll
-                  be there when you&rsquo;re ready. There&rsquo;s no clock.
+                  <strong>Supplement Guide</strong> &mdash; 17 research-backed
+                  supplements with weight-adjusted doses and evidence levels.
                 </td>
               </tr>
             </table>
 
-            {/* Expectation 2 */}
+            {/* Resource 2 */}
             <table
               role="presentation"
               cellPadding="0"
@@ -168,13 +169,13 @@ export function WelcomeEmail({
                   }}
                   className="body-text"
                 >
-                  <strong>Your journal is private.</strong> Nobody else sees it.
-                  It&rsquo;s yours, always.
+                  <strong>Health Tracker</strong> &mdash; Log daily symptoms,
+                  medications, and vet visits. See trends over time.
                 </td>
               </tr>
             </table>
 
-            {/* Expectation 3 */}
+            {/* Resource 3 */}
             <table
               role="presentation"
               cellPadding="0"
@@ -208,8 +209,8 @@ export function WelcomeEmail({
                   }}
                   className="body-text"
                 >
-                  <strong>Completely free.</strong> No trial, no premium tier. I
-                  built this because I needed it and it didn&rsquo;t exist.
+                  <strong>Vet Report Analysis</strong> &mdash; Upload bloodwork
+                  or lab results and get a plain-English explanation.
                 </td>
               </tr>
             </table>
@@ -229,14 +230,14 @@ export function WelcomeEmail({
               }}
               className="body-text"
             >
-              In the meantime, Day 1 is already waiting for you.
+              Start with whatever feels most urgent. Everything is ready for you.
             </div>
           </td>
         </tr>
 
         {/* CTA */}
-        <EmailCTA href="https://hsadays.com/days/1?utm_source=kit&utm_medium=email&utm_campaign=welcome&utm_content=start">
-          Begin Day 1
+        <EmailCTA href="https://hsadays.com/resources?utm_source=kit&utm_medium=email&utm_campaign=welcome&utm_content=start">
+          Explore Resources
         </EmailCTA>
 
         {/* Divider */}
@@ -271,10 +272,14 @@ export function WelcomeEmail({
                   >
                     If today is a particularly hard day &mdash; if you just got
                     the call, if you&rsquo;re sitting in the parking lot at the
-                    vet &mdash; just start Day 1. It&rsquo;s short. It won&rsquo;t
-                    ask much of you. It&rsquo;ll just say:{" "}
+                    vet &mdash; start with the{" "}
+                    <a href="https://hsadays.com/resources/emergency" style={{ color: "#5B7B5E" }}>
+                      emergency guide
+                    </a>
+                    . It&rsquo;ll tell you exactly what to watch for and what
+                    to do.{" "}
                     <em style={{ color: "#5B7B5E" }}>
-                      you&rsquo;re not alone in this.
+                      You&rsquo;re not alone in this.
                     </em>
                   </div>
                 </td>

@@ -9,14 +9,12 @@ export default function OfflinePage() {
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      // Auto-navigate back after brief delay so user sees the status change
       setTimeout(() => {
-        window.location.href = "/days";
+        window.location.href = "/resources";
       }, 800);
     };
 
     window.addEventListener("online", handleOnline);
-    // Check immediately in case we're already back online
     if (navigator.onLine) handleOnline();
 
     return () => window.removeEventListener("online", handleOnline);
@@ -73,13 +71,13 @@ export default function OfflinePage() {
 
         {isOnline ? (
           <p className="text-[0.95rem] text-text-muted leading-relaxed mb-6">
-            Reconnected. Taking you back to your journal...
+            Reconnected. Taking you back...
           </p>
         ) : (
           <>
             <p className="text-[0.95rem] text-text-muted leading-relaxed mb-6">
-              No worries — your journal entries are saved on this device and will
-              sync automatically when you reconnect.
+              No worries — cached resources are still available on this device.
+              Everything will sync when you reconnect.
             </p>
 
             <div
@@ -95,11 +93,11 @@ export default function OfflinePage() {
               <ul className="text-[0.85rem] text-text-muted leading-relaxed list-none p-0 m-0 flex flex-col gap-2">
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--sage)" }}>&#10003;</span>
-                  Continue writing in your journal
+                  Browse resources you&apos;ve already loaded
                 </li>
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--sage)" }}>&#10003;</span>
-                  Review days you&apos;ve already loaded
+                  Review supplement and diet guides
                 </li>
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--sage)" }}>&#10003;</span>
@@ -125,7 +123,7 @@ export default function OfflinePage() {
                   border: "1px solid var(--border)",
                 }}
               >
-                Back to Journal
+                Back to Resources
               </Link>
             </div>
           </>

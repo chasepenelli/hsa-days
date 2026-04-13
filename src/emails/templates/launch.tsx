@@ -13,7 +13,7 @@ export function LaunchEmail({
   firstName = "{{ subscriber.first_name }}",
 }: LaunchEmailProps) {
   return (
-    <EmailLayout preview="HSA Days is live. Your 30-day companion is ready.">
+    <EmailLayout preview="HSA Days is live. Your HSA resource hub is ready.">
       <table
         role="presentation"
         cellPadding="0"
