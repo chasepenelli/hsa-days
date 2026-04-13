@@ -35,6 +35,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, { status: 301 });
   }
 
+  // ── Legacy redirect: /community → / ────────────────
+  if (request.nextUrl.pathname.startsWith("/community")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/";
+    return NextResponse.redirect(url, { status: 301 });
+  }
+
   // ── Legacy redirect: /journey → / ─────────────────
   if (request.nextUrl.pathname === "/journey") {
     const url = request.nextUrl.clone();

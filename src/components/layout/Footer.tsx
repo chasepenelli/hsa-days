@@ -40,12 +40,6 @@ export function Footer() {
               Our Story
             </Link>
             <Link
-              href="/community"
-              className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
-            >
-              Community
-            </Link>
-            <Link
               href="/resources"
               className="text-white/90 no-underline text-[0.85rem] hover:text-white/90 transition-colors"
             >

@@ -63,7 +63,6 @@ export function Header() {
           {([
             { href: "/resources", label: "Resources" },
             { href: "/tools", label: "Tools" },
-            { href: "/community", label: "Community" },
           ] as { href: string; label: string }[]).map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             return (

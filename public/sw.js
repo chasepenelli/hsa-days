@@ -7,7 +7,6 @@ const PRECACHE_ASSETS = [
   "/",
   "/resources",
   "/track",
-  "/community",
   "/tools",
   "/manifest.json",
   "/offline",
@@ -83,7 +82,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Resource and tracking routes: network-first, cache on success for offline access
-  if (event.request.mode === "navigate" && url.pathname.match(/^\/(resources|track|tools|community)(\/|$)/)) {
+  if (event.request.mode === "navigate" && url.pathname.match(/^\/(resources|track|tools)(\/|$)/)) {
     event.respondWith(
       fetch(event.request)
         .then((response) => {

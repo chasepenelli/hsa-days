@@ -23,13 +23,13 @@ const TABS: Tab[] = [
     label: "Track",
     href: "/track",
     icon: "/illustrations/icons/icon-paw-print.png",
-    isActive: (p) => p.startsWith("/track") || p.startsWith("/tools"),
+    isActive: (p) => p.startsWith("/track"),
   },
   {
-    label: "Community",
-    href: "/community",
+    label: "Tools",
+    href: "/tools",
     icon: "/illustrations/icons/icon-community.png",
-    isActive: (p) => p.startsWith("/community"),
+    isActive: (p) => p.startsWith("/tools"),
   },
 ];
 
