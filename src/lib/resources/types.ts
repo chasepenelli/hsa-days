@@ -147,3 +147,57 @@ export interface DietSource {
   type: "clinical" | "review" | "organization" | "integrative";
   year: number;
 }
+
+// ── Health Log types ──
+
+export type GumColor = "pink" | "pale" | "white" | "blue";
+
+export interface SymptomLog {
+  id: string;
+  subscriber_id: string;
+  logged_at: string;
+  energy: number | null;
+  appetite: number | null;
+  gum_color: GumColor | null;
+  mobility: number | null;
+  comfort: number | null;
+  notes: string | null;
+  created_at: string;
+}
+
+export type HealthLogEntryType = "symptom_checkin" | "medication" | "meal" | "vet_visit" | "weight" | "note";
+
+export interface HealthLogEntry {
+  id: string;
+  subscriber_id: string;
+  logged_at: string;
+  entry_type: HealthLogEntryType;
+  title: string;
+  notes: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface WeightLog {
+  id: string;
+  subscriber_id: string;
+  logged_at: string;
+  weight_lbs: number;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface DocumentAnalysis {
+  id: string;
+  subscriber_id: string;
+  file_name: string | null;
+  input_type: "image" | "pdf" | "text";
+  analysis_json: {
+    summary: string;
+    key_findings: string[];
+    flagged_concerns: string[];
+    suggested_questions: string[];
+    disclaimer: string;
+  } | null;
+  created_at: string;
+}
