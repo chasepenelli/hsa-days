@@ -11,7 +11,6 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      // Ensure subscriber record exists with auth user's ID
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -23,15 +22,33 @@ export async function GET(request: Request) {
           .eq("id", user.id)
           .single();
 
+        // Detect signup source from provider
+        const provider =
+          user.app_metadata?.provider ?? "magic_link";
+        const signupSource =
+          provider === "google"
+            ? "google"
+            : provider === "facebook"
+              ? "facebook"
+              : provider === "apple"
+                ? "apple"
+                : "magic_link";
+
+        // Extract name from OAuth metadata
+        const fullName =
+          user.user_metadata?.full_name ??
+          user.user_metadata?.name ??
+          null;
+
         if (!existing) {
-          // Create subscriber record matching the auth user ID
           const { error: upsertError } = await supabase
             .from("subscribers")
             .upsert(
               {
                 id: user.id,
                 email: user.email!,
-                signup_source: "magic_link",
+                name: fullName,
+                signup_source: signupSource,
                 has_digital_access: true,
               },
               { onConflict: "id" }
@@ -44,11 +61,17 @@ export async function GET(request: Request) {
             );
           }
 
-          // New user — send to onboarding
           return NextResponse.redirect(`${origin}/welcome`);
         }
 
-        // Existing user — check onboarding status
+        // Existing user — update name if we got one from OAuth and they don't have one
+        if (fullName && !existing.onboarding_completed) {
+          await supabase
+            .from("subscribers")
+            .update({ name: fullName })
+            .eq("id", user.id);
+        }
+
         if (!existing.onboarding_completed) {
           return NextResponse.redirect(`${origin}/welcome`);
         }

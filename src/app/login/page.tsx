@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 type Step = "email" | "sent";
 
@@ -147,16 +148,29 @@ export default function LoginPage() {
                 Welcome back
               </h1>
               <p className="text-[0.95rem] leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                Enter your email and we&apos;ll send you a link to sign in.
-                No passwords needed.
+                Sign in to access your personalized resources,
+                health tracker, and tools.
               </p>
             </>
           )}
         </div>
 
-        {/* Step 1: Email */}
+        {/* Step 1: Sign in options */}
         {step === "email" && (
           <div className="animate-fade-in-up">
+            {/* Google sign-in — primary */}
+            <div className="mb-4">
+              <GoogleSignInButton />
+            </div>
+
+            {/* Separator */}
+            <div className="flex items-center gap-3 my-5">
+              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+              <span className="text-[0.75rem]" style={{ color: "var(--text-muted)", opacity: 0.5 }}>or sign in with email</span>
+              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+            </div>
+
+            {/* Email magic link */}
             <form onSubmit={handleEmailSubmit} className="space-y-3">
               <div className="relative">
                 <input
@@ -222,24 +236,6 @@ export default function LoginPage() {
                 </div>
               )}
             </form>
-
-            {/* Separator */}
-            <div className="flex items-center gap-3 my-6">
-              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-              <span className="text-[0.75rem]" style={{ color: "var(--text-muted)", opacity: 0.5 }}>or</span>
-              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
-            </div>
-
-            <p className="text-center text-[0.88rem]" style={{ color: "var(--text-muted)" }}>
-              Don&apos;t have an account?{" "}
-              <a
-                href="/#signup"
-                className="font-medium no-underline transition-colors hover:opacity-80"
-                style={{ color: "var(--sage)" }}
-              >
-                Start free
-              </a>
-            </p>
           </div>
         )}
 

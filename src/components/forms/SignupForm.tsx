@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 
 interface SignupFormProps {
   variant?: "default" | "dark";
@@ -164,6 +165,19 @@ export function SignupForm({ variant = "default" }: SignupFormProps) {
           {error}
         </div>
       )}
+
+      {/* Google sign-in alternative */}
+      <div className="max-w-[480px] mx-auto mt-4">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 h-px" style={{ background: isDark ? "rgba(255,255,255,0.15)" : "var(--border)" }} />
+          <span className="text-[0.75rem]" style={{ color: isDark ? "rgba(255,255,255,0.4)" : "var(--text-muted)", opacity: isDark ? 1 : 0.5 }}>or</span>
+          <div className="flex-1 h-px" style={{ background: isDark ? "rgba(255,255,255,0.15)" : "var(--border)" }} />
+        </div>
+        <GoogleSignInButton
+          label="Sign up with Google"
+          variant={variant}
+        />
+      </div>
     </div>
   );
 }
