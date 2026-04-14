@@ -196,9 +196,9 @@ export function Tools() {
               transitionDelay: "0.08s",
             }}
           >
-            Track every day.{" "}
+            So you can focus on{" "}
             <em className="italic" style={{ color: "var(--sage)" }}>
-              Understand every report.
+              being with your dog.
             </em>
           </h2>
           <p
@@ -209,8 +209,8 @@ export function Tools() {
               transitionDelay: "0.16s",
             }}
           >
-            Practical tools built for HSA caregivers — because you have enough
-            on your mind without hunting for answers.
+            The practical stuff shouldn&apos;t take all your energy. These tools
+            handle the tracking and the research so you can be present.
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 import { Hero } from "@/components/sections/Hero";
+import { Triage } from "@/components/sections/Triage";
 import { WhyThisExists } from "@/components/sections/WhyThisExists";
 import { About } from "@/components/sections/About";
 import { CommunityStories } from "@/components/sections/CommunityStories";
@@ -12,10 +13,11 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <Triage />
+      <WhyThisExists />
       <Resources />
       <Tools />
       <AppPreview />
-      <WhyThisExists />
       <About />
       <CommunityStories />
       <FinalCTA />

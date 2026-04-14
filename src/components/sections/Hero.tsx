@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { SignupForm } from "@/components/forms/SignupForm";
 
 /* ─── Ambient floating orb ─────────────────── */
 function Orb({
@@ -248,7 +247,7 @@ export function Hero() {
             className="w-1.5 h-1.5 rounded-full animate-breathe"
             style={{ background: "var(--sage)" }}
           />
-          Free &middot; No Signup Required
+          For families facing HSA
         </div>
 
         {/* Main headline — staggered line-by-line reveal */}
@@ -323,12 +322,12 @@ export function Hero() {
             animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
-          Supplements, nutrition, emergency guides, treatment options,
-          financial help — everything you need, researched and organized
-          so you can focus on what matters most.
+          Everything we wished someone had gathered for us &mdash;
+          supplements, emergency guides, nutrition, treatment options
+          &mdash; all in one place, all free.
         </p>
 
-        {/* Signup form */}
+        {/* Primary CTA — not a signup form, just a path forward */}
         <div
           style={{
             animationName: "fadeInUp",
@@ -338,59 +337,35 @@ export function Hero() {
             animationTimingFunction: "var(--ease-out-expo)",
           }}
         >
-          <div className="mb-5">
-            <SignupForm />
-          </div>
-
-          {/* Trust signals */}
-          <p
-            className="text-[0.84rem] mb-1.5"
-            style={{ color: "var(--text-muted)" }}
+          <a
+            href="#triage"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-[1rem] no-underline transition-all duration-200"
+            style={{
+              background: "var(--sage)",
+              color: "white",
+              boxShadow: "0 4px 14px rgba(91,123,94,0.3)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 8px 20px rgba(91,123,94,0.35)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "";
+              e.currentTarget.style.boxShadow = "0 4px 14px rgba(91,123,94,0.3)";
+            }}
           >
-            Browse guides now &middot; No signup required
-          </p>
-          <p
-            className="text-[0.78rem] italic"
-            style={{ color: "var(--text-muted)", opacity: 0.55 }}
-          >
-            Built by a dog dad who needed this. Trusted by hundreds of HSA families.
-          </p>
-        </div>
+            Find what you need
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4">
+              <path d="M8 3v10M4 9l4 4 4-4" />
+            </svg>
+          </a>
 
-        {/* Social proof / stat row */}
-        <div
-          className="flex items-center justify-center gap-8 mt-12 flex-wrap"
-          style={{
-            animationName: "fadeIn",
-            animationDuration: "1s",
-            animationDelay: "2s",
-            animationFillMode: "both",
-          }}
-        >
-          {[
-            { number: "8", label: "In-Depth Guides" },
-            { number: "17", label: "Supplements Covered" },
-            { number: "0", label: "Cost, Ever" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div
-                className="font-serif font-semibold"
-                style={{
-                  fontSize: "1.4rem",
-                  color: "var(--sage-dark)",
-                  lineHeight: 1,
-                }}
-              >
-                {stat.number}
-              </div>
-              <div
-                className="text-[0.72rem] uppercase tracking-[0.1em] mt-1 font-medium"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {stat.label}
-              </div>
-            </div>
-          ))}
+          <p
+            className="text-[0.82rem] mt-4"
+            style={{ color: "var(--text-muted)", opacity: 0.6 }}
+          >
+            Free forever &middot; No signup required &middot; Built by a dog dad who needed this
+          </p>
         </div>
       </div>
 
