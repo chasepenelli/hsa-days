@@ -24,7 +24,7 @@ const gallery = [
   },
   {
     src: "/illustrations/order/order-lifestyle-complete.png",
-    caption: "Thirty days later. Still holding on.",
+    caption: "Still holding on.",
     aspect: "16 / 9" as const,
     span: "full" as const,
   },

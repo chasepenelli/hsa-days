@@ -97,7 +97,7 @@ export function WhatsInside() {
               transitionDelay: "0.08s",
             }}
           >
-            Thirty days of being present &mdash;{" "}
+            Every day of being present &mdash;{" "}
             <em className="italic" style={{ color: "var(--sage)" }}>
               printed and bound.
             </em>

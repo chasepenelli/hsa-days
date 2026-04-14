@@ -60,7 +60,7 @@ export function LaunchEmail({
                 lineHeight: "1.35",
               }}
             >
-              Your 30-day companion is ready.
+              Your HSA resource hub is ready.
             </div>
           </td>
         </tr>
@@ -87,17 +87,19 @@ export function LaunchEmail({
               <p style={{ margin: "0 0 14px 0" }}>
                 A few months ago, I sat on the floor of my apartment the night
                 after losing my dog and thought: I wish something existed for
-                this. Something gentle. Something that didn&rsquo;t try to fix
-                it &mdash; just walked beside me through it.
+                this. Somewhere that had all the answers I spent weeks
+                desperately searching for &mdash; organized, researched, and
+                free.
               </p>
               <p style={{ margin: "0 0 14px 0" }}>
                 Nothing did. So I built it.
               </p>
               <p style={{ margin: "0 0 14px 0" }}>
-                HSA Days is a free, 30-day companion for people navigating
-                pet loss or a difficult diagnosis. One day at a time. One
-                reflection at a time. No rush, no pressure, no homework.
-                Just a quiet space that meets you where you are.
+                HSA Days is a free resource hub for dog owners navigating
+                hemangiosarcoma. Supplements with weight-adjusted doses,
+                emergency guides, nutrition plans, treatment explanations,
+                health tracking, and AI-powered vet report analysis &mdash;
+                everything in one place so you can focus on your dog.
               </p>
             </div>
           </td>
@@ -149,8 +151,8 @@ export function LaunchEmail({
                         style={{ padding: "0 4px" }}
                       >
                         <img
-                          src="https://hsadays.com/illustrations/icons/icon-read-reflect.png"
-                          alt="Daily reflections"
+                          src="https://hsadays.com/illustrations/icons/icon-supplement.png"
+                          alt="Supplement guides"
                           width="36"
                           height="36"
                           style={{
@@ -170,7 +172,7 @@ export function LaunchEmail({
                             lineHeight: "1.4",
                           }}
                         >
-                          Daily reflections
+                          Supplement guides
                         </div>
                       </td>
                       <td
@@ -180,8 +182,8 @@ export function LaunchEmail({
                         style={{ padding: "0 4px" }}
                       >
                         <img
-                          src="https://hsadays.com/illustrations/icons/icon-journal.png"
-                          alt="A private journal"
+                          src="https://hsadays.com/illustrations/icons/icon-heart.png"
+                          alt="Emergency resources"
                           width="36"
                           height="36"
                           style={{
@@ -201,7 +203,7 @@ export function LaunchEmail({
                             lineHeight: "1.4",
                           }}
                         >
-                          A private journal
+                          Emergency resources
                         </div>
                       </td>
                       <td
@@ -211,8 +213,8 @@ export function LaunchEmail({
                         style={{ padding: "0 4px" }}
                       >
                         <img
-                          src="https://hsadays.com/illustrations/icons/icon-community.png"
-                          alt="A gentle community"
+                          src="https://hsadays.com/illustrations/icons/icon-paw-print.png"
+                          alt="Health tracking"
                           width="36"
                           height="36"
                           style={{
@@ -232,7 +234,7 @@ export function LaunchEmail({
                             lineHeight: "1.4",
                           }}
                         >
-                          A gentle community
+                          Health tracking
                         </div>
                       </td>
                     </tr>

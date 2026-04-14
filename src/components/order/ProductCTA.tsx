@@ -5,7 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ShopifyButton } from "@/components/ui/ShopifyButton";
 
 const features = [
-  "30 daily reflections & guided prompts",
+  "Guided prompts & writing space throughout",
   "Complete supplement & nutrition guides",
   "Dedicated journaling space on every page",
   "Room for photos, notes, and keepsakes",
@@ -150,7 +150,7 @@ export function ProductCTA() {
               className="text-[0.92rem] leading-relaxed text-center mx-auto mb-8"
               style={{ color: "var(--text-muted)", maxWidth: "520px" }}
             >
-              All 30 days in a beautiful printed format with dedicated writing
+              A beautifully printed journal with dedicated writing
               space, thick archival pages, lay-flat binding, and room for photos
               and keepsakes.
             </p>

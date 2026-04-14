@@ -38,11 +38,11 @@ const guidedJournal: Product = {
   title: "The Guided Journal",
   subtitle: "Record your journey as it happens.",
   description:
-    "All 30 days in a beautiful printed format with dedicated writing space, thick archival pages, lay-flat binding, and room for photos and keepsakes.",
+    "A beautiful printed journal with dedicated writing space, thick archival pages, lay-flat binding, and room for photos and keepsakes.",
   features: [
     {
       icon: "/illustrations/icons/icon-journal.png",
-      title: "30 Days of Guided Space",
+      title: "Guided Writing Space",
       description: "Every reflection, prompt, and activity with room to write.",
     },
     {
@@ -75,7 +75,7 @@ const keepsakeBook: Product = {
   title: "The Keepsake Book",
   subtitle: "Celebrate your completed journey.",
   description:
-    "We compile your journal entries, reflections, and photos from the digital program into a one-of-a-kind printed book. Your words, your memories, bound forever.",
+    "Curate your own collection of words, photos, and memories into a one-of-a-kind printed book. Your story, bound forever.",
   features: [
     {
       icon: "/illustrations/icons/icon-camera.png",

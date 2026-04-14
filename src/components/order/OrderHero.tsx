@@ -282,9 +282,9 @@ export function OrderHero() {
             animationTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
-          The HSA Days Guided Journal is a printed companion for your 30-day
-          journey &mdash; a place to write, reflect, and hold onto the moments
-          that matter most.
+          The HSA Days Guided Journal is a printed companion for the days
+          you&apos;re living through &mdash; a place to write, reflect, and
+          hold onto the moments that matter most.
         </p>
 
         {/* Price hint */}
