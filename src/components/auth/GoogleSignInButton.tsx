@@ -1,7 +1,5 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
-
 interface GoogleSignInButtonProps {
   label?: string;
   variant?: "default" | "dark";
@@ -13,14 +11,10 @@ export function GoogleSignInButton({
 }: GoogleSignInButtonProps) {
   const isDark = variant === "dark";
 
-  const handleGoogleSignIn = async () => {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/api/auth/callback`,
-      },
-    });
+  const handleGoogleSignIn = () => {
+    // Redirect to our own Google OAuth route — NOT through Supabase
+    // This way Google sees hsadays.com as the requesting domain
+    window.location.href = "/api/auth/google";
   };
 
   return (
