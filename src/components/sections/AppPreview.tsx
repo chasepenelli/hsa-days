@@ -7,20 +7,20 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 const screens = [
   {
     label: "Health Tracker",
-    description: "Quick daily check-ins with sparkline trends",
-    mockup: "/illustrations/resources/resource-hub-hero.png",
+    description: "Daily symptom check-ins and trends",
+    mockup: "/illustrations/app-preview/screen-track.png",
     color: "var(--sage)",
   },
   {
     label: "Supplement Guide",
     description: "Weight-adjusted doses for 17 supplements",
-    mockup: "/illustrations/supplements/supplement-hero.png",
+    mockup: "/illustrations/app-preview/screen-supplements.png",
     color: "var(--gold)",
   },
   {
     label: "Vet Report Analysis",
     description: "AI-powered plain-English explanations",
-    mockup: "/illustrations/resources/financial-help-hero.png",
+    mockup: "/illustrations/app-preview/screen-analyze.png",
     color: "var(--terracotta)",
   },
 ];
@@ -130,31 +130,8 @@ export function AppPreview() {
                     fill
                     sizes="220px"
                     className="object-cover object-top"
-                    style={{ opacity: 0.85 }}
+                    style={{ opacity: 1 }}
                   />
-                  {/* Gradient overlay for readability */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(180deg, rgba(250,248,245,0.3) 0%, rgba(250,248,245,0) 30%, rgba(250,248,245,0.6) 85%, rgba(250,248,245,0.95) 100%)",
-                    }}
-                  />
-                  {/* Screen label overlay */}
-                  <div className="absolute bottom-3 left-3 right-3">
-                    <div
-                      className="text-[0.65rem] font-semibold uppercase tracking-[0.1em] mb-0.5"
-                      style={{ color: screen.color }}
-                    >
-                      {screen.label}
-                    </div>
-                    <div
-                      className="text-[0.7rem] leading-snug"
-                      style={{ color: "var(--text-muted)" }}
-                    >
-                      {screen.description}
-                    </div>
-                  </div>
                 </div>
 
                 {/* Bottom nav mockup */}
@@ -187,6 +164,22 @@ export function AppPreview() {
                       </span>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Label below phone */}
+              <div className="mt-4 text-center">
+                <div
+                  className="text-[0.72rem] font-semibold uppercase tracking-[0.1em] mb-0.5"
+                  style={{ color: screen.color }}
+                >
+                  {screen.label}
+                </div>
+                <div
+                  className="text-[0.72rem] leading-snug"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {screen.description}
                 </div>
               </div>
             </div>
